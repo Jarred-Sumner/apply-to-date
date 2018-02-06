@@ -38,17 +38,12 @@ const Head = props => (
       />
 
       <link
-        href="https://fonts.googleapis.com/css?family=Adamina|Open+Sans"
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,700,900"
         rel="stylesheet"
       />
 
       <link
-        href="https://fonts.googleapis.com/css?family=Lora"
-        rel="stylesheet"
-      />
-
-      <link
-        href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre"
+        href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre:300,400,500,700,900"
         rel="stylesheet"
       />
     </NextHead>

@@ -39,7 +39,7 @@ const Button = ({
           font-family: Open Sans, sans-serif;
           font-size: 12px;
           text-transform: uppercase;
-          font-weight: 700;
+          font-weight: 900;
           appearance: none;
           text-align: center;
           justify-content: center;

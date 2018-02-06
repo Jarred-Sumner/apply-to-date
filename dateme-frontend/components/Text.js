@@ -5,7 +5,7 @@ const Text = ({
   type,
   className,
   children,
-  size = "16px",
+  size = "18px",
   color = "rgba(0,0,0,.75);",
   componentType = "div",
   weight = "regular",

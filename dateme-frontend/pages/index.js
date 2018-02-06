@@ -184,15 +184,15 @@ class Homepage extends React.Component {
               <div className="Copy-title">
                 <Text
                   font="sans-serif"
-                  size="48px"
-                  lineHeight="54px"
+                  size="36px"
+                  lineHeight="44px"
                   weight="bold"
                 >
                   A personal website to get dates
                 </Text>
               </div>
               <div className="Copy-body">
-                <Text size="24px" lineHeight="24px">
+                <Text size="24px" lineHeight="24px" font="serif">
                   Free and quick to setup. Start pitching yourself today.
                 </Text>
               </div>
