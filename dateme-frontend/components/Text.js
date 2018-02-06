@@ -109,11 +109,24 @@ export default ({ type, children, ...otherProps }) => {
         {children}
       </Text>
     );
-  } else if (type === "PageTitle") {
+  } else if (type == "ProfilePageTitle") {
     return (
       <Text
         {...otherProps}
         font="serif"
+        color="#000"
+        size="36px"
+        lineHeight="35px"
+        weight="bold"
+      >
+        {children}
+      </Text>
+    );
+  } else if (type === "PageTitle") {
+    return (
+      <Text
+        {...otherProps}
+        font="sans-serif"
         color="#000"
         size="36px"
         lineHeight="35px"
@@ -148,7 +161,7 @@ export default ({ type, children, ...otherProps }) => {
         casing="uppercase"
         font="sans-serif"
         size="12px"
-        color="#B8BFD3"
+        color="#808696"
         weight="extraBold"
       >
         {children}

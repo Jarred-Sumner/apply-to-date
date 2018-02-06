@@ -66,7 +66,7 @@ class VerifyAccount extends React.Component {
           }
 
           main {
-            margin-top: 30px;
+            margin-top: 50px;
             display: grid;
             grid-template-rows: auto auto auto;
             grid-row-gap: 30px;
@@ -75,7 +75,7 @@ class VerifyAccount extends React.Component {
           }
 
           .Buttons {
-            margin-top: 28px;
+            margin-top: 14px;
             display: grid;
             grid-template-columns: minmax(180px, 300px);
             grid-template-rows: 42px;

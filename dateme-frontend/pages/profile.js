@@ -120,7 +120,7 @@ class Profile extends React.Component {
         >
           <section className="Section Section--center Section--title">
             <div className="Section-row">
-              <Text type="PageTitle">
+              <Text type="ProfilePageTitle">
                 👋 Hi, I'm {titleCase(profile.name)}.
               </Text>
             </div>
