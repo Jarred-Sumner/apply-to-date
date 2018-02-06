@@ -93,6 +93,10 @@ export default class FormField extends React.Component {
             font-weight: 400;
             font-family: Lucida Grande, Open Sans, sans-serif;
           }
+
+          input::placeholder {
+            color: #b9bed1;
+          }
         `}</style>
       </fieldset>
     );
