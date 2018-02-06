@@ -3,30 +3,34 @@ import classNames from "classnames";
 
 const Button = ({
   onClick,
-  pathname,
-  query,
+  href,
   prefetch,
   className,
   children,
   inline,
+  fill = true,
   size = "normal",
-  componentType = "div",
+  componentType = "button",
   color = "black",
   icon
 }) => {
+  const realComponentType = href ? "a" : componentType;
   const classes = classNames("Button", {
     "Button--iconOnly": !children && !!icon,
     "Button--icon": !!icon,
-    "Button--black": color === "black",
-    "Button--green": color === "green",
-    "Button--gray": color === "gray",
+    "Button--black--fill": color === "black" && fill,
+    "Button--black--unfill": color === "black" && !fill,
+    "Button--green--fill": color === "green" && fill,
+    "Button--green--unfill": color === "green" && !fill,
+    "Button--gray--fill": color === "gray" && fill,
+    "Button--gray--unfill": color === "gray" && !fill,
     "Button--large": size === "large",
     "Button--inline": !!inline,
     "Button--normal": size === "normal"
   });
 
   const component = (
-    <span>
+    <React.Fragment>
       <style jsx>{`
         .Button {
           font-family: Lato, sans-serif;
@@ -42,19 +46,37 @@ const Button = ({
           border-radius: 33px;
           box-shadow: none;
           color: #ffffff;
+          text-decoration: none;
           cursor: pointer;
+          outline: 0;
         }
 
-        .Button:hover {
+        .Button--black--fill:hover {
           background-color: #333;
         }
 
-        .Button--black {
+        .Button--black--fill {
           background-color: #000000;
+          color: #fff;
         }
 
-        .Button--green {
+        .Button--black--unfill {
+          border-color: #000000;
+          color: #000;
+        }
+
+        .Button--black--unfill:hover {
+          background-color: #f9f9f9;
+        }
+
+        .Button--green--fill {
           background-color: #4be1ab;
+          color: #fff;
+        }
+
+        .Button--green--unfill {
+          border-color: #4be1ab;
+          color: #4be1ab;
         }
 
         .Button--inline {
@@ -67,14 +89,20 @@ const Button = ({
           padding: 14px 24px;
         }
       `}</style>
-      <button className={classes} onClick={onClick}>
-        {children}
-      </button>
-    </span>
+      {realComponentType === "button" && (
+        <button className={classes}>{children}</button>
+      )}
+      {realComponentType === "a" && (
+        <a href={href} className={classes}>
+          {children}
+        </a>
+      )}
+      {realComponentType === "div" && <div className={classes}>{children}</div>}
+    </React.Fragment>
   );
 
-  if (pathname) {
-    return <Link href={{ pathname, query }}>{component}</Link>;
+  if (href) {
+    return <Link href={href}>{component}</Link>;
   } else {
     return component;
   }

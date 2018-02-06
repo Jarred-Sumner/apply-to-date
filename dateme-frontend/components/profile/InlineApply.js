@@ -16,7 +16,7 @@ export default class InlineApply extends React.Component {
     evt.preventDefault();
 
     Router.push({
-      pathname: `/profiles/${this.props.profileId}/apply`,
+      pathname: `/${this.props.profileId}/apply`,
       query: {
         email: this.state.email
       }

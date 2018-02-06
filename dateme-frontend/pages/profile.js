@@ -5,12 +5,14 @@ import withRedux from "next-redux-wrapper";
 import { updateEntities, setCurrentUser, initStore } from "../redux/store";
 import { getProfile, getCurrentUser } from "../api";
 import { bindActionCreators } from "redux";
-import Header from "../components/profile/Header";
+import Header from "../components/Header";
 import Text from "../components/Text";
 import InlineApply from "../components/profile/InlineApply";
 import Lightbox from "react-images";
 import _ from "lodash";
 import titleCase from "title-case";
+import Waypoint from "react-waypoint";
+import Button from "../components/Button";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -43,9 +45,13 @@ class Profile extends React.Component {
     super(props);
 
     this.state = {
-      currentPhotoIndex: null
+      currentPhotoIndex: null,
+      isHeaderSticky: false
     };
   }
+
+  enableStickyHeader = () => this.setState({ isHeaderSticky: true });
+  disableStickyHeader = () => this.setState({ isHeaderSticky: false });
 
   setCurrentPhoto = url => {
     this.setState({
@@ -102,24 +108,32 @@ class Profile extends React.Component {
     return (
       <div>
         <Head />
-        <Header profile={this.props.profile} />
-
-        <section className="Section Section--center Section--title">
-          <div className="Section-row">
-            <Text font="serif" size="30px" type="pageTitle" weight="bold">
-              👋 Hi, I'm {titleCase(profile.name)}.
-            </Text>
-          </div>
-
-          <div className="Section-row">
-            <Text font="sans-serif">{profile.tagline}</Text>
-          </div>
-
-          <div className="Section-row ApplicationForm">
+        <Header showChildren={this.state.isHeaderSticky}>
+          <div className="HeaderForm">
             <InlineApply profileId={this.props.profile.id} />
           </div>
-        </section>
+        </Header>
 
+        <Waypoint
+          onEnter={this.disableStickyHeader}
+          onLeave={this.enableStickyHeader}
+        >
+          <section className="Section Section--center Section--title">
+            <div className="Section-row">
+              <Text type="PageTitle">
+                👋 Hi, I'm {titleCase(profile.name)}.
+              </Text>
+            </div>
+
+            <div className="Section-row">
+              <Text font="sans-serif">{profile.tagline}</Text>
+            </div>
+
+            <div className="Section-row ApplicationForm">
+              <InlineApply profileId={this.props.profile.id} />
+            </div>
+          </section>
+        </Waypoint>
         <section className="Section Section--photos">
           {profile.photos.slice(0, 3).map(url => (
             <div
@@ -140,7 +154,6 @@ class Profile extends React.Component {
             onClose={this.closeLightbox}
           />
         </section>
-
         <section className="Section Section--bio">
           {this.paragraphs().map(paragraph => {
             return (
@@ -148,15 +161,12 @@ class Profile extends React.Component {
                 key={paragraph.title}
                 className="Section-row Section-row--bio"
               >
-                <Text type="title" font="serif" size="30px" weight="bold">
-                  {paragraph.title}
-                </Text>
+                <Text type="title">{paragraph.title}</Text>
                 <Text type="paragraph">{paragraph.body}</Text>
               </div>
             );
           })}
         </section>
-
         <style jsx>{`
           .Section {
             margin-top: 4rem;
@@ -165,6 +175,12 @@ class Profile extends React.Component {
             display: grid;
             grid-row-gap: 2rem;
             max-width: 1080px;
+          }
+
+          .HeaderForm {
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
           }
 
           .Section-row {
@@ -187,15 +203,22 @@ class Profile extends React.Component {
           }
 
           .Section--photos {
-            grid-column-gap: 2rem;
-            grid-template-columns: 1fr 1fr 1fr;
-            grid-template-rows: 1fr;
-            margin-left: auto;
+            align-items: flex-start;
+            display: flex;
             text-align: center;
+            align-items: center;
+            justify-content: center;
           }
 
           .Section--photos .photo {
-            vertical-align: top;
+            flex: 1;
+            margin-right: 2em;
+            align-self: flex-start;
+            max-width: 400px;
+          }
+
+          .Section--photos .photo:last-child {
+            margin-right: 0;
           }
 
           .Section--photos .photo img {

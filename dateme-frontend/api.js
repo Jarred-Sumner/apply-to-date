@@ -20,3 +20,7 @@ export const getCurrentUser = () => {
 export const getProfile = profile => {
   return get("/profiles/" + profile);
 };
+
+export const getFeaturedProfiles = () => {
+  return get("/profiles");
+};

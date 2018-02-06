@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="151px" height="236px" viewBox="0 0 151 236" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>large-brand</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M62.8460596,0 C54.4222102,0 47.051342,4.50292107 43.0006129,11.234225 C38.9498838,4.50292107 31.5777898,0 23.1539404,0 C10.3655515,0 0,10.3745037 0,23.1724737 C0,29.8317751 2.81203586,35.8313621 7.30712545,40.0579661 L40.4496772,71.8030366 C41.0576849,72.5341381 41.9696965,73 42.9920322,73 C43.9389797,73 44.791539,72.5981403 45.3946434,71.9562725 L78.703907,40.0579661 C83.1898029,35.8319775 86,29.8323906 86,23.1724737 C86,10.3745037 75.6344485,0 62.8460596,0 Z" id="path-1"></path>
+    </defs>
+    <g id="Desktop-HD-Copy" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-178.000000, -235.000000)">
+        <g id="large-brand" transform="translate(178.000000, 235.000000)">
+            <path d="M77.098,8.012 C43.536,8.012 28.306,24.428 17.045,0.641 C17.045,0.641 -13.619,54.31 19.638,83.354 C35.56,97.259 60.152,101.304 77.098,90.225 L77.098,8.012 Z" id="Shape" fill="#00E2AA" fill-rule="nonzero"></path>
+            <path d="M75.507,8.012 C109.069,8.012 124.299,24.428 135.56,0.641 C135.56,0.641 166.224,54.31 132.967,83.354 C117.045,97.259 92.452,101.304 75.507,90.225 L75.506,90.225 L75.507,8.012 Z" id="Shape" fill="#0ACA9B" fill-rule="nonzero"></path>
+            <path d="M0.773,126.087 C0.773,166.715 73.028,233.066 75.582,235.398 L75.582,51.205 C34.26,51.246 0.773,84.755 0.773,126.087 Z" id="Shape" fill="#00E2AA" fill-rule="nonzero"></path>
+            <path d="M150.467,126.087 C150.467,84.731 116.94,51.203 75.582,51.203 C75.558,51.203 75.532,51.205 75.506,51.205 L75.506,235.397 C75.553,235.44 75.582,235.465 75.582,235.465 C75.582,235.465 150.467,167.446 150.467,126.087 Z" id="Shape" fill="#0ACA9B" fill-rule="nonzero"></path>
+            <circle id="Oval" fill="#FFFFFF" fill-rule="nonzero" cx="37.421" cy="44.925" r="24.092"></circle>
+            <circle id="Oval" fill="#3E4D75" fill-rule="nonzero" cx="37.422" cy="44.926" r="15.553"></circle>
+            <circle id="Oval" fill="#FFFFFF" fill-rule="nonzero" cx="28.685" cy="38.533" r="6.808"></circle>
+            <circle id="Oval" fill="#FFFFFF" fill-rule="nonzero" cx="115.939" cy="44.247" r="24.092"></circle>
+            <circle id="Oval" fill="#353859" fill-rule="nonzero" cx="115.939" cy="44.247" r="15.552"></circle>
+            <circle id="Oval" fill="#F8FBFA" fill-rule="nonzero" cx="107.202" cy="37.856" r="6.808"></circle>
+            <path d="M63.958,38.398 L73.478,51.032 C74.035,51.772 74.769,52.145 75.505,52.153 L75.505,33.919 C67.281,33.925 62.831,36.903 63.958,38.398 Z" id="Shape" fill="#FFBE69" fill-rule="nonzero"></path>
+            <path d="M77.58,51.0320885 L87.101,38.3980232 C88.228,36.9010154 82.845,33.919 75.529,33.919 C75.522,33.919 75.515,33.919 75.507,33.919 L75.507,52.1531913 C76.258,52.1600944 77.011,51.7880924 77.58,51.0320885 Z" id="Shape" fill="#E9A66B" fill-rule="nonzero"></path>
+            <g id="heart" transform="translate(33.000000, 96.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <use id="Mask" fill="#F5FFFD" fill-rule="nonzero" xlink:href="#path-1"></use>
+                <rect id="Rectangle" fill="#FFFFFF" mask="url(#mask-2)" x="-2" y="-3" width="45" height="78"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

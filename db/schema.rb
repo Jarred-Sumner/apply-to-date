@@ -10,12 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180206002900) do
+ActiveRecord::Schema.define(version: 20180206064743) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
   enable_extension "pgcrypto"
+
+  create_table "external_authentications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "uid"
+    t.string "provider", null: false
+    t.uuid "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["provider"], name: "index_external_authentications_on_provider"
+    t.index ["uid"], name: "index_external_authentications_on_uid"
+    t.index ["user_id"], name: "index_external_authentications_on_user_id"
+  end
 
   create_table "profiles", id: :string, force: :cascade do |t|
     t.uuid "user_id"
@@ -27,6 +38,8 @@ ActiveRecord::Schema.define(version: 20180206002900) do
     t.string "name"
     t.text "tagline"
     t.string "photos", array: true
+    t.boolean "featured", default: false, null: false
+    t.index ["featured"], name: "index_profiles_on_featured"
     t.index ["user_id"], name: "index_profiles_on_user_id"
   end
 
@@ -48,5 +61,6 @@ ActiveRecord::Schema.define(version: 20180206002900) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "external_authentications", "users"
   add_foreign_key "profiles", "users"
 end

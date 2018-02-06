@@ -1,6 +1,6 @@
 import classNames from "classnames";
 
-export default ({
+const Text = ({
   font = "sans-serif",
   type,
   className,
@@ -8,17 +8,21 @@ export default ({
   size = "16px",
   color = "#3A405B",
   componentType = "div",
-  weight = "regular"
+  weight = "regular",
+  lineHeight = "19px",
+  wrap = null
 }) => {
-  const classes = classNames("Text", {
+  const classes = classNames("Text", className, {
     "Text--bold": weight === "bold",
     "Text--medium": weight === "medium",
+    "Text--semiBold": weight === "semiBold",
     "Text--regular": weight === "regular",
     "Text--sans-serif": font === "sans-serif",
     "Text--serif": font === "serif",
     "Text--paragraph": type === "paragraph",
     "Text--title": type === "title",
-    "Text--pageTitle": type === "pageTitle"
+    "Text--wrap": wrap === true,
+    "Text--noWrap": wrap === false
   });
 
   return (
@@ -28,22 +32,24 @@ export default ({
           color: ${color};
           display: inline;
           letter-spacing: 0;
-          line-height: 19px;
+          line-height: ${lineHeight};
           font-size: ${size};
         }
 
-        .Text--paragraph {
-          line-height: 30px;
+        .Text--wrap {
           white-space: normal;
           word-wrap: break-word;
           word-break: break-word;
         }
 
-        .Text--pageTitle {
-          line-height: 39px;
-          white-space: nowrap;
-          word-wrap: none;
-          word-break: none;
+        .Text--regular {
+          font-weight: 400;
+        }
+
+        .Text--hugeTitle {
+          font-size: 46px;
+          line-height: 54px;
+          letter-spacing: 0.07px;
         }
 
         .Text--title {
@@ -65,16 +71,60 @@ export default ({
           font-weight: 700;
         }
 
-        .Text--serif.Text--bold {
+        .Text--serif.Text--semiBold {
+          font-weight: 600;
+        }
+
+        .Text--serif.Text--bold,
+        .Text--serif strong {
           font-weight: 700;
         }
 
-        .Text--sans-serif.Text--bold {
+        .Text--sans-serif.Text--bold,
+        .Text--sans-serif strong {
           font-weight: 700;
         }
       `}</style>
 
-      {React.createElement(componentType, {}, children)}
+      {children}
     </div>
   );
+};
+
+export default ({ type, children, ...otherProps }) => {
+  if (type === "PageTitle") {
+    return (
+      <Text
+        {...otherProps}
+        font="serif"
+        color="#000"
+        size="30px"
+        lineHeight="35px"
+        weight="bold"
+      >
+        {children}
+      </Text>
+    );
+  } else if (type === "paragraph") {
+    return (
+      <Text
+        {...otherProps}
+        weight="medium"
+        wrap
+        font="sans-serif"
+        size="16px"
+        lineHeight="30px"
+      >
+        {children}
+      </Text>
+    );
+  } else if (type === "title") {
+    return (
+      <Text {...otherProps} font="serif" size="30px" weight="bold">
+        {children}
+      </Text>
+    );
+  } else {
+    return <Text {...otherProps}>{children}</Text>;
+  }
 };

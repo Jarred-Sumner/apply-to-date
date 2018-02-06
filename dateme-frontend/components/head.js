@@ -9,7 +9,7 @@ const defaultOGImage = "";
 const Head = props => (
   <React.Fragment>
     <NextHead>
-      <meta charset="UTF-8" />
+      <meta charSet="UTF-8" />
       <title>{props.title || ""}</title>
       <meta
         name="description"
