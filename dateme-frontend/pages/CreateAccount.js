@@ -135,6 +135,7 @@ class CreateAccount extends React.Component {
                 required
                 value={email}
                 onChange={this.setEmail}
+                placeholder="youremail@gmail.com"
               />
 
               <FormField
@@ -143,6 +144,7 @@ class CreateAccount extends React.Component {
                 name="username"
                 value={username}
                 onChange={this.setUsername}
+                placeholder="desiredurl"
               >
                 <input
                   type="url"
@@ -185,7 +187,7 @@ class CreateAccount extends React.Component {
           }
 
           main {
-            margin-top: 30px;
+            margin-top: 50px;
             display: grid;
             grid-template-rows: auto auto auto;
             grid-row-gap: 30px;
