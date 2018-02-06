@@ -45,6 +45,8 @@ const Text = ({
 
         .Text--regular {
           font-weight: 400;
+          line-height: 1.58;
+          letter-spacing: -0.003em;
         }
 
         .Text--hugeTitle {
@@ -54,7 +56,7 @@ const Text = ({
         }
 
         .Text--title {
-          line-height: 30px;
+          line-height: 34px;
           white-space: nowrap;
           word-wrap: none;
           word-break: none;
@@ -70,6 +72,9 @@ const Text = ({
 
         .Text--sans-serif.Text--extraBold {
           font-weight: 900;
+          margin-left: -2.13px;
+          line-height: 1.15;
+          letter-spacing: -0.015em;
         }
 
         .Text--serif.Text--bold {
@@ -97,7 +102,13 @@ const Text = ({
 };
 
 export default ({ type, children, ...otherProps }) => {
-  if (type === "PageTitle") {
+  if (type == "TagLine") {
+    return (
+      <Text {...otherProps} font="serif" color="#000" size="18px">
+        {children}
+      </Text>
+    );
+  } else if (type === "PageTitle") {
     return (
       <Text
         {...otherProps}
@@ -117,7 +128,7 @@ export default ({ type, children, ...otherProps }) => {
         weight="regular"
         wrap
         font="serif"
-        size="18px"
+        size="21px"
         lineHeight="30px"
       >
         {children}

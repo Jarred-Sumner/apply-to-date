@@ -126,7 +126,9 @@ class Profile extends React.Component {
             </div>
 
             <div className="Section-row">
-              <Text font="sans-serif">{profile.tagline}</Text>
+              <Text type="Tagline" font="serif">
+                {profile.tagline}
+              </Text>
             </div>
 
             <div className="Section-row ApplicationForm">
@@ -191,6 +193,10 @@ class Profile extends React.Component {
 
           .Section-title {
             margin-bottom: 14px;
+          }
+
+          .Section-tagline {
+            font-size: 18px;
           }
 
           .Section-row--bio {
