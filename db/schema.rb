@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180206213648) do
+ActiveRecord::Schema.define(version: 20180206224820) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,10 @@ ActiveRecord::Schema.define(version: 20180206213648) do
     t.string "name"
     t.jsonb "info"
     t.jsonb "raw_info"
+    t.string "access_token", null: false
+    t.string "refresh_token"
+    t.datetime "access_token_expiration"
+    t.string "location"
     t.index ["provider"], name: "index_external_authentications_on_provider"
     t.index ["uid"], name: "index_external_authentications_on_uid"
     t.index ["user_id"], name: "index_external_authentications_on_user_id"

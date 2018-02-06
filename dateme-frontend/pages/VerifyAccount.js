@@ -7,7 +7,7 @@ import Button from "../components/Button";
 import Text from "../components/Text";
 import _ from "lodash";
 import { updateEntities, setCurrentUser, initStore } from "../redux/store";
-import { getFeaturedProfiles, getCurrentUser } from "../api";
+import { getVerification, getCurrentUser } from "../api";
 import { bindActionCreators } from "redux";
 import Router from "next/router";
 import classNames from "classnames";
@@ -15,8 +15,6 @@ import classNames from "classnames";
 const BASE_AUTHORIZE_URL = "http://localhost:3001/auth";
 
 class VerifyAccount extends React.Component {
-  static async getInitialProps({ store, query }) {}
-
   render() {
     return (
       <div>

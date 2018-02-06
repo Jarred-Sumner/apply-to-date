@@ -1,13 +1,24 @@
 class Api::V1::UsersController < Api::V1::ApplicationController
 
   def create
-    @user = User.create!(create_params.merge(password_confirmation: create_params[:password]))
-    @profile = Profile.create!(
-      user: @user,
-      id: @user.username
-    )
-    auto_login(@user, true)
-    render json: UserSerializer.new(@user, {include: [:profile]}).serializable_hash
+    ActiveRecord::Base.transaction do
+      @external_authentication = ExternalAuthentication.find(params[:external_authentication_id])
+
+      @user = User.create!(create_params.merge(password_confirmation: create_params[:password]))
+
+      @external_authentication.user = @user
+      @external_authentication.save!
+
+      @profile = Profile.create!(
+        user: @user,
+        id: @user.username,
+        name: @external_authentication.name.split(' ').first,
+        tagline: @external_authentication.info["description"],
+      )
+      
+      auto_login(@user, true)
+      render json: UserSerializer.new(@user, {include: [:profile]}).serializable_hash
+    end
   rescue ActiveRecord::RecordInvalid => e
     render_error(message: e.record.errors.full_messages.join(' and '))
   end

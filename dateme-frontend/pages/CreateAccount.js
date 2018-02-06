@@ -7,11 +7,12 @@ import Button from "../components/Button";
 import Text from "../components/Text";
 import _ from "lodash";
 import { updateEntities, setCurrentUser, initStore } from "../redux/store";
-import { getVer, getCurrentUser } from "../api";
+import { getVerification, getCurrentUser } from "../api";
 import { bindActionCreators } from "redux";
 import Router from "next/router";
 import classNames from "classnames";
 import FormField from "../components/FormField";
+import Icon from "../components/Icon";
 
 const BASE_AUTHORIZE_URL = "http://localhost:3001/auth";
 
@@ -21,8 +22,64 @@ const EXTERNAL_ACCOUNT_LABELS = {
   facebook: "Facebook"
 };
 
+const ExternalAccount = ({ account }) => {
+  if (account.provider === "twitter") {
+    return (
+      <div className="Twitter">
+        <Icon type="twitter" />
+        <div className="Username">
+          <Text size="14px">@{account.username}</Text>
+        </div>
+        <Icon type="check" />
+
+        <div className="Connected">
+          <Text
+            color="#53E2AF"
+            size="12px"
+            letterSpacing="1px"
+            casing="uppercase"
+          >
+            Connected
+          </Text>
+        </div>
+
+        <style jsx>{`
+          .Twitter {
+            background-color: #fff;
+            border: 1px solid #e7ebf2;
+            padding: 14px 22px;
+            display: flex;
+            align-items: center;
+            border-radius: 100px;
+            margin-bottom: 14px;
+            text-align: left;
+          }
+
+          .Connected {
+            padding-left: 7px;
+          }
+
+          .Username {
+            flex: 1;
+            padding-left: 14px;
+            justify-content: flex-start;
+          }
+        `}</style>
+      </div>
+    );
+  } else if (account.provider === "facebook") {
+  } else {
+    return null;
+  }
+};
+
 class CreateAccount extends React.Component {
-  static async getInitialProps({ store, query }) {}
+  static async getInitialProps({ store, query }) {
+    const response = await getVerification(query.id);
+
+    store.dispatch(updateEntities(response.body));
+  }
+
   constructor(props) {
     super(props);
 
@@ -62,6 +119,8 @@ class CreateAccount extends React.Component {
             <Text type="PageTitle">Create account</Text>
 
             <div className="Row">
+              <ExternalAccount account={this.props.externalAccount} />
+
               <Text size="16px">
                 Thanks for verifying with {EXTERNAL_ACCOUNT_LABELS[provider]}!
                 Let's get you setup.
@@ -179,7 +238,8 @@ const CreateAccountWithStore = withRedux(
   initStore,
   (state, props) => {
     return {
-      currentUser: state.currentUserId ? state.user[state.currentUserId] : null
+      currentUser: state.currentUserId ? state.user[state.currentUserId] : null,
+      externalAccount: state.external_authentication[props.url.query.id]
     };
   },
   dispatch => bindActionCreators({ updateEntities, setCurrentUser }, dispatch)

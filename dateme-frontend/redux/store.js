@@ -67,6 +67,7 @@ export const currentUser = (state = null, action) => {
 export const defaultState = {
   profile: {},
   user: {},
+  external_authentication: {},
   currentUserId: null
 };
 
@@ -88,7 +89,8 @@ export const initStore = (initialState = defaultState) => {
     combineReducers({
       currentUserId: currentUser,
       profile: createEntitiyReducer("profile"),
-      user: createEntitiyReducer("user")
+      user: createEntitiyReducer("user"),
+      external_authentication: createEntitiyReducer("external_authentication")
     }),
     initialState,
     composeWithDevTools(applyMiddleware(thunkMiddleware))

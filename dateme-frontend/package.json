@@ -5,6 +5,30 @@
     "build": "NODE_SRC=\".\" next build",
     "start": "NODE_ENV=production NODE_SRC=\".\" node server.js"
   },
+  "babel": {
+    "presets": [
+      "next/babel"
+    ],
+    "plugins": [
+      [
+        "inline-react-svg",
+        {
+          "svgo": {
+            "plugins": [
+              {
+                "removeAttrs": {
+                  "attrs": "(data-name)"
+                }
+              },
+              {
+                "cleanupIDs": true
+              }
+            ]
+          }
+        }
+      ]
+    ]
+  },
   "dependencies": {
     "@zeit/next-css": "^0.0.7",
     "@zeit/next-less": "^0.0.9",
@@ -37,6 +61,7 @@
     "title-case": "^2.1.1"
   },
   "devDependencies": {
+    "babel-plugin-inline-react-svg": "^0.5.2",
     "extract-text-webpack-plugin": "^3.0.2"
   }
 }

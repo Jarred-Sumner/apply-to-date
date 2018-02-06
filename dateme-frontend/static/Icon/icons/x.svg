@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="9px" height="9px" viewBox="0 0 9 9" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Close Icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Input-Fields-Styles-/-Error-Input-Field" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-242.000000, -41.000000)">
+        <path d="M246.5,43.8850601 L249.38506,41 L251,42.6149399 L248.11494,45.5 L251,48.3850601 L249.38506,50 L246.5,47.1149399 L243.61494,50 L242,48.3850601 L244.88506,45.5 L242,42.6149399 L243.61494,41 L246.5,43.8850601 Z" id="Close-Icon" fill="#EF4B4B"></path>
+    </g>
+</svg>

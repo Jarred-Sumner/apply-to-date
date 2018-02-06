@@ -37,6 +37,7 @@ gem 'rack-cors', :require => 'rack/cors'
 # gem 'capistrano-rails', group: :development
 gem 'omniauth'
 gem 'omniauth-twitter'
+gem 'omniauth-instagram'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
 
