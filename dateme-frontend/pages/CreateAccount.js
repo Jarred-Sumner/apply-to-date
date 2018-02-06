@@ -12,6 +12,8 @@ import { bindActionCreators } from "redux";
 import Router from "next/router";
 import classNames from "classnames";
 
+const BASE_AUTHORIZE_URL = "http://localhost:3001/auth";
+
 const EXTERNAL_ACCOUNT_LABELS = {
   twitter: "Twitter",
   youtube: "YouTube",
@@ -39,6 +41,37 @@ class CreateAccount extends React.Component {
         <article>
           <main>
             <Text type="PageTitle">Create account</Text>
+
+            <div className="Row">
+              <Text size="16px">
+                Please verify your identity with one of the social networks
+                below.
+              </Text>
+            </div>
+
+            <div className="Row Buttons">
+              <Button
+                fill
+                href={`${BASE_AUTHORIZE_URL}/instagram`}
+                color="instagram"
+              >
+                Instagram
+              </Button>
+              <Button
+                fill
+                href={`${BASE_AUTHORIZE_URL}/facebook`}
+                color="facebook"
+              >
+                Facebook
+              </Button>
+              <Button
+                fill
+                href={`${BASE_AUTHORIZE_URL}/twitter`}
+                color="twitter"
+              >
+                Twitter
+              </Button>
+            </div>
           </main>
         </article>
         <style jsx>{`
@@ -49,11 +82,21 @@ class CreateAccount extends React.Component {
           }
 
           main {
-            display: flex;
-            margin-top: 6rem;
-            margin-bottom: 6rem;
-
+            margin-top: 30px;
+            display: grid;
+            grid-template-rows: auto auto auto;
+            grid-row-gap: 30px;
             justify-content: center;
+            text-align: center;
+          }
+
+          .Buttons {
+            margin-top: 28px;
+            display: grid;
+            grid-template-columns: minmax(180px, 300px);
+            grid-template-rows: 42px;
+            justify-content: center;
+            grid-row-gap: 28px;
           }
 
           footer {
