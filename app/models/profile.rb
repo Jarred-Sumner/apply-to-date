@@ -1,0 +1,21 @@
+class Profile < ApplicationRecord
+  belongs_to :user
+  validates :id, presence: true, uniqueness: true
+  
+  DEFAULT_SECTIONS = [
+    'introduction',
+    'background',
+    'looking-for',
+    'not-looking-for'
+  ]
+
+  def self.build_default_sections
+    DEFAULT_SECTIONS.map do |section|
+      [section, '']
+    end.to_h
+  end
+
+  before_validation on: :create do
+    self.sections = Profile.build_default_sections
+  end
+end
