@@ -41,6 +41,16 @@ const Head = props => (
         href="https://fonts.googleapis.com/css?family=Adamina|Open+Sans"
         rel="stylesheet"
       />
+
+      <link
+        href="https://fonts.googleapis.com/css?family=Lora"
+        rel="stylesheet"
+      />
+
+      <link
+        href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre"
+        rel="stylesheet"
+      />
     </NextHead>
     <RootStyles />
   </React.Fragment>

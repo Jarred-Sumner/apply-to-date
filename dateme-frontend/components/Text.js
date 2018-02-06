@@ -6,7 +6,7 @@ const Text = ({
   className,
   children,
   size = "16px",
-  color = "rgba(0,0,0,.84);",
+  color = "rgba(0,0,0,.75);",
   componentType = "div",
   weight = "regular",
   lineHeight = "19px",
@@ -46,7 +46,6 @@ const Text = ({
         .Text--regular {
           font-weight: 400;
           line-height: 1.58;
-          letter-spacing: -0.003em;
         }
 
         .Text--hugeTitle {
@@ -63,7 +62,7 @@ const Text = ({
         }
 
         .Text--serif {
-          font-family: Georgia, serif;
+          font-family: Frank Ruhl Libre, serif;
         }
 
         .Text--sans-serif {
