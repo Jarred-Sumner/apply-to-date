@@ -7,9 +7,14 @@ routes
     page: "index"
   })
   .add({
+    name: "create-account",
+    pattern: "/sign-up/:provider/:id",
+    page: "CreateAccount"
+  })
+  .add({
     name: "sign-up",
     pattern: "/sign-up",
-    page: "CreateAccount"
+    page: "VerifyAccount"
   })
   .add({
     name: "sign-in",

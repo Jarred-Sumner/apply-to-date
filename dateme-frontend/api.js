@@ -24,3 +24,7 @@ export const getProfile = profile => {
 export const getFeaturedProfiles = () => {
   return get("/profiles");
 };
+
+export const getVerification = id => {
+  return get("/verifications/" + id);
+};

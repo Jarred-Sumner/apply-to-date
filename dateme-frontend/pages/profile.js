@@ -126,9 +126,7 @@ class Profile extends React.Component {
             </div>
 
             <div className="Section-row">
-              <Text type="Tagline" font="serif">
-                {profile.tagline}
-              </Text>
+              <Text type="Tagline">{profile.tagline}</Text>
             </div>
 
             <div className="Section-row ApplicationForm">

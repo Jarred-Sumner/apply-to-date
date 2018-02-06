@@ -12,6 +12,7 @@ module Dateme
 
     config.autoload_paths << "#{Rails.root}/lib"
     config.autoload_paths << "#{Rails.root}/app/serializers"
+    config.read_encrypted_secrets = true
 
     config.middleware.insert_before 0, Rack::Cors do
       allow do
