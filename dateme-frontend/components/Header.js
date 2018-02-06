@@ -40,7 +40,7 @@ class Header extends React.Component {
 
           <style jsx>{`
             header {
-              padding: 24px 40px;
+              padding: 14px 40px;
               display: flex;
               border-bottom: 1px solid #e8e8e8;
               background-color: white;

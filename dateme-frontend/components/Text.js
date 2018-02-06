@@ -6,13 +6,14 @@ const Text = ({
   className,
   children,
   size = "16px",
-  color = "#3A405B",
+  color = "rgba(0,0,0,.84);",
   componentType = "div",
   weight = "regular",
   lineHeight = "19px",
   wrap = null
 }) => {
   const classes = classNames("Text", className, {
+    "Text--extraBold": weight == "extraBold",
     "Text--bold": weight === "bold",
     "Text--medium": weight === "medium",
     "Text--semiBold": weight === "semiBold",
@@ -60,11 +61,15 @@ const Text = ({
         }
 
         .Text--serif {
-          font-family: Cochin, serif;
+          font-family: Georgia, serif;
         }
 
         .Text--sans-serif {
-          font-family: Lato, sans-serif;
+          font-family: Lucida Grande, Open Sans, sans-serif;
+        }
+
+        .Text--sans-serif.Text--extraBold {
+          font-weight: 900;
         }
 
         .Text--serif.Text--bold {
@@ -98,7 +103,7 @@ export default ({ type, children, ...otherProps }) => {
         {...otherProps}
         font="serif"
         color="#000"
-        size="30px"
+        size="36px"
         lineHeight="35px"
         weight="bold"
       >
@@ -109,10 +114,10 @@ export default ({ type, children, ...otherProps }) => {
     return (
       <Text
         {...otherProps}
-        weight="medium"
+        weight="regular"
         wrap
-        font="sans-serif"
-        size="16px"
+        font="serif"
+        size="18px"
         lineHeight="30px"
       >
         {children}
@@ -120,7 +125,7 @@ export default ({ type, children, ...otherProps }) => {
     );
   } else if (type === "title") {
     return (
-      <Text {...otherProps} font="serif" size="30px" weight="bold">
+      <Text {...otherProps} font="sans-serif" size="30px" weight="extraBold">
         {children}
       </Text>
     );

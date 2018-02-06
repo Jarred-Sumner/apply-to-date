@@ -161,7 +161,9 @@ class Profile extends React.Component {
                 key={paragraph.title}
                 className="Section-row Section-row--bio"
               >
-                <Text type="title">{paragraph.title}</Text>
+                <Text className="Section-title" type="title">
+                  {paragraph.title}
+                </Text>
                 <Text type="paragraph">{paragraph.body}</Text>
               </div>
             );
@@ -174,7 +176,7 @@ class Profile extends React.Component {
             margin-right: auto;
             display: grid;
             grid-row-gap: 2rem;
-            max-width: 1080px;
+            max-width: 710px;
           }
 
           .HeaderForm {
@@ -185,6 +187,10 @@ class Profile extends React.Component {
 
           .Section-row {
             grid-row: 1fr;
+          }
+
+          .Section-title {
+            margin-bottom: 14px;
           }
 
           .Section-row--bio {

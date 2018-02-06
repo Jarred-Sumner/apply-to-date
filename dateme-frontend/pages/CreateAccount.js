@@ -43,7 +43,7 @@ class CreateAccount extends React.Component {
         </article>
         <style jsx>{`
           article {
-            max-width: 1080px;
+            max-width: 710px;
             margin-left: auto;
             margin-right: auto;
           }

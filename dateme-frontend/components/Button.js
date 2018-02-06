@@ -33,8 +33,8 @@ const Button = ({
     <React.Fragment>
       <style jsx>{`
         .Button {
-          font-family: Lato, sans-serif;
-          font-size: 14px;
+          font-family: Open Sans, sans-serif;
+          font-size: 12px;
           text-transform: uppercase;
           font-weight: 700;
           appearance: none;
