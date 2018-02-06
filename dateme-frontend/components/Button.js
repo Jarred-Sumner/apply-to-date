@@ -24,6 +24,9 @@ const Button = ({
     "Button--green--unfill": color === "green" && !fill,
     "Button--gray--fill": color === "gray" && fill,
     "Button--gray--unfill": color === "gray" && !fill,
+    "Button--twitter--fill": color === "twitter" && fill,
+    "Button--instagram--fill": color === "instagram" && fill,
+    "Button--facebook--fill": color === "facebook" && fill,
     "Button--large": size === "large",
     "Button--inline": !!inline,
     "Button--normal": size === "normal"
@@ -87,6 +90,48 @@ const Button = ({
 
         .Button--normal {
           padding: 14px 24px;
+        }
+
+        .Button--twitter--fill {
+          background-color: #55acee;
+          color: #fff;
+        }
+
+        .Button--twitter--fill:hover {
+          background-color: #4890c7;
+          color: #fff;
+        }
+
+        .Button--facebook--fill {
+          background-color: #3b5998;
+          color: #fff;
+        }
+
+        .Button--facebook--fill:hover {
+          background-color: #2f477a;
+          color: #fff;
+        }
+
+        .Button--instagram--fill {
+          background-image: linear-gradient(
+            -110deg,
+            #99389b 0%,
+            #d94263 27%,
+            #d32d79 78%,
+            #ce2d94 100%
+          );
+          color: #fff;
+        }
+
+        .Button--instagram--fill:hover {
+          background-image: linear-gradient(
+            -130deg,
+            #99389b 0%,
+            #d94263 27%,
+            #d32d79 78%,
+            #ce2d94 100%
+          );
+          color: #fff;
         }
       `}</style>
       {realComponentType === "button" && (
