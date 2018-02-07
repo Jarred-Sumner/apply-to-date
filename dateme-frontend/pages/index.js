@@ -195,7 +195,7 @@ class Homepage extends React.Component {
           <footer>
             <div className="divider" />
 
-            <Text size="36px" font="serif" color="#000">
+            <Text size="36px" font="sans-serif" color="#000">
               Featured profiles
             </Text>
 
