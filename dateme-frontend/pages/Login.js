@@ -11,6 +11,7 @@ import { updateEntities, setCurrentUser, initStore } from "../redux/store";
 import { getFeaturedProfiles, getCurrentUser } from "../api";
 import { bindActionCreators } from "redux";
 import Router from "next/router";
+import Alert from "../components/Alert";
 
 class Login extends React.Component {
   constructor(props) {
@@ -21,6 +22,12 @@ class Login extends React.Component {
       password: "",
       isLoggingIn: false
     };
+  }
+
+  componentDidMount() {
+    if (this.props.url.query.from) {
+      Alert.error("To continue, please login");
+    }
   }
 
   setUsername = username => this.setState({ username });

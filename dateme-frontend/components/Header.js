@@ -1,6 +1,7 @@
 import Brand from "./Brand";
 import Sticky from "react-stickynode";
 import Button from "./Button";
+import LoginGate from "./LoginGate";
 import { AlertHost } from "./Alert";
 
 class Header extends React.Component {
@@ -57,4 +58,4 @@ class Header extends React.Component {
   }
 }
 
-export default Header;
+export default LoginGate(Header);

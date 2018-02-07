@@ -27,9 +27,9 @@ routes
     page: "profile"
   })
   .add({
-    name: "EnterApplication",
-    pattern: "/:id/apply",
-    page: "EnterApplication"
+    name: "EditProfile",
+    pattern: "/:id/edit",
+    page: "EditProfile"
   });
 
 module.exports = routes;

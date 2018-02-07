@@ -13,8 +13,16 @@ const post = (path, options = {}) =>
 const put = (path, options = {}) =>
   request.put(buildUrl(path), options).withCredentials();
 
-export const getCurrentUser = () => {
-  return get("/users/me");
+export const withCookies = (req, request) => {
+  if (typeof req !== "undefined") {
+    return request.set("Cookie", req.header.cookie);
+  } else {
+    return request;
+  }
+};
+
+export const getCurrentUser = (options = {}) => {
+  return get("/users/me", options);
 };
 
 export const getProfile = profile => {

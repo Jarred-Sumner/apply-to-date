@@ -1,12 +1,12 @@
 import Link from "next/link";
 import Head from "../components/head";
 import Nav from "../components/nav";
+import Router from "next/router";
 import withRedux from "next-redux-wrapper";
 import { updateEntities, setCurrentUser, initStore } from "../redux/store";
-import { getProfile, getCurrentUser, withCookies } from "../api";
+import { getProfile, getCurrentUser } from "../api";
 import { bindActionCreators } from "redux";
 import Header from "../components/Header";
-import LoginGate from "../components/LoginGate";
 import Text from "../components/Text";
 import InlineApply from "../components/profile/InlineApply";
 import Lightbox from "react-images";
@@ -14,6 +14,8 @@ import _ from "lodash";
 import titleCase from "title-case";
 import Waypoint from "react-waypoint";
 import Button from "../components/Button";
+import Alert from "../components/Alert";
+import LoginGate from "../components/LoginGate";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -31,14 +33,11 @@ const SECTION_LABELS = {
 
 class Profile extends React.Component {
   static async getInitialProps({ query, store, req, isServer }) {
-    const profileResponse = await getProfile(query.id);
-    const userResponse = await getCurrentUser();
-
-    store.dispatch(updateEntities(profileResponse.body));
-
-    if (userResponse.body.data) {
-      store.dispatch(setCurrentUser(userResponse.body.data.id));
-      store.dispatch(updateEntities(userResponse.body));
+    try {
+      const profileResponse = await getProfile(query.id);
+      store.dispatch(updateEntities(profileResponse.body));
+    } catch (exception) {
+      console.error(exception);
     }
   }
 
@@ -49,6 +48,20 @@ class Profile extends React.Component {
       currentPhotoIndex: null,
       isHeaderSticky: false
     };
+  }
+
+  componentDidMount() {
+    // if (!this.props.currentUser && this.props.profile) {
+    //   Router.push(
+    //     `/login?from=/${encodeURIComponent(this.props.profile.id)}/edit`
+    //   );
+    // } else if (!this.props.profile) {
+    //   Router.push("/404");
+    // } else if (this.props.profile.user_id !== this.props.currentUser.id) {
+    //   Router.replace(
+    //     "/" + encodeURIComponent(this.props.profile.id) + "?error=readonly"
+    //   );
+    // }
   }
 
   enableStickyHeader = () => this.setState({ isHeaderSticky: true });
@@ -259,6 +272,10 @@ const ProfileWithStore = withRedux(
     };
   },
   dispatch => bindActionCreators({ updateEntities }, dispatch)
-)(LoginGate(Profile));
+)(
+  LoginGate(Profile, {
+    loginRequired: true
+  })
+);
 
 export default ProfileWithStore;
