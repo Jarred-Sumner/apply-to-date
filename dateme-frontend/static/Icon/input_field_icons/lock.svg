@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="17px" viewBox="0 0 14 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Lock Icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Create-Account-step-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-415.000000, -564.000000)">
+        <g id="Group" transform="translate(399.000000, 268.000000)" fill="#B9BED1">
+            <g id="Input-Fields-Styles-/-Completed-Input-Field" transform="translate(0.000000, 260.000000)">
+                <path d="M25.333,40.84 C25.333,39.21 24.288,37.889 23,37.889 C21.711,37.889 20.666,39.21 20.666,40.84 L20.666,41.979 L25.333,41.979 L25.333,40.84 Z M22.3,47.219 L22.3,49.451 C22.3,49.843 22.613,50.16 23,50.16 C23.386,50.16 23.7,49.843 23.7,49.451 L23.7,47.219 C24.109,47.05 24.4,46.647 24.4,46.171 C24.4,45.545 23.898,45.039 23.28,45.039 L22.72,45.039 C22.101,45.039 21.6,45.545 21.6,46.171 C21.6,46.647 21.89,47.05 22.3,47.219 L22.3,47.219 Z M28.133,53 L17.866,53 C16.835,53 16,52.154 16,51.111 L16,43.868 C16,42.825 16.835,41.979 17.866,41.979 L18.8,41.979 L18.8,40.722 C18.8,38.114 20.68,36 23,36 C25.319,36 27.2,38.114 27.2,40.722 L27.2,41.979 L28.133,41.979 C29.164,41.979 30,42.825 30,43.868 L30,51.111 C30,52.154 29.164,53 28.133,53 L28.133,53 Z" id="Lock-Icon"></path>
+            </g>
+        </g>
+    </g>
+</svg>

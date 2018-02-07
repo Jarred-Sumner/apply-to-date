@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="15px" height="15px" viewBox="0 0 15 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>User Icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Applications-(Desktop)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-267.000000, -39.000000)" opacity="0.691462862">
+        <g id="Menu" transform="translate(267.000000, 36.000000)" fill="#3A405B">
+            <g id="Group-2">
+                <path d="M7.664,18.0003 C-0.00499999576,18.0003 4.24380353e-09,18.0003 4.24380353e-09,15.1013 C4.24380353e-09,13.5123 1.303,12.1253 2.814,12.1253 C4.74089904,12.1253 5.23858782,12.923125 7.3285,13.0218231 L7.3285,13.0193 C9.7055,12.9963 10.1355,12.1123 12.1765,12.1123 C13.6875,12.1123 14.9905,13.5023 14.9905,15.0943 C14.9905,17.9572723 14.9943824,17.9996629 7.664,18.0002906 Z M7.6201,3 C9.4671,3 10.9641,4.875 10.9641,7.188 C10.9641,9.5 9.4671,11.375 7.6201,11.375 C5.7731,11.375 4.2761,9.5 4.2761,7.188 C4.2761,4.875 5.7731,3 7.6201,3 Z" id="User-Icon"></path>
+            </g>
+        </g>
+    </g>
+</svg>
