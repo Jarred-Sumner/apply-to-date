@@ -19,7 +19,7 @@ module Dateme
         origins 'localhost:3000', '127.0.0.1:3000'
         resource '*', :headers => [
 
-        ], :methods => [:get, :post, :options], :credentials => true
+        ], :methods => [:get, :post, :put, :options], :credentials => true
       end
     end
 

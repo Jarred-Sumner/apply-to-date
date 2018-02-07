@@ -65,10 +65,6 @@ const Text = ({
           word-break: none;
         }
 
-        .Text--link:hover {
-          color: ;
-        }
-
         .Text--serif {
           font-family: Frank Ruhl Libre, serif;
         }

@@ -14,10 +14,70 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
   end
 
   def update
+    profile = current_user.profile
 
+    ActiveRecord::Base.transaction do
+      if update_params[:sections].present?
+        sections = JSON.parse(update_params[:sections]).with_indifferent_access
+        has_all_sections = Profile::DEFAULT_SECTIONS.all? do |section_key|
+          !sections[section_key].nil?
+        end
+
+        # This error message is not true, just wanna make sure they're stuffing weird stuff into the sections object
+        if sections.keys.map(&:to_s).sort != Profile::DEFAULT_SECTIONS.map(&:to_s).sort
+          raise ArgumentError.new("Please ensure you've filled out all the sections and try again")
+        end
+
+        profile.update(sections: sections)
+      end
+
+      if !update_params[:name].nil?
+        if update_params[:name].blank?
+          raise ArgumentError.new("Please include your name")
+        end
+
+        profile.update(name: update_params[:name])
+      end
+
+      if !update_params[:tagline].nil?
+        if update_params[:tagline].blank?
+          raise ArgumentError.new("Please include a TLDR beneath your name")
+        end
+
+        profile.update(tagline: update_params[:tagline])
+      end
+
+      photos = Array(update_params[:photos])
+      if !photos.nil?
+        if photos.blank?
+          raise ArgumentError.new("Please add at least one photo")
+        end
+
+        # Ensure Photo URLs are valid
+        begin
+          photos.each do |photo|
+            URI.parse(URI.encode(photo))
+          end
+        rescue URI::InvalidURIError
+          raise ArgumentError.new("Please re-upload your photos and try again")
+        end
+
+        profile.update(photos: photos)
+      end
+    end
+
+    render_profile(profile)
+  rescue ArgumentError => e
+    return render_error(message: e.message)
   end
 
   def render_profile(profile)
     render json: ProfileSerializer.new(profile).serializable_hash
+  end
+
+  def update_params
+    params
+      .require(:profile)
+      .permit([:sections, :social_links, :name, :tagline, :pictures])
   end
 end

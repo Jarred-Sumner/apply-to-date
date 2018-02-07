@@ -141,19 +141,19 @@ const Button = ({
         }
       `}</style>
       {realComponentType === "button" && (
-        <button className={classes}>
+        <button onClick={onClick} className={classes}>
           {icon && <div className="IconContainer">{icon}</div>}
           {children}
         </button>
       )}
       {realComponentType === "a" && (
-        <a href={href} className={classes}>
+        <a onClick={onClick} href={href} className={classes}>
           {icon && <div className="IconContainer">{icon}</div>}
           {children}
         </a>
       )}
       {realComponentType === "div" && (
-        <div className={classes}>
+        <div onClick={onClick} className={classes}>
           {icon && <div className="IconContainer">{icon}</div>}
           {children}
         </div>

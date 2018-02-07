@@ -1,5 +1,11 @@
 {
   "name": "dateme",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-dropzone": "^4.2.7",
+    "react-dropzone-s3-uploader": "^1.1.0",
+    "react-s3-uploader": "^4.6.2"
+  }
 }

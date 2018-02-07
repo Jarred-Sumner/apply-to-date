@@ -1,11 +1,15 @@
 import Brand from "./Brand";
 import Sticky from "react-stickynode";
 import Button from "./Button";
-import LoginGate from "./LoginGate";
+import LoginGate, { LOGIN_STATUSES } from "./LoginGate";
 import { AlertHost } from "./Alert";
 
 class Header extends React.Component {
   renderButtons = () => {
+    if (this.props.loginStatus === LOGIN_STATUSES.loggedIn) {
+      return null;
+    }
+
     return (
       <div className="Buttons">
         <Button href="/login" fill={false}>
@@ -30,27 +34,36 @@ class Header extends React.Component {
   };
 
   render() {
-    const { isSticky = true, showChildren = false, children } = this.props;
+    const {
+      isSticky = true,
+      showChildren = false,
+      renderSubheader,
+      children
+    } = this.props;
 
     return (
       <React.Fragment>
         <Sticky enabled={isSticky}>
-          <header>
-            <Brand />
+          <div>
+            <header>
+              <Brand />
 
-            {!showChildren && this.renderButtons()}
-            {showChildren && children}
+              {!showChildren && this.renderButtons()}
+              {showChildren && children}
 
-            <style jsx>{`
-              header {
-                padding: 14px 40px;
-                display: flex;
-                border-bottom: 1px solid #e8e8e8;
-                background-color: white;
-                z-index: 999;
-              }
-            `}</style>
-          </header>
+              <style jsx>{`
+                header {
+                  padding: 14px 40px;
+                  display: flex;
+                  border-bottom: 1px solid #e8e8e8;
+                  background-color: white;
+                  z-index: 999;
+                }
+              `}</style>
+            </header>
+
+            {renderSubheader && renderSubheader()}
+          </div>
         </Sticky>
         <AlertHost />
       </React.Fragment>

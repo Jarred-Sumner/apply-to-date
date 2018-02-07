@@ -29,6 +29,12 @@ export const getProfile = profile => {
   return get("/profiles/" + profile);
 };
 
+export const updateProfile = profileObject => {
+  return put("/profiles/" + profileObject.id).send(
+    _.pick(profileObject, ["tagline", "name", "sections", "photos"])
+  );
+};
+
 export const getFeaturedProfiles = () => {
   return get("/profiles");
 };

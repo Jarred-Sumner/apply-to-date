@@ -4,7 +4,12 @@ import _ from "lodash";
 export const handleApiError = error => {
   if (error.response) {
     if (!_.isEmpty(error.response.body.message)) {
-      Alert.error(_.first(error.response.body.message));
+      if (typeof error.response.body.message === "string") {
+        Alert.error(error.response.body.message);
+      } else {
+        Alert.error(_.first(error.response.body.message));
+      }
+
       return;
     }
   }

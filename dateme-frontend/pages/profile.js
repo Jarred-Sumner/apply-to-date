@@ -14,6 +14,7 @@ import _ from "lodash";
 import titleCase from "title-case";
 import Waypoint from "react-waypoint";
 import Button from "../components/Button";
+import Thumbnail from "../components/Thumbnail";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -136,14 +137,13 @@ class Profile extends React.Component {
           </section>
         </Waypoint>
         <section className="Section Section--photos">
-          {_.slice(profile.photos || [], 0, 3).map(url => (
-            <div
-              className="photo"
-              key={url}
+          {_.slice(profile.photos || [], 0, 3).map((url, index) => (
+            <Thumbnail
+              url={url}
+              isLast={index === 2}
               onClick={() => this.setCurrentPhoto(url)}
-            >
-              <img src={url} />
-            </div>
+              key={url}
+            />
           ))}
 
           <Lightbox
@@ -219,31 +219,6 @@ class Profile extends React.Component {
             text-align: center;
             align-items: center;
             justify-content: center;
-          }
-
-          .Section--photos .photo {
-            flex: 1;
-            margin-right: 2em;
-            align-self: flex-start;
-            max-width: 400px;
-          }
-
-          .Section--photos .photo:last-child {
-            margin-right: 0;
-          }
-
-          .Section--photos .photo img {
-            width: 100%;
-            object-fit: contain;
-            background: #d8d8d8;
-            box-shadow: 0 0 20px 0 rgba(160, 160, 160, 0.5);
-            border-radius: 6px;
-            cursor: pointer;
-            transition: transform 0.1s linear;
-          }
-
-          .Section--photos .photo img:hover {
-            transform: scale(1.05, 1.05);
           }
         `}</style>
       </div>

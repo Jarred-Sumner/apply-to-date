@@ -164,12 +164,7 @@ class SignupForm extends React.Component {
 class Homepage extends React.Component {
   static async getInitialProps({ store }) {
     const profileResponse = await getFeaturedProfiles();
-    const userResponse = await getCurrentUser();
     store.dispatch(updateEntities(profileResponse.body));
-    if (userResponse.body.data) {
-      store.dispatch(setCurrentUser(userResponse.body.data.id));
-      store.dispatch(updateEntities(userResponse.body));
-    }
   }
 
   render() {
