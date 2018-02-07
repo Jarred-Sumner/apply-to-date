@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="15px" viewBox="0 0 18 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Heart Icon</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Applications-(Desktop)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-409.000000, -39.000000)">
+        <g id="Menu" transform="translate(267.000000, 36.000000)" fill="#787C8E">
+            <g id="Group-2" transform="translate(142.000000, 0.000000)">
+                <path d="M8.97544624,17.8561575 C8.97544624,17.8561575 0.70460688,11.7388199 0.449128853,7.24046957 C0.0413063535,4.00694493 4.67760431,1.17496051 8.3168573,4.46659598 C9.07962674,5.18146328 8.98382257,5.18277206 8.98382257,5.18277206 C8.98382257,5.18277206 9.15815482,5.20554526 9.73690679,4.466596 C11.3158448,2.04217235 17.9483267,2.45863289 17.5187781,7.31821237 C17.1586215,11.7599757 8.97544624,17.8561575 8.97544624,17.8561575 Z" id="Heart-Icon"></path>
+            </g>
+        </g>
+    </g>
+</svg>
