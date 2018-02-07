@@ -1,3 +1,9 @@
+if (typeof window !== "undefined") {
+  window.Promise = require("bluebird");
+} else if (typeof global !== "undefined") {
+  global.Promise = require("bluebird");
+}
+
 export default ({}) => (
   <style jsx global>{`
     html,

@@ -7,12 +7,13 @@ import Button from "../components/Button";
 import Text from "../components/Text";
 import _ from "lodash";
 import { updateEntities, setCurrentUser, initStore } from "../redux/store";
-import { getVerification, getCurrentUser } from "../api";
+import { getVerification, getCurrentUser, createAccount } from "../api";
 import { bindActionCreators } from "redux";
 import Router from "next/router";
 import classNames from "classnames";
 import FormField from "../components/FormField";
 import Icon from "../components/Icon";
+import Alert, { handleApiError } from "../components/Alert";
 
 const BASE_AUTHORIZE_URL = "http://localhost:3001/auth";
 
@@ -26,7 +27,7 @@ const ExternalAccount = ({ account }) => {
   if (account.provider === "twitter") {
     return (
       <div className="Twitter">
-        <Icon type="twitter" />
+        <Icon type="twitter" color="blue" />
         <div className="Username">
           <Text size="14px">@{account.username}</Text>
         </div>
@@ -68,6 +69,49 @@ const ExternalAccount = ({ account }) => {
       </div>
     );
   } else if (account.provider === "facebook") {
+    return (
+      <div className="Facebook">
+        <Icon type="facebook" color="white" />
+        <div className="Username">
+          <Text size="14px">{account.name}</Text>
+        </div>
+        <Icon type="check" />
+
+        <div className="Connected">
+          <Text
+            color="#53E2AF"
+            size="12px"
+            letterSpacing="1px"
+            casing="uppercase"
+          >
+            Connected
+          </Text>
+        </div>
+
+        <style jsx>{`
+          .Facebook {
+            background-color: #fff;
+            border: 1px solid #e7ebf2;
+            padding: 14px 22px;
+            display: flex;
+            align-items: center;
+            border-radius: 100px;
+            margin-bottom: 14px;
+            text-align: left;
+          }
+
+          .Connected {
+            padding-left: 7px;
+          }
+
+          .Username {
+            flex: 1;
+            padding-left: 14px;
+            justify-content: flex-start;
+          }
+        `}</style>
+      </div>
+    );
   } else {
     return null;
   }
@@ -92,7 +136,48 @@ class CreateAccount extends React.Component {
     };
   }
 
-  submit = () => {};
+  submit = async evt => {
+    evt.preventDefault();
+    if (this.state.isSubmitting) {
+      return;
+    }
+
+    this.setState({
+      isSubmitting: true
+    });
+
+    const {
+      email,
+      username,
+      password,
+      passwordConfirmation,
+      isSubmitting
+    } = this.state;
+
+    createAccount({
+      external_authentication_id: this.props.externalAccount.id,
+      user: {
+        email,
+        username,
+        password,
+        password_confirmation: passwordConfirmation
+      }
+    })
+      .then(response => {
+        console.log(response);
+        Alert.success("Success!");
+        Router.push(`/${username}`);
+      })
+      .catch(error => {
+        console.log(error);
+        handleApiError(error);
+      })
+      .finally(() => {
+        this.setState({
+          isSubmitting: false
+        });
+      });
+  };
 
   setEmail = email => this.setState({ email });
   setUsername = username => this.setState({ username });

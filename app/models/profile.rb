@@ -1,7 +1,7 @@
 class Profile < ApplicationRecord
   belongs_to :user
   validates :id, presence: true, uniqueness: true
-  
+
   DEFAULT_SECTIONS = [
     'introduction',
     'background',
@@ -17,5 +17,7 @@ class Profile < ApplicationRecord
 
   before_validation on: :create do
     self.sections = Profile.build_default_sections
+    self.social_links = {}
+    self.photos = []
   end
 end

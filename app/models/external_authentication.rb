@@ -23,4 +23,14 @@ class ExternalAuthentication < ApplicationRecord
 
     auth
   end
+
+  def build_social_link_entry
+    social_links = {}
+
+    if provider === 'twitter'
+      social_links[provider] = info['urls']['Twitter']
+    end
+
+    social_links
+  end
 end

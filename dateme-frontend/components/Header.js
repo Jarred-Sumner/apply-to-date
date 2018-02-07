@@ -1,6 +1,7 @@
 import Brand from "./Brand";
 import Sticky from "react-stickynode";
 import Button from "./Button";
+import { AlertHost } from "./Alert";
 
 class Header extends React.Component {
   renderButtons = () => {
@@ -31,24 +32,27 @@ class Header extends React.Component {
     const { isSticky = true, showChildren = false, children } = this.props;
 
     return (
-      <Sticky enabled={isSticky}>
-        <header>
-          <Brand />
+      <React.Fragment>
+        <Sticky enabled={isSticky}>
+          <header>
+            <Brand />
 
-          {!showChildren && this.renderButtons()}
-          {showChildren && children}
+            {!showChildren && this.renderButtons()}
+            {showChildren && children}
 
-          <style jsx>{`
-            header {
-              padding: 14px 40px;
-              display: flex;
-              border-bottom: 1px solid #e8e8e8;
-              background-color: white;
-              z-index: 999;
-            }
-          `}</style>
-        </header>
-      </Sticky>
+            <style jsx>{`
+              header {
+                padding: 14px 40px;
+                display: flex;
+                border-bottom: 1px solid #e8e8e8;
+                background-color: white;
+                z-index: 999;
+              }
+            `}</style>
+          </header>
+        </Sticky>
+        <AlertHost />
+      </React.Fragment>
     );
   }
 }

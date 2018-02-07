@@ -11,6 +11,7 @@ import { getVerification, getCurrentUser } from "../api";
 import { bindActionCreators } from "redux";
 import Router from "next/router";
 import classNames from "classnames";
+import Icon from "../components/Icon";
 
 const BASE_AUTHORIZE_URL = "http://localhost:3001/auth";
 
@@ -34,6 +35,7 @@ class VerifyAccount extends React.Component {
             <div className="Row Buttons">
               <Button
                 fill
+                icon={<Icon type="instagram" color="white" />}
                 href={`${BASE_AUTHORIZE_URL}/instagram`}
                 color="instagram"
               >
@@ -41,6 +43,7 @@ class VerifyAccount extends React.Component {
               </Button>
               <Button
                 fill
+                icon={<Icon type="facebook" color="white" />}
                 href={`${BASE_AUTHORIZE_URL}/facebook`}
                 color="facebook"
               >
@@ -48,6 +51,7 @@ class VerifyAccount extends React.Component {
               </Button>
               <Button
                 fill
+                icon={<Icon type="twitter" color="white" />}
                 href={`${BASE_AUTHORIZE_URL}/twitter`}
                 color="twitter"
               >

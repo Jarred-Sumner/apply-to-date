@@ -133,16 +133,31 @@ const Button = ({
           );
           color: #fff;
         }
+
+        .IconContainer {
+          margin-right: 7px;
+          align-items: center;
+          display: flex;
+        }
       `}</style>
       {realComponentType === "button" && (
-        <button className={classes}>{children}</button>
+        <button className={classes}>
+          {icon && <div className="IconContainer">{icon}</div>}
+          {children}
+        </button>
       )}
       {realComponentType === "a" && (
         <a href={href} className={classes}>
+          {icon && <div className="IconContainer">{icon}</div>}
           {children}
         </a>
       )}
-      {realComponentType === "div" && <div className={classes}>{children}</div>}
+      {realComponentType === "div" && (
+        <div className={classes}>
+          {icon && <div className="IconContainer">{icon}</div>}
+          {children}
+        </div>
+      )}
     </React.Fragment>
   );
 

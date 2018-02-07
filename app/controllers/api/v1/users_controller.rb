@@ -15,12 +15,17 @@ class Api::V1::UsersController < Api::V1::ApplicationController
         name: @external_authentication.name.split(' ').first,
         tagline: @external_authentication.info["description"],
       )
-      
+
+      if @external_authentication.build_social_link_entry.present?
+        @profile.social_links = @profile.social_links.merge(@external_authentication.build_social_link_entry)
+        @profile.save!
+      end
+
       auto_login(@user, true)
       render json: UserSerializer.new(@user, {include: [:profile]}).serializable_hash
     end
   rescue ActiveRecord::RecordInvalid => e
-    render_error(message: e.record.errors.full_messages.join(' and '))
+    render_error(message: e.record.errors.full_messages)
   end
 
   def me

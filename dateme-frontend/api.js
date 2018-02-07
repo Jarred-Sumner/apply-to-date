@@ -28,3 +28,9 @@ export const getFeaturedProfiles = () => {
 export const getVerification = id => {
   return get("/verifications/" + id);
 };
+
+export const createAccount = details => {
+  return post("/users", {
+    ...details
+  });
+};

@@ -135,7 +135,7 @@ class Profile extends React.Component {
           </section>
         </Waypoint>
         <section className="Section Section--photos">
-          {profile.photos.slice(0, 3).map(url => (
+          {_.slice(profile.photos || [], 0, 3).map(url => (
             <div
               className="photo"
               key={url}
