@@ -4,6 +4,7 @@ import Nav from "../components/nav";
 import withRedux from "next-redux-wrapper";
 import Header from "../components/Header";
 import Button from "../components/Button";
+import FormField from "../components/FormField";
 import Text from "../components/Text";
 import _ from "lodash";
 import { updateEntities, setCurrentUser, initStore } from "../redux/store";
@@ -12,20 +13,71 @@ import { bindActionCreators } from "redux";
 import Router from "next/router";
 
 class Login extends React.Component {
-  static async getInitialProps({ store, query }) {}
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      username: "",
+      password: "",
+      isLoggingIn: false
+    };
+  }
+
+  setUsername = username => this.setState({ username });
+  setPassword = password => this.setState({ password });
+
+  login = evt => {};
 
   render() {
+    const { username, password, isLoggingIn } = this.state;
+
     return (
       <div>
         <Head title="Login | ApplyToDate" />
         <Header />
         <article>
           <main>
-            <Text type="pageTitle">Login</Text>
+            <Text type="PageTitle">Login</Text>
+
+            <form onSubmit={this.login}>
+              <FormField
+                name="email"
+                type="text"
+                placeholder="e.g. ylukem or lucy@shipfirstlabs.com"
+                value={username}
+                label="Username or email"
+                onChange={this.setUsername}
+                required
+              />
+
+              <FormField
+                name="password"
+                type="password"
+                value={username}
+                label="Password"
+                onChange={this.setPassword}
+                required
+                minLength={3}
+              />
+
+              <Button>Login</Button>
+            </form>
           </main>
+
+          <footer>
+            <Link href={"/forgot-password"}>
+              <a>
+                <Text size="14px" type="link">
+                  Forgot your password?
+                </Text>
+              </a>
+            </Link>
+          </footer>
         </article>
         <style jsx>{`
           article {
+            margin-top: 6rem;
+            margin-bottom: 3rem;
             max-width: 710px;
             margin-left: auto;
             margin-right: auto;
@@ -33,47 +85,25 @@ class Login extends React.Component {
 
           main {
             display: flex;
-            margin-top: 6rem;
-            margin-bottom: 6rem;
+            flex-direction: column;
+            text-align: center;
 
             justify-content: center;
+          }
+
+          form {
+            display: grid;
+            margin-top: 32px;
+            margin-bottom: 14px;
+            grid-auto-rows: auto;
+            grid-row-gap: 14px;
           }
 
           footer {
             display: flex;
             flex-direction: column;
-            text-align: center;
-          }
-
-          .divider {
-            height: 2px;
-            width: 269px;
-            margin-bottom: 6rem;
-            margin-left: auto;
-            margin-right: auto;
-            background-color: #0aca9b;
-          }
-
-          .Copy {
-            max-width: 860px;
-            margin-left: 4rem;
-          }
-
-          .Copy-body {
-            margin-top: 2rem;
-            margin-bottom: 2rem;
-          }
-
-          .FeaturedProfiles {
-            margin-top: 4rem;
-            margin-bottom: 6rem;
-            display: grid;
-            grid-column-gap: 2rem;
-            grid-template-rows: 1fr;
-            grid-auto-flow: column dense;
-            text-align: center;
-            justify-content: center;
-            grid-auto-columns: minmax(auto, 300px);
+            text-align: left;
+            padding-left: 22px;
           }
         `}</style>
       </div>

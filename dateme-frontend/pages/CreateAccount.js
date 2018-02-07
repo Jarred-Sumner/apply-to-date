@@ -214,7 +214,7 @@ class CreateAccount extends React.Component {
 
             <form onSubmit={this.submit}>
               <FormField
-                label="Your e-mail"
+                label="email"
                 type="email"
                 name="email"
                 required
@@ -224,12 +224,12 @@ class CreateAccount extends React.Component {
               />
 
               <FormField
-                label="Your url"
+                label="username"
                 required
                 name="username"
                 value={username}
                 onChange={this.setUsername}
-                placeholder="desiredurl"
+                placeholder="username"
               >
                 <input
                   type="url"

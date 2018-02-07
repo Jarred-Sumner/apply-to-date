@@ -11,6 +11,7 @@ const Text = ({
   weight = "regular",
   lineHeight = "19px",
   casing = "inherit",
+  textDecoration = "none",
   wrap = null
 }) => {
   const classes = classNames("Text", className, {
@@ -37,6 +38,7 @@ const Text = ({
           line-height: ${lineHeight};
           font-size: ${size};
           text-transform: ${casing};
+          text-decoration: ${textDecoration};
         }
 
         .Text--wrap {
@@ -61,6 +63,10 @@ const Text = ({
           white-space: nowrap;
           word-wrap: none;
           word-break: none;
+        }
+
+        .Text--link:hover {
+          color: ;
         }
 
         .Text--serif {
@@ -163,6 +169,18 @@ export default ({ type, children, ...otherProps }) => {
         size="12px"
         color="#808696"
         weight="extraBold"
+      >
+        {children}
+      </Text>
+    );
+  } else if (type === "link") {
+    return (
+      <Text
+        {...otherProps}
+        type={type}
+        size="14px"
+        lineHeight="26px"
+        textDecoration="underline"
       >
         {children}
       </Text>

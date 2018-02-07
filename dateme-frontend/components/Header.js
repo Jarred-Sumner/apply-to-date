@@ -7,7 +7,7 @@ class Header extends React.Component {
   renderButtons = () => {
     return (
       <div className="Buttons">
-        <Button href="/sign-in" fill={false}>
+        <Button href="/login" fill={false}>
           Sign in
         </Button>
 

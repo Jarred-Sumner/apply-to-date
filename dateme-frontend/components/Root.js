@@ -136,5 +136,9 @@ export default ({}) => (
     body {
       font-family: "Monteserrat", sans-serif;
     }
+
+    a {
+      text-decoration: none;
+    }
   `}</style>
 );
