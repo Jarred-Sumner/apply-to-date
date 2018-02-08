@@ -83,14 +83,15 @@ const Button = ({
           color: #4be1ab;
         }
 
+        .Button--normal {
+          padding: 14px 24px;
+        }
+
         .Button--inline {
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
           display: inline-flex;
-        }
-
-        .Button--normal {
-          padding: 14px 24px;
+          padding: 12px 24px;
         }
 
         .Button--twitter--fill {

@@ -41,6 +41,7 @@ export default class InlineApply extends React.Component {
         <style jsx>{`
           form {
             display: flex;
+            height: 42px;
           }
 
           input {
