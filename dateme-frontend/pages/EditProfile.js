@@ -79,6 +79,7 @@ class Profile extends React.Component {
     this.state = {
       currentPhotoIndex: null,
       isHeaderSticky: false,
+      isSavingProfile: false,
       name,
       tagline,
       photos,
@@ -97,6 +98,14 @@ class Profile extends React.Component {
   }
 
   handleSaveProfile = async () => {
+    if (this.state.isSavingProfile) {
+      return;
+    }
+
+    this.setState({
+      isSavingProfile: true
+    });
+
     const profile = updateProfile({
       id: this.props.profile.id,
       ..._.pick(this.state, ["name", "tagline", "photos", "sections"])
@@ -107,6 +116,9 @@ class Profile extends React.Component {
       })
       .catch(error => {
         handleApiError(error);
+      })
+      .finally(() => {
+        this.setState({ isSavingProfile: false });
       });
   };
 
@@ -145,7 +157,6 @@ class Profile extends React.Component {
   setName = evt => this.setState({ name: evt.target.value });
   setTagline = evt => this.setState({ tagline: evt.target.value });
   setPhotoAtIndex = index => url => {
-    debugger;
     const photos = this.state.photos.slice();
     photos.splice(index, 1, url);
 
@@ -170,6 +181,7 @@ class Profile extends React.Component {
                   <Button
                     componentType="div"
                     color="green"
+                    pending={this.state.isSavingProfile}
                     onClick={this.handleSaveProfile}
                   >
                     Save

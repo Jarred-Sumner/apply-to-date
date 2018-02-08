@@ -74,7 +74,6 @@ export default class Photo extends React.Component {
 
   onCancelCrop = () => {
     this.setState({
-      file: null,
       status: this.getInitialStatus(this.props)
     });
   };
@@ -85,7 +84,6 @@ export default class Photo extends React.Component {
     }
 
     this.setState({
-      file: blob,
       status: Status.uploading
     });
 
@@ -140,7 +138,9 @@ export default class Photo extends React.Component {
             )}
           </Dropzone>
           <CropModal
-            open={!!(status === Status.cropping && file)}
+            open={
+              !!([Status.cropping, Status.uploading].includes(status) && file)
+            }
             onClose={this.onCancelCrop}
             onCrop={this.handleCrop}
             isSaving={status === Status.uploading}

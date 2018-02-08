@@ -13,7 +13,8 @@ const Button = ({
   componentType = "button",
   color = "black",
   icon,
-  pending = false
+  pending = false,
+  disabled = false
 }) => {
   const realComponentType = href ? "a" : componentType;
   const classes = classNames("Button", {
@@ -30,7 +31,9 @@ const Button = ({
     "Button--facebook--fill": color === "facebook" && fill,
     "Button--large": size === "large",
     "Button--inline": !!inline,
-    "Button--normal": size === "normal"
+    "Button--normal": size === "normal",
+    "Button--pending": pending,
+    "Button--disabled": disabled
   });
 
   const component = (
@@ -53,6 +56,9 @@ const Button = ({
           text-decoration: none;
           cursor: pointer;
           outline: 0;
+
+          transition: opacity 0.15s linear;
+          transition-property: opacity, transform;
         }
 
         .Button--black--fill:hover {
@@ -142,31 +148,59 @@ const Button = ({
           display: flex;
         }
 
-        .LoadingSpinner {
-          margin-left: 16px;
+        .Button--pending {
+          position: relative;
+          text-indent: 14px;
+          opacity: 0.8;
+          pointer-events: none;
+        }
+
+        .Button--disabled {
+          opacity: 0.6;
+          pointer-events: none;
+        }
+
+        .Button--pending:after {
+          position: absolute;
+          top: 0;
+          display: flex;
+          content: "";
+          left: 14px;
+          bottom: 0;
+          margin-top: auto;
+          margin-bottom: auto;
+          height: 7px;
+          width: 7px;
+          animation: rotate 0.8s infinite linear;
+          border: 4px solid #fff;
+          border-right-color: transparent;
+          border-radius: 50%;
+        }
+
+        @keyframes rotate {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
         }
       `}</style>
       {realComponentType === "button" && (
         <button onClick={onClick} className={classes}>
-          {icon && <div className="IconContainer">{icon}</div>}
+          {icon && !pending && <div className="IconContainer">{icon}</div>}
           {children}
-          {pending && (
-            <i
-              className="LoadingSpinner"
-              class="fa fa-circle-o-notch fa-spin"
-            />
-          )}
         </button>
       )}
       {realComponentType === "a" && (
         <a onClick={onClick} href={href} className={classes}>
-          {icon && <div className="IconContainer">{icon}</div>}
+          {icon && !pending && <div className="IconContainer">{icon}</div>}
           {children}
         </a>
       )}
       {realComponentType === "div" && (
         <div onClick={onClick} className={classes}>
-          {icon && <div className="IconContainer">{icon}</div>}
+          {icon && !pending && <div className="IconContainer">{icon}</div>}
           {children}
         </div>
       )}

@@ -46,7 +46,10 @@ export default class CropModal extends React.Component {
   componentWillReceiveProps(props) {
     if (props.file) {
       this.setState({
-        file: props.file
+        file: props.file,
+        crop: {
+          aspectRatio: 1
+        }
       });
     }
   }
