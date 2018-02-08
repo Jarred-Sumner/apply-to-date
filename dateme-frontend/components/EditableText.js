@@ -37,6 +37,13 @@ export default class EditableText extends React.PureComponent {
             box-shadow: none;
           }
 
+          input:focus,
+          select:focus,
+          textarea:focus,
+          button:focus {
+            outline: none;
+          }
+
           .EditableText--ProfilePageTitle {
             font-family: Frank Ruhl Libre, serif;
             color: #000;

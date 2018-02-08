@@ -22,7 +22,9 @@ const UploadPhoto = ({ file, status }) => {
       <div className="Button">
         <Button pending={status === Status.uploading}>Choose picture</Button>
       </div>
-      <Text type="muted">or drag'n'drop here</Text>
+      <Text type="muted" size="13px">
+        or drag'n'drop here
+      </Text>
 
       <style jsx>{`
         .container {

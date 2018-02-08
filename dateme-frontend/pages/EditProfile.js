@@ -334,7 +334,7 @@ class Profile extends React.Component {
             background-color: white;
             display: flex;
             align-items: center;
-            padding: 14px 40px;
+            padding: 10px 40px;
             width: auto;
             border-bottom: 1px solid #e8e8e8;
           }

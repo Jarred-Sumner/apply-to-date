@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="55px" height="47px" viewBox="0 0 55 47" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>heart</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M40.1922474,0 C34.8049019,0 30.0909745,2.89914096 27.500392,7.23299416 C24.9098094,2.89914096 20.1950981,0 14.8077526,0 C6.6291318,0 0,6.67947497 0,14.9192639 C0,19.2067593 1.79839503,23.0695071 4.67316162,25.7907453 L25.8689796,46.2293523 C26.2578217,46.7000615 26.841085,47 27.4949043,47 C28.1005103,47 28.6457517,46.7412684 29.031458,46.3280111 L50.333894,25.7907453 C53.2027809,23.0699033 55,19.2071556 55,14.9192639 C55,6.67947497 48.3708682,0 40.1922474,0 Z" id="path-1"></path>
+    </defs>
+    <g id="Homepage" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-693.000000, -224.000000)">
+        <g id="Knowledge" transform="translate(672.000000, 162.000000)">
+            <g id="heart" transform="translate(21.000000, 62.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <use id="Mask" fill="#F5FFFD" fill-rule="nonzero" xlink:href="#path-1"></use>
+                <rect id="Rectangle" fill="#FFFFFF" mask="url(#mask-2)" x="-1.27906977" y="-1.93150685" width="28.7790698" height="50.2191781"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

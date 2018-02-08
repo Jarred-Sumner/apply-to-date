@@ -90,7 +90,7 @@ const Button = ({
         }
 
         .Button--normal {
-          padding: 14px 24px;
+          padding: 10px 24px;
         }
 
         .Button--inline {
