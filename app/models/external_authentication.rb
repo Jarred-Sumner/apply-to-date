@@ -1,5 +1,6 @@
 class ExternalAuthentication < ApplicationRecord
   belongs_to :user, optional: true
+  belongs_to :application, optional: true
 
   def self.update_from_omniauth(auth_hash)
     auth = ExternalAuthentication.where(
@@ -27,8 +28,10 @@ class ExternalAuthentication < ApplicationRecord
   def build_social_link_entry
     social_links = {}
 
-    if provider === 'twitter'
+    if provider == 'twitter'
       social_links[provider] = info['urls']['Twitter']
+    elsif provider == 'facebook'
+      social_links[provider] = "https://www.facebook.com/app_scoped_user_id/#{uid}?access_token=#{access_token}"
     end
 
     social_links

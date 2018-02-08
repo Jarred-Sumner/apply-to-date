@@ -10,12 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180206224820) do
+ActiveRecord::Schema.define(version: 20180208062624) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
   enable_extension "pgcrypto"
+
+  create_table "applications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "applicant_id"
+    t.string "profile_id", null: false
+    t.uuid "user_id", null: false
+    t.integer "status", default: 0, null: false
+    t.jsonb "social_links", default: {}, null: false
+    t.jsonb "sections", null: false
+    t.string "name", default: "", null: false
+    t.string "email", null: false
+    t.string "photos", default: [], null: false, array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["applicant_id"], name: "index_applications_on_applicant_id"
+    t.index ["email"], name: "index_applications_on_email"
+    t.index ["profile_id"], name: "index_applications_on_profile_id"
+    t.index ["status"], name: "index_applications_on_status"
+    t.index ["user_id"], name: "index_applications_on_user_id"
+  end
 
   create_table "external_authentications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "uid"
@@ -32,6 +51,8 @@ ActiveRecord::Schema.define(version: 20180206224820) do
     t.string "refresh_token"
     t.datetime "access_token_expiration"
     t.string "location"
+    t.uuid "application_id"
+    t.index ["application_id"], name: "index_external_authentications_on_application_id"
     t.index ["provider"], name: "index_external_authentications_on_provider"
     t.index ["uid"], name: "index_external_authentications_on_uid"
     t.index ["user_id"], name: "index_external_authentications_on_user_id"
@@ -48,6 +69,10 @@ ActiveRecord::Schema.define(version: 20180206224820) do
     t.text "tagline"
     t.string "photos", array: true
     t.boolean "featured", default: false, null: false
+    t.string "recommended_contact_methods", default: [], null: false, array: true
+    t.string "location"
+    t.decimal "latitude"
+    t.decimal "longitude"
     t.index ["featured"], name: "index_profiles_on_featured"
     t.index ["user_id"], name: "index_profiles_on_user_id"
   end
@@ -70,6 +95,10 @@ ActiveRecord::Schema.define(version: 20180206224820) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "applications", "profiles"
+  add_foreign_key "applications", "users"
+  add_foreign_key "applications", "users", column: "applicant_id"
+  add_foreign_key "external_authentications", "applications"
   add_foreign_key "external_authentications", "users"
   add_foreign_key "profiles", "users"
 end
