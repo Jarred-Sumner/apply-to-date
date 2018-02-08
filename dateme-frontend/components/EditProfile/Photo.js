@@ -7,6 +7,46 @@ import Modal from "../Modal";
 import Alert from "../Alert";
 import CropModal from "../CropModal";
 import { BASE_HOSTNAME } from "../../api";
+import Icon from "../Icon";
+
+const EditableThumbnail = ({ url, onRemove }) => {
+  return (
+    <div className="container">
+      <Thumbnail isLast url={url} />
+
+      <div className="Button" onClick={onRemove}>
+        <Button color="white" icon={<Icon type="x" size="05x" />} />
+      </div>
+
+      <style jsx>{`
+        .container {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 206px;
+          position: relative;
+
+          cursor: pointer;
+        }
+
+        .container:hover .Button {
+          opacity: 1;
+        }
+
+        .Button {
+          position: absolute;
+          top: -16px;
+          right: -16px;
+          border-radius: 50%;
+          border: 1px solid #ccc;
+          opacity: 0;
+          transition: opacity 0.1s linear;
+        }
+      `}</style>
+    </div>
+  );
+};
 
 const Status = {
   empty: "empty",
@@ -19,26 +59,43 @@ const Status = {
 const UploadPhoto = ({ file, status }) => {
   return (
     <div className="container">
-      <div className="Button">
-        <Button pending={status === Status.uploading}>Choose picture</Button>
+      <div className="wrapper">
+        <div className="Button">
+          <Button pending={status === Status.uploading}>Choose picture</Button>
+        </div>
+        <Text type="muted">or drag'n'drop here</Text>
       </div>
-      <Text type="muted">or drag'n'drop here</Text>
-
       <style jsx>{`
-        .container {
+        .wrapper {
           display: flex;
           margin-top: auto;
           margin-bottom: auto;
           align-items: center;
           justify-content: center;
           flex-direction: column;
-
           width: auto;
           height: 100%;
         }
 
         .Button {
           margin-bottom: 14px;
+        }
+
+        .container {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 206px;
+
+          border: 2px dashed #e3e3e6;
+          border-radius: 4px;
+
+          cursor: pointer;
+        }
+
+        .container:hover {
+          border-color: #ababab;
         }
       `}</style>
     </div>
@@ -114,6 +171,13 @@ export default class Photo extends React.Component {
     Alert.success("Upload complete!");
   };
 
+  handleDeletePhoto = event => {
+    event.stopPropagation();
+    event.preventDefault();
+
+    this.props.setURL(null);
+  };
+
   componentWillUnmount() {
     this.uploader = null;
   }
@@ -132,7 +196,11 @@ export default class Photo extends React.Component {
             onDrop={this.handleDrop}
           >
             {status === Status.preview ? (
-              <Thumbnail url={url} isLast />
+              <EditableThumbnail
+                onRemove={this.handleDeletePhoto}
+                url={url}
+                isLast
+              />
             ) : (
               <UploadPhoto url={url} status={status} />
             )}
@@ -147,24 +215,6 @@ export default class Photo extends React.Component {
             file={file}
           />
         </React.Fragment>
-        <style jsx>{`
-          .container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 206px;
-
-            border: 2px dashed #e3e3e6;
-            border-radius: 4px;
-
-            cursor: pointer;
-          }
-
-          .container:hover {
-            border-color: #ababab;
-          }
-        `}</style>
       </div>
     );
   }

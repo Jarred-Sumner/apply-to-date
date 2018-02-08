@@ -25,18 +25,31 @@ const ICON_COMPONENT_BY_TYPE = {
   check: CheckIcon
 };
 
-export default ({ type, color }) => {
+export default ({ type, color, size = null }) => {
   let Component = ICON_COMPONENT_BY_TYPE[type];
   if (color && Component[color]) {
     Component = Component[color];
   }
 
   return (
-    <div className={classNames("Icon", `Icon--${type}`)}>
+    <div
+      className={classNames("Icon", `Icon--${type}`, {
+        "Icon--2x": size === "2x",
+        "Icon--05x": size === "05x"
+      })}
+    >
       <Component />
       <style jsx>{`
         .Icon {
           display: inline-flex;
+        }
+
+        .Icon--05x {
+          transform: scale(1.5);
+        }
+
+        .Icon--2x {
+          transform: scale(2);
         }
       `}</style>
     </div>
