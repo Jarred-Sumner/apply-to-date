@@ -174,20 +174,16 @@ class Homepage extends React.Component {
         <Header />
         <article>
           <main>
-            <img className="Logo" src="/static/large-brand.svg" />
             <div className="Copy">
+              {/* <img className="Logo Logo-Home" src="/static/large-brand.svg" /> */}
+              <img className="Logo Logo-Home" src="/static/animatedlogo.gif" />
               <div className="Copy-title">
-                <Text
-                  font="sans-serif"
-                  size="36px"
-                  lineHeight="44px"
-                  weight="bold"
-                >
+                <Text font="serif" size="36px" lineHeight="44px" weight="bold">
                   A personal website to get dates
                 </Text>
               </div>
               <div className="Copy-body">
-                <Text size="24px" lineHeight="24px" font="serif">
+                <Text size="16px" lineHeight="24px" font="sans-serif">
                   Free and quick to setup. Start pitching yourself today.
                 </Text>
               </div>
@@ -199,7 +195,7 @@ class Homepage extends React.Component {
           <footer>
             <div className="divider" />
 
-            <Text size="36px" font="serif" color="#000">
+            <Text size="36px" font="sans-serif" color="#000">
               Featured profiles
             </Text>
 
@@ -240,14 +236,23 @@ class Homepage extends React.Component {
             background-color: #0aca9b;
           }
 
+          .Logo-Home {
+            margin-left: auto;
+            margin-right: auto;
+            width: 97px;
+            margin-bottom: 28px;
+          }
+
           .Copy {
-            max-width: 860px;
-            margin-left: 4rem;
+            max-width: 710px;
+            margin: 0 auto;
+            text-align: center;
           }
 
           .Copy-body {
-            margin-top: 2rem;
+            margin-top: 1rem;
             margin-bottom: 2rem;
+            font-weight: 200;
           }
 
           .FeaturedProfiles {

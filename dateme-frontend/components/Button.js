@@ -12,7 +12,8 @@ const Button = ({
   size = "normal",
   componentType = "button",
   color = "black",
-  icon
+  icon,
+  pending = false
 }) => {
   const realComponentType = href ? "a" : componentType;
   const classes = classNames("Button", {
@@ -82,14 +83,15 @@ const Button = ({
           color: #4be1ab;
         }
 
+        .Button--normal {
+          padding: 14px 24px;
+        }
+
         .Button--inline {
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
           display: inline-flex;
-        }
-
-        .Button--normal {
-          padding: 14px 24px;
+          padding: 12px 24px;
         }
 
         .Button--twitter--fill {
@@ -139,11 +141,21 @@ const Button = ({
           align-items: center;
           display: flex;
         }
+
+        .LoadingSpinner {
+          margin-left: 16px;
+        }
       `}</style>
       {realComponentType === "button" && (
         <button onClick={onClick} className={classes}>
           {icon && <div className="IconContainer">{icon}</div>}
           {children}
+          {pending && (
+            <i
+              className="LoadingSpinner"
+              class="fa fa-circle-o-notch fa-spin"
+            />
+          )}
         </button>
       )}
       {realComponentType === "a" && (
