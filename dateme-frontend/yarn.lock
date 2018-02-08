@@ -1482,6 +1482,10 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
+cropperjs@v1.0.0-rc.3:
+  version "1.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/cropperjs/-/cropperjs-1.0.0-rc.3.tgz#50a7c7611befc442702f845ede77d7df4572e82b"
+
 cross-spawn@5.1.0, cross-spawn@^5.0.1:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-5.1.0.tgz#e8bd0efee58fcff6f8f94510a0a554bbfa235449"
@@ -4216,6 +4220,13 @@ rc@^1.0.1, rc@^1.1.6, rc@^1.1.7:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
 
+react-cropper@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-cropper/-/react-cropper-1.0.1.tgz#6e5595abb8576088ab3e51ecfdcfe5f865d0340f"
+  dependencies:
+    cropperjs v1.0.0-rc.3
+    prop-types "^15.5.8"
+
 react-dom@^16.2.0:
   version "16.2.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.2.0.tgz#69003178601c0ca19b709b33a83369fe6124c044"
@@ -4247,6 +4258,10 @@ react-hot-loader@4.0.0-beta.18:
     global "^4.3.0"
     hoist-non-react-statics "^2.3.1"
     react-stand-in "^4.0.0-beta.18"
+
+react-image-crop@^3.0.10:
+  version "3.0.10"
+  resolved "https://registry.yarnpkg.com/react-image-crop/-/react-image-crop-3.0.10.tgz#a1bced7ca608b17632da124cab63f5bad1877de0"
 
 react-images@^0.5.16:
   version "0.5.16"

@@ -145,6 +145,7 @@ class Profile extends React.Component {
   setName = evt => this.setState({ name: evt.target.value });
   setTagline = evt => this.setState({ tagline: evt.target.value });
   setPhotoAtIndex = index => url => {
+    debugger;
     const photos = this.state.photos.slice();
     photos.splice(index, 1, url);
 
@@ -222,9 +223,21 @@ class Profile extends React.Component {
         <section className="Section Section--photos">
           <Text type="label">Upload your pictures</Text>
           <div className="PhotosContainer">
-            <Photo url={photos[0]} setURL={this.setPhotoAtIndex(0)} />
-            <Photo url={photos[1]} setURL={this.setPhotoAtIndex(1)} />
-            <Photo url={photos[2]} setURL={this.setPhotoAtIndex(2)} />
+            <Photo
+              key={photos[0]}
+              url={photos[0]}
+              setURL={this.setPhotoAtIndex(0)}
+            />
+            <Photo
+              key={photos[1]}
+              url={photos[1]}
+              setURL={this.setPhotoAtIndex(1)}
+            />
+            <Photo
+              key={photos[2]}
+              url={photos[2]}
+              setURL={this.setPhotoAtIndex(2)}
+            />
           </div>
 
           <Lightbox

@@ -1,10 +1,90 @@
 import Modal from "react-responsive-modal/lib/css";
+import Button from "./Button";
+
+export const ConfirmAndCloseButtons = ({
+  onConfirm,
+  onCancel,
+  confirmLabel = "Save",
+  cancelLabel = "Cancel",
+  isConfirmPending = false
+}) => {
+  return (
+    <div className="Container">
+      <Button componentType="div" fill={false} onCancel={onCancel}>
+        {cancelLabel}
+      </Button>
+
+      <div className="spacer" />
+
+      <Button
+        componentType="div"
+        pending={isConfirmPending}
+        onClick={onConfirm}
+      >
+        {confirmLabel}
+      </Button>
+
+      <style jsx>{`
+        .Container {
+          display: flex;
+          justify-content: flex-end;
+          margin-left: auto;
+        }
+
+        .spacer {
+          padding-left: 12px;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+const ModalHeader = ({ children }) => {
+  return (
+    <div className="Header">
+      {children}
+      <style jsx>{`
+        .Header {
+          padding: 14px 22px;
+          background-color: white;
+          border-top-left-radius: 4px;
+          border-top-right-radius: 4px;
+          display: flex;
+          align-items: center;
+          width: auto;
+          border-bottom: 1px solid #e4e9f0;
+        }
+      `}</style>
+    </div>
+  );
+};
+const ModalFooter = ({ children }) => {
+  return (
+    <div className="Footer">
+      {children}
+      <style jsx>{`
+        .Footer {
+          padding: 14px 22px;
+          background-color: white;
+          border-bottom-left-radius: 4px;
+          border-bottom-left-radius: 4px;
+          display: flex;
+          align-items: center;
+          width: auto;
+          border-top: 1px solid #e4e9f0;
+        }
+      `}</style>
+    </div>
+  );
+};
 
 export default ({
   open,
   onClose,
   children,
   little,
+  renderHeader,
+  renderFooter,
   animationDuration = 500
 }) => {
   return (
@@ -15,7 +95,9 @@ export default ({
         little={little}
         animationDuration={animationDuration}
       >
+        {renderHeader && <ModalHeader>{renderHeader()}</ModalHeader>}
         {children}
+        {renderFooter && <ModalFooter>{renderFooter()}</ModalFooter>}
       </Modal>
       <style jsx global>{`
         .react-responsive-modal-overlay {
@@ -31,7 +113,6 @@ export default ({
           overflow-y: auto;
           overflow-x: hidden;
           z-index: 1000;
-          padding: 1.2rem;
         }
         .react-responsive-modal-overlay-little {
           align-items: center;
@@ -39,8 +120,10 @@ export default ({
         .react-responsive-modal-modal {
           max-width: 800px;
           position: relative;
-          padding: 1.2rem;
           background: #ffffff;
+          border-radius: 4px;
+          margin: 14px 22px;
+          border-radius: 4px;
           background-clip: padding-box;
           box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.25);
         }

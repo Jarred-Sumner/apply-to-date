@@ -18,7 +18,7 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
 
     ActiveRecord::Base.transaction do
       if update_params[:sections].present?
-        sections = JSON.parse(update_params[:sections]).with_indifferent_access
+        sections = update_params[:sections].permit(Profile::DEFAULT_SECTIONS)
         has_all_sections = Profile::DEFAULT_SECTIONS.all? do |section_key|
           !sections[section_key].nil?
         end
@@ -48,6 +48,7 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
       end
 
       photos = Array(update_params[:photos])
+
       if !photos.nil?
         if photos.blank?
           raise ArgumentError.new("Please add at least one photo")
@@ -78,6 +79,5 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
   def update_params
     params
       .require(:profile)
-      .permit([:sections, :social_links, :name, :tagline, :pictures])
   end
 end

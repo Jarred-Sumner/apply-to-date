@@ -30,9 +30,9 @@ export const getProfile = profile => {
 };
 
 export const updateProfile = profileObject => {
-  return put("/profiles/" + profileObject.id).send(
-    _.pick(profileObject, ["tagline", "name", "sections", "photos"])
-  );
+  return put("/profiles/" + profileObject.id).send({
+    profile: _.pick(profileObject, ["tagline", "name", "sections", "photos"])
+  });
 };
 
 export const getFeaturedProfiles = () => {
