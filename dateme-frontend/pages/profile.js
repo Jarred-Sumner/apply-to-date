@@ -15,6 +15,8 @@ import titleCase from "title-case";
 import Waypoint from "react-waypoint";
 import Button from "../components/Button";
 import Thumbnail from "../components/Thumbnail";
+import PageFooter from "../components/PageFooter";
+import Page from "../components/Page";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -108,14 +110,17 @@ class Profile extends React.Component {
     const { profile } = this.props;
 
     return (
-      <div>
+      <Page
+        headerProps={{
+          showChildren: this.state.isHeaderSticky,
+          children: (
+            <div className="HeaderForm">
+              <InlineApply profileId={this.props.profile.id} />
+            </div>
+          )
+        }}
+      >
         <Head />
-        <Header showChildren={this.state.isHeaderSticky}>
-          <div className="HeaderForm">
-            <InlineApply profileId={this.props.profile.id} />
-          </div>
-        </Header>
-
         <Waypoint
           onEnter={this.disableStickyHeader}
           onLeave={this.enableStickyHeader}
@@ -173,11 +178,10 @@ class Profile extends React.Component {
         <style jsx>{`
           .Section {
             margin-top: 4rem;
-            margin-left: auto;
-            margin-right: auto;
+
             display: grid;
             grid-row-gap: 2rem;
-            max-width: 710px;
+            max-width: 100%;
           }
 
           .HeaderForm {
@@ -221,7 +225,7 @@ class Profile extends React.Component {
             justify-content: center;
           }
         `}</style>
-      </div>
+      </Page>
     );
   }
 }
