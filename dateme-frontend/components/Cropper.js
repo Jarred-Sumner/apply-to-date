@@ -10,7 +10,7 @@ export default class Cropper extends React.Component {
           src={file.preview}
           keepSelection={false}
           onChange={onChange}
-          crop={crop}
+          crop={{ ...crop, aspect: 1 }}
         />
         <style jsx global>{`
           .ReactCrop {
@@ -18,7 +18,7 @@ export default class Cropper extends React.Component {
             display: inline-block;
             cursor: crosshair;
             overflow: hidden;
-            height: ${height};
+            max-height: ${height};
             background-color: #000;
           }
           .ReactCrop:focus {
@@ -29,7 +29,8 @@ export default class Cropper extends React.Component {
           }
           .ReactCrop__image {
             display: block;
-            height: ${height};
+            max-height: ${height};
+            max-width: 100%;
           }
           .ReactCrop--crop-invisible .ReactCrop__image {
             opacity: 0.5;
