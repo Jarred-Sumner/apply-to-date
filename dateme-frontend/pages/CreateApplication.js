@@ -20,6 +20,7 @@ import Alert, { handleApiError } from "../components/Alert";
 import LoginGate from "../components/LoginGate";
 import Photo from "../components/EditProfile/Photo";
 import Page from "../components/Page";
+import SocialLink from "../components/SocialLink";
 
 const SECTION_ORDERING = ["introduction", "why"];
 
@@ -165,6 +166,14 @@ class CreateApplication extends React.Component {
             </Text>
           </div>
         </section>
+        <section className="Section Section--socialLinks">
+          <SocialLink hoverable provider="twitter" />
+          <SocialLink hoverable provider="medium" />
+          <SocialLink hoverable provider="snapchat" />
+          <SocialLink hoverable provider="instagram" />
+          <SocialLink hoverable provider="linkedin" />
+          <SocialLink hoverable provider="dribbble" />
+        </section>
         <section className="Section Section--photos">
           <Text type="label">Share some pics</Text>
           <div className="PhotosContainer">
@@ -253,6 +262,17 @@ class CreateApplication extends React.Component {
             grid-template-columns: 1fr 1fr 1fr;
             grid-template-rows: 1fr;
             grid-column-gap: 28px;
+          }
+
+          .Section--socialLinks {
+            display: grid;
+            justify-content: center;
+            margin-left: auto;
+            padding-left: 18px;
+            padding-right: 18px;
+            margin-right: auto;
+            grid-auto-flow: column;
+            grid-column-gap: 32px;
           }
 
           .Subheader {

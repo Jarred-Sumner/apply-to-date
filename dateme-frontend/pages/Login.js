@@ -12,6 +12,7 @@ import { getFeaturedProfiles, getCurrentUser } from "../api";
 import { bindActionCreators } from "redux";
 import Router from "next/router";
 import Alert from "../components/Alert";
+import Page from "../components/Page";
 
 class Login extends React.Component {
   constructor(props) {
@@ -39,9 +40,8 @@ class Login extends React.Component {
     const { username, password, isLoggingIn } = this.state;
 
     return (
-      <div>
+      <Page>
         <Head title="Login | ApplyToDate" />
-        <Header />
         <article>
           <main>
             <Text type="PageTitle">Login</Text>
@@ -60,7 +60,7 @@ class Login extends React.Component {
               <FormField
                 name="password"
                 type="password"
-                value={username}
+                value={password}
                 label="Password"
                 onChange={this.setPassword}
                 required
@@ -85,9 +85,6 @@ class Login extends React.Component {
           article {
             margin-top: 6rem;
             margin-bottom: 3rem;
-            max-width: 710px;
-            margin-left: auto;
-            margin-right: auto;
           }
 
           main {
@@ -113,7 +110,7 @@ class Login extends React.Component {
             padding-left: 22px;
           }
         `}</style>
-      </div>
+      </Page>
     );
   }
 }

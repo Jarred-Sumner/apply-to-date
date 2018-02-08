@@ -17,6 +17,7 @@ import Button from "../components/Button";
 import Thumbnail from "../components/Thumbnail";
 import PageFooter from "../components/PageFooter";
 import Page from "../components/Page";
+import SocialLink from "../components/SocialLink";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -136,6 +137,17 @@ class Profile extends React.Component {
               <Text type="Tagline">{profile.tagline}</Text>
             </div>
 
+            <div className="Section--socialLinks">
+              {_.map(profile.socialLinks, (url, provider) => (
+                <SocialLink
+                  provider={provider}
+                  active
+                  url={url}
+                  key={provider}
+                />
+              ))}
+            </div>
+
             <div className="Section-row ApplicationForm">
               <InlineApply profileId={this.props.profile.id} />
             </div>
@@ -152,7 +164,7 @@ class Profile extends React.Component {
           ))}
 
           <Lightbox
-            images={profile.photos.slice(0, 3).map(src => ({ src }))}
+            images={_.slice(profile.photos || [], 0, 3).map(src => ({ src }))}
             isOpen={_.isNumber(this.state.currentPhotoIndex)}
             currentImage={this.state.currentPhotoIndex || 0}
             onClickPrev={this.previousPhoto}
@@ -182,6 +194,17 @@ class Profile extends React.Component {
             display: grid;
             grid-row-gap: 2rem;
             max-width: 100%;
+          }
+
+          .Section--socialLinks {
+            display: grid;
+            justify-content: center;
+            margin-left: auto;
+            padding-left: 18px;
+            padding-right: 18px;
+            margin-right: auto;
+            grid-auto-flow: column;
+            grid-column-gap: 32px;
           }
 
           .HeaderForm {
