@@ -64,6 +64,7 @@ export default ({ center = false }) => {
 
         a:hover {
           text-decoration: underline;
+          text-decoration-color: #b8bfd3;
         }
 
         @media (max-width: 580px) {
