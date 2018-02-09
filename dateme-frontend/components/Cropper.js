@@ -18,7 +18,7 @@ export default class Cropper extends React.Component {
             display: inline-block;
             cursor: crosshair;
             overflow: hidden;
-            max-height: ${height};
+            height: ${height};
             background-color: #000;
           }
           .ReactCrop:focus {
@@ -29,7 +29,7 @@ export default class Cropper extends React.Component {
           }
           .ReactCrop__image {
             display: block;
-            max-height: ${height};
+            height: ${height};
             max-width: 100%;
           }
           .ReactCrop--crop-invisible .ReactCrop__image {

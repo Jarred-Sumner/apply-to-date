@@ -19,6 +19,7 @@ import Alert, { handleApiError } from "../components/Alert";
 import LoginGate from "../components/LoginGate";
 import Photo from "../components/EditProfile/Photo";
 import Page from "../components/Page";
+import EditSocialLinks from "../components/EditSocialLinks";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -74,7 +75,13 @@ class Profile extends React.Component {
     super(props);
 
     const profile = props.profile || {};
-    const { name = "", tagline = "", photos = [], sections = {} } = profile;
+    const {
+      name = "",
+      tagline = "",
+      photos = [],
+      sections = {},
+      socialLinks = {}
+    } = profile;
 
     this.state = {
       currentPhotoIndex: null,
@@ -83,7 +90,8 @@ class Profile extends React.Component {
       name,
       tagline,
       photos,
-      sections
+      sections,
+      socialLinks
     };
   }
 
@@ -108,7 +116,13 @@ class Profile extends React.Component {
 
     const profile = updateProfile({
       id: this.props.profile.id,
-      ..._.pick(this.state, ["name", "tagline", "photos", "sections"])
+      ..._.pick(this.state, [
+        "name",
+        "tagline",
+        "photos",
+        "sections",
+        "socialLinks"
+      ])
     })
       .then(response => {
         this.props.updateEntities(response.body);
@@ -165,7 +179,7 @@ class Profile extends React.Component {
 
   render() {
     const { profile } = this.props;
-    const { name, tagline, photos } = this.state;
+    const { name, tagline, photos, socialLinks } = this.state;
 
     return (
       <Page
@@ -192,38 +206,40 @@ class Profile extends React.Component {
         }}
       >
         <Head />
-
-        <Waypoint
-          onEnter={this.disableStickyHeader}
-          onLeave={this.enableStickyHeader}
-        >
-          <section className="Section Section--center Section--title">
-            <div className="Section-row">
-              <Text type="ProfilePageTitle">
-                👋 Hi, I'm{" "}
-                <EditableText
-                  value={name}
-                  onChange={this.setName}
-                  placeholder="Your Name"
-                  type="ProfilePageTitle"
-                  width={getWidthForText(name || "Your Name", !name)}
-                />
-              </Text>
-            </div>
-
-            <div className="Section-row Section-row--Tagline">
+        <section className="Section Section--center Section--title">
+          <div className="Section-row">
+            <Text type="ProfilePageTitle">
+              👋 Hi, I'm{" "}
               <EditableText
-                placeholder="Enter a short TLDR of yourself"
-                type="Tagline"
-                value={tagline}
-                maxLength={74}
-                onChange={this.setTagline}
-                maxWidth="640px"
-                width={"640px"}
+                value={name}
+                onChange={this.setName}
+                placeholder="Your Name"
+                type="ProfilePageTitle"
+                width={getWidthForText(name || "Your Name", !name)}
               />
-            </div>
-          </section>
-        </Waypoint>
+            </Text>
+          </div>
+
+          <div className="Section-row Section-row--Tagline">
+            <EditableText
+              placeholder="Enter a short TLDR of yourself"
+              type="Tagline"
+              value={tagline}
+              maxLength={74}
+              onChange={this.setTagline}
+              maxWidth="640px"
+              width={"640px"}
+            />
+          </div>
+
+          <div className="Section-row">
+            <EditSocialLinks
+              socialLinks={socialLinks}
+              setSocialLinks={socialLinks => this.setState({ socialLinks })}
+            />
+          </div>
+        </section>
+
         <section className="Section Section--photos">
           <Text type="label">Share some pics</Text>
           <div className="PhotosContainer">

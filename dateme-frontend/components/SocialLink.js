@@ -2,9 +2,17 @@ import classNames from "classnames";
 import SocialIcon from "./SocialIcon";
 import Link from "next/link";
 
-const SocialLink = ({ active = false, provider, hoverable = false }) => {
+const SocialLink = ({
+  active = false,
+  provider,
+  hoverable = false,
+  width = "36px",
+  height = "36px",
+  onClick
+}) => {
   return (
     <div
+      onClick={onClick}
       className={classNames("SocialLink", `SocialLink--${provider}`, {
         "SocialLink--active": active,
         "SocialLink--disabled": !active,
@@ -12,16 +20,39 @@ const SocialLink = ({ active = false, provider, hoverable = false }) => {
       })}
     >
       <div className="SocialIcon--activeIcon">
-        <SocialIcon active={true} provider={provider} />
+        <SocialIcon
+          width={"auto"}
+          height={"auto"}
+          active={true}
+          provider={provider}
+        />
       </div>
 
       <div className="SocialIcon--disabledIcon">
-        <SocialIcon active={false} provider={provider} />
+        <SocialIcon
+          width={"auto"}
+          height={"auto"}
+          active={false}
+          provider={provider}
+        />
       </div>
+
+      <style jsx>{`
+        .SocialLink {
+          width: ${width};
+          height: ${height};
+        }
+
+        .SocialIcon--activeIcon,
+        .SocialIcon--disabledIcon {
+          padding: 20%;
+          width: 100%;
+          height: 100%;
+        }
+      `}</style>
 
       <style jsx global>{`
         .SocialLink {
-          padding: 8px;
           border-radius: 50%;
           display: flex;
           justify-content: center;
@@ -31,8 +62,6 @@ const SocialLink = ({ active = false, provider, hoverable = false }) => {
           flex: 0;
           flex-grow: 0;
           flex-shrink: 0;
-          width: 18px;
-          height: 18x;
         }
 
         .SocialIcon--activeIcon,
@@ -40,8 +69,6 @@ const SocialLink = ({ active = false, provider, hoverable = false }) => {
           display: flex;
           justify-content: center;
           align-items: center;
-          height: 18px;
-          width: 18px;
         }
 
         .SocialLink svg {
@@ -119,7 +146,15 @@ const SocialLink = ({ active = false, provider, hoverable = false }) => {
   );
 };
 
-export default ({ active = false, provider, hoverable = false, url }) => {
+export default ({
+  active = false,
+  provider,
+  hoverable = false,
+  url,
+  onClick,
+  width,
+  height
+}) => {
   if (url) {
     return (
       <Link href={url}>
@@ -128,13 +163,23 @@ export default ({ active = false, provider, hoverable = false, url }) => {
             active={active}
             provider={provider}
             hoverable={hoverable}
+            onClick={onClick}
+            width={width}
+            height={height}
           />
         </a>
       </Link>
     );
   } else {
     return (
-      <SocialLink active={active} provider={provider} hoverable={hoverable} />
+      <SocialLink
+        active={active}
+        provider={provider}
+        hoverable={hoverable}
+        onClick={onClick}
+        width={width}
+        height={height}
+      />
     );
   }
 };

@@ -1,7 +1,10 @@
 import Icons from "./SocialIcon/icons";
+import invariant from "invariant";
 
 export const getComponent = ({ provider, active }) => {
   const providerIcons = Icons[provider];
+
+  invariant(providerIcons, `Missing icon for ${provider}`);
 
   if (active) {
     return providerIcons.active;
@@ -10,7 +13,7 @@ export const getComponent = ({ provider, active }) => {
   }
 };
 
-export default ({ provider, active }) => {
+export default ({ provider, active, width = "18px", height = "18px" }) => {
   if (provider === "snapchat" && !active) {
     return (
       <img
@@ -23,5 +26,9 @@ export default ({ provider, active }) => {
 
   const Component = getComponent({ provider, active });
 
-  return <Component />;
+  if (!Component) {
+    return null;
+  }
+
+  return <Component width={width} height={height} />;
 };

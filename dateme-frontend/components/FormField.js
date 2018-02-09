@@ -20,6 +20,9 @@ export default class FormField extends React.Component {
       name,
       type = "text",
       label,
+      autoFocus = false,
+      autoCapitalize = false,
+      autoCorrect = true,
       required = false,
       disabled = false,
       children,
@@ -45,6 +48,9 @@ export default class FormField extends React.Component {
             type={type}
             placeholder={placeholder}
             name={name}
+            autoFocus={autoFocus}
+            autoCapitalize={autoCapitalize}
+            autoCorrect={autoCorrect}
             value={value}
             min
             onFocus={() => this.setFocused(true)}

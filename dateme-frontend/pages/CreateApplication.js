@@ -20,7 +20,7 @@ import Alert, { handleApiError } from "../components/Alert";
 import LoginGate from "../components/LoginGate";
 import Photo from "../components/EditProfile/Photo";
 import Page from "../components/Page";
-import SocialLink from "../components/SocialLink";
+import EditSocialLinks from "../components/EditSocialLinks";
 
 const SECTION_ORDERING = ["introduction", "why"];
 
@@ -71,6 +71,7 @@ class CreateApplication extends React.Component {
       name: "",
       tagline: "",
       photos: [],
+      socialLinks: {},
       sections: {
         introduction: "",
         why: ""
@@ -146,7 +147,7 @@ class CreateApplication extends React.Component {
 
   render() {
     const { profile } = this.props;
-    const { name, photos } = this.state;
+    const { name, photos, socialLinks } = this.state;
 
     return (
       <Page>
@@ -165,15 +166,15 @@ class CreateApplication extends React.Component {
               />
             </Text>
           </div>
+
+          <div className="Section-row">
+            <EditSocialLinks
+              socialLinks={socialLinks}
+              setSocialLinks={socialLinks => this.setState({ socialLinks })}
+            />
+          </div>
         </section>
-        <section className="Section Section--socialLinks">
-          <SocialLink hoverable provider="twitter" />
-          <SocialLink hoverable provider="medium" />
-          <SocialLink hoverable provider="snapchat" />
-          <SocialLink hoverable provider="instagram" />
-          <SocialLink hoverable provider="linkedin" />
-          <SocialLink hoverable provider="dribbble" />
-        </section>
+
         <section className="Section Section--photos">
           <Text type="label">Share some pics</Text>
           <div className="PhotosContainer">

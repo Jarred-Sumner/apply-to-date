@@ -85,14 +85,22 @@ export default ({
   little,
   renderHeader,
   renderFooter,
-  animationDuration = 500
+  overlayColor = "rgba(0, 0, 0, 0.75)",
+  showCloseIcon = true,
+  animationDuration = 300
 }) => {
   return (
     <React.Fragment>
       <Modal
         open={open}
         onClose={onClose}
+        showCloseIcon={showCloseIcon}
         little={little}
+        styles={{
+          overlay: {
+            background: overlayColor
+          }
+        }}
         animationDuration={animationDuration}
       >
         {renderHeader && <ModalHeader>{renderHeader()}</ModalHeader>}
@@ -101,7 +109,6 @@ export default ({
       </Modal>
       <style jsx global>{`
         .react-responsive-modal-overlay {
-          background: rgba(0, 0, 0, 0.75);
           display: flex;
           align-items: flex-start;
           justify-content: center;
@@ -145,7 +152,7 @@ export default ({
         }
         .react-responsive-modal-transition-exit-active {
           opacity: 0.01;
-          transition: opacity 500ms cubic-bezier(0.23, 1, 0.32, 1);
+          transition: opacity 300ms cubic-bezier(0.23, 1, 0.32, 1);
         }
       `}</style>
     </React.Fragment>
