@@ -20,21 +20,11 @@ const SocialLink = ({
       })}
     >
       <div className="SocialIcon--activeIcon">
-        <SocialIcon
-          width={"auto"}
-          height={"auto"}
-          active={true}
-          provider={provider}
-        />
+        <SocialIcon active={true} provider={provider} />
       </div>
 
       <div className="SocialIcon--disabledIcon">
-        <SocialIcon
-          width={"auto"}
-          height={"auto"}
-          active={false}
-          provider={provider}
-        />
+        <SocialIcon active={false} provider={provider} />
       </div>
 
       <style jsx>{`
@@ -46,7 +36,6 @@ const SocialLink = ({
         .SocialIcon--activeIcon,
         .SocialIcon--disabledIcon {
           padding: 20%;
-          width: 100%;
           height: 100%;
         }
       `}</style>
@@ -72,7 +61,7 @@ const SocialLink = ({
         }
 
         .SocialLink svg {
-          margin: auto;
+          display: flex;
         }
 
         .SocialLink--hoverable:hover .SocialIcon--activeIcon {
@@ -119,6 +108,11 @@ const SocialLink = ({
         .SocialLink--hoverable.SocialLink--dribbble:hover,
         .SocialLink--active.SocialLink--dribbble {
           background-color: #f26798;
+        }
+
+        .SocialLink--hoverable.SocialLink--youtube:hover,
+        .SocialLink--active.SocialLink--youtube {
+          background-color: #ce1312;
         }
 
         .SocialLink--hoverable.SocialLink--instagram:hover,

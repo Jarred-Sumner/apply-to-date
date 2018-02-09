@@ -23,6 +23,18 @@ export default class EditSocialLinks extends React.Component {
         />
         <EditableSocialLink
           hoverable
+          provider="facebook"
+          url={socialLinks["facebook"]}
+          setURL={this.setSocialLink("facebook")}
+        />
+        <EditableSocialLink
+          hoverable
+          provider="youtube"
+          url={socialLinks["youtube"]}
+          setURL={this.setSocialLink("youtube")}
+        />
+        <EditableSocialLink
+          hoverable
           provider="medium"
           url={socialLinks["medium"]}
           setURL={this.setSocialLink("medium")}

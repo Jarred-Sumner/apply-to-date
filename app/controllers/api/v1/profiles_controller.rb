@@ -65,6 +65,11 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
 
         profile.update(photos: photos)
       end
+
+      if !update_params[:social_links].nil?
+        social_links = ExternalAuthentication.update_social_links(update_params[:social_links])
+        profile.update(social_links: social_links)
+      end
     end
 
     render_profile(profile)

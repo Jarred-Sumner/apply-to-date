@@ -15,10 +15,24 @@ import SnapchatActive from "../../static/Icon/social/Active/Snapchat.svg";
 import TwitterActive from "../../static/Icon/social/Active/twitter.svg";
 import TwitterDisabled from "../../static/Icon/social/Disabled/twitter.svg";
 
+import YoutubeActive from "../../static/Icon/social/Active/youtube.svg";
+import YoutubeDisabled from "../../static/Icon/social/Disabled/youtube.svg";
+
+import FacebookActive from "../../static/Icon/social/Active/facebook.svg";
+import FacebookDisabled from "../../static/Icon/social/Disabled/facebook.svg";
+
 export default {
   dribbble: {
     active: DribbbleActive,
     disabled: DribbbleDisabled
+  },
+  youtube: {
+    active: YoutubeActive,
+    disabled: YoutubeDisabled
+  },
+  facebook: {
+    active: FacebookActive,
+    disabled: FacebookDisabled
   },
   medium: {
     active: MediumActive,

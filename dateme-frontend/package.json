@@ -17,7 +17,7 @@
             "plugins": [
               {
                 "removeAttrs": {
-                  "attrs": "(data-name)"
+                  "attrs": ["(data-name)", "(width)", "(height)"]
                 }
               },
               {

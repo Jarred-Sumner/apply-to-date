@@ -6,8 +6,11 @@ import SocialIcon from "./SocialIcon";
 import Button from "./Button";
 import SocialLink from "./SocialLink";
 import Alert from "./Alert";
+import _ from "lodash";
 
 const LINKEDIN_REGEX = /((https?:\/\/)?((www|\w\w)\.)?linkedin\.com\/)((([\w]{2,3})?)|([^\/]+\/(([\w|\d-&#?=])+\/?){1,}))$/;
+
+const URL_ONLY_PROVIDERS = ["linkedin", "facebook"];
 
 const LABEL_BY_PROVIDER = {
   snapchat: "Add your Snapchat",
@@ -58,8 +61,22 @@ export default class EditSocialLinkModal extends React.Component {
   constructor(props) {
     super(props);
 
+    const { url = "", provider } = props;
+
+    if (!url) {
+      this.state = {
+        url: ""
+      };
+
+      return;
+    }
+
+    const normalizedUrl = URL_ONLY_PROVIDERS.includes(provider)
+      ? url
+      : _.last(url.split("/"));
+
     this.state = {
-      url: props.url
+      url: normalizedUrl
     };
   }
 
@@ -75,7 +92,7 @@ export default class EditSocialLinkModal extends React.Component {
       setURL(null);
     } else {
       if (!isProfileValid(url, provider)) {
-        if (["facebook", "linkedin"].includes(provider)) {
+        if (URL_ONLY_PROVIDERS.includes(provider)) {
           Alert.error("Please paste the full URL");
         } else if (["twitter", "medium"].includes(provider)) {
           Alert.error("Double check your @username and try again");
@@ -115,9 +132,7 @@ export default class EditSocialLinkModal extends React.Component {
           </div>
           <form onSubmit={this.handleConfirm}>
             <FormField
-              type={
-                ["linkedin", "facebook"].includes(provider) ? "url" : "text"
-              }
+              type={URL_ONLY_PROVIDERS.includes(provider) ? "url" : "text"}
               placeholder={PLACEHOLDER_BY_PROVIDER[provider]}
               name={provider}
               autoFocus

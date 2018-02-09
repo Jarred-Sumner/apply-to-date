@@ -13,7 +13,7 @@ export const getComponent = ({ provider, active }) => {
   }
 };
 
-export default ({ provider, active, width = "18px", height = "18px" }) => {
+export default ({ provider, active, width = "100%", height = "100%" }) => {
   if (provider === "snapchat" && !active) {
     return (
       <img

@@ -106,7 +106,16 @@ class Profile extends React.Component {
   }
 
   handleSaveProfile = async () => {
-    if (this.state.isSavingProfile) {
+    const {
+      isSavingProfile,
+      name,
+      socialLinks,
+      tagline,
+      photos,
+      sections
+    } = this.state;
+
+    if (isSavingProfile) {
       return;
     }
 
@@ -116,13 +125,11 @@ class Profile extends React.Component {
 
     const profile = updateProfile({
       id: this.props.profile.id,
-      ..._.pick(this.state, [
-        "name",
-        "tagline",
-        "photos",
-        "sections",
-        "socialLinks"
-      ])
+      name,
+      tagline,
+      photos,
+      sections,
+      social_links: socialLinks
     })
       .then(response => {
         this.props.updateEntities(response.body);

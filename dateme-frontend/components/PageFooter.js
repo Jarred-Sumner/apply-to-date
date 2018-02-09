@@ -22,7 +22,7 @@ export default ({ center = false }) => {
             </a>
           </Link>
 
-          <Link href="/terms-of-service">
+          <Link href="/privacy-policy">
             <a>
               <Text type="footerlink">Privacy Policy</Text>
             </a>
@@ -56,6 +56,10 @@ export default ({ center = false }) => {
           align-items: center;
           display: flex;
           width: 100%;
+        }
+
+        a {
+          color: #000;
         }
 
         a:hover {
