@@ -1,1 +1,50 @@
+body *{font-family: 'Open Sans', Arial, sans-serif !important}
 
+div, p, a, li, td { -webkit-text-size-adjust:none; }
+
+*{-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing: grayscale;}
+td{word-break: break-word;}
+a{word-break: break-word; text-decoration: none; color: inherit;}
+
+body .ReadMsgBody
+{width: 100%; background-color: #ffffff;}
+body .ExternalClass
+{width: 100%; background-color: #ffffff;}
+body{width: 100%; height: 100%; background-color: #ffffff; margin:0; padding:0; -webkit-font-smoothing: antialiased;}
+html{ background-color:#ffffff; width: 100%;}
+
+body p {padding: 0!important; margin-top: 0!important; margin-right: 0!important; margin-bottom: 0!important; margin-left: 0!important; }
+body img {user-drag: none; -moz-user-select: none; -webkit-user-drag: none;}
+body .hover:hover {opacity:0.85;filter:alpha(opacity=85);}
+
+body .image77 img {width: 77px; height: auto;}
+body .icon18 img {width: 18px; height: auto;}
+body .icon61 img {width: 61px; height: auto;}
+body .logo img {width: 75px; height: auto;}
+body .icon18 img {width: 18px; height: auto;}
+body .circle-image img{width:104px; height:104px;}
+body .full-size img{width:100%; height:auto;}
+
+@media only screen and (max-width: 640px){
+    body body{width:auto!important;}
+    body table[class=full2] {width: 100%!important; clear: both; }
+    body table[class=mobile2] {width: 100%!important; padding-left: 20px; padding-right: 20px; clear: both; }
+    body table[class=fullCenter2] {width: 100%!important; text-align: center!important; clear: both; }
+    body td[class=fullCenter2] {width: 100%!important; text-align: center!important; clear: both; }
+    body td[class=pad15] {width: 100%!important; padding-left: 15px; padding-right: 15px; clear: both;}
+}
+
+@media only screen and (max-width: 479px){
+    body body{width:auto!important;}
+    body table[class=full2] {width: 100%!important; clear: both; }
+    body table[class=mobile2] {width: 100%!important; padding-left: 20px; padding-right: 20px; clear: both; }
+    body table[class=fullCenter2] {width: 100%!important; text-align: center!important; clear: both; }
+    body td[class=fullCenter2] {width: 100%!important; text-align: center!important; clear: both; }
+    body table[class=full] {width: 100%!important; clear: both; }
+    body table[class=mobile] {width: 100%!important; padding-left: 20px; padding-right: 20px; clear: both; }
+    body table[class=fullCenter] {width: 100%!important; text-align: center!important; clear: both; }
+    body td[class=fullCenter] {width: 100%!important; text-align: center!important; clear: both; }
+    body td[class=pad15] {width: 100%!important; padding-left: 15px; padding-right: 15px; clear: both;}
+    body .erase {display: none;}
+    body .break {width: 100%!important; display: table-cell; margin:0; padding-bottom: 10px!important;}
+}
