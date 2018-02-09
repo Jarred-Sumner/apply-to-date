@@ -93,6 +93,17 @@ const Button = ({
           padding: 10px 24px;
         }
 
+        .Button.Button--iconOnly {
+          border-radius: 50%;
+          width: 32px;
+          height: 32px;
+          padding: 0;
+        }
+
+        .Button--iconOnly .IconContainer {
+          margin-right: 0;
+        }
+
         .Button--inline {
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;

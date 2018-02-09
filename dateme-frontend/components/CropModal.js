@@ -1,6 +1,7 @@
 import Modal, { ConfirmAndCloseButtons } from "./Modal";
 import Cropper from "./Cropper";
 import Text from "./Text";
+import { makeAspectCrop } from "react-image-crop";
 
 function getCroppedImg(imageSrc, pixelCrop, fileName) {
   const image = document.createElement("img");
@@ -38,7 +39,7 @@ export default class CropModal extends React.Component {
     this.state = {
       file: props.file,
       crop: {
-        aspectRatio: 1
+        aspect: 1
       }
     };
   }
@@ -87,7 +88,7 @@ export default class CropModal extends React.Component {
               file={file}
               onChange={this.handleCropChange}
               crop={this.state.crop}
-              height="80vh"
+              height="auto"
               cropperRef={cropper => (this.cropper = cropper)}
             />
           )}
@@ -95,7 +96,7 @@ export default class CropModal extends React.Component {
 
         <style jsx>{`
           .container {
-            max-height: 80vh;
+            max-height: 100%;
           }
         `}</style>
       </Modal>

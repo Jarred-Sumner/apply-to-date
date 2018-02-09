@@ -14,6 +14,7 @@ import classNames from "classnames";
 import FormField from "../components/FormField";
 import Icon from "../components/Icon";
 import Alert, { handleApiError } from "../components/Alert";
+import Page from "../components/Page";
 
 const BASE_AUTHORIZE_URL = "http://localhost:3001/auth";
 
@@ -198,8 +199,7 @@ class CreateAccount extends React.Component {
     return (
       <div>
         <Head title="Create account | ApplyToDate" />
-        <Header />
-        <article>
+        <Page>
           <main>
             <Text type="PageTitle">Create account</Text>
 
@@ -263,14 +263,8 @@ class CreateAccount extends React.Component {
               <Button>Create site</Button>
             </form>
           </main>
-        </article>
+        </Page>
         <style jsx>{`
-          article {
-            max-width: 710px;
-            margin-left: auto;
-            margin-right: auto;
-          }
-
           main {
             margin-top: 50px;
             display: grid;

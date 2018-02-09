@@ -137,6 +137,13 @@ export default ({}) => (
       font-family: "Monteserrat", sans-serif;
     }
 
+    html,
+    body,
+    #__next,
+    div[data-reactroot] {
+      height: 100%;
+    }
+
     a {
       text-decoration: none;
     }

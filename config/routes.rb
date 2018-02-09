@@ -5,8 +5,13 @@ Rails.application.routes.draw do
       get 'verifications/:id' => 'external_authentications#show'
       get 'images/sign' => 'images#sign'
       resources :users
-      resources :profiles
+      resources :profiles do
+        post 'apply' => 'applications#create'
+        get 'application' => 'applications#show'
+        post 'verify/:provder' => 'applications#external_authentication'
+      end
       resources :sessions
+      
     end
   end
 

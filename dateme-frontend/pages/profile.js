@@ -15,6 +15,9 @@ import titleCase from "title-case";
 import Waypoint from "react-waypoint";
 import Button from "../components/Button";
 import Thumbnail from "../components/Thumbnail";
+import PageFooter from "../components/PageFooter";
+import Page from "../components/Page";
+import SocialLink from "../components/SocialLink";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -108,14 +111,17 @@ class Profile extends React.Component {
     const { profile } = this.props;
 
     return (
-      <div>
+      <Page
+        headerProps={{
+          showChildren: this.state.isHeaderSticky,
+          children: (
+            <div className="HeaderForm">
+              <InlineApply profileId={this.props.profile.id} />
+            </div>
+          )
+        }}
+      >
         <Head />
-        <Header showChildren={this.state.isHeaderSticky}>
-          <div className="HeaderForm">
-            <InlineApply profileId={this.props.profile.id} />
-          </div>
-        </Header>
-
         <Waypoint
           onEnter={this.disableStickyHeader}
           onLeave={this.enableStickyHeader}
@@ -129,6 +135,17 @@ class Profile extends React.Component {
 
             <div className="Section-row">
               <Text type="Tagline">{profile.tagline}</Text>
+            </div>
+
+            <div className="Section--socialLinks">
+              {_.map(profile.socialLinks, (url, provider) => (
+                <SocialLink
+                  provider={provider}
+                  active
+                  url={url}
+                  key={provider}
+                />
+              ))}
             </div>
 
             <div className="Section-row ApplicationForm">
@@ -147,7 +164,7 @@ class Profile extends React.Component {
           ))}
 
           <Lightbox
-            images={profile.photos.slice(0, 3).map(src => ({ src }))}
+            images={_.slice(profile.photos || [], 0, 3).map(src => ({ src }))}
             isOpen={_.isNumber(this.state.currentPhotoIndex)}
             currentImage={this.state.currentPhotoIndex || 0}
             onClickPrev={this.previousPhoto}
@@ -173,11 +190,21 @@ class Profile extends React.Component {
         <style jsx>{`
           .Section {
             margin-top: 4rem;
-            margin-left: auto;
-            margin-right: auto;
+
             display: grid;
             grid-row-gap: 2rem;
-            max-width: 710px;
+            max-width: 100%;
+          }
+
+          .Section--socialLinks {
+            display: grid;
+            justify-content: center;
+            margin-left: auto;
+            padding-left: 18px;
+            padding-right: 18px;
+            margin-right: auto;
+            grid-auto-flow: column;
+            grid-column-gap: 32px;
           }
 
           .HeaderForm {
@@ -221,7 +248,7 @@ class Profile extends React.Component {
             justify-content: center;
           }
         `}</style>
-      </div>
+      </Page>
     );
   }
 }

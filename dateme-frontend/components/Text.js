@@ -169,6 +169,23 @@ export default ({ type, children, ...otherProps }) => {
         {children}
       </Text>
     );
+  } else if (type === "footerlink") {
+    return (
+      <Text
+        {...otherProps}
+        type={type}
+        size="12px"
+        letterSpacing="1px"
+        lineHeight="22px"
+        textDecoration="none"
+        fontWeight="400"
+        font="sans-serif"
+        color="#000"
+        casing="uppercase"
+      >
+        {children}
+      </Text>
+    );
   } else if (type === "link") {
     return (
       <Text
@@ -178,6 +195,12 @@ export default ({ type, children, ...otherProps }) => {
         lineHeight="26px"
         textDecoration="underline"
       >
+        {children}
+      </Text>
+    );
+  } else if (type === "muted") {
+    return (
+      <Text {...otherProps} size="13px">
         {children}
       </Text>
     );

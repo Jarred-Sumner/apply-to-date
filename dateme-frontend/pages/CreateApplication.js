@@ -10,6 +10,7 @@ import Header from "../components/Header";
 import Text from "../components/Text";
 import EditableText from "../components/EditableText";
 import TextArea from "../components/TextArea";
+import InlineApply from "../components/profile/InlineApply";
 import Lightbox from "react-images";
 import _ from "lodash";
 import titleCase from "title-case";
@@ -21,36 +22,25 @@ import Photo from "../components/EditProfile/Photo";
 import Page from "../components/Page";
 import EditSocialLinks from "../components/EditSocialLinks";
 
-const SECTION_ORDERING = [
-  "introduction",
-  "background",
-  "looking-for",
-  "not-looking-for"
-];
+const SECTION_ORDERING = ["introduction", "why"];
 
 const SECTION_LABELS = {
   introduction: "Introduction",
-  background: "Background",
-  "looking-for": "Looking for",
-  "not-looking-for": "Not looking for"
+  why: "Why I want to go on a date with you"
 };
 
-const SECTION_PLACEHOLDERS = {
-  introduction:
-    "Give a short summary of yourself and what you’re looking for. This should be a longer version of your TLDR.",
-  background:
-    "Give some background about yourself (optional), in more detail than your introduction",
-  "looking-for":
-    "Tell your applicants what you're looking for (e.g. a girl/boyfriend, or just a date for an event)",
-  "not-looking-for":
-    "Tell your applicants what you're NOT looking for (e.g. no hookups)"
+const getSectionPlaceholder = (key, profile) => {
+  return {
+    introduction: `Tell ${
+      profile.name
+    } a little about you. Stand out from the crowd with a good introduction.`,
+    why: `Tell ${profile.name} why you want to go on a date with them.`
+  }[key];
 };
 
 const ROWS_BY_SECTION = {
   introduction: 4,
-  background: 6,
-  "looking-for": 3,
-  "not-looking-for": 3
+  why: 6
 };
 
 const getWidthForText = (text, isPlaceholder) => {
@@ -61,7 +51,7 @@ const getWidthForText = (text, isPlaceholder) => {
   }
 };
 
-class Profile extends React.Component {
+class CreateApplication extends React.Component {
   static async getInitialProps({ query, store, req, isServer }) {
     try {
       const profileResponse = await getProfile(query.id);
@@ -74,35 +64,19 @@ class Profile extends React.Component {
   constructor(props) {
     super(props);
 
-    const profile = props.profile || {};
-    const {
-      name = "",
-      tagline = "",
-      photos = [],
-      sections = {},
-      socialLinks = {}
-    } = profile;
-
     this.state = {
       currentPhotoIndex: null,
       isHeaderSticky: false,
       isSavingProfile: false,
-      name,
-      tagline,
-      photos,
-      sections,
-      socialLinks
+      name: "",
+      tagline: "",
+      photos: [],
+      socialLinks: {},
+      sections: {
+        introduction: "",
+        why: ""
+      }
     };
-  }
-
-  componentWillMount() {
-    if (!this.props.profile) {
-      Router.push("/404");
-    } else if (this.props.profile.userId !== this.props.currentUser.id) {
-      Router.replace(
-        "/" + encodeURIComponent(this.props.profile.id) + "?error=readonly"
-      );
-    }
   }
 
   handleSaveProfile = async () => {
@@ -116,13 +90,7 @@ class Profile extends React.Component {
 
     const profile = updateProfile({
       id: this.props.profile.id,
-      ..._.pick(this.state, [
-        "name",
-        "tagline",
-        "photos",
-        "sections",
-        "socialLinks"
-      ])
+      ..._.pick(this.state, ["name", "tagline", "photos", "sections"])
     })
       .then(response => {
         this.props.updateEntities(response.body);
@@ -153,7 +121,7 @@ class Profile extends React.Component {
         title: SECTION_LABELS[section],
         key: section,
         rows: ROWS_BY_SECTION[section],
-        placeholder: SECTION_PLACEHOLDERS[section],
+        placeholder: getSectionPlaceholder(section, this.props.profile),
         body: sections[section] || ""
       })
     );
@@ -179,37 +147,16 @@ class Profile extends React.Component {
 
   render() {
     const { profile } = this.props;
-    const { name, tagline, photos, socialLinks } = this.state;
+    const { name, photos, socialLinks } = this.state;
 
     return (
-      <Page
-        headerProps={{
-          renderSubheader: () => {
-            return (
-              <div className="Subheader">
-                <div className="Subheader--buttons">
-                  <Button href={`/${profile.id}`} color="green" fill={false}>
-                    View site
-                  </Button>
-                  <Button
-                    componentType="div"
-                    color="green"
-                    pending={this.state.isSavingProfile}
-                    onClick={this.handleSaveProfile}
-                  >
-                    Save
-                  </Button>
-                </div>
-              </div>
-            );
-          }
-        }}
-      >
+      <Page>
         <Head />
+
         <section className="Section Section--center Section--title">
           <div className="Section-row">
             <Text type="ProfilePageTitle">
-              👋 Hi, I'm{" "}
+              👋 Hi {profile.name}, I'm{" "}
               <EditableText
                 value={name}
                 onChange={this.setName}
@@ -218,18 +165,6 @@ class Profile extends React.Component {
                 width={getWidthForText(name || "Your Name", !name)}
               />
             </Text>
-          </div>
-
-          <div className="Section-row Section-row--Tagline">
-            <EditableText
-              placeholder="Enter a short TLDR of yourself"
-              type="Tagline"
-              value={tagline}
-              maxLength={74}
-              onChange={this.setTagline}
-              maxWidth="640px"
-              width={"640px"}
-            />
           </div>
 
           <div className="Section-row">
@@ -259,15 +194,6 @@ class Profile extends React.Component {
               setURL={this.setPhotoAtIndex(2)}
             />
           </div>
-
-          <Lightbox
-            images={profile.photos.slice(0, 3).map(src => ({ src }))}
-            isOpen={_.isNumber(this.state.currentPhotoIndex)}
-            currentImage={this.state.currentPhotoIndex || 0}
-            onClickPrev={this.previousPhoto}
-            onClickNext={this.nextPhoto}
-            onClose={this.closeLightbox}
-          />
         </section>
         <section className="Section Section--bio">
           {this.paragraphs().map(paragraph => {
@@ -287,6 +213,10 @@ class Profile extends React.Component {
               </div>
             );
           })}
+        </section>
+
+        <section className="Section Section--apply">
+          <Button onClick={this.applyForDate}>Submit application</Button>
         </section>
         <style jsx>{`
           .Section {
@@ -322,11 +252,28 @@ class Profile extends React.Component {
             text-align: center;
           }
 
+          .ApplicationForm {
+            width: 40rem;
+            margin-left: auto;
+            margin-right: auto;
+          }
+
           .PhotosContainer {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             grid-template-rows: 1fr;
             grid-column-gap: 28px;
+          }
+
+          .Section--socialLinks {
+            display: grid;
+            justify-content: center;
+            margin-left: auto;
+            padding-left: 18px;
+            padding-right: 18px;
+            margin-right: auto;
+            grid-auto-flow: column;
+            grid-column-gap: 32px;
           }
 
           .Subheader {
@@ -351,7 +298,7 @@ class Profile extends React.Component {
   }
 }
 
-const ProfileWithStore = withRedux(
+const CreateApplicationWithStore = withRedux(
   initStore,
   (state, props) => {
     return {
@@ -359,10 +306,6 @@ const ProfileWithStore = withRedux(
     };
   },
   dispatch => bindActionCreators({ updateEntities }, dispatch)
-)(
-  LoginGate(Profile, {
-    loginRequired: true
-  })
-);
+)(LoginGate(CreateApplication));
 
-export default ProfileWithStore;
+export default CreateApplicationWithStore;

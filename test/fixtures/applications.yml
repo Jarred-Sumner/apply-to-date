@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  applicant: one
+  profile: 
+  status: 1
+  social_links: 
+  sections: 
+  name: MyString
+  email: MyString
+  photos: 
+
+two:
+  applicant: two
+  profile: 
+  status: 1
+  social_links: 
+  sections: 
+  name: MyString
+  email: MyString
+  photos: 

@@ -17,4 +17,9 @@ class Api::V1::ApplicationController < ActionController::Base
   def render_forbidden
     render_error(message: "That resource is unavailable.", status: 403)
   end
+
+  def render_validation_error(e)
+    render_error(message: e.record.errors.full_messages)
+  end
+
 end

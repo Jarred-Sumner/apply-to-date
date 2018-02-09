@@ -25,7 +25,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
       render json: UserSerializer.new(@user, {include: [:profile]}).serializable_hash
     end
   rescue ActiveRecord::RecordInvalid => e
-    render_error(message: e.record.errors.full_messages)
+    render_validation_error(e)
   end
 
   def me

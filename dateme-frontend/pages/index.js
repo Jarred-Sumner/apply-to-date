@@ -10,6 +10,7 @@ import { updateEntities, setCurrentUser, initStore } from "../redux/store";
 import { getFeaturedProfiles, getCurrentUser } from "../api";
 import { bindActionCreators } from "redux";
 import Router from "next/router";
+import PageFooter from "../components/PageFooter";
 
 const FeaturedProfile = ({ profile }) => {
   return (
@@ -206,6 +207,8 @@ class Homepage extends React.Component {
             </div>
           </footer>
         </article>
+        <PageFooter center />
+
         <style jsx>{`
           article {
             max-width: 710px;
