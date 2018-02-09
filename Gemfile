@@ -30,6 +30,10 @@ gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
 gem 'fast_jsonapi'
 gem 'rack-cors', :require => 'rack/cors'
+gem 'premailer-rails'
+gem "letter_opener", :group => :development
+
+
 
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
