@@ -21,6 +21,7 @@ const Text = ({
     "Text--semiBold": weight === "semiBold",
     "Text--regular": weight === "regular",
     "Text--sans-serif": font === "sans-serif",
+    "Text--lucida": font === "lucida",
     "Text--serif": font === "serif",
     "Text--paragraph": type === "paragraph",
     "Text--title": type === "title",
@@ -70,7 +71,11 @@ const Text = ({
         }
 
         .Text--sans-serif {
-          font-family: Lucida Grande, Open Sans, sans-serif;
+          font-family: Open Sans, sans-serif;
+        }
+
+        .Text--lucida {
+          font-family: Lucida Grande, sans-serif;
         }
 
         .Text--sans-serif.Text--extraBold {
@@ -152,7 +157,7 @@ export default ({ type, children, ...otherProps }) => {
     );
   } else if (type === "title") {
     return (
-      <Text {...otherProps} font="sans-serif" size="30px" weight="extraBold">
+      <Text {...otherProps} font="lucida" size="30px" weight="extraBold">
         {children}
       </Text>
     );

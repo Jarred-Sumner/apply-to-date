@@ -14,7 +14,7 @@ import classNames from "classnames";
 import Icon from "../components/Icon";
 import Page from "../components/Page";
 
-const BASE_AUTHORIZE_URL = "http://localhost:3001/auth";
+import { BASE_AUTHORIZE_URL } from "../components/SocialLogin";
 
 class VerifyAccount extends React.Component {
   render() {

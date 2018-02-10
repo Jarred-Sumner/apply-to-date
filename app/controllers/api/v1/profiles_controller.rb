@@ -8,9 +8,16 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
   end
 
   def show
-    profile = Profile.find(params[:id])
+    if current_user.try(:username) == params[:id]
+      profile = Profile.includes(:external_authentications).find(params[:id])
 
-    render_profile(profile)
+      render json: PrivateProfileSerializer.new(profile, {
+        include: [:external_authentications]
+      }).serializable_hash
+    else
+      profile = Profile.find(params[:id])
+      render_profile(profile)
+    end
   end
 
   def update

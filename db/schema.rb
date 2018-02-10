@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180208062624) do
+ActiveRecord::Schema.define(version: 20180209203705) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,6 +52,8 @@ ActiveRecord::Schema.define(version: 20180208062624) do
     t.datetime "access_token_expiration"
     t.string "location"
     t.uuid "application_id"
+    t.string "applicant_email"
+    t.string "photos", default: [], array: true
     t.index ["application_id"], name: "index_external_authentications_on_application_id"
     t.index ["provider"], name: "index_external_authentications_on_provider"
     t.index ["uid"], name: "index_external_authentications_on_uid"
@@ -95,10 +97,25 @@ ActiveRecord::Schema.define(version: 20180208062624) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  create_table "verified_networks", force: :cascade do |t|
+    t.uuid "external_authentication_id"
+    t.string "profile_id"
+    t.uuid "application_id"
+    t.string "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["application_id"], name: "index_verified_networks_on_application_id"
+    t.index ["external_authentication_id"], name: "index_verified_networks_on_external_authentication_id"
+    t.index ["profile_id"], name: "index_verified_networks_on_profile_id"
+  end
+
   add_foreign_key "applications", "profiles"
   add_foreign_key "applications", "users"
   add_foreign_key "applications", "users", column: "applicant_id"
   add_foreign_key "external_authentications", "applications"
   add_foreign_key "external_authentications", "users"
   add_foreign_key "profiles", "users"
+  add_foreign_key "verified_networks", "applications"
+  add_foreign_key "verified_networks", "external_authentications"
+  add_foreign_key "verified_networks", "profiles"
 end

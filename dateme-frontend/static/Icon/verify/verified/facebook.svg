@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="8px" height="15px" viewBox="0 0 8 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>facebook</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Edit-Profile-Add-Social-(Desktop)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-548.000000, -534.000000)">
+        <g id="Group-13" transform="translate(74.000000, 417.000000)" fill="#FFFFFF">
+            <g id="Group-10" transform="translate(224.000000, 103.000000)">
+                <g id="Rounded-Button" transform="translate(230.000000, 1.000000)">
+                    <path d="M24.9866933,28 L21.6616766,28 L21.6616766,20.9168519 L20,20.9168519 L20,18.1873055 L21.6616766,18.1873055 L21.6616766,16.5499111 C21.6616766,14.3247554 22.5998004,13 25.2644711,13 L27.4841983,13 L27.4841983,15.7295465 L26.0969727,15.7295465 C25.0598802,15.7295465 24.9908516,16.1113828 24.9908516,16.8225322 L24.9866933,18.1873055 L27.5,18.1873055 L27.2055888,20.9168519 L24.9866933,20.9168519 L24.9866933,28 Z" id="facebook"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

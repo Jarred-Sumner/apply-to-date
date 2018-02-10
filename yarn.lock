@@ -172,6 +172,10 @@ react-dropzone@^4.0.0, react-dropzone@^4.2.7:
     attr-accept "^1.0.3"
     prop-types "^15.5.7"
 
+react-instagram-login@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-instagram-login/-/react-instagram-login-1.2.0.tgz#fafaebae5eb81da36e1b3338a869aa9400d31d72"
+
 react-s3-uploader@4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/react-s3-uploader/-/react-s3-uploader-4.5.0.tgz#37316d5ef6b01a3921c6d463f2db2f4062e14b7e"

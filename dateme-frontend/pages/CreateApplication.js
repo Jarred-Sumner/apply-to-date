@@ -4,7 +4,14 @@ import Nav from "../components/nav";
 import Router from "next/router";
 import withRedux from "next-redux-wrapper";
 import { updateEntities, setCurrentUser, initStore } from "../redux/store";
-import { getProfile, getCurrentUser, updateProfile } from "../api";
+import {
+  getProfile,
+  getCurrentUser,
+  updateProfile,
+  createApplication,
+  saveApplication,
+  getSavedApplication
+} from "../api";
 import { bindActionCreators } from "redux";
 import Header from "../components/Header";
 import Text from "../components/Text";
@@ -21,6 +28,7 @@ import LoginGate from "../components/LoginGate";
 import Photo from "../components/EditProfile/Photo";
 import Page from "../components/Page";
 import EditSocialLinks from "../components/EditSocialLinks";
+import VerifyNetworksSection from "../components/VerifyNetworksSection";
 
 const SECTION_ORDERING = ["introduction", "why"];
 
@@ -56,6 +64,13 @@ class CreateApplication extends React.Component {
     try {
       const profileResponse = await getProfile(query.id);
       store.dispatch(updateEntities(profileResponse.body));
+
+      if (query.applicationId) {
+        const applicationResponse = await getSavedApplication(
+          query.applicationId
+        );
+        store.dispatch(updateEntities(applicationResponse.body));
+      }
     } catch (exception) {
       console.error(exception);
     }
@@ -64,23 +79,43 @@ class CreateApplication extends React.Component {
   constructor(props) {
     super(props);
 
+    const { application } = props;
+
     this.state = {
       currentPhotoIndex: null,
       isHeaderSticky: false,
       isSavingProfile: false,
-      name: "",
-      tagline: "",
-      photos: [],
-      socialLinks: {},
-      sections: {
+      name: _.get(application, "name", ""),
+      tagline: _.get(application, "tagline", ""),
+      photos: _.get(application, "photos", []),
+      email: _.get(application, "email", props.url.query.email || ""),
+      socialLinks: _.get(application, "socialLinks", {}),
+      externalAuthentications: _.get(
+        application,
+        "externalAuthentications",
+        []
+      ),
+      sections: _.get(application, "sections", {
         introduction: "",
         why: ""
-      }
+      })
     };
   }
 
-  handleSaveProfile = async () => {
-    if (this.state.isSavingProfile) {
+  saveApplication = async () => {
+    const {
+      isSavingProfile,
+      email,
+      name,
+      photos,
+      tagline,
+      socialLinks,
+      externalAuthentications,
+      sections
+    } = this.state;
+    const { id: profileId } = this.props.profile;
+
+    if (isSavingProfile) {
       return;
     }
 
@@ -88,13 +123,80 @@ class CreateApplication extends React.Component {
       isSavingProfile: true
     });
 
-    const profile = updateProfile({
-      id: this.props.profile.id,
-      ..._.pick(this.state, ["name", "tagline", "photos", "sections"])
+    return saveApplication({
+      profileId,
+      name,
+      tagline,
+      email,
+      socialLinks,
+      sections,
+      externalAuthentications: externalAuthentications.map(({ id }) => id),
+      photos
     })
       .then(response => {
         this.props.updateEntities(response.body);
-        Alert.success("Updated your site successfully!");
+        const id = _.get(response, "body.data.id");
+        if (id) {
+          Router.replace(
+            this.props.url.asPath,
+            {
+              query: {
+                ...this.props.url.query,
+                applicationId: id
+              }
+            },
+            {
+              shallow: true
+            }
+          );
+        }
+
+        return response.body;
+      })
+      .catch(error => {
+        handleApiError(error);
+        return null;
+      })
+      .finally(response => {
+        this.setState({ isSavingProfile: false });
+        return response;
+      });
+  };
+
+  submitApplication = async () => {
+    const {
+      isSavingProfile,
+      email,
+      name,
+      photos,
+      tagline,
+      socialLinks,
+      externalAuthentications,
+      sections
+    } = this.state;
+    const { id: profileId } = this.props.profile;
+
+    if (isSavingProfile) {
+      return;
+    }
+
+    this.setState({
+      isSavingProfile: true
+    });
+
+    return submitApplication({
+      profileId,
+      name,
+      tagline,
+      email,
+      socialLinks,
+      sections,
+      externalAuthentications: externalAuthentications.map(({ id }) => id),
+      photos
+    })
+      .then(response => {
+        this.props.updateEntities(response.body);
+        Alert.success("Applied!");
       })
       .catch(error => {
         handleApiError(error);
@@ -144,10 +246,18 @@ class CreateApplication extends React.Component {
 
     this.setState({ photos: photos });
   };
+  setExternalAuthentications = externalAuthentications =>
+    this.setState({ externalAuthentications }, () => this.saveApplication());
 
   render() {
     const { profile } = this.props;
-    const { name, photos, socialLinks } = this.state;
+    const {
+      name,
+      photos,
+      socialLinks,
+      email,
+      externalAuthentications
+    } = this.state;
 
     return (
       <Page>
@@ -166,6 +276,13 @@ class CreateApplication extends React.Component {
               />
             </Text>
           </div>
+
+          <VerifyNetworksSection
+            externalAuthentications={externalAuthentications}
+            email={email}
+            save={this.saveApplication}
+            setExternalAuthentications={this.setExternalAuthentications}
+          />
 
           <div className="Section-row">
             <EditSocialLinks
@@ -301,8 +418,11 @@ class CreateApplication extends React.Component {
 const CreateApplicationWithStore = withRedux(
   initStore,
   (state, props) => {
+    const { id, applicationId } = _.get(props, "url.query", {});
+
     return {
-      profile: state.profile[props.url.query.id]
+      profile: state.profile[id],
+      application: state.application[applicationId]
     };
   },
   dispatch => bindActionCreators({ updateEntities }, dispatch)

@@ -49,3 +49,70 @@ export const createAccount = details => {
     ...details
   });
 };
+
+export const verifyAccount = ({
+  provider,
+  token,
+  expiration,
+  application_email,
+  profile_id
+}) => {
+  return post(`/verifications/${provider}`, {
+    application_email,
+    access_token: token,
+    profile_id,
+    expiration
+  });
+};
+
+export const saveApplication = ({
+  email,
+  name,
+  photos,
+  socialLinks,
+  tagline,
+  externalAuthentications,
+  sections,
+  profileId
+}) => {
+  return post(`/profiles/${profileId}/apply`, {
+    application: {
+      email,
+      name,
+      photos,
+      tagline,
+      external_authentications: externalAuthentications,
+      sections,
+      social_links: socialLinks,
+      status: "pending"
+    }
+  });
+};
+
+export const getSavedApplication = id => {
+  return get(`/applications/${id}`);
+};
+
+export const submitApplication = ({
+  email,
+  name,
+  photos,
+  socialLinks,
+  tagline,
+  externalAuthentications,
+  sections,
+  profileId
+}) => {
+  return post(`/profiles/${profileId}/apply`, {
+    application: {
+      email,
+      name,
+      photos,
+      tagline,
+      external_authentications: externalAuthentications,
+      sections,
+      social_links: socialLinks,
+      status: "submitted"
+    }
+  });
+};

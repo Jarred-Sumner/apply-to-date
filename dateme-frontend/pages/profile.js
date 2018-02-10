@@ -138,14 +138,18 @@ class Profile extends React.Component {
             </div>
 
             <div className="Section--socialLinks">
-              {_.map(profile.socialLinks, (url, provider) => (
-                <SocialLink
-                  provider={provider}
-                  active
-                  url={url}
-                  key={provider}
-                />
-              ))}
+              {_.map(
+                profile.socialLinks,
+                (url, provider) =>
+                  url && (
+                    <SocialLink
+                      provider={provider}
+                      url={url}
+                      key={provider}
+                      active
+                    />
+                  )
+              )}
             </div>
 
             <div className="Section-row ApplicationForm">

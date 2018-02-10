@@ -154,6 +154,12 @@ export default ({
           opacity: 0.01;
           transition: opacity 300ms cubic-bezier(0.23, 1, 0.32, 1);
         }
+
+        @media (max-width: 500px) {
+          .react-responsive-modal-overlay-little {
+            align-items: flex-start;
+          }
+        }
       `}</style>
     </React.Fragment>
   );

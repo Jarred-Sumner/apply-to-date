@@ -31,7 +31,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
   def me
     if logged_in?
       render json: UserSerializer.new(current_user, {
-        include: [:profile]
+        include: [:profile, :external_authentications]
       }).serializable_hash
     else
       render json: { data: nil }

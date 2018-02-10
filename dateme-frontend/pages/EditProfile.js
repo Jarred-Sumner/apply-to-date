@@ -20,6 +20,7 @@ import LoginGate from "../components/LoginGate";
 import Photo from "../components/EditProfile/Photo";
 import Page from "../components/Page";
 import EditSocialLinks from "../components/EditSocialLinks";
+import VerifyButton from "../components/VerifyButton";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -62,15 +63,6 @@ const getWidthForText = (text, isPlaceholder) => {
 };
 
 class Profile extends React.Component {
-  static async getInitialProps({ query, store, req, isServer }) {
-    try {
-      const profileResponse = await getProfile(query.id);
-      store.dispatch(updateEntities(profileResponse.body));
-    } catch (exception) {
-      console.error(exception);
-    }
-  }
-
   constructor(props) {
     super(props);
 
@@ -93,16 +85,6 @@ class Profile extends React.Component {
       sections,
       socialLinks
     };
-  }
-
-  componentWillMount() {
-    if (!this.props.profile) {
-      Router.push("/404");
-    } else if (this.props.profile.userId !== this.props.currentUser.id) {
-      Router.replace(
-        "/" + encodeURIComponent(this.props.profile.id) + "?error=readonly"
-      );
-    }
   }
 
   handleSaveProfile = async () => {
@@ -187,6 +169,9 @@ class Profile extends React.Component {
   render() {
     const { profile } = this.props;
     const { name, tagline, photos, socialLinks } = this.state;
+    if (!profile) {
+      return null;
+    }
 
     return (
       <Page
@@ -238,6 +223,8 @@ class Profile extends React.Component {
               width={"640px"}
             />
           </div>
+
+          <div className="Section-row Section-row--verify" />
 
           <div className="Section-row">
             <EditSocialLinks
@@ -361,11 +348,19 @@ class Profile extends React.Component {
 const ProfileWithStore = withRedux(
   initStore,
   (state, props) => {
-    return {
-      profile: state.profile[props.url.query.id]
-    };
+    const currentUser = state.user[state.currentUserId];
+
+    if (currentUser) {
+      return {
+        profile: currentUser.profile
+      };
+    } else {
+      return {
+        profile: null
+      };
+    }
   },
-  dispatch => bindActionCreators({ updateEntities }, dispatch)
+  dispatch => bindActionCreators({ updateEntities, setCurrentUser }, dispatch)
 )(
   LoginGate(Profile, {
     loginRequired: true

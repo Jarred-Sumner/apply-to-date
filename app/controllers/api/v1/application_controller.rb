@@ -22,4 +22,8 @@ class Api::V1::ApplicationController < ActionController::Base
     render_error(message: e.record.errors.full_messages)
   end
 
+  def render_generic_error(e)
+    Rails.logger.error(e)
+    render_error(message: "Something went wrong. Please try again.")
+  end
 end

@@ -3,12 +3,14 @@ Rails.application.routes.draw do
     namespace :v1 do
       get 'users/me' => 'users#me'
       get 'verifications/:id' => 'external_authentications#show'
+      post 'verifications/:provider' => 'external_authentications#claim'
+
+      get 'applications/:id' => 'applications#show_applicant'
+
       get 'images/sign' => 'images#sign'
       resources :users
       resources :profiles do
         post 'apply' => 'applications#create'
-        get 'application' => 'applications#show'
-        post 'verify/:provder' => 'applications#external_authentication'
       end
       resources :sessions
       

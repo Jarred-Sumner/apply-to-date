@@ -15,7 +15,7 @@ const EditableThumbnail = ({ url, onRemove }) => {
       <Thumbnail isLast url={url} />
 
       <div className="Button" onClick={onRemove}>
-        <Button color="white" icon={<Icon type="x" size="05x" />} />
+        <Button color="white" icon={<Icon type="x" size="12px" />} />
       </div>
 
       <style jsx>{`

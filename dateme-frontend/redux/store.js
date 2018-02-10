@@ -68,6 +68,7 @@ export const defaultState = {
   profile: {},
   user: {},
   external_authentication: {},
+  application: {},
   currentUserId: null
 };
 
@@ -90,7 +91,8 @@ export const initStore = (initialState = defaultState) => {
       currentUserId: currentUser,
       profile: createEntitiyReducer("profile"),
       user: createEntitiyReducer("user"),
-      external_authentication: createEntitiyReducer("external_authentication")
+      external_authentication: createEntitiyReducer("external_authentication"),
+      application: createEntitiyReducer("application")
     }),
     initialState,
     composeWithDevTools(applyMiddleware(thunkMiddleware))

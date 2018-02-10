@@ -1,4 +1,7 @@
 class Application < ApplicationRecord
+  has_many :verified_networks
+  has_many :external_authentications, through: :verified_networks
+
   enum status: {
     pending: 0,
     submitted: 1,
@@ -12,9 +15,11 @@ class Application < ApplicationRecord
   belongs_to :profile
 
   validates :email, presence: true, uniqueness: { scope: [:user_id] }
-  validates :profile, presence: true
-  validates :name, presence: true
-  validates :social_links, presence: true
+  validates :profile, presence: true, :unless => :pending?
+  validates :name, presence: true, :unless => :pending?
+  validates :social_links, presence: true, :unless => :pending?
+
+
 
   before_validation on: :create do
     self.user ||= profile.user
