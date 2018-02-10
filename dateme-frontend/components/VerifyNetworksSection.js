@@ -3,8 +3,18 @@ import { verifyAccount } from "../api";
 import _ from "lodash";
 import { BASE_AUTHORIZE_URL } from "./SocialLogin";
 import Router from "next/router";
+import EditPhoneModal from "./EditPhoneModal";
 
 export default class VerifyNetworksSection extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isEditingPhone: false
+    };
+  }
+
+  stopEditingPhone = () => this.setState({ isEditingPhone: false });
   handleSocialLogin = provider => {
     return async login => {
       verifyAccount({
@@ -80,6 +90,13 @@ export default class VerifyNetworksSection extends React.Component {
     );
   };
 
+  updateExternalAccount = id => {
+    this.setExternalAuthentications([
+      ...this.props.externalAuthentications,
+      id
+    ]);
+  };
+
   render() {
     const facebook = this.getFacebook();
     const instagram = this.getInstagram();
@@ -89,7 +106,20 @@ export default class VerifyNetworksSection extends React.Component {
     return (
       <section>
         {whitelist.includes("phone") && (
-          <VerifyButton username="+19252008843" provider="phone" />
+          <React.Fragment>
+            <VerifyButton
+              triggerLogin={() => this.setState({ isEditingPhone: true })}
+              onLogout={() => this.setState({ isEditingPhone: true })}
+              username="+19252008843"
+              provider="phone"
+            />
+            <EditPhoneModal
+              open={this.state.isEditingPhone}
+              onRemove={this.removeExternalAccount("phone")}
+              onUpdate={this.updateExternalAccount}
+              onClose={this.stopEditingPhone}
+            />
+          </React.Fragment>
         )}
         {whitelist.includes("facebook") && (
           <VerifyButton

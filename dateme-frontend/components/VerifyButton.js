@@ -11,7 +11,7 @@ import Icon from "./Icon";
 import classNames from "classnames";
 import Link from "next/link";
 
-const ICON_BY_PROVIDER = {
+export const ICON_BY_PROVIDER = {
   facebook: {
     verified: VerifiedFacebookIcon,
     pending: PendingFacebookIcon
