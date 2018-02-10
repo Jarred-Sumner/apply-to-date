@@ -38,6 +38,7 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
       @application.social_links = ExternalAuthentication.update_social_links(social_links)
     end
 
+
     render json: ApplicantApplicationSerializer.new(@application, {
       include: [:external_authentications]
     }).serializable_hash

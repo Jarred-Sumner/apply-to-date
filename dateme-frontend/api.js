@@ -93,6 +93,10 @@ export const getSavedApplication = id => {
   return get(`/applications/${id}`);
 };
 
+export const getVerifications = () => {
+  return get(`/verifications`);
+};
+
 export const submitApplication = ({
   email,
   name,

@@ -1,4 +1,10 @@
 class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationController
+  before_action :require_login, only: :index
+
+  def index
+    render json: ExternalAuthenticationSerializer.new(current_user.external_authentications).serializable_hash
+  end
+
   def show
     auth = ExternalAuthentication.find_by!(user: nil, id: params[:id])
     render_external_authentication(auth)
@@ -34,6 +40,7 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
     if auth_hash.present? && auth_hash.uid.present? && auth_hash.provider.present?
       ActiveRecord::Base.transaction do
         auth = ExternalAuthentication.update_from_omniauth(auth_hash)
+
         if auth_params[:application_id].present?
           application = Application.find_by(id: auth_params[:application_id], status: Application.statuses[:pending])
 
@@ -57,6 +64,10 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
           VerifiedNetwork.create!(
             external_authentication_id: auth.id,
             profile_id: auth_params[:profile_id]
+          )
+
+          current_user.profile.update(
+            recommended_contact_methods: current_user.profile.external_authentications.pluck(:provider).uniq
           )
         end
 

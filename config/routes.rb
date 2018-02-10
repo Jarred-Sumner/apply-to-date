@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       get 'users/me' => 'users#me'
+      get 'verifications' => 'external_authentications#index'
       get 'verifications/:id' => 'external_authentications#show'
       post 'verifications/:provider' => 'external_authentications#claim'
 

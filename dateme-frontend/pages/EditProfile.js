@@ -4,7 +4,12 @@ import Nav from "../components/nav";
 import Router from "next/router";
 import withRedux from "next-redux-wrapper";
 import { updateEntities, setCurrentUser, initStore } from "../redux/store";
-import { getProfile, getCurrentUser, updateProfile } from "../api";
+import {
+  getProfile,
+  getCurrentUser,
+  updateProfile,
+  getVerifications
+} from "../api";
 import { bindActionCreators } from "redux";
 import Header from "../components/Header";
 import Text from "../components/Text";
@@ -20,7 +25,7 @@ import LoginGate from "../components/LoginGate";
 import Photo from "../components/EditProfile/Photo";
 import Page from "../components/Page";
 import EditSocialLinks from "../components/EditSocialLinks";
-import VerifyButton from "../components/VerifyButton";
+import VerifyNetworksSection from "../components/VerifyNetworksSection";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -62,6 +67,47 @@ const getWidthForText = (text, isPlaceholder) => {
   }
 };
 
+class VerifySocialNetworksContainer extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      externalAuthentications: []
+    };
+  }
+
+  async componentDidMount() {
+    const response = await getVerifications();
+
+    this.setState({
+      externalAuthentications: response.body.data
+    });
+  }
+
+  componentWillReceiveProps(props) {
+    if (props.externalAuthentications !== this.props.externalAuthentications) {
+      this.setState({
+        externalAuthentications: props.externalAuthentications
+      });
+    }
+  }
+
+  setExternalAuthentications = externalAuthentications => {
+    this.props.setExternalAuthentications(externalAuthentications);
+  };
+
+  render() {
+    return (
+      <VerifyNetworksSection
+        externalAuthentications={this.state.externalAuthentications}
+        save={() => this.props.onSave(false)}
+        whitelist={["twitter", "facebook", "instagram", "phone"]}
+        setExternalAuthentications={this.setExternalAuthentications}
+      />
+    );
+  }
+}
+
 class Profile extends React.Component {
   constructor(props) {
     super(props);
@@ -83,18 +129,20 @@ class Profile extends React.Component {
       tagline,
       photos,
       sections,
-      socialLinks
+      socialLinks,
+      externalAuthentications: null
     };
   }
 
-  handleSaveProfile = async () => {
+  handleSaveProfile = async (showAlert = true) => {
     const {
       isSavingProfile,
       name,
       socialLinks,
       tagline,
       photos,
-      sections
+      sections,
+      externalAuthentications
     } = this.state;
 
     if (isSavingProfile) {
@@ -105,23 +153,35 @@ class Profile extends React.Component {
       isSavingProfile: true
     });
 
-    const profile = updateProfile({
+    return updateProfile({
       id: this.props.profile.id,
       name,
       tagline,
       photos,
       sections,
+      external_authentications:
+        externalAuthentications === null
+          ? undefined
+          : externalAuthentications.map(({ id }) => id),
       social_links: socialLinks
     })
       .then(response => {
         this.props.updateEntities(response.body);
-        Alert.success("Updated your site successfully!");
+        if (showAlert) {
+          Alert.success("Updated your site successfully!");
+        }
+
+        return response.body;
       })
       .catch(error => {
         handleApiError(error);
+
+        return false;
       })
-      .finally(() => {
+      .finally(response => {
         this.setState({ isSavingProfile: false });
+
+        return response;
       });
   };
 
@@ -157,6 +217,8 @@ class Profile extends React.Component {
     });
   };
 
+  setExternalAuthentications = externalAuthentications =>
+    this.setState({ externalAuthentications });
   setName = evt => this.setState({ name: evt.target.value });
   setTagline = evt => this.setState({ tagline: evt.target.value });
   setPhotoAtIndex = index => url => {
@@ -168,7 +230,14 @@ class Profile extends React.Component {
 
   render() {
     const { profile } = this.props;
-    const { name, tagline, photos, socialLinks } = this.state;
+    const {
+      name,
+      tagline,
+      photos,
+      socialLinks,
+      externalAuthentications
+    } = this.state;
+
     if (!profile) {
       return null;
     }
@@ -224,7 +293,11 @@ class Profile extends React.Component {
             />
           </div>
 
-          <div className="Section-row Section-row--verify" />
+          <VerifySocialNetworksContainer
+            externalAuthentications={externalAuthentications}
+            setExternalAuthentications={this.setExternalAuthentications}
+            onSave={this.handleSaveProfile}
+          />
 
           <div className="Section-row">
             <EditSocialLinks

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Head from "../components/head";
 import Nav from "../components/nav";
-import Router from "next/router";
+import { Router } from "../routes";
 import withRedux from "next-redux-wrapper";
 import { updateEntities, setCurrentUser, initStore } from "../redux/store";
 import {
@@ -29,6 +29,7 @@ import Photo from "../components/EditProfile/Photo";
 import Page from "../components/Page";
 import EditSocialLinks from "../components/EditSocialLinks";
 import VerifyNetworksSection from "../components/VerifyNetworksSection";
+import qs from "qs";
 
 const SECTION_ORDERING = ["introduction", "why"];
 
@@ -133,20 +134,20 @@ class CreateApplication extends React.Component {
       externalAuthentications: externalAuthentications.map(({ id }) => id),
       photos
     })
-      .then(response => {
+      .then(async response => {
         this.props.updateEntities(response.body);
         const id = _.get(response, "body.data.id");
         if (id) {
-          Router.replace(
-            this.props.url.asPath,
-            {
-              query: {
-                ...this.props.url.query,
-                applicationId: id
-              }
-            },
-            {
-              shallow: true
+          const url =
+            this.props.url.asPath.split("?")[0] +
+            `?${qs.stringify({
+              ...this.props.url.query,
+              applicationId: id
+            })}`;
+          return Router.replaceRoute(url, url, { shallow: false }).then(
+            result => {
+              console.log(result);
+              return response.body;
             }
           );
         }
@@ -154,6 +155,7 @@ class CreateApplication extends React.Component {
         return response.body;
       })
       .catch(error => {
+        console.error(error);
         handleApiError(error);
         return null;
       })
@@ -247,7 +249,7 @@ class CreateApplication extends React.Component {
     this.setState({ photos: photos });
   };
   setExternalAuthentications = externalAuthentications =>
-    this.setState({ externalAuthentications }, () => this.saveApplication());
+    this.setState({ externalAuthentications });
 
   render() {
     const { profile } = this.props;
@@ -279,14 +281,15 @@ class CreateApplication extends React.Component {
 
           <VerifyNetworksSection
             externalAuthentications={externalAuthentications}
-            email={email}
             save={this.saveApplication}
+            whitelist={profile.recommendedContactMethods}
             setExternalAuthentications={this.setExternalAuthentications}
           />
 
           <div className="Section-row">
             <EditSocialLinks
               socialLinks={socialLinks}
+              blacklist={profile.recommendedContactMethods}
               setSocialLinks={socialLinks => this.setState({ socialLinks })}
             />
           </div>

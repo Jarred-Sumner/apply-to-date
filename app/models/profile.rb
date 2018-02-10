@@ -17,6 +17,10 @@ class Profile < ApplicationRecord
     end.to_h
   end
 
+  def build_recommended_contact_methods
+    external_authentications.pluck(:provider)
+  end
+
   before_validation on: :create do
     self.sections = Profile.build_default_sections
     self.social_links = {}

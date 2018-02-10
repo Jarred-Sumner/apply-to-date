@@ -11,7 +11,7 @@ export default class VerifyNetworksSection extends React.Component {
         provider: provider,
         token: login.token.accessToken,
         expiration: login.token.expiresAt,
-        application_email: this.props.email
+        application_email: this.props.email || null
       }).then(response => {
         const auths = [
           ...this.props.externalAuthentications,
@@ -84,28 +84,37 @@ export default class VerifyNetworksSection extends React.Component {
     const facebook = this.getFacebook();
     const instagram = this.getInstagram();
     const twitter = this.getTwitter();
+    const { whitelist } = this.props;
 
     return (
       <section>
-        <VerifyButton username="+19252008843" provider="phone" />
-        <VerifyButton
-          provider="facebook"
-          username={_.get(facebook, "name")}
-          triggerLogin={() => this.onRedirectLogin("facebook")}
-          onLogout={this.removeExternalAccount("facebook")}
-        />
-        <VerifyButton
-          provider="instagram"
-          username={_.get(instagram, "username")}
-          triggerLogin={() => this.onRedirectLogin("instagram")}
-          onLogout={this.removeExternalAccount("instagram")}
-        />
-        <VerifyButton
-          provider="twitter"
-          username={_.get(twitter, "username")}
-          triggerLogin={() => this.onRedirectLogin("twitter")}
-          onLogout={this.removeExternalAccount("twitter")}
-        />
+        {whitelist.includes("phone") && (
+          <VerifyButton username="+19252008843" provider="phone" />
+        )}
+        {whitelist.includes("facebook") && (
+          <VerifyButton
+            provider="facebook"
+            username={_.get(facebook, "name")}
+            triggerLogin={() => this.onRedirectLogin("facebook")}
+            onLogout={this.removeExternalAccount("facebook")}
+          />
+        )}
+        {whitelist.includes("instagram") && (
+          <VerifyButton
+            provider="instagram"
+            username={_.get(instagram, "username")}
+            triggerLogin={() => this.onRedirectLogin("instagram")}
+            onLogout={this.removeExternalAccount("instagram")}
+          />
+        )}
+        {whitelist.includes("twitter") && (
+          <VerifyButton
+            provider="twitter"
+            username={_.get(twitter, "username")}
+            triggerLogin={() => this.onRedirectLogin("twitter")}
+            onLogout={this.removeExternalAccount("twitter")}
+          />
+        )}
         <style jsx>{`
           section {
             display: grid;

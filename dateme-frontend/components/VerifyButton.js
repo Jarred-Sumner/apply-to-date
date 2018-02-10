@@ -92,6 +92,7 @@ class VerifyButton extends React.Component {
             display: flex;
             flex-shrink: 0;
             flex-grow: 0;
+            flex: 0;
             white-space: nowrap;
             align-items: center;
 

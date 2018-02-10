@@ -16,10 +16,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
         tagline: @external_authentication.info["description"],
       )
 
-      if @external_authentication.build_social_link_entry.present?
-        @profile.social_links = @profile.social_links.merge(@external_authentication.build_social_link_entry)
-        @profile.save!
-      end
+      VerifiedNetwork.create!(profile_id: @profile.id, external_authentication_id: @external_authentication.id)
 
       auto_login(@user, true)
       render json: UserSerializer.new(@user, {include: [:profile]}).serializable_hash
@@ -31,7 +28,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
   def me
     if logged_in?
       render json: UserSerializer.new(current_user, {
-        include: [:profile, :external_authentications]
+        include: [:profile]
       }).serializable_hash
     else
       render json: { data: nil }
@@ -41,4 +38,5 @@ class Api::V1::UsersController < Api::V1::ApplicationController
   private def create_params
     params.require(:user).permit([:email, :username, :password])
   end
+
 end
