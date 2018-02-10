@@ -23,15 +23,16 @@ const LABEL_BY_PROVIDER = {
 };
 
 const PLACEHOLDER_BY_PROVIDER = {
-  facebook: "e.g. https://facebook.com/facebook.username (full url)",
-  snapchat: "e.g. snapchat.username (no @ sign)",
-  instagram: "e.g. jarredsumner (no @ sign)",
+  facebook:
+    "your facebook url e.g. https://facebook.com/facebook.username (full url)",
+  snapchat: "your snapchat username e.g. snapchat.username (no @ sign)",
+  instagram: "your instagram username e.g. jarredsumner (no @ sign)",
   linkedin:
-    "e.g. https://www.linkedin.com/in/jarred-sumner-a8772425/ (full url)",
-  dribbble: "e.g. username",
-  medium: "e.g. @jarredsumner",
-  twitter: "e.g. @jarredsumner",
-  youtube: "e.g. jarredsumner"
+    "your linkedin url e.g. https://www.linkedin.com/in/jarred-sumner-a8772425/ (full url)",
+  dribbble: "your dribbble username e.g. username",
+  medium: "your medium username e.g. @jarredsumner",
+  twitter: "your twitter handle e.g. @jarredsumner",
+  youtube: "your youtube username .g. jarredsumner"
 };
 
 const isProfileValid = (url, provider) => {
@@ -123,13 +124,13 @@ export default class EditSocialLinkModal extends React.Component {
             <SocialLink
               provider={provider}
               active
-              width={"72px"}
-              height={"72px"}
+              width={"60px"}
+              height={"60px"}
             />
           </div>
-          <div className="Text">
+          {/* <div className="Text">
             <Text type="title">{LABEL_BY_PROVIDER[provider]}</Text>
-          </div>
+          </div> */}
           <form onSubmit={this.handleConfirm}>
             <FormField
               type={URL_ONLY_PROVIDERS.includes(provider) ? "url" : "text"}
@@ -143,7 +144,9 @@ export default class EditSocialLinkModal extends React.Component {
             />
           </form>
 
-          <Button onClick={this.handleConfirm}>Done</Button>
+          <Button onClick={this.handleConfirm}>
+            {LABEL_BY_PROVIDER[provider]}
+          </Button>
         </div>
 
         <style jsx>{`
