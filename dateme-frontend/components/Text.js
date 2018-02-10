@@ -78,6 +78,10 @@ const Text = ({
           font-family: Lucida Grande, sans-serif;
         }
 
+        .Text--lucida.Text--extraBold {
+          font-weight: 900;
+        }
+
         .Text--sans-serif.Text--extraBold {
           font-weight: 900;
           margin-left: -2.13px;
