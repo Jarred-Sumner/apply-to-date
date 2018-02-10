@@ -24,7 +24,7 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
     elsif claim_params[:provider] == 'twitter'
     elsif claim_params[:provider] == 'instagram'
     elsif claim_params[:provider] == 'phone'
-      @external_authentication = ExternalAuthentication.create!(username: claim_params[:username], access_token: claim_params[:access_token], provider: 'phone')
+      @external_authentication = ExternalAuthentication.create!(username: claim_params[:access_token], access_token: claim_params[:access_token], provider: 'phone')
     else
       return render_error(message: "Something went wrong while trying to verify your account")
     end
