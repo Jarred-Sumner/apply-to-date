@@ -280,7 +280,6 @@ class Profile extends React.Component {
               />
             </Text>
           </div>
-
           <div className="Section-row Section-row--Tagline">
             <EditableText
               placeholder="Enter a short TLDR of yourself"
@@ -298,7 +297,6 @@ class Profile extends React.Component {
             setExternalAuthentications={this.setExternalAuthentications}
             onSave={this.handleSaveProfile}
           />
-
           <div className="Section-row">
             <EditSocialLinks
               socialLinks={socialLinks}

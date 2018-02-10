@@ -2,6 +2,8 @@ import Alert from "react-s-alert";
 import _ from "lodash";
 
 export const handleApiError = error => {
+  console.error(error);
+
   if (error.response) {
     if (!_.isEmpty(error.response.body.message)) {
       if (typeof error.response.body.message === "string") {

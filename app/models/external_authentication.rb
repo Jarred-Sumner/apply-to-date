@@ -75,7 +75,7 @@ class ExternalAuthentication < ApplicationRecord
   def self.normalize_social_link(url, provider)
     url = url.try(:strip)
 
-    if url.blank?
+    if url.blank? || provider == 'phone'
       return nil
     end
 

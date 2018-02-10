@@ -102,6 +102,10 @@ const Text = ({
         .Text--sans-serif strong {
           font-weight: 700;
         }
+
+        .Text :global(strong) {
+          font-weight: 700;
+        }
       `}</style>
 
       {children}
