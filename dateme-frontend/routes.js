@@ -32,6 +32,11 @@ routes
     page: "CreateApplication"
   })
   .add({
+    name: "UpdateApplication",
+    pattern: "/a/:id",
+    page: "UpdateApplication"
+  })
+  .add({
     name: "EditProfile",
     pattern: "/:id/edit",
     page: "EditProfile"

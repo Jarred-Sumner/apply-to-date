@@ -22,7 +22,7 @@ export default class FormField extends React.Component {
       label,
       autoFocus = false,
       autoCapitalize = false,
-      autoCorrect = true,
+      autoCorrect = false,
       required = false,
       disabled = false,
       children,
@@ -41,7 +41,7 @@ export default class FormField extends React.Component {
             "InputContainer--focused": this.state.isFocused
           })}
         >
-          {icon && <div className="IconContainer">{icon}</div>}
+          {icon && <div className="FormField-IconContainer">{icon}</div>}
           {children}
           <input
             required={required}
@@ -66,6 +66,10 @@ export default class FormField extends React.Component {
           fieldset {
             display: flex;
             flex-direction: column;
+          }
+
+          .FormField-IconContainer {
+            margin-right: 12px;
           }
 
           label {

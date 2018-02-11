@@ -40,6 +40,10 @@ export default class VerifyNetworksSection extends React.Component {
 
   onRedirectLogin = async provider => {
     const response = await this.props.save();
+    if (!response) {
+      return;
+    }
+
     let redirectPath = this.buildRedirectPath(provider);
     if (_.get(response, "data.type") === "application") {
       const id = _.get(response, "data.id");
@@ -66,41 +70,26 @@ export default class VerifyNetworksSection extends React.Component {
     return error => {};
   };
 
-  getFacebook = () => {
+  getByProvider = provider => {
     return _.last(
       this.props.externalAuthentications.filter(
-        auth => auth.provider === "facebook"
+        auth => auth.provider === provider
       )
     );
   };
 
-  getInstagram = () => {
-    return _.last(
-      this.props.externalAuthentications.filter(
-        auth => auth.provider === "instagram"
-      )
-    );
-  };
-
-  getTwitter = () => {
-    return _.last(
-      this.props.externalAuthentications.filter(
-        auth => auth.provider === "twitter"
-      )
-    );
-  };
-
-  updateExternalAccount = id => {
-    this.setExternalAuthentications([
+  updateExternalAccount = externalAuthentication => {
+    this.props.setExternalAuthentications([
       ...this.props.externalAuthentications,
-      id
+      externalAuthentication
     ]);
   };
 
   render() {
-    const facebook = this.getFacebook();
-    const instagram = this.getInstagram();
-    const twitter = this.getTwitter();
+    const facebook = this.getByProvider("facebook");
+    const instagram = this.getByProvider("instagram");
+    const twitter = this.getByProvider("twitter");
+    const phone = this.getByProvider("phone");
     const { whitelist } = this.props;
 
     return (
@@ -110,7 +99,7 @@ export default class VerifyNetworksSection extends React.Component {
             <VerifyButton
               triggerLogin={() => this.setState({ isEditingPhone: true })}
               onLogout={() => this.setState({ isEditingPhone: true })}
-              username="+19252008843"
+              username={_.get(phone, "username")}
               provider="phone"
             />
             <EditPhoneModal

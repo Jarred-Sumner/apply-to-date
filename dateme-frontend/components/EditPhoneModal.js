@@ -29,6 +29,7 @@ export default class EditPhoneModal extends React.Component {
 
     if (_.isEmpty(phone)) {
       this.props.onRemove();
+      this.props.onClose();
       return;
     }
 
@@ -38,12 +39,12 @@ export default class EditPhoneModal extends React.Component {
 
     verifyAccount({
       provider: "phone",
-      token: this.state.phone
+      token: phone
     })
       .then(response => {
         const id = _.get(response, "body.data.id");
         if (id) {
-          this.props.onUpdate(id);
+          this.props.onUpdate(response.body.data);
           this.props.onClose();
         } else {
           handleApiError(response);

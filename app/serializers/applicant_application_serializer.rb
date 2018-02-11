@@ -3,5 +3,6 @@ class ApplicantApplicationSerializer
   set_type :application
 
   has_many :external_authentications
-  attributes :social_links, :sections, :name, :photos, :email, :name
+  belongs_to :profile
+  attributes :social_links, :sections, :name, :photos, :email, :name, :profile_id
 end
