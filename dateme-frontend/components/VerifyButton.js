@@ -10,23 +10,20 @@ import Text from "./Text";
 import Icon from "./Icon";
 import classNames from "classnames";
 import Link from "next/link";
+import Button from "./Button";
 
 export const ICON_BY_PROVIDER = {
   facebook: {
-    verified: VerifiedFacebookIcon,
-    pending: PendingFacebookIcon
+    verified: VerifiedFacebookIcon
   },
   phone: {
-    verified: VerifiedPhoneIcon,
-    pending: PendingPhoneIcon
+    verified: VerifiedPhoneIcon
   },
   instagram: {
-    verified: VerifiedInstagramIcon,
-    pending: PendingInstagramIcon
+    verified: VerifiedInstagramIcon
   },
   twitter: {
-    verified: VerifiedTwitterIcon,
-    pending: PendingTwitterIcon
+    verified: VerifiedTwitterIcon
   }
 };
 
@@ -48,108 +45,16 @@ class VerifyButton extends React.Component {
     } = this.props;
 
     const isVerified = !!username;
-    const PendingIconComponent = ICON_BY_PROVIDER[provider]["pending"];
     const VerifiedIconComponent = ICON_BY_PROVIDER[provider]["verified"];
 
     return (
-      <div
-        onClick={isVerified ? onLogout : triggerLogin}
-        className={classNames("Container", {
-          "Container--verified": getVerificationEnum(isVerified) === "verified",
-          "Container--pending": getVerificationEnum(isVerified) === "pending"
-        })}
+      <Button
+        onClick={triggerLogin}
+        color={provider}
+        icon={<VerifiedIconComponent width="17px" height="17px" />}
       >
-        <div className="PendingIcon">
-          <PendingIconComponent width="17px" height="17px" />
-        </div>
-        <div className="VerifiedIcon">
-          <VerifiedIconComponent width="17px" height="17px" />
-        </div>
-
-        <div className="Text">
-          <Text
-            font="sans-serif"
-            color="inherit"
-            weight="bold"
-            size="12px"
-            casing="uppercase"
-          >
-            {isVerified ? `${username}` : `Add ${provider}`}
-          </Text>
-        </div>
-
-        <div className="ConnectedIcon">
-          <Icon type="check" size="12px" />
-        </div>
-
-        <div className="RemoveIcon">
-          <Icon type="x" size="12px" color="white" />
-        </div>
-
-        <style jsx>{`
-          .Container {
-            text-transform: uppercase;
-            display: flex;
-            flex-shrink: 0;
-            flex-grow: 0;
-            flex: 0;
-            white-space: nowrap;
-            align-items: center;
-
-            padding: 10px 16px;
-            border-radius: 100px;
-            cursor: pointer;
-          }
-
-          .Container--verified:hover .ConnectedIcon,
-          .Container--pending .RemoveIcon,
-          .Container--verified .RemoveIcon,
-          .Container--pending .ConnectedIcon {
-            display: none;
-          }
-
-          .Container--verified:hover .RemoveIcon {
-            display: flex;
-          }
-
-          .Container--pending {
-            background-color: transparent;
-            border: 1px dashed #00e2aa;
-            color: #00e2aa;
-          }
-
-          .Container--pending:hover,
-          .Container--verified {
-            background-color: #00e2aa;
-            border: 1px dashed transparent;
-            color: white;
-          }
-
-          .Container--pending .PendingIcon {
-            display: flex;
-          }
-
-          .Container--pending:hover .VerifiedIcon,
-          .Container--verified .VerifiedIcon {
-            display: flex;
-          }
-
-          .Container--pending:hover .PendingIcon,
-          .Container--verified .PendingIcon {
-            display: none;
-          }
-
-          .Container--pending .VerifiedIcon {
-            display: none;
-          }
-
-          .Text {
-            padding-left: 8px;
-            padding-right: 8px;
-            width: 100%;
-          }
-        `}</style>
-      </div>
+        Connect with {provider}
+      </Button>
     );
   }
 }

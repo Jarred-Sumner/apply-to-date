@@ -11,112 +11,16 @@ import { getVerification, getCurrentUser, createAccount } from "../api";
 import { bindActionCreators } from "redux";
 import Router from "next/router";
 import classNames from "classnames";
-import FormField from "../components/FormField";
+import FormField, {
+  geocodeByAddress,
+  getLatLng
+} from "../components/FormField";
 import Icon from "../components/Icon";
+import ExternalAuthentication, {
+  EXTERNAL_ACCOUNT_LABELS
+} from "../components/ExternalAuthentication";
 import Alert, { handleApiError } from "../components/Alert";
 import Page from "../components/Page";
-
-const BASE_AUTHORIZE_URL = "http://localhost:3001/auth";
-
-const EXTERNAL_ACCOUNT_LABELS = {
-  twitter: "Twitter",
-  youtube: "YouTube",
-  facebook: "Facebook"
-};
-
-const ExternalAccount = ({ account }) => {
-  if (account.provider === "twitter") {
-    return (
-      <div className="Twitter">
-        <Icon type="twitter" color="blue" />
-        <div className="Username">
-          <Text size="14px">@{account.username}</Text>
-        </div>
-        <Icon type="check" />
-
-        <div className="Connected">
-          <Text
-            color="#53E2AF"
-            size="12px"
-            letterSpacing="1px"
-            casing="uppercase"
-          >
-            Connected
-          </Text>
-        </div>
-
-        <style jsx>{`
-          .Twitter {
-            background-color: #fff;
-            border: 1px solid #e7ebf2;
-            padding: 14px 22px;
-            display: flex;
-            align-items: center;
-            border-radius: 100px;
-            margin-bottom: 14px;
-            text-align: left;
-          }
-
-          .Connected {
-            padding-left: 7px;
-          }
-
-          .Username {
-            flex: 1;
-            padding-left: 14px;
-            justify-content: flex-start;
-          }
-        `}</style>
-      </div>
-    );
-  } else if (account.provider === "facebook") {
-    return (
-      <div className="Facebook">
-        <Icon type="facebook" color="white" />
-        <div className="Username">
-          <Text size="14px">{account.name}</Text>
-        </div>
-        <Icon type="check" />
-
-        <div className="Connected">
-          <Text
-            color="#53E2AF"
-            size="12px"
-            letterSpacing="1px"
-            casing="uppercase"
-          >
-            Connected
-          </Text>
-        </div>
-
-        <style jsx>{`
-          .Facebook {
-            background-color: #fff;
-            border: 1px solid #e7ebf2;
-            padding: 14px 22px;
-            display: flex;
-            align-items: center;
-            border-radius: 100px;
-            margin-bottom: 14px;
-            text-align: left;
-          }
-
-          .Connected {
-            padding-left: 7px;
-          }
-
-          .Username {
-            flex: 1;
-            padding-left: 14px;
-            justify-content: flex-start;
-          }
-        `}</style>
-      </div>
-    );
-  } else {
-    return null;
-  }
-};
 
 class CreateAccount extends React.Component {
   static async getInitialProps({ store, query }) {
@@ -133,7 +37,12 @@ class CreateAccount extends React.Component {
       username: "",
       password: "",
       passwordConfirmation: "",
-      isSubmitting: false
+      location: "",
+      interestedInMen: false,
+      interestedInWomen: false,
+      interestedInOther: false,
+      isSubmitting: false,
+      sex: ""
     };
   }
 
@@ -152,22 +61,52 @@ class CreateAccount extends React.Component {
       username,
       password,
       passwordConfirmation,
-      isSubmitting
+      isSubmitting,
+      location,
+      sex,
+      interestedInMen,
+      interestedInWomen,
+      interestedInOther
     } = this.state;
+
+    let latLng;
+    if (location) {
+      try {
+        latLng = await geocodeByAddress(location).then(results =>
+          getLatLng(results[0])
+        );
+      } catch (exception) {
+        console.error(exception);
+        Alert.error("Please re-enter your location and try again");
+        this.setState({
+          isSubmitting: false
+        });
+        return;
+      }
+    }
 
     createAccount({
       external_authentication_id: this.props.externalAccount.id,
+      profile: {
+        latitude: latLng ? latLng.lat : null,
+        longitude: latLng ? latLng.lat : null,
+        location
+      },
       user: {
         email,
         username,
         password,
+        sex,
+        interested_in_men: interestedInMen,
+        interested_in_women: interestedInWomen,
+        interested_in_other: interestedInOther,
         password_confirmation: passwordConfirmation
       }
     })
       .then(response => {
         console.log(response);
-        Alert.success("Success!");
-        Router.push(`/${username}`);
+        Alert.success("Welcome to ApplyToDate!");
+        Router.push(`/${username}/edit`);
       })
       .catch(error => {
         console.log(error);
@@ -180,11 +119,21 @@ class CreateAccount extends React.Component {
       });
   };
 
+  setLocation = location => this.setState({ location });
   setEmail = email => this.setState({ email });
   setUsername = username => this.setState({ username });
   setPassword = password => this.setState({ password });
   setPasswordConfirmation = passwordConfirmation =>
     this.setState({ passwordConfirmation });
+  setInterestedIn = (name, isInterested) => {
+    this.setState({
+      [name]: !!isInterested
+    });
+  };
+
+  setSex = sex => {
+    this.setState({ sex });
+  };
 
   render() {
     const { provider, id } = this.props.url.query;
@@ -193,7 +142,12 @@ class CreateAccount extends React.Component {
       username,
       password,
       passwordConfirmation,
-      isSubmitting
+      isSubmitting,
+      location,
+      interestedInMen,
+      interestedInWomen,
+      interestedInOther,
+      sex
     } = this.state;
 
     return (
@@ -204,7 +158,7 @@ class CreateAccount extends React.Component {
             <Text type="PageTitle">Create account</Text>
 
             <div className="Row">
-              <ExternalAccount account={this.props.externalAccount} />
+              <ExternalAuthentication account={this.props.externalAccount} />
 
               <Text size="16px">
                 Thanks for verifying with {EXTERNAL_ACCOUNT_LABELS[provider]}!
@@ -216,29 +170,13 @@ class CreateAccount extends React.Component {
               <FormField
                 label="email"
                 type="email"
+                icon={<Icon type="email" size="18px" color="#B9BED1" />}
                 name="email"
                 required
                 value={email}
                 onChange={this.setEmail}
                 placeholder="youremail@gmail.com"
               />
-
-              <FormField
-                label="username"
-                required
-                name="username"
-                value={username}
-                onChange={this.setUsername}
-                placeholder="username"
-              >
-                <input
-                  type="url"
-                  tabIndex={-1}
-                  name="url"
-                  value="https://applytodate.me/"
-                  readOnly
-                />
-              </FormField>
 
               <FormField
                 label="Password"
@@ -260,7 +198,82 @@ class CreateAccount extends React.Component {
                 onChange={this.setPasswordConfirmation}
               />
 
-              <Button>Create site</Button>
+              <FormField
+                label="username"
+                required
+                name="username"
+                value={username}
+                onChange={this.setUsername}
+                placeholder="username"
+              >
+                <input
+                  type="url"
+                  tabIndex={-1}
+                  name="url"
+                  value="https://applytodate.me/"
+                  readOnly
+                />
+              </FormField>
+
+              <FormField
+                label="I identify as"
+                type="radio"
+                name="sex"
+                value={sex}
+                onChange={this.setSex}
+                showBorder={false}
+                radios={[
+                  {
+                    label: "Male",
+                    value: "male"
+                  },
+                  {
+                    label: "Female",
+                    value: "female"
+                  },
+                  {
+                    label: "Other",
+                    value: "other"
+                  }
+                ]}
+              />
+
+              <FormField
+                label="Interested in"
+                type="checkbox"
+                name="interestedIn"
+                onChange={this.setInterestedIn}
+                showBorder={false}
+                checkboxes={[
+                  {
+                    checked: interestedInMen,
+                    label: "Men",
+                    name: "interestedInMen"
+                  },
+                  {
+                    checked: interestedInWomen,
+                    label: "Women",
+                    name: "interestedInWomen"
+                  },
+                  {
+                    checked: interestedInOther,
+                    label: "Other",
+                    name: "interestedInOther"
+                  }
+                ]}
+              />
+
+              <FormField
+                label="location"
+                type="location"
+                required
+                name="location"
+                value={location}
+                onChange={this.setLocation}
+                placeholder="e.g. San Francisco, CA"
+              />
+
+              <Button>Create account</Button>
             </form>
           </main>
         </Page>

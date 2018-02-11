@@ -36,7 +36,7 @@ class VerifyAccount extends React.Component {
               <Button
                 fill
                 icon={<Icon type="instagram" color="white" />}
-                href={`${BASE_AUTHORIZE_URL}/instagram`}
+                href={`${BASE_AUTHORIZE_URL}/instagram?signUp=true`}
                 color="instagram"
               >
                 Instagram
@@ -44,7 +44,7 @@ class VerifyAccount extends React.Component {
               <Button
                 fill
                 icon={<Icon type="facebook" color="white" />}
-                href={`${BASE_AUTHORIZE_URL}/facebook`}
+                href={`${BASE_AUTHORIZE_URL}/facebook?signUp=true`}
                 color="facebook"
               >
                 Facebook
@@ -52,7 +52,7 @@ class VerifyAccount extends React.Component {
               <Button
                 fill
                 icon={<Icon type="twitter" color="white" />}
-                href={`${BASE_AUTHORIZE_URL}/twitter`}
+                href={`${BASE_AUTHORIZE_URL}/twitter?signUp=true`}
                 color="twitter"
               >
                 Twitter

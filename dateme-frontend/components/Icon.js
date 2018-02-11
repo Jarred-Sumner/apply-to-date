@@ -5,12 +5,16 @@ import TwitterBlueIcon from "../static/Icon/icons/twitter-blue.svg";
 
 import FacebookWhiteIcon from "../static/Icon/icons/facebook-white.svg";
 
+import PhoneWhiteIcon from "../static/Icon/icons/facebook-white.svg";
+
 import InstagramWhiteIcon from "../static/Icon/icons/instagram-white.svg";
 
 import EmailIcon from "../static/Icon/input_field_icons/email.svg";
+import HeartIcon from "../static/Icon/input_field_icons/heart.svg";
 
 import XIcon from "../static/Icon/icons/x.svg";
 import CheckIcon from "../static/Icon/icons/Check.svg";
+import FeedbackIcon from "../static/Icon/icons/feedback.svg";
 
 const ICON_COMPONENT_BY_TYPE = {
   email: EmailIcon,
@@ -24,8 +28,11 @@ const ICON_COMPONENT_BY_TYPE = {
   instagram: {
     white: InstagramWhiteIcon
   },
+  phone: PhoneWhiteIcon,
+  heart: HeartIcon,
   x: XIcon,
-  check: CheckIcon
+  check: CheckIcon,
+  feedback: FeedbackIcon
 };
 
 export default ({ type, color = "#ffffff", size = "18px" }) => {

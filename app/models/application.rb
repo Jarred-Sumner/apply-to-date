@@ -18,8 +18,7 @@ class Application < ApplicationRecord
   validates :profile, presence: true, :unless => :pending?
   validates :name, presence: true, :unless => :pending?
   validates :social_links, presence: true, :unless => :pending?
-
-
+  validates :sex, presence: true, inclusion: { in: ['male', 'female', 'other'] }, unless: :pending?
 
   before_validation on: :create do
     self.user ||= profile.user

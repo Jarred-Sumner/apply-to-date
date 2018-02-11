@@ -13,6 +13,7 @@ const Button = ({
   componentType = "button",
   color = "black",
   icon,
+  rightIcon,
   pending = false,
   disabled = false
 }) => {
@@ -24,13 +25,15 @@ const Button = ({
     "Button--black--unfill": color === "black" && !fill,
     "Button--green--fill": color === "green" && fill,
     "Button--green--unfill": color === "green" && !fill,
-    "Button--gray--fill": color === "gray" && fill,
-    "Button--gray--unfill": color === "gray" && !fill,
+    "Button--white--fill": color === "white" && fill,
+    "Button--white--unfill": color === "white" && !fill,
     "Button--twitter--fill": color === "twitter" && fill,
     "Button--instagram--fill": color === "instagram" && fill,
+    "Button--instagram--unfill": color === "instagram" && !fill,
     "Button--facebook--fill": color === "facebook" && fill,
     "Button--large": size === "large",
     "Button--inline": !!inline,
+    "Button--small": size === "small",
     "Button--normal": size === "normal",
     "Button--pending": pending,
     "Button--disabled": disabled
@@ -44,9 +47,12 @@ const Button = ({
           font-size: 12px;
           text-transform: uppercase;
           font-weight: 900;
+          letter-spacing: 0.5px;
           appearance: none;
           text-align: center;
           justify-content: center;
+          align-content: center;
+          align-items: center;
           border: 1px solid transparent;
           align-items: center;
           display: flex;
@@ -56,13 +62,29 @@ const Button = ({
           text-decoration: none;
           cursor: pointer;
           outline: 0;
+          text-align: center;
 
           transition: opacity 0.15s linear;
           transition-property: opacity, transform;
         }
 
+        .ButtonText {
+          display: flex;
+          color: inherit;
+        }
+
         .Button--black--fill:hover {
           background-color: #333;
+        }
+
+        .Button--white--unfill {
+          border-color: #333;
+          color: #333;
+        }
+
+        .Button--white--unfill:hover {
+          border-color: #000;
+          color: #000;
         }
 
         .Button--black--fill {
@@ -73,10 +95,6 @@ const Button = ({
         .Button--black--unfill {
           border-color: #000000;
           color: #000;
-        }
-
-        .Button--black--unfill:hover {
-          background-color: #f9f9f9;
         }
 
         .Button--green--fill {
@@ -91,6 +109,10 @@ const Button = ({
 
         .Button--normal {
           padding: 10px 24px;
+        }
+
+        .Button--small {
+          padding: 5px 16px;
         }
 
         .Button.Button--iconOnly {
@@ -142,6 +164,11 @@ const Button = ({
           color: #fff;
         }
 
+        .Button--instagram--unfill {
+          border-color: #d94263;
+          color: #d94263;
+        }
+
         .Button--instagram--fill:hover {
           background-image: linear-gradient(
             -130deg,
@@ -154,9 +181,23 @@ const Button = ({
         }
 
         .IconContainer {
-          margin-right: 7px;
           align-items: center;
           display: flex;
+        }
+
+        .IconContainer--left {
+          padding-right: 8px;
+          margin-right: auto;
+        }
+
+        .ButtonText {
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        .IconContainer--right {
+          padding-left: 8px;
+          margin-left: auto;
         }
 
         .Button--pending {
@@ -199,20 +240,35 @@ const Button = ({
       `}</style>
       {realComponentType === "button" && (
         <button onClick={onClick} className={classes}>
-          {icon && !pending && <div className="IconContainer">{icon}</div>}
-          {children}
+          <div className="IconContainer IconContainer--left">
+            {!pending && icon}
+          </div>
+          <div className="ButtonText">{children}</div>
+          <div className="IconContainer IconContainer--right">
+            {!pending && rightIcon}
+          </div>
         </button>
       )}
       {realComponentType === "a" && (
         <a onClick={onClick} href={href} className={classes}>
-          {icon && !pending && <div className="IconContainer">{icon}</div>}
-          {children}
+          <div className="IconContainer IconContainer--left">
+            {!pending && icon}
+          </div>
+          <div className="ButtonText">{children}</div>
+          <div className="IconContainer IconContainer--right">
+            {!pending && rightIcon}
+          </div>
         </a>
       )}
       {realComponentType === "div" && (
         <div onClick={onClick} className={classes}>
-          {icon && !pending && <div className="IconContainer">{icon}</div>}
-          {children}
+          <div className="IconContainer IconContainer--left">
+            {!pending && icon}
+          </div>
+          <div className="ButtonText">{children}</div>
+          <div className="IconContainer IconContainer--right">
+            {!pending && rightIcon}
+          </div>
         </div>
       )}
     </React.Fragment>

@@ -23,7 +23,9 @@ class Profile < ApplicationRecord
 
   before_validation on: :create do
     self.sections = Profile.build_default_sections
-    self.social_links = {}
-    self.photos = []
+    self.social_links ||= {}
+    self.photos ||= []
+    self.tags ||= []
   end
+
 end

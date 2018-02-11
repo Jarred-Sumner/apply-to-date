@@ -24,6 +24,10 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
     profile = current_user.profile
 
     ActiveRecord::Base.transaction do
+      if Array(update_params[:tags]).present?
+        profile.update(tags: Array(update_params[:tags]))
+      end
+
       if update_params[:sections].present?
         sections = update_params[:sections].permit(Profile::DEFAULT_SECTIONS)
         has_all_sections = Profile::DEFAULT_SECTIONS.all? do |section_key|
@@ -43,7 +47,7 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
           raise ArgumentError.new("Please include your name")
         end
 
-        profile.update(name: update_params[:name])
+        profile.update(name: String(update_params[:name]))
       end
 
       if !update_params[:tagline].nil?

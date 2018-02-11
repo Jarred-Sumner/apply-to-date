@@ -12,6 +12,8 @@ const Text = ({
   lineHeight = "19px",
   casing = "inherit",
   textDecoration = "none",
+  letterSpacing = "default",
+  align = "inherit",
   wrap = null
 }) => {
   const classes = classNames("Text", className, {
@@ -38,6 +40,8 @@ const Text = ({
           letter-spacing: 0;
           line-height: ${lineHeight};
           font-size: ${size};
+          text-align: ${align};
+          letter-spacing: ${letterSpacing};
           text-transform: ${casing};
           text-decoration: ${textDecoration};
         }

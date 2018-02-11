@@ -75,12 +75,10 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
 
         if auth_params[:redirect_path].present?
           redirect_to Rails.application.secrets[:frontend_url] + auth_params[:redirect_path]
-        else
-          if auth.user.present?
-            redirect_to Rails.application.secrets[:frontend_url] + "/"
-          else
-            redirect_to Rails.application.secrets[:frontend_url] + "/sign-up/#{auth_hash.provider}/#{auth.id}"
-          end
+        elsif auth.user.present?
+          redirect_to Rails.application.secrets[:frontend_url] + "/#{auth.user.username}"
+        elsif auth_params[:signUp] == 'true'
+          redirect_to Rails.application.secrets[:frontend_url] + "/sign-up/#{auth_hash.provider}/#{auth.id}"
         end
       end
     else

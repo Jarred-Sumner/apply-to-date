@@ -10,10 +10,11 @@ class Api::V1::UsersController < Api::V1::ApplicationController
       @external_authentication.save!
 
       @profile = Profile.create!(
-        user: @user,
-        id: @user.username,
-        name: @external_authentication.name.split(' ').first,
-        tagline: @external_authentication.info["description"],
+        create_profile_params.merge(
+          user: @user,
+          id: @user.username,
+          name: @external_authentication.name.try(:split, ' ').try(:first),
+        )
       )
 
       VerifiedNetwork.create!(profile_id: @profile.id, external_authentication_id: @external_authentication.id)
@@ -36,7 +37,13 @@ class Api::V1::UsersController < Api::V1::ApplicationController
   end
 
   private def create_params
-    params.require(:user).permit([:email, :username, :password])
+    params.require(:user).permit([:email, :username, :password, :interested_in_men, :interested_in_women, :interested_in_other, :sex])
+  end
+
+  private def create_profile_params
+    params.require(:profile).permit([
+      :location, :latitude, :longitude
+    ])
   end
 
 end

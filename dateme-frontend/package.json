@@ -88,6 +88,8 @@
     "react-image-crop": "^3.0.10",
     "react-images": "^0.5.16",
     "react-markdown": "^3.1.5",
+    "react-onclickoutside": "^6.7.1",
+    "react-places-autocomplete": "^6.1.1",
     "react-redux": "^5.0.6",
     "react-responsive-modal": "^2.0.0",
     "react-s-alert": "^1.4.1",

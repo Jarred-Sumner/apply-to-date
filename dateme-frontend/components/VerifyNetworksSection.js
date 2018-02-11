@@ -1,9 +1,25 @@
-import VerifyButton from "./VerifyButton";
 import { verifyAccount } from "../api";
 import _ from "lodash";
 import { BASE_AUTHORIZE_URL } from "./SocialLogin";
 import Router from "next/router";
 import EditPhoneModal from "./EditPhoneModal";
+import ExternalAuthentication from "./ExternalAuthentication";
+
+const EditableExternalAuthentication = ({
+  account,
+  provider,
+  username,
+  onLogout,
+  triggerLogin
+}) => {
+  return (
+    <ExternalAuthentication
+      onConnect={triggerLogin}
+      account={account}
+      provider={provider}
+    />
+  );
+};
 
 export default class VerifyNetworksSection extends React.Component {
   constructor(props) {
@@ -96,10 +112,10 @@ export default class VerifyNetworksSection extends React.Component {
       <section>
         {whitelist.includes("phone") && (
           <React.Fragment>
-            <VerifyButton
+            <EditableExternalAuthentication
+              account={phone}
               triggerLogin={() => this.setState({ isEditingPhone: true })}
               onLogout={() => this.setState({ isEditingPhone: true })}
-              username={_.get(phone, "username")}
               provider="phone"
             />
             <EditPhoneModal
@@ -111,25 +127,25 @@ export default class VerifyNetworksSection extends React.Component {
           </React.Fragment>
         )}
         {whitelist.includes("facebook") && (
-          <VerifyButton
+          <EditableExternalAuthentication
+            account={facebook}
             provider="facebook"
-            username={_.get(facebook, "name")}
             triggerLogin={() => this.onRedirectLogin("facebook")}
             onLogout={this.removeExternalAccount("facebook")}
           />
         )}
         {whitelist.includes("instagram") && (
-          <VerifyButton
+          <EditableExternalAuthentication
+            account={instagram}
             provider="instagram"
-            username={_.get(instagram, "username")}
             triggerLogin={() => this.onRedirectLogin("instagram")}
             onLogout={this.removeExternalAccount("instagram")}
           />
         )}
         {whitelist.includes("twitter") && (
-          <VerifyButton
+          <EditableExternalAuthentication
+            account={twitter}
             provider="twitter"
-            username={_.get(twitter, "username")}
             triggerLogin={() => this.onRedirectLogin("twitter")}
             onLogout={this.removeExternalAccount("twitter")}
           />

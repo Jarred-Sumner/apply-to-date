@@ -14,7 +14,8 @@ const URL_ONLY_PROVIDERS = ["linkedin", "facebook"];
 
 const LABEL_BY_PROVIDER = {
   snapchat: "Add your Snapchat",
-  medium: "Add your Medium user",
+  facebook: "Add your Facebook",
+  medium: "Add your Medium",
   instagram: "Add your Instagram",
   linkedin: "Add your LinkedIn",
   dribbble: "Add your Dribbble",
@@ -128,9 +129,6 @@ export default class EditSocialLinkModal extends React.Component {
               height={"60px"}
             />
           </div>
-          {/* <div className="Text">
-            <Text type="title">{LABEL_BY_PROVIDER[provider]}</Text>
-          </div> */}
           <form onSubmit={this.handleConfirm}>
             <FormField
               type={URL_ONLY_PROVIDERS.includes(provider) ? "url" : "text"}

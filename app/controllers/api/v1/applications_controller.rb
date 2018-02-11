@@ -1,9 +1,9 @@
 class Api::V1::ApplicationsController < Api::V1::ApplicationController
 
   def create
-    social_links = params[:application][:social_links].to_unsafe_h
+    social_links = params[:application][:social_links].try(:to_unsafe_h) || {}
     external_authentications = params[:application][:external_authentications]
-    sections = params[:application][:sections].to_unsafe_h
+    sections = params[:application][:sections].try(:to_unsafe_h) || {}
 
     if create_params[:status] == 'submitted'
       if params[:application][:social_links].blank?

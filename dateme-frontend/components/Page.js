@@ -1,13 +1,19 @@
 import PageFooter from "./PageFooter";
 import Header from "./Header";
+import classNames from "classnames";
 
-export default ({ headerProps, children }) => {
+export default ({ headerProps, children, size = "default" }) => {
+  const classes = classNames("PageSize", {
+    "PageSize--default": size === "default",
+    "PageSize--small": size === "small"
+  });
+
   return (
     <React.Fragment>
       <Header {...headerProps} />
-      <main>{children}</main>
+      <main className={classes}>{children}</main>
 
-      <footer>
+      <footer className={classes}>
         <PageFooter />
       </footer>
 
@@ -15,15 +21,21 @@ export default ({ headerProps, children }) => {
         main {
           margin-left: auto;
           margin-right: auto;
-          max-width: 710px;
           min-height: 100%;
           padding-bottom: 56px;
+        }
+
+        .PageSize--default {
+          max-width: 710px;
+        }
+
+        .PageSize--small {
+          max-width: 483px;
         }
 
         footer {
           margin-left: auto;
           margin-right: auto;
-          max-width: 710px;
         }
       `}</style>
     </React.Fragment>

@@ -214,13 +214,12 @@ class CreateApplication extends React.Component {
     const contactMethod = this.contactMethod();
 
     return (
-      <Page>
+      <Page size="small">
         <Head />
-
-        <section className="Section Section--center Section--title">
+        <form onSubmit={this.submitApplication}>
           <div className="Section-row">
             <Text type="ProfilePageTitle">
-              👋 Hi {profile.name}, I'm{" "}
+              👋 Hi I'm{" "}
               <EditableText
                 value={name}
                 onChange={this.setName}
@@ -247,6 +246,7 @@ class CreateApplication extends React.Component {
             <VerifyNetworksSection
               externalAuthentications={externalAuthentications}
               whitelist={contactMethod}
+              save={this.saveApplication}
               setExternalAuthentications={this.setExternalAuthentications}
             />
 
@@ -263,92 +263,31 @@ class CreateApplication extends React.Component {
               setSocialLinks={socialLinks => this.setState({ socialLinks })}
             />
           </div>
-        </section>
 
-        <section className="Section Section--apply">
-          <Button onClick={this.applyForDate}>Submit application</Button>
-        </section>
+          <Button>
+            <Icon type="heart" size="14px" />&nbsp; Ask him out
+          </Button>
+        </form>
+
         <style jsx>{`
-          .Section {
-            margin-top: 4rem;
+          form {
             display: grid;
+            margin-top: 2rem;
+            grid-auto-flow: row dense;
             grid-row-gap: 2rem;
-          }
-
-          .HeaderForm {
-            margin-left: auto;
-            margin-right: auto;
-            width: 50%;
+            width: 100%;
+            text-align: center;
           }
 
           .Section-row {
-            grid-row: 1fr;
-          }
-
-          .Section-title {
-            margin-bottom: 14px;
-          }
-
-          .Section-tagline {
-            font-size: 18px;
+            width: 100%;
           }
 
           .Section-row--email {
             display: grid;
             grid-row-gap: 1rem;
-            max-width: 600px;
             margin-left: auto;
             margin-right: auto;
-          }
-
-          .Section-row--bio {
-            display: grid;
-            grid-row-gap: 1rem;
-          }
-
-          .Section--center {
-            text-align: center;
-          }
-
-          .ApplicationForm {
-            width: 40rem;
-            margin-left: auto;
-            margin-right: auto;
-          }
-
-          .PhotosContainer {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            grid-template-rows: 1fr;
-            grid-column-gap: 28px;
-          }
-
-          .Section--socialLinks {
-            display: grid;
-            justify-content: center;
-            margin-left: auto;
-            padding-left: 18px;
-            padding-right: 18px;
-            margin-right: auto;
-            grid-auto-flow: column;
-            grid-column-gap: 32px;
-          }
-
-          .Subheader {
-            background-color: white;
-            display: flex;
-            align-items: center;
-            padding: 10px 40px;
-            width: auto;
-            border-bottom: 1px solid #e8e8e8;
-          }
-
-          .Subheader--buttons {
-            margin-left: auto;
-            display: grid;
-            grid-template-columns: auto auto;
-            grid-column-gap: 14px;
-            grid-template-rows: 1fr;
           }
         `}</style>
       </Page>

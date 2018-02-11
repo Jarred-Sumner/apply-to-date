@@ -42,6 +42,10 @@ const Head = props => (
         href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre:300,400,500,700,900"
         rel="stylesheet"
       />
+      <script
+        type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_ad15stG5b8YA-oVUoneLHmIW7pWpa3w&libraries=places"
+      />
     </NextHead>
     <RootStyles />
   </React.Fragment>

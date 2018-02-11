@@ -21,6 +21,9 @@ import YoutubeDisabled from "../../static/Icon/social/Disabled/youtube.svg";
 import FacebookActive from "../../static/Icon/social/Active/facebook.svg";
 import FacebookDisabled from "../../static/Icon/social/Disabled/facebook.svg";
 
+import PhoneActive from "../../static/Icon/verify/verified/phone.svg";
+import PhoneDisabled from "../../static/Icon/verify/pending/phone.svg";
+
 export default {
   dribbble: {
     active: DribbbleActive,
@@ -53,5 +56,9 @@ export default {
   twitter: {
     active: TwitterActive,
     disabled: TwitterDisabled
+  },
+  phone: {
+    active: PhoneActive,
+    disabled: PhoneDisabled
   }
 };

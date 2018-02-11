@@ -3,13 +3,13 @@ import Sticky from "react-stickynode";
 import Button from "./Button";
 import LoginGate, { LOGIN_STATUSES } from "./LoginGate";
 import { AlertHost } from "./Alert";
+import FeedbackForm from "./FeedbackForm";
 
 class Header extends React.Component {
-  renderButtons = () => {
+  renderAuthButtons = () => {
     if (this.props.loginStatus === LOGIN_STATUSES.loggedIn) {
       return null;
     }
-
     return (
       <div className="Buttons">
         <Button href="/login" fill={false}>
@@ -33,6 +33,15 @@ class Header extends React.Component {
     );
   };
 
+  renderButtons = () => {
+    return (
+      <React.Fragment>
+        <FeedbackForm />
+        {this.renderAuthButtons()}
+      </React.Fragment>
+    );
+  };
+
   render() {
     const {
       isSticky = true,
@@ -48,8 +57,10 @@ class Header extends React.Component {
             <header>
               <Brand />
 
-              {!showChildren && this.renderButtons()}
               {showChildren && children}
+              <div className="RightSide">
+                {!showChildren && this.renderButtons()}
+              </div>
 
               <style jsx>{`
                 header {
@@ -58,6 +69,13 @@ class Header extends React.Component {
                   border-bottom: 1px solid #e8e8e8;
                   background-color: white;
                   z-index: 999;
+                }
+
+                .RightSide {
+                  margin-left: auto;
+                  margin-top: auto;
+                  margin-bottom: auto;
+                  display: flex;
                 }
               `}</style>
             </header>
