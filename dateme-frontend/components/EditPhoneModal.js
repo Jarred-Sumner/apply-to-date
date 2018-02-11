@@ -39,7 +39,7 @@ export default class EditPhoneModal extends React.Component {
 
     verifyAccount({
       provider: "phone",
-      token: this.state.phone
+      token: phone
     })
       .then(response => {
         const id = _.get(response, "body.data.id");

@@ -1,7 +1,7 @@
 import Button from "../Button";
 import Router from "next/router";
 
-export default class InlineEmailApplication extends React.Component {
+export default class InlineApply extends React.Component {
   constructor(props) {
     super(props);
 

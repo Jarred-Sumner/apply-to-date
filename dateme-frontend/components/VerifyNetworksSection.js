@@ -40,6 +40,10 @@ export default class VerifyNetworksSection extends React.Component {
 
   onRedirectLogin = async provider => {
     const response = await this.props.save();
+    if (!response) {
+      return;
+    }
+
     let redirectPath = this.buildRedirectPath(provider);
     if (_.get(response, "data.type") === "application") {
       const id = _.get(response, "data.id");

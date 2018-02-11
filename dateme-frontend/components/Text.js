@@ -93,7 +93,11 @@ const Text = ({
           font-weight: 700;
         }
 
-        .Text--serif.Text--semiBold {
+        .Text--sans-serif.Text--semiBold {
+          font-weight: 600;
+        }
+
+        .Text--semiBold {
           font-weight: 600;
         }
 
@@ -166,6 +170,18 @@ export default ({ type, children, ...otherProps }) => {
   } else if (type === "title") {
     return (
       <Text {...otherProps} font="lucida" size="30px" weight="extraBold">
+        {children}
+      </Text>
+    );
+  } else if (type === "subtitle") {
+    return (
+      <Text
+        {...otherProps}
+        font="serif"
+        size="21px"
+        color="#000000"
+        lineHeight="27px"
+      >
         {children}
       </Text>
     );

@@ -89,9 +89,19 @@ class CreateApplication extends React.Component {
       isHeaderSticky: false,
       isSavingProfile: false,
       name: _.get(application, "name", ""),
+      tagline: _.get(application, "tagline", ""),
+      photos: _.get(application, "photos", []),
       email: _.get(application, "email", props.url.query.email || ""),
       socialLinks: _.get(application, "socialLinks", {}),
-      externalAuthentications: _.get(application, "externalAuthentications", [])
+      externalAuthentications: _.get(
+        application,
+        "externalAuthentications",
+        []
+      ),
+      sections: _.get(application, "sections", {
+        introduction: "",
+        why: ""
+      })
     };
   }
 
@@ -180,12 +190,16 @@ class CreateApplication extends React.Component {
     return submitApplication({
       profileId,
       name,
+      tagline,
       email,
       socialLinks,
-      externalAuthentications: externalAuthentications.map(({ id }) => id)
+      sections,
+      externalAuthentications: externalAuthentications.map(({ id }) => id),
+      photos
     })
       .then(response => {
         this.props.updateEntities(response.body);
+        Alert.success("Applied!");
       })
       .catch(error => {
         handleApiError(error);
@@ -195,9 +209,48 @@ class CreateApplication extends React.Component {
       });
   };
 
-  contactMethod = () => _.first(this.props.profile.recommendedContactMethods);
+  enableStickyHeader = () => this.setState({ isHeaderSticky: true });
+  disableStickyHeader = () => this.setState({ isHeaderSticky: false });
+
+  setCurrentPhoto = url => {
+    this.setState({
+      currentPhotoIndex: this.props.profile.photos.indexOf(url)
+    });
+  };
+
   setEmail = email => this.setState({ email });
+
+  paragraphs = () => {
+    const { sections } = this.state;
+
+    return _.sortBy(_.keys(sections), key => SECTION_ORDERING.indexOf(key)).map(
+      section => ({
+        title: SECTION_LABELS[section],
+        key: section,
+        rows: ROWS_BY_SECTION[section],
+        placeholder: getSectionPlaceholder(section, this.props.profile),
+        body: sections[section] || ""
+      })
+    );
+  };
+
+  setSectionText = title => value => {
+    this.setState({
+      sections: {
+        ...this.state.sections,
+        [title]: value
+      }
+    });
+  };
+
   setName = evt => this.setState({ name: evt.target.value });
+  setTagline = evt => this.setState({ tagline: evt.target.value });
+  setPhotoAtIndex = index => url => {
+    const photos = this.state.photos.slice();
+    photos.splice(index, 1, url);
+
+    this.setState({ photos: photos });
+  };
   setExternalAuthentications = externalAuthentications =>
     this.setState({ externalAuthentications });
 
@@ -210,8 +263,6 @@ class CreateApplication extends React.Component {
       email,
       externalAuthentications
     } = this.state;
-
-    const contactMethod = this.contactMethod();
 
     return (
       <Page>
@@ -244,25 +295,66 @@ class CreateApplication extends React.Component {
               placeholder="e.g. example@example.com"
             />
 
-            <VerifyNetworksSection
-              externalAuthentications={externalAuthentications}
-              whitelist={contactMethod}
-              setExternalAuthentications={this.setExternalAuthentications}
-            />
-
             <Text weight="semiBold" size="14px" color="#820B0B">
               You’ll receive updates via email, please make sure this is
               correct.
             </Text>
           </div>
 
+          <VerifyNetworksSection
+            externalAuthentications={externalAuthentications}
+            save={this.saveApplication}
+            whitelist={profile.recommendedContactMethods}
+            setExternalAuthentications={this.setExternalAuthentications}
+          />
+
           <div className="Section-row">
             <EditSocialLinks
               socialLinks={socialLinks}
-              blacklist={[contactMethod]}
+              blacklist={profile.recommendedContactMethods}
               setSocialLinks={socialLinks => this.setState({ socialLinks })}
             />
           </div>
+        </section>
+
+        <section className="Section Section--photos">
+          <Text type="label">Share some pics</Text>
+          <div className="PhotosContainer">
+            <Photo
+              key={photos[0] || 0}
+              url={photos[0]}
+              setURL={this.setPhotoAtIndex(0)}
+            />
+            <Photo
+              key={photos[1] || 1}
+              url={photos[1]}
+              setURL={this.setPhotoAtIndex(1)}
+            />
+            <Photo
+              key={photos[2] || 2}
+              url={photos[2]}
+              setURL={this.setPhotoAtIndex(2)}
+            />
+          </div>
+        </section>
+        <section className="Section Section--bio">
+          {this.paragraphs().map(paragraph => {
+            return (
+              <div key={paragraph.key} className="Section-row Section-row--bio">
+                <Text className="Section-title" type="title">
+                  {paragraph.title}
+                </Text>
+                <TextArea
+                  name={paragraph.key}
+                  rows={paragraph.rows}
+                  value={paragraph.body}
+                  placeholder={paragraph.placeholder}
+                  onChange={this.setSectionText(paragraph.key)}
+                  type="paragraph"
+                />
+              </div>
+            );
+          })}
         </section>
 
         <section className="Section Section--apply">
