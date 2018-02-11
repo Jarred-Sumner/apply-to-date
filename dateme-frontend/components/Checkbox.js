@@ -1,7 +1,7 @@
 import Text from "./Text";
 import Icon from "./Icon";
 
-export default ({ checked, name, label, onChange }) => {
+export default ({ checked, name, label, onChange, required }) => {
   return (
     <React.Fragment>
       <div
@@ -11,6 +11,7 @@ export default ({ checked, name, label, onChange }) => {
         <div className="CheckboxContainer">
           <input
             type="checkbox"
+            required={required}
             name={name}
             checked={checked}
             onChange={onChange}

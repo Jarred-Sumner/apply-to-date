@@ -21,6 +21,7 @@ import ExternalAuthentication, {
 } from "../components/ExternalAuthentication";
 import Alert, { handleApiError } from "../components/Alert";
 import Page from "../components/Page";
+import Checkbox from "../components/Checkbox";
 
 class CreateAccount extends React.Component {
   static async getInitialProps({ store, query }) {
@@ -42,7 +43,8 @@ class CreateAccount extends React.Component {
       interestedInWomen: false,
       interestedInOther: false,
       isSubmitting: false,
-      sex: ""
+      sex: "",
+      termsOfService: false
     };
   }
 
@@ -50,6 +52,10 @@ class CreateAccount extends React.Component {
     evt.preventDefault();
     if (this.state.isSubmitting) {
       return;
+    }
+
+    if (!this.state.termsOfService) {
+      return Alert.error("To continue, you msut agree to the terms of service");
     }
 
     this.setState({
@@ -109,7 +115,7 @@ class CreateAccount extends React.Component {
         Router.push(`/${username}/edit`);
       })
       .catch(error => {
-        console.log(error);
+        console.error(error);
         handleApiError(error);
       })
       .finally(() => {
@@ -199,7 +205,7 @@ class CreateAccount extends React.Component {
               />
 
               <FormField
-                label="username"
+                label="Page"
                 required
                 name="username"
                 value={username}
@@ -218,6 +224,7 @@ class CreateAccount extends React.Component {
               <FormField
                 label="I identify as"
                 type="radio"
+                required
                 name="sex"
                 value={sex}
                 onChange={this.setSex}
@@ -241,6 +248,7 @@ class CreateAccount extends React.Component {
               <FormField
                 label="Interested in"
                 type="checkbox"
+                required
                 name="interestedIn"
                 onChange={this.setInterestedIn}
                 showBorder={false}
@@ -271,6 +279,21 @@ class CreateAccount extends React.Component {
                 value={location}
                 onChange={this.setLocation}
                 placeholder="e.g. San Francisco, CA"
+              />
+
+              <FormField
+                type="checkbox"
+                name="termsOfService"
+                required
+                onChange={(name, value) => this.setState({ [name]: value })}
+                showBorder={false}
+                checkboxes={[
+                  {
+                    checked: this.state.termsOfService,
+                    label: "I agree to the terms of service and privacy policy",
+                    name: "termsOfService"
+                  }
+                ]}
               />
 
               <Button>Create account</Button>

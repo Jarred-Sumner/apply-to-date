@@ -4,6 +4,14 @@ class Api::V1::UsersController < Api::V1::ApplicationController
     ActiveRecord::Base.transaction do
       @external_authentication = ExternalAuthentication.find(params[:external_authentication_id])
 
+      if create_params[:sex].blank?
+        return render_error(message: "Please choose your gender identity")
+      end
+
+      if create_params[:interested_in_men].blank? && create_params[:interested_in_women].blank? && create_params[:interested_in_other].blank?
+        return render_error(message: "Please fill out the interested in section")
+      end
+
       @user = User.create!(create_params.merge(password_confirmation: create_params[:password]))
 
       @external_authentication.user = @user
