@@ -85,6 +85,12 @@ const FeaturedProfile = ({ profile }) => {
             border-top-right-radius: 6px;
             filter: saturate(0);
           }
+
+          @media (max-width: 500px) {
+            .Profile {
+              margin-bottom: 2em;
+            }
+          }
         `}</style>
       </a>
     </Link>
@@ -269,6 +275,12 @@ class Homepage extends React.Component {
             text-align: center;
             justify-content: center;
             grid-auto-columns: minmax(auto, 300px);
+          }
+
+          @media (max-width: 500px) {
+            .FeaturedProfiles {
+              display: block;
+            }
           }
         `}</style>
       </div>
