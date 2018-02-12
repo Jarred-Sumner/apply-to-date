@@ -250,10 +250,6 @@ const Button = ({
           .Button--inline {
             padding: 5px 7px;
           }
-
-          .Button--normal {
-            padding: 2px 7px;
-          }
         }
       `}</style>
       {realComponentType === "button" && (
