@@ -238,6 +238,22 @@ export default ({ type, children, ...otherProps }) => {
         {children}
       </Text>
     );
+  } else if (type == "hamburgerlink") {
+    return (
+      <Text
+        {...otherProps}
+        weight="extraBold"
+        type={type}
+        size="1.15em"
+        letterSpacing="1px"
+        lineHeight="22px"
+        textDecoration="none"
+        font="sans-serif"
+        color="#b8b7ad"
+      >
+        {children}
+      </Text>
+    );
   } else if (type === "link") {
     return (
       <Text

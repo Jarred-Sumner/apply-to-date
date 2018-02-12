@@ -11,7 +11,9 @@ export default ({ headerProps, children, size = "default" }) => {
   return (
     <React.Fragment>
       <Header {...headerProps} />
-      <main className={classes}>{children}</main>
+      <main id="PageRoot" className={classes}>
+        {children}
+      </main>
 
       <footer className={classes}>
         <PageFooter />

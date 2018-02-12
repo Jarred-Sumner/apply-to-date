@@ -4,37 +4,34 @@ import Button from "./Button";
 import LoginGate, { LOGIN_STATUSES } from "./LoginGate";
 import { AlertHost } from "./Alert";
 import FeedbackForm from "./FeedbackForm";
-import { isMobile } from "../lib/Mobile";
+import Hamburger from "../components/Hamburger";
 
 class Header extends React.Component {
-  showSettings(event) {
-    event.preventDefault();
-  }
-
   renderAuthButtons = () => {
     // if (this.props.loginStatus === LOGIN_STATUSES.loggedIn) {
     //   return null;
     // }
     return (
-      <div className="Buttons">
-        <Button href="/login" fill={false}>
-          Sign in
-        </Button>
+      <Hamburger />
+      // <div className="Buttons">
+      //   <Button href="/login" fill={false}>
+      //     Sign in
+      //   </Button>
 
-        <Button href="/sign-up" fill>
-          Get your own site
-        </Button>
+      //   <Button href="/sign-up" fill>
+      //     Get your own site
+      //   </Button>
 
-        <style jsx>{`
-          .Buttons {
-            margin-left: auto;
-            display: grid;
-            grid-template-columns: auto auto;
-            grid-template-rows: 1fr;
-            grid-column-gap: 14px;
-          }
-        `}</style>
-      </div>
+      //   <style jsx>{`
+      //     .Buttons {
+      //       margin-left: auto;
+      //       display: grid;
+      //       grid-template-columns: auto auto;
+      //       grid-template-rows: 1fr;
+      //       grid-column-gap: 14px;
+      //     }
+      //   `}</style>
+      // </div>
     );
   };
 
@@ -47,36 +44,12 @@ class Header extends React.Component {
     );
   };
 
-  renderFooter = () => {
-    const { renderSubheader } = this.props;
-    if (!renderSubheader) {
-      return null;
-    }
-
-    return (
-      <footer>
-        {renderSubheader()}
-        <style jsx>{`
-          footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            display: flex;
-            z-index: 999;
-            width: 100%;
-          }
-        `}</style>
-      </footer>
-    );
-  };
-
   render() {
     const {
       isSticky = true,
       showChildren = false,
-      children,
-      renderSubheader
+      renderSubheader,
+      children
     } = this.props;
 
     return (
@@ -90,34 +63,35 @@ class Header extends React.Component {
               <div className="RightSide">
                 {!showChildren && this.renderButtons()}
               </div>
+
+              <style jsx>{`
+                header {
+                  padding: 14px 40px;
+                  display: flex;
+                  border-bottom: 1px solid #e8e8e8;
+                  background-color: white;
+                  z-index: 999;
+                }
+
+                .RightSide {
+                  margin-left: auto;
+                  margin-top: auto;
+                  margin-bottom: auto;
+                  display: flex;
+                }
+
+                @media (max-width: 460px) {
+                  header {
+                    padding: 18px 20px;
+                  }
+                }
+              `}</style>
             </header>
-            {isMobile() && renderSubheader && renderSubheader()}
+
+            {renderSubheader && renderSubheader()}
           </div>
         </Sticky>
-        {!isMobile() && this.renderFooter()}
         <AlertHost />
-        <style jsx>{`
-          header {
-            padding: 14px 40px;
-            display: flex;
-            border-bottom: 1px solid #e8e8e8;
-            background-color: white;
-            z-index: 999;
-          }
-
-          .RightSide {
-            margin-left: auto;
-            margin-top: auto;
-            margin-bottom: auto;
-            display: flex;
-          }
-
-          @media (max-width: 460px) {
-            header {
-              padding: 18px 20px;
-            }
-          }
-        `}</style>
       </React.Fragment>
     );
   }
