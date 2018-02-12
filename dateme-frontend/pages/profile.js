@@ -254,6 +254,9 @@ class Profile extends React.Component {
           }
 
           @media (max-width: 500px) {
+            .Section--photos {
+              display: block;
+            }
           }
         `}</style>
       </Page>
