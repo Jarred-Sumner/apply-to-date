@@ -26,6 +26,7 @@ import Photo from "../components/EditProfile/Photo";
 import Page from "../components/Page";
 import EditSocialLinks from "../components/EditSocialLinks";
 import VerifyNetworksSection from "../components/VerifyNetworksSection";
+import Subheader from "../components/Subheader";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -283,7 +284,7 @@ class Profile extends React.Component {
         headerProps={{
           renderSubheader: () => {
             return (
-              <div className="Subheader">
+              <Subheader>
                 <div className="Subheader--buttons">
                   <Button href={`/${profile.id}`} color="green" fill={false}>
                     View site
@@ -297,7 +298,7 @@ class Profile extends React.Component {
                     Save
                   </Button>
                 </div>
-              </div>
+              </Subheader>
             );
           }
         }}
@@ -464,21 +465,10 @@ class Profile extends React.Component {
             grid-column-gap: 28px;
           }
 
-          .Subheader {
-            background-color: white;
-            display: flex;
-            align-items: center;
-            padding: 10px 40px;
-            width: auto;
-            border-bottom: 1px solid #e8e8e8;
-          }
-
           .Subheader--buttons {
             margin-left: auto;
-            display: grid;
-            grid-template-columns: auto auto;
+            display: flex;
             grid-column-gap: 14px;
-            grid-template-rows: 1fr;
           }
         `}</style>
       </Page>

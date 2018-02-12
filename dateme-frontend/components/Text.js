@@ -46,7 +46,8 @@ const Text = ({
           text-decoration: ${textDecoration};
         }
 
-        .Text--wrap {
+        .Text--wrap,
+        .Text--wrap strong {
           white-space: normal;
           word-wrap: break-word;
           word-break: break-word;
@@ -173,7 +174,13 @@ export default ({ type, children, ...otherProps }) => {
     );
   } else if (type === "title") {
     return (
-      <Text {...otherProps} font="lucida" size="30px" weight="extraBold">
+      <Text
+        {...otherProps}
+        font="lucida"
+        size="30px"
+        lineHeight="48px"
+        weight="extraBold"
+      >
         {children}
       </Text>
     );
