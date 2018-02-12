@@ -20,7 +20,10 @@ export default class TextInput extends React.Component {
       inline,
       inputRef,
       onChangeText,
+      disabled,
       onChange,
+      children,
+      rounded,
       ...otherProps
     } = this.props;
     return (
@@ -28,7 +31,9 @@ export default class TextInput extends React.Component {
         className={classNames("Container", {
           "Container--inline": inline,
           "Container--block": !inline,
-          "Container--withIcon": !!icon
+          "Container--disabled": !!disabled,
+          "Container--withIcon": !!icon,
+          "Container--rounded": rounded
         })}
       >
         {icon && <div className="IconContainer">{icon}</div>}
@@ -40,7 +45,10 @@ export default class TextInput extends React.Component {
           onChange={this.handleChange}
           required={required}
           value={value}
+          disabled={disabled}
         />
+
+        {children}
 
         <style jsx>{`
           input {
@@ -59,6 +67,10 @@ export default class TextInput extends React.Component {
           .Container--block {
             border-radius: 4px;
             border: 1px solid #e3e8f0;
+          }
+
+          .Container--block.Container--disabled {
+            background-color: #f0f2f7;
           }
 
           .Container--inline {
@@ -80,6 +92,10 @@ export default class TextInput extends React.Component {
             background-color: #fcfcfc;
           }
 
+          .Container--block.Container--disabled:hover {
+            background-color: #f0f2f7;
+          }
+
           .IconContainer {
             height: 100%;
             pointer-events: none;
@@ -90,6 +106,10 @@ export default class TextInput extends React.Component {
             align-items: center;
             pointer-events: none;
             margin-right: 12px;
+          }
+
+          .Container--rounded {
+            border-radius: 100px;
           }
         `}</style>
       </div>

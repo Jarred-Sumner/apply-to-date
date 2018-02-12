@@ -19,6 +19,10 @@ class Profile < ApplicationRecord
     !visible?
   end
 
+  def url
+    Rails.application.secrets[:frontend_url] + '/' + id
+  end
+
   def self.build_default_sections
     DEFAULT_SECTIONS.map do |section|
       [section, '']

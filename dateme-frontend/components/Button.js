@@ -34,6 +34,7 @@ const Button = ({
     "Button--large": size === "large",
     "Button--inline": !!inline,
     "Button--small": size === "small",
+    "Button--xsmall": size === "xsmall",
     "Button--normal": size === "normal",
     "Button--pending": pending,
     "Button--disabled": disabled
@@ -113,6 +114,13 @@ const Button = ({
 
         .Button--small {
           padding: 5px 16px;
+        }
+
+        .Button--xsmall {
+          width: 30px;
+          height: 30px;
+          margin-top: auto;
+          margin-bottom: auto;
         }
 
         .Button.Button--iconOnly {

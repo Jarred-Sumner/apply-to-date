@@ -86,6 +86,18 @@ export default class EditSocialLinks extends React.Component {
             justify-content: center;
             grid-column-gap: 36px;
           }
+
+          @media (max-width: 600px) {
+            .Section--socialLinks {
+              display: grid;
+              grid-template-rows: 1fr;
+              grid-template-columns: 36px 36px 36px;
+              grid-auto-flow: row;
+              max-width: 100%;
+              justify-content: center;
+              grid-row-gap: 36px;
+            }
+          }
         `}</style>
       </section>
     );

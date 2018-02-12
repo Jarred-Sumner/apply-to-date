@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="6px" height="10px" viewBox="0 0 6 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>caret-right</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Edit-Profile-Add-Social-(Desktop)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-1018.000000, -2056.000000)">
+        <g id="Split-Input-Fields-/-Button-addon-Input-Field" transform="translate(754.000000, 2040.000000)" class="SVGFill">
+            <path d="M266.688184,21.6454769 L270.030287,18.3033732 C270.352363,17.9812974 270.874551,17.9812974 271.196627,18.3033732 C271.518703,18.6254489 271.518703,19.1476369 271.196627,19.4697127 L267.469713,23.1966268 C267.257827,23.4085129 266.959332,23.4810041 266.688184,23.4141004 C266.417036,23.4810041 266.118541,23.4085129 265.906655,23.1966268 L262.17974,19.4697127 C261.857665,19.1476369 261.857665,18.6254489 262.17974,18.3033732 C262.501816,17.9812974 263.024004,17.9812974 263.34608,18.3033732 L266.688184,21.6454769 Z" id="caret-right" transform="translate(266.688184, 20.750000) scale(-1, 1) rotate(-270.000000) translate(-266.688184, -20.750000) "></path>
+        </g>
+    </g>
+</svg>

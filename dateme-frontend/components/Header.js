@@ -5,6 +5,7 @@ import LoginGate, { LOGIN_STATUSES } from "./LoginGate";
 import { AlertHost } from "./Alert";
 import FeedbackForm from "./FeedbackForm";
 import BurgerMenu from "react-burger-menu";
+import { isMobile } from "../lib/Mobile";
 
 class Header extends React.Component {
   showSettings(event) {
@@ -47,12 +48,36 @@ class Header extends React.Component {
     );
   };
 
+  renderFooter = () => {
+    const { renderSubheader } = this.props;
+    if (!renderSubheader) {
+      return null;
+    }
+
+    return (
+      <footer>
+        {renderSubheader()}
+        <style jsx>{`
+          footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            z-index: 999;
+            width: 100%;
+          }
+        `}</style>
+      </footer>
+    );
+  };
+
   render() {
     const {
       isSticky = true,
       showChildren = false,
-      renderSubheader,
-      children
+      children,
+      renderSubheader
     } = this.props;
 
     return (
@@ -90,11 +115,27 @@ class Header extends React.Component {
                 }
               `}</style>
             </header>
-
-            {renderSubheader && renderSubheader()}
+            {isMobile() && renderSubheader && renderSubheader()}
           </div>
         </Sticky>
+        {!isMobile() && this.renderFooter()}
         <AlertHost />
+        <style jsx>{`
+          header {
+            padding: 14px 40px;
+            display: flex;
+            border-bottom: 1px solid #e8e8e8;
+            background-color: white;
+            z-index: 999;
+          }
+
+          .RightSide {
+            margin-left: auto;
+            margin-top: auto;
+            margin-bottom: auto;
+            display: flex;
+          }
+        `}</style>
       </React.Fragment>
     );
   }
