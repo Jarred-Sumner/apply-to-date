@@ -202,6 +202,18 @@ export default ({ type, children, ...otherProps }) => {
         {children}
       </Text>
     );
+  } else if (type === "smalltitle") {
+    return (
+      <Text
+        {...otherProps}
+        font="sans-serif"
+        size="18px"
+        color="#000"
+        weight="extraBold"
+      >
+        {children}
+      </Text>
+    );
   } else if (type === "footerlink") {
     return (
       <Text
