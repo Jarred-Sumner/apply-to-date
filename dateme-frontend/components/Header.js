@@ -13,7 +13,6 @@ class Header extends React.Component {
     }
 
     return (
-      // <Hamburger />
       <div className="Buttons">
         <Button href="/login" fill={false}>
           Sign in
@@ -55,7 +54,7 @@ class Header extends React.Component {
 
     return (
       <React.Fragment>
-        <Sticky enabled={isSticky}>
+        <Sticky enabled={isSticky} innerZ={1000}>
           <div>
             <header>
               <Brand />
@@ -85,12 +84,6 @@ class Header extends React.Component {
                 @media (max-width: 460px) {
                   header {
                     padding: 18px 20px;
-                  }
-                }
-
-                @media (min-width: 460px) {
-                  Hamburger {
-                    display: none;
                   }
                 }
               `}</style>
