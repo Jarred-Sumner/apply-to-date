@@ -36,6 +36,13 @@ export default ({ onClick, url, isLast = false }) => (
       .photo--last {
         margin-right: 0;
       }
+
+      @media (max-width: 500px) {
+        .photo {
+          margin-right: 0;
+          margin-top: 2em;
+        }
+      }
     `}</style>
   </div>
 );

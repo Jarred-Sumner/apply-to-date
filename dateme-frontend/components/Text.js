@@ -249,7 +249,7 @@ export default ({ type, children, ...otherProps }) => {
         lineHeight="22px"
         textDecoration="none"
         font="sans-serif"
-        color="#b8b7ad"
+        color="#000000"
       >
         {children}
       </Text>

@@ -1,5 +1,4 @@
 import { slide as Menu } from "react-burger-menu";
-
 import BurgerMenu from "react-burger-menu";
 import classNames from "classnames";
 import React, { Component } from "react";
@@ -63,7 +62,11 @@ export default class Hamburger extends React.Component {
     return (
       <div className="HamburgerContainer">
         <Portal>
-          <Menu outerContainerId="PageRoot" right>
+          <Menu
+            outerContainerId="PageRoot"
+            customBurgerIcon={<img src="../static/Icon/icons/hamburger.svg" />}
+            right
+          >
             <Link href="/login">
               <a className="hamburgerlink">
                 <Text type="hamburgerlink">Login</Text>
@@ -123,18 +126,21 @@ export default class Hamburger extends React.Component {
           .bm-cross-button {
             height: 24px;
             width: 24px;
+            right: 15px;
+            top: 15px;
           }
 
           /* Color/shape of close button cross */
           .bm-cross {
-            background: #bdc3c7;
+            background: #3a405b;
           }
 
           /* General sidebar styles */
           .bm-menu {
-            background: #373a47;
+            background: #ffffff;
             padding: 2.5em 1.5em 0;
             font-size: 1.15em;
+            box-shadow: 6px 7px 21px 0 rgba(221, 231, 243, 0.83);
           }
 
           /* Morph shape necessary with bubble or elastic */
