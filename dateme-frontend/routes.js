@@ -22,6 +22,11 @@ routes
     page: "Login"
   })
   .add({
+    name: "PrivacyPolicy",
+    pattern: "/privacy-policy",
+    page: "PrivacyPolicy"
+  })
+  .add({
     name: "profile",
     pattern: "/:id",
     page: "profile"
