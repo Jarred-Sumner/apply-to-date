@@ -181,11 +181,11 @@ export default class FormField extends React.Component {
           value={value}
           onFocus={() => this.setFocused(true)}
           onBlur={() => this.setFocused(false)}
-          ref={inputRef => (this.inputRef = inputRef)}
+          inputRef={inputRef => (this.inputRef = inputRef)}
           onKeyUp={onKeyUp}
           disabled={disabled}
           className="input"
-          onChangeText={this.handleChange}
+          onChange={this.handleChange}
         />
       );
     }

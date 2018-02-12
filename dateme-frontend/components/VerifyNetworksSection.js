@@ -9,24 +9,6 @@ import ExternalAuthentication, {
 import Select from "./Select";
 
 export default class VerifyNetworksSection extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      phone: _.get(
-        _.last(
-          props.externalAuthentications.filter(
-            ({ provider }) => provider === "phone"
-          )
-        ),
-        "username",
-        ""
-      )
-    };
-  }
-
-  handleSetPhone = phone => this.setState({ phone });
-
   buildRedirectPath = provider => {
     return `${BASE_AUTHORIZE_URL}/${provider}?redirect_path=${encodeURIComponent(
       window.location.pathname + window.location.search
@@ -81,9 +63,13 @@ export default class VerifyNetworksSection extends React.Component {
   };
 
   render() {
-    const { whitelist } = this.props;
-    const { recommendedContactMethod, phone } = this.state;
-
+    const {
+      whitelist,
+      recommendedContactMethod,
+      setRecommendedContactMethod,
+      setPhone,
+      phone
+    } = this.props;
     const externalAccount = this.getByProvider(recommendedContactMethod);
 
     return (
@@ -92,7 +78,7 @@ export default class VerifyNetworksSection extends React.Component {
           name="provider"
           value={recommendedContactMethod}
           inline
-          onChange={this.setContactMethod}
+          onChange={setRecommendedContactMethod}
           options={whitelist.map(value => ({
             value,
             label: EXTERNAL_ACCOUNT_LABELS[value]
@@ -104,7 +90,7 @@ export default class VerifyNetworksSection extends React.Component {
           account={externalAccount}
           inline
           provider={recommendedContactMethod}
-          setPhone={this.handleSetPhone}
+          setPhone={setPhone}
           phone={phone}
         />
         <style jsx>{`
