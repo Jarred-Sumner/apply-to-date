@@ -176,7 +176,6 @@ class Homepage extends React.Component {
         <article>
           <main>
             <div className="Copy">
-              {/* <img className="Logo Logo-Home" src="/static/large-brand.svg" /> */}
               <img className="Logo Logo-Home" src="/static/animatedlogo.gif" />
               <div className="Copy-title">
                 <Text font="serif" size="36px" lineHeight="44px" weight="bold">
