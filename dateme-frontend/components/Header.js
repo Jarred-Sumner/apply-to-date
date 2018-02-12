@@ -12,9 +12,10 @@ class Header extends React.Component {
   }
 
   renderAuthButtons = () => {
-    // if (this.props.loginStatus === LOGIN_STATUSES.loggedIn) {
-    //   return null;
-    // }
+    if (this.props.loginStatus === LOGIN_STATUSES.loggedIn) {
+      return null;
+    }
+
     return (
       <div className="Buttons">
         <Button href="/login" fill={false}>

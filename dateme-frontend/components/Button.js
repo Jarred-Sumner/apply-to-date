@@ -253,7 +253,6 @@ const Button = ({
 
           .Button--normal {
             padding: 2px 7px;
-            height: 33px;
           }
         }
       `}</style>
