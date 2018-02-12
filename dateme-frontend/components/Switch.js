@@ -1,5 +1,6 @@
 import ExternalSwitch from "rc-switch";
 import Icon from "./Icon";
+import classNames from "classnames";
 import Text from "./Text";
 
 const OFF_COLOR = "#F45138";
@@ -10,7 +11,12 @@ export default class Switch extends React.Component {
     const { checked, onChange, children, ...otherProps } = this.props;
 
     return (
-      <div className="SwitchContainer">
+      <div
+        className={classNames("SwitchContainer", {
+          "SwitchContainer--on": checked,
+          "SwitchContainer--off": !checked
+        })}
+      >
         <ExternalSwitch
           {...otherProps}
           prefixCls="Switch"
@@ -29,7 +35,7 @@ export default class Switch extends React.Component {
         />
 
         <Text
-          color={checked ? ON_COLOR : OFF_COLOR}
+          color="inherit"
           weight="bold"
           casing="uppercase"
           size="12px"
@@ -44,6 +50,15 @@ export default class Switch extends React.Component {
             grid-auto-flow: column;
             grid-column-gap: 12px;
             align-items: center;
+            transition: color 0.3s linear;
+          }
+
+          .SwitchContainer--on {
+            color: ${ON_COLOR};
+          }
+
+          .SwitchContainer--off {
+            color: ${OFF_COLOR};
           }
 
           .SwitchContainer .IconContainer {

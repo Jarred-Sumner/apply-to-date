@@ -229,7 +229,7 @@ class Profile extends React.Component {
       .then(response => {
         this.props.updateEntities(response.body);
         if (showAlert) {
-          Alert.success("Updated your site successfully!");
+          Alert.success("Saved.");
         }
 
         return response.body;

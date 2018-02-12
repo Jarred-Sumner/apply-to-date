@@ -23,7 +23,7 @@ class Header extends React.Component {
         </Button>
 
         <Button href="/sign-up" fill>
-          Get your own site
+          Get your own page
         </Button>
 
         <style jsx>{`
