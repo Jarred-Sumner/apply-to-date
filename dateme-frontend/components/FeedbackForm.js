@@ -153,6 +153,12 @@ class FeedbackForm extends React.Component {
             opacity: 0;
             pointer-events: none;
           }
+
+          @media (max-width: 460px) {
+            .Container {
+              display: none;
+            }
+          }
         `}</style>
       </div>
     );

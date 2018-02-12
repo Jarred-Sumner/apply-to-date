@@ -4,12 +4,17 @@ import Button from "./Button";
 import LoginGate, { LOGIN_STATUSES } from "./LoginGate";
 import { AlertHost } from "./Alert";
 import FeedbackForm from "./FeedbackForm";
+import BurgerMenu from "react-burger-menu";
 
 class Header extends React.Component {
+  showSettings(event) {
+    event.preventDefault();
+  }
+
   renderAuthButtons = () => {
-    if (this.props.loginStatus === LOGIN_STATUSES.loggedIn) {
-      return null;
-    }
+    // if (this.props.loginStatus === LOGIN_STATUSES.loggedIn) {
+    //   return null;
+    // }
     return (
       <div className="Buttons">
         <Button href="/login" fill={false}>
@@ -76,6 +81,12 @@ class Header extends React.Component {
                   margin-top: auto;
                   margin-bottom: auto;
                   display: flex;
+                }
+
+                @media (max-width: 460px) {
+                  header {
+                    padding: 18px 20px;
+                  }
                 }
               `}</style>
             </header>

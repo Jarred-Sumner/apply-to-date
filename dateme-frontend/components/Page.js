@@ -23,6 +23,9 @@ export default ({ headerProps, children, size = "default" }) => {
           margin-right: auto;
           min-height: 100%;
           padding-bottom: 56px;
+          padding-left: 14px;
+          padding-right: 14px;
+          max-width: 710px;
         }
 
         .PageSize--default {

@@ -20,6 +20,16 @@ export default ({ hideText = false }) => {
           height: 43px;
           display: block;
         }
+
+        @media (max-width: 460px) {
+          img {
+            height: 33px;
+          }
+
+          a {
+            height: 33px;
+          }
+        }
       `}</style>
     </div>
   );

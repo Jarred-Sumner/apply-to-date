@@ -237,6 +237,17 @@ const Button = ({
             transform: rotate(360deg);
           }
         }
+
+        @media (max-width: 500px) {
+          .Button--inline {
+            padding: 5px 7px;
+          }
+
+          .Button--normal {
+            padding: 2px 7px;
+            height: 33px;
+          }
+        }
       `}</style>
       {realComponentType === "button" && (
         <button onClick={onClick} className={classes}>

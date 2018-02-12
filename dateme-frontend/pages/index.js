@@ -214,6 +214,8 @@ class Homepage extends React.Component {
             max-width: 710px;
             margin-left: auto;
             margin-right: auto;
+            padding-left: 14px;
+            padding-right: 14px;
           }
 
           main {
