@@ -81,6 +81,7 @@
     "postcss-loader": "^2.1.0",
     "qs": "^6.5.1",
     "raven-js": "^3.22.1",
+    "rc-switch": "^1.6.0",
     "react": "^16.2.0",
     "react-cropper": "^1.0.1",
     "react-dom": "^16.2.0",

@@ -16,6 +16,9 @@ import XIcon from "../static/Icon/icons/x.svg";
 import CheckIcon from "../static/Icon/icons/Check.svg";
 import FeedbackIcon from "../static/Icon/icons/feedback.svg";
 import CaretIcon from "../static/Icon/icons/caret.svg";
+import RightCaretIcon from "../static/Icon/icons/caret-right.svg";
+import SwitchOnIcon from "../static/Icon/icons/switch-on.svg";
+import SwitchOffIcon from "../static/Icon/icons/switch-off.svg";
 
 const ICON_COMPONENT_BY_TYPE = {
   email: EmailIcon,
@@ -27,7 +30,10 @@ const ICON_COMPONENT_BY_TYPE = {
   caret: CaretIcon,
   x: XIcon,
   check: CheckIcon,
-  feedback: FeedbackIcon
+  feedback: FeedbackIcon,
+  "caret-right": RightCaretIcon,
+  "switch-on": SwitchOnIcon,
+  "switch-off": SwitchOffIcon
 };
 
 export default ({ type, color = "#ffffff", size = "18px" }) => {

@@ -60,6 +60,7 @@ class Header extends React.Component {
             right: 0;
             display: flex;
             z-index: 999;
+            width: 100%;
           }
         `}</style>
       </footer>
@@ -85,12 +86,11 @@ class Header extends React.Component {
               <div className="RightSide">
                 {!showChildren && this.renderButtons()}
               </div>
-
-              {!isMobile() && renderSubheader && renderSubheader()}
             </header>
+            {isMobile() && renderSubheader && renderSubheader()}
           </div>
         </Sticky>
-        {isMobile() && this.renderFooter()}
+        {!isMobile() && this.renderFooter()}
         <AlertHost />
         <style jsx>{`
           header {

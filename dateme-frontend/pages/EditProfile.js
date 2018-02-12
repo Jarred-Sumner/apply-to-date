@@ -27,6 +27,9 @@ import Page from "../components/Page";
 import EditSocialLinks from "../components/EditSocialLinks";
 import VerifyNetworksSection from "../components/VerifyNetworksSection";
 import Subheader from "../components/Subheader";
+import Icon from "../components/Icon";
+import TextInput from "../components/TextInput";
+import Switch from "../components/Switch";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -131,7 +134,8 @@ class Profile extends React.Component {
       socialLinks = {},
       recommendedContactMethod = "phone",
       phone = "",
-      sections: profileSections
+      sections: profileSections,
+      visible
     } = profile;
 
     const sections = _.fromPairs(
@@ -147,6 +151,7 @@ class Profile extends React.Component {
       photos,
       phone,
       sections,
+      visible,
       socialLinks,
       recommendedContactMethod: recommendedContactMethod || "phone",
       externalAuthentications: null
@@ -227,6 +232,8 @@ class Profile extends React.Component {
     });
   };
 
+  toggleVisible = () => this.setState({ visible: !this.state.visible });
+
   paragraphs = () => {
     const { sections } = this.state;
 
@@ -271,6 +278,7 @@ class Profile extends React.Component {
       photos,
       socialLinks,
       phone,
+      visible,
       externalAuthentications,
       recommendedContactMethod
     } = this.state;
@@ -284,11 +292,30 @@ class Profile extends React.Component {
         headerProps={{
           renderSubheader: () => {
             return (
-              <Subheader>
-                <div className="Subheader--buttons">
-                  <Button href={`/${profile.id}`} color="green" fill={false}>
-                    View site
-                  </Button>
+              <Subheader spaceBetween>
+                <Switch checked={visible} onChange={this.toggleVisible}>
+                  {visible ? "Page is live" : "Page is not live"}
+                </Switch>
+
+                <div className="Subheader--actions">
+                  <TextInput
+                    rounded
+                    disabled
+                    readOnly
+                    type="url"
+                    value={profile.url}
+                  >
+                    <div className="OpenButton">
+                      <Button
+                        size="xsmall"
+                        href={profile.url}
+                        color="green"
+                        fill
+                      >
+                        <Icon type="caret-right" size="10px" />
+                      </Button>
+                    </div>
+                  </TextInput>
                   <Button
                     componentType="div"
                     color="green"
@@ -465,10 +492,16 @@ class Profile extends React.Component {
             grid-column-gap: 28px;
           }
 
-          .Subheader--buttons {
-            margin-left: auto;
-            display: flex;
+          .Subheader--actions {
+            display: grid;
+            grid-auto-flow: column;
             grid-column-gap: 14px;
+          }
+
+          .OpenButton {
+            margin-right: 8px;
+            margin-top: auto;
+            margin-bottom: auto;
           }
         `}</style>
       </Page>
