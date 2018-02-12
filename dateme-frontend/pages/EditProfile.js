@@ -118,7 +118,8 @@ class Profile extends React.Component {
       tagline = "",
       photos = [],
       sections = {},
-      socialLinks = {}
+      socialLinks = {},
+      recommendedContactMethod = null
     } = profile;
 
     this.state = {
@@ -130,6 +131,7 @@ class Profile extends React.Component {
       photos,
       sections,
       socialLinks,
+      recommendedContactMethod,
       externalAuthentications: null
     };
   }
@@ -217,6 +219,8 @@ class Profile extends React.Component {
     });
   };
 
+  setRecommendedContactMethod = recommendedContactMethod =>
+    this.setState({ setRecommendedContactMethod });
   setExternalAuthentications = externalAuthentications =>
     this.setState({ externalAuthentications });
   setName = evt => this.setState({ name: evt.target.value });
@@ -235,7 +239,8 @@ class Profile extends React.Component {
       tagline,
       photos,
       socialLinks,
-      externalAuthentications
+      externalAuthentications,
+      recommendedContactMethod
     } = this.state;
 
     if (!profile) {
@@ -268,41 +273,62 @@ class Profile extends React.Component {
       >
         <Head />
         <section className="Section Section--center Section--title">
-          <div className="Section-row">
-            <Text type="ProfilePageTitle">
-              👋 Hi, I'm{" "}
-              <EditableText
-                value={name}
-                onChange={this.setName}
-                placeholder="Your Name"
-                type="ProfilePageTitle"
-                width={getWidthForText(name || "Your Name", !name)}
-              />
+          <Text type="ProfilePageTitle">
+            👋 Hi, I'm{" "}
+            <EditableText
+              value={name}
+              onChange={this.setName}
+              placeholder="Your Name"
+              type="ProfilePageTitle"
+              width={getWidthForText(name || "Your Name", !name)}
+            />
+          </Text>
+        </section>
+
+        <section className="Section Section-row--Tagline">
+          <EditableText
+            placeholder="Enter a short TLDR of yourself"
+            type="Tagline"
+            value={tagline}
+            maxLength={74}
+            onChange={this.setTagline}
+            maxWidth="100%"
+            width={"100%"}
+          />
+        </section>
+
+        <section className="Section Section--center">
+          <div className="TextGroup">
+            <Text type="title">I prefer to be contacted by</Text>
+            <Text>
+              This will not be displayed publicly. Only your matches will
+              receive this.
             </Text>
           </div>
-          <div className="Section-row Section-row--Tagline">
-            <EditableText
-              placeholder="Enter a short TLDR of yourself"
-              type="Tagline"
-              value={tagline}
-              maxLength={74}
-              onChange={this.setTagline}
-              maxWidth="640px"
-              width={"640px"}
-            />
-          </div>
 
-          <VerifySocialNetworksContainer
-            externalAuthentications={externalAuthentications}
-            setExternalAuthentications={this.setExternalAuthentications}
-            onSave={this.handleSaveProfile}
-          />
-          <div className="Section-row">
-            <EditSocialLinks
-              socialLinks={socialLinks}
-              setSocialLinks={socialLinks => this.setState({ socialLinks })}
+          <div className="Verify">
+            <VerifySocialNetworksContainer
+              externalAuthentications={externalAuthentications}
+              recommendedContactMethod={recommendedContactMethod}
+              setRecommendedContactMethod={this.setRecommendedContactMethod}
+              setExternalAuthentications={this.setExternalAuthentications}
+              onSave={this.handleSaveProfile}
             />
           </div>
+        </section>
+
+        <section className="Section">
+          <div className="TextGroup">
+            <Text type="title">Public social media</Text>
+            <Text wrap>
+              Public profiles you want displayed on your page.{" "}
+              <strong>Anyone can see these:</strong>
+            </Text>
+          </div>
+          <EditSocialLinks
+            socialLinks={socialLinks}
+            setSocialLinks={socialLinks => this.setState({ socialLinks })}
+          />
         </section>
 
         <section className="Section Section--photos">
@@ -360,6 +386,12 @@ class Profile extends React.Component {
             grid-row-gap: 2rem;
           }
 
+          .TextGroup {
+            display: grid;
+            grid-row-gap: 18px;
+            text-align: center;
+          }
+
           .HeaderForm {
             margin-left: auto;
             margin-right: auto;
@@ -385,6 +417,11 @@ class Profile extends React.Component {
 
           .Section--center {
             text-align: center;
+          }
+
+          .Verify {
+            margin-left: auto;
+            margin-right: auto;
           }
 
           .PhotosContainer {

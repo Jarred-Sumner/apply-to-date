@@ -4,6 +4,7 @@ import PlacesAutocomplete from "react-places-autocomplete";
 import Checkbox from "./Checkbox";
 import _ from "lodash";
 import Radio from "./Radio";
+import TextInput from "./TextInput";
 
 export { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 
@@ -168,12 +169,13 @@ export default class FormField extends React.Component {
       );
     } else {
       return (
-        <input
+        <TextInput
           required={required}
           type={type}
           placeholder={placeholder}
           name={name}
           autoFocus={autoFocus}
+          inline
           autoCapitalize={autoCapitalize}
           autoCorrect={autoCorrect}
           value={value}
@@ -183,7 +185,7 @@ export default class FormField extends React.Component {
           onKeyUp={onKeyUp}
           disabled={disabled}
           className="input"
-          onChange={this.handleChange}
+          onChangeText={this.handleChange}
         />
       );
     }
@@ -255,7 +257,7 @@ export default class FormField extends React.Component {
             border: 0;
             font-size: 14px;
             font-weight: 400;
-            font-family: Lucida Grande, Open Sans, sans-serif;
+            font-family: Open Sans, sans-serif;
           }
 
           fieldset :global(.LocationInputRoot) {

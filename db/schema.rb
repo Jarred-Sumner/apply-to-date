@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180211223418) do
+ActiveRecord::Schema.define(version: 20180212020558) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,6 +77,8 @@ ActiveRecord::Schema.define(version: 20180211223418) do
     t.decimal "latitude"
     t.decimal "longitude"
     t.string "tags", default: [], null: false, array: true
+    t.string "recommended_contact_method"
+    t.string "phone"
     t.index ["featured"], name: "index_profiles_on_featured"
     t.index ["user_id"], name: "index_profiles_on_user_id"
   end

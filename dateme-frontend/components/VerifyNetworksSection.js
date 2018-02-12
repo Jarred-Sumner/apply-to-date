@@ -3,50 +3,29 @@ import _ from "lodash";
 import { BASE_AUTHORIZE_URL } from "./SocialLogin";
 import Router from "next/router";
 import EditPhoneModal from "./EditPhoneModal";
-import ExternalAuthentication from "./ExternalAuthentication";
-
-const EditableExternalAuthentication = ({
-  account,
-  provider,
-  username,
-  onLogout,
-  triggerLogin
-}) => {
-  return (
-    <ExternalAuthentication
-      onConnect={triggerLogin}
-      account={account}
-      provider={provider}
-    />
-  );
-};
+import ExternalAuthentication, {
+  EXTERNAL_ACCOUNT_LABELS
+} from "./ExternalAuthentication";
+import Select from "./Select";
 
 export default class VerifyNetworksSection extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      isEditingPhone: false
+      phone: _.get(
+        _.last(
+          props.externalAuthentications.filter(
+            ({ provider }) => provider === "phone"
+          )
+        ),
+        "username",
+        ""
+      )
     };
   }
 
-  stopEditingPhone = () => this.setState({ isEditingPhone: false });
-  handleSocialLogin = provider => {
-    return async login => {
-      verifyAccount({
-        provider: provider,
-        token: login.token.accessToken,
-        expiration: login.token.expiresAt,
-        application_email: this.props.email || null
-      }).then(response => {
-        const auths = [
-          ...this.props.externalAuthentications,
-          response.body.data
-        ];
-        this.props.setExternalAuthentications(auths);
-      });
-    };
-  };
+  handleSetPhone = phone => this.setState({ phone });
 
   buildRedirectPath = provider => {
     return `${BASE_AUTHORIZE_URL}/${provider}?redirect_path=${encodeURIComponent(
@@ -102,59 +81,37 @@ export default class VerifyNetworksSection extends React.Component {
   };
 
   render() {
-    const facebook = this.getByProvider("facebook");
-    const instagram = this.getByProvider("instagram");
-    const twitter = this.getByProvider("twitter");
-    const phone = this.getByProvider("phone");
     const { whitelist } = this.props;
+    const { recommendedContactMethod, phone } = this.state;
+
+    const externalAccount = this.getByProvider(recommendedContactMethod);
 
     return (
       <section>
-        {whitelist.includes("phone") && (
-          <React.Fragment>
-            <EditableExternalAuthentication
-              account={phone}
-              triggerLogin={() => this.setState({ isEditingPhone: true })}
-              onLogout={() => this.setState({ isEditingPhone: true })}
-              provider="phone"
-            />
-            <EditPhoneModal
-              open={this.state.isEditingPhone}
-              onRemove={this.removeExternalAccount("phone")}
-              onUpdate={this.updateExternalAccount}
-              onClose={this.stopEditingPhone}
-            />
-          </React.Fragment>
-        )}
-        {whitelist.includes("facebook") && (
-          <EditableExternalAuthentication
-            account={facebook}
-            provider="facebook"
-            triggerLogin={() => this.onRedirectLogin("facebook")}
-            onLogout={this.removeExternalAccount("facebook")}
-          />
-        )}
-        {whitelist.includes("instagram") && (
-          <EditableExternalAuthentication
-            account={instagram}
-            provider="instagram"
-            triggerLogin={() => this.onRedirectLogin("instagram")}
-            onLogout={this.removeExternalAccount("instagram")}
-          />
-        )}
-        {whitelist.includes("twitter") && (
-          <EditableExternalAuthentication
-            account={twitter}
-            provider="twitter"
-            triggerLogin={() => this.onRedirectLogin("twitter")}
-            onLogout={this.removeExternalAccount("twitter")}
-          />
-        )}
+        <Select
+          name="provider"
+          value={recommendedContactMethod}
+          inline
+          onChange={this.setContactMethod}
+          options={whitelist.map(value => ({
+            value,
+            label: EXTERNAL_ACCOUNT_LABELS[value]
+          }))}
+          required
+        />
+        <ExternalAuthentication
+          onConnect={() => this.onRedirectLogin(recommendedContactMethod)}
+          account={externalAccount}
+          inline
+          provider={recommendedContactMethod}
+          setPhone={this.handleSetPhone}
+          phone={phone}
+        />
         <style jsx>{`
           section {
-            display: grid;
-            grid-auto-flow: column;
-            grid-column-gap: 24px;
+            display: flex;
+            border: 1px solid #e3e8f0;
+            border-radius: 100px;
           }
         `}</style>
       </section>

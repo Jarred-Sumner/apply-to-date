@@ -15,21 +15,16 @@ import HeartIcon from "../static/Icon/input_field_icons/heart.svg";
 import XIcon from "../static/Icon/icons/x.svg";
 import CheckIcon from "../static/Icon/icons/Check.svg";
 import FeedbackIcon from "../static/Icon/icons/feedback.svg";
+import CaretIcon from "../static/Icon/icons/caret.svg";
 
 const ICON_COMPONENT_BY_TYPE = {
   email: EmailIcon,
-  twitter: {
-    white: TwitterWhiteIcon,
-    blue: TwitterBlueIcon
-  },
-  facebook: {
-    white: FacebookWhiteIcon
-  },
-  instagram: {
-    white: InstagramWhiteIcon
-  },
+  twitter: TwitterWhiteIcon,
+  facebook: FacebookWhiteIcon,
+  instagram: InstagramWhiteIcon,
   phone: PhoneWhiteIcon,
   heart: HeartIcon,
+  caret: CaretIcon,
   x: XIcon,
   check: CheckIcon,
   feedback: FeedbackIcon

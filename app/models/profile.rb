@@ -1,6 +1,7 @@
 class Profile < ApplicationRecord
   belongs_to :user
   validates :id, presence: true, uniqueness: true
+  belongs_to :recommended_contact_method, class_name: ExternalAuthentication
   has_many :verified_networks
   has_many :external_authentications, through: :verified_networks
 

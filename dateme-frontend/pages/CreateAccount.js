@@ -164,7 +164,10 @@ class CreateAccount extends React.Component {
             <Text type="PageTitle">Create account</Text>
 
             <div className="Row">
-              <ExternalAuthentication account={this.props.externalAccount} />
+              <ExternalAuthentication
+                account={this.props.externalAccount}
+                provider={this.props.externalAccount.provider}
+              />
 
               <Text size="16px">
                 Thanks for verifying with {EXTERNAL_ACCOUNT_LABELS[provider]}!

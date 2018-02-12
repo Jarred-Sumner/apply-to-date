@@ -51,9 +51,10 @@ class VerifyButton extends React.Component {
       <Button
         onClick={triggerLogin}
         color={provider}
+        size="small"
         icon={<VerifiedIconComponent width="17px" height="17px" />}
       >
-        Connect with {provider}
+        Connect
       </Button>
     );
   }

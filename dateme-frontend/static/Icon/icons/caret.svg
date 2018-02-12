@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="9px" height="5px" viewBox="0 0 9 5" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>caret</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Edit-Profile-Add-Social-(Desktop)" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-473.000000, -518.000000)">
+        <g id="Split-Field" transform="translate(305.000000, 498.000000)" class="SVGFill">
+            <g id="Input-Form" transform="translate(25.000000, 11.000000)">
+                <path d="M147.5,12.3327899 L150.666204,9.22464687 C150.971328,8.92511771 151.466032,8.92511771 151.771157,9.22464687 C152.076281,9.52417603 152.076281,10.0098088 151.771157,10.3093379 L148.240396,13.7753531 C148.039662,13.9724064 147.756877,14.0398229 147.5,13.9776027 C147.243123,14.0398229 146.960338,13.9724064 146.759604,13.7753531 L143.228843,10.3093379 C142.923719,10.0098088 142.923719,9.52417603 143.228843,9.22464687 C143.533968,8.92511771 144.028672,8.92511771 144.333796,9.22464687 L147.5,12.3327899 Z" id="caret"></path>
+            </g>
+        </g>
+    </g>
+</svg>
