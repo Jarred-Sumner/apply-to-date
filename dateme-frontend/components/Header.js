@@ -4,7 +4,6 @@ import Button from "./Button";
 import LoginGate, { LOGIN_STATUSES } from "./LoginGate";
 import { AlertHost } from "./Alert";
 import FeedbackForm from "./FeedbackForm";
-import BurgerMenu from "react-burger-menu";
 import { isMobile } from "../lib/Mobile";
 
 class Header extends React.Component {
@@ -91,29 +90,6 @@ class Header extends React.Component {
               <div className="RightSide">
                 {!showChildren && this.renderButtons()}
               </div>
-
-              <style jsx>{`
-                header {
-                  padding: 14px 40px;
-                  display: flex;
-                  border-bottom: 1px solid #e8e8e8;
-                  background-color: white;
-                  z-index: 999;
-                }
-
-                .RightSide {
-                  margin-left: auto;
-                  margin-top: auto;
-                  margin-bottom: auto;
-                  display: flex;
-                }
-
-                @media (max-width: 460px) {
-                  header {
-                    padding: 18px 20px;
-                  }
-                }
-              `}</style>
             </header>
             {isMobile() && renderSubheader && renderSubheader()}
           </div>
@@ -134,6 +110,12 @@ class Header extends React.Component {
             margin-top: auto;
             margin-bottom: auto;
             display: flex;
+          }
+
+          @media (max-width: 460px) {
+            header {
+              padding: 18px 20px;
+            }
           }
         `}</style>
       </React.Fragment>
