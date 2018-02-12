@@ -85,6 +85,11 @@ export default class Hamburger extends React.Component {
         </Portal>
 
         <style jsx global>{`
+          @media (min-width: 460px) {
+            .bm-burger-button {
+              display: none;
+            }
+          }
           .hamburgerlink {
             display: block;
             margin-bottom: 20px;

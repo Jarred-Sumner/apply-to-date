@@ -13,26 +13,26 @@ class Header extends React.Component {
     }
 
     return (
-      <Hamburger />
-      // <div className="Buttons">
-      //   <Button href="/login" fill={false}>
-      //     Sign in
-      //   </Button>
+      // <Hamburger />
+      <div className="Buttons">
+        <Button href="/login" fill={false}>
+          Sign in
+        </Button>
 
-      // <Button href="/sign-up" fill>
-      //   Get your own page
-      // </Button>
+        <Button href="/sign-up" fill>
+          Get your own page
+        </Button>
 
-      //   <style jsx>{`
-      //     .Buttons {
-      //       margin-left: auto;
-      //       display: grid;
-      //       grid-template-columns: auto auto;
-      //       grid-template-rows: 1fr;
-      //       grid-column-gap: 14px;
-      //     }
-      //   `}</style>
-      // </div>
+        <style jsx>{`
+          .Buttons {
+            margin-left: auto;
+            display: grid;
+            grid-template-columns: auto auto;
+            grid-template-rows: 1fr;
+            grid-column-gap: 14px;
+          }
+        `}</style>
+      </div>
     );
   };
 
@@ -85,6 +85,12 @@ class Header extends React.Component {
                 @media (max-width: 460px) {
                   header {
                     padding: 18px 20px;
+                  }
+                }
+
+                @media (min-width: 460px) {
+                  Hamburger {
+                    display: none;
                   }
                 }
               `}</style>
