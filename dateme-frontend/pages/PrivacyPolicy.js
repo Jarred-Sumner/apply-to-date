@@ -14,32 +14,11 @@ import Router from "next/router";
 import Alert from "../components/Alert";
 import Page from "../components/Page";
 
-class PrivacyPolicy extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      username: "",
-      password: "",
-      isLoggingIn: false
-    };
-  }
-
-  componentDidMount() {
-    if (this.props.url.query.from) {
-      Alert.error("To continue, please login");
-    }
-  }
-
-  setUsername = username => this.setState({ username });
-  setPassword = password => this.setState({ password });
-
+class PrivacyPolicy extends React.PureComponent {
   render() {
-    const { username, password, isLoggingIn } = this.state;
-
     return (
       <Page>
-        <Head title="PrivacyPolicy | ApplyToDate" />
+        <Head title="Privacy Policy | ApplyToDate" />
         <article>
           <main>
             <Text type="PageTitle">Privacy Policy</Text>
@@ -134,10 +113,8 @@ class PrivacyPolicy extends React.Component {
               </Text>
               <Text type="paragraph">
                 <p>
-                  Cookies are files with small amount of data that is commonly
-                  used an anonymous unique identifier. These are sent to your
-                  browser from the website that you visit and are stored on your
-                  device internal memory.
+                  We may employ third-party companies and individuals due to the
+                  following reasons:
                 </p>
 
                 <ul>
@@ -287,14 +264,6 @@ class PrivacyPolicy extends React.Component {
   }
 }
 
-const PrivacyPolicyWithStore = withRedux(
-  initStore,
-  (state, props) => {
-    return {
-      currentUser: state.currentUserId ? state.user[state.currentUserId] : null
-    };
-  },
-  dispatch => bindActionCreators({ updateEntities, setCurrentUser }, dispatch)
-)(PrivacyPolicy);
+const PrivacyPolicyWithStore = withRedux(initStore)(PrivacyPolicy);
 
 export default PrivacyPolicyWithStore;
