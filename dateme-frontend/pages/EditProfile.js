@@ -71,6 +71,35 @@ const getWidthForText = (text, isPlaceholder) => {
   }
 };
 
+const getProfileFromProps = props => {
+  const profile = props.profile || {};
+  const {
+    name = "",
+    tagline = "",
+    photos = [],
+    socialLinks = {},
+    recommendedContactMethod = "phone",
+    phone = "",
+    sections: profileSections = {},
+    visible
+  } = profile;
+
+  const sections = _.fromPairs(
+    SECTION_ORDERING.map(key => [key, profileSections[key] || ""])
+  );
+
+  return {
+    name,
+    tagline,
+    photos: photos || [],
+    phone,
+    sections,
+    visible,
+    socialLinks,
+    recommendedContactMethod: recommendedContactMethod || "phone"
+  };
+};
+
 class VerifySocialNetworksContainer extends React.Component {
   constructor(props) {
     super(props);
@@ -122,40 +151,23 @@ class VerifySocialNetworksContainer extends React.Component {
   }
 }
 
-class Profile extends React.Component {
+class EditProfile extends React.Component {
   constructor(props) {
     super(props);
 
-    const profile = props.profile || {};
-    const {
-      name = "",
-      tagline = "",
-      photos = [],
-      socialLinks = {},
-      recommendedContactMethod = "phone",
-      phone = "",
-      sections: profileSections,
-      visible
-    } = profile;
-
-    const sections = _.fromPairs(
-      SECTION_ORDERING.map(key => [key, profileSections[key] || ""])
-    );
-
     this.state = {
+      ...getProfileFromProps(props),
       currentPhotoIndex: null,
       isHeaderSticky: false,
       isSavingProfile: false,
-      name,
-      tagline,
-      photos,
-      phone,
-      sections,
-      visible,
-      socialLinks,
-      recommendedContactMethod: recommendedContactMethod || "phone",
       externalAuthentications: null
     };
+  }
+
+  componentWillReceiveProps(props) {
+    if (props.profile !== this.props.profile) {
+      this.setState(getProfileFromProps(props));
+    }
   }
 
   handleSaveProfile = async (showAlert = true) => {
@@ -168,6 +180,7 @@ class Profile extends React.Component {
       sections,
       externalAuthentications,
       phone,
+      visible,
       recommendedContactMethod
     } = this.state;
 
@@ -179,8 +192,8 @@ class Profile extends React.Component {
       isSavingProfile: true
     });
 
-    return updateProfile({
-      id: this.props.profile.id,
+    const params = {
+      visible: visible,
       name: name !== this.props.profile.name ? name : undefined,
       tagline: tagline !== this.props.profile.tagline ? tagline : undefined,
       photos: !_.isEqual(photos, this.props.profile.photos)
@@ -201,11 +214,22 @@ class Profile extends React.Component {
       social_links: _.isEqual(socialLinks, this.props.profile.socialLinks)
         ? undefined
         : socialLinks
+    };
+
+    _.each(params, (value, key) => {
+      if (value === undefined) {
+        delete params[key];
+      }
+    });
+
+    return updateProfile({
+      id: this.props.profile.id,
+      ...params
     })
       .then(response => {
         this.props.updateEntities(response.body);
         if (showAlert) {
-          Alert.success("Updated your site successfully!");
+          Alert.success("Saved.");
         }
 
         return response.body;
@@ -232,7 +256,11 @@ class Profile extends React.Component {
     });
   };
 
-  toggleVisible = () => this.setState({ visible: !this.state.visible });
+  toggleVisible = () => {
+    this.setState({ visible: !this.state.visible }, () => {
+      this.handleSaveProfile();
+    });
+  };
 
   paragraphs = () => {
     const { sections } = this.state;
@@ -509,6 +537,33 @@ class Profile extends React.Component {
   }
 }
 
+class ProfileGate extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isLoadingProfile: true
+    };
+  }
+  async componentDidMount() {
+    getProfile(this.props.currentUser.username).then(response => {
+      this.props.updateEntities(response.body);
+
+      this.setState({
+        isLoadingProfile: false
+      });
+    });
+  }
+
+  render() {
+    if (!this.props.profile || this.state.isLoadingProfile) {
+      return null;
+    } else {
+      return <EditProfile {...this.props} />;
+    }
+  }
+}
+
 const ProfileWithStore = withRedux(
   initStore,
   (state, props) => {
@@ -516,7 +571,7 @@ const ProfileWithStore = withRedux(
 
     if (currentUser) {
       return {
-        profile: currentUser.profile
+        profile: state.profile[currentUser.username]
       };
     } else {
       return {
@@ -526,7 +581,7 @@ const ProfileWithStore = withRedux(
   },
   dispatch => bindActionCreators({ updateEntities, setCurrentUser }, dispatch)
 )(
-  LoginGate(Profile, {
+  LoginGate(ProfileGate, {
     loginRequired: true
   })
 );

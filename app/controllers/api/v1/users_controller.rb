@@ -5,7 +5,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
       @external_authentication = ExternalAuthentication.find(params[:external_authentication_id])
 
       if create_params[:sex].blank?
-        return render_error(message: "Please choose your gender identity")
+        return render_error(message: "Please choose your gender")
       end
 
       if create_params[:interested_in_men].blank? && create_params[:interested_in_women].blank? && create_params[:interested_in_other].blank?
@@ -36,9 +36,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 
   def me
     if logged_in?
-      render json: UserSerializer.new(current_user, {
-        include: [:profile]
-      }).serializable_hash
+      render json: UserSerializer.new(current_user).serializable_hash
     else
       render json: { data: nil }
     end

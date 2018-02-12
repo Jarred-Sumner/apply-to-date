@@ -8,9 +8,10 @@ import Hamburger from "../components/Hamburger";
 
 class Header extends React.Component {
   renderAuthButtons = () => {
-    // if (this.props.loginStatus === LOGIN_STATUSES.loggedIn) {
-    //   return null;
-    // }
+    if (this.props.loginStatus === LOGIN_STATUSES.loggedIn) {
+      return null;
+    }
+
     return (
       <Hamburger />
       // <div className="Buttons">
@@ -18,9 +19,9 @@ class Header extends React.Component {
       //     Sign in
       //   </Button>
 
-      //   <Button href="/sign-up" fill>
-      //     Get your own site
-      //   </Button>
+      // <Button href="/sign-up" fill>
+      //   Get your own page
+      // </Button>
 
       //   <style jsx>{`
       //     .Buttons {
@@ -61,6 +62,7 @@ class Header extends React.Component {
 
               {showChildren && children}
               <div className="RightSide">
+                <Hamburger />
                 {!showChildren && this.renderButtons()}
               </div>
 

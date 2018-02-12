@@ -5,11 +5,12 @@ export const handleApiError = error => {
   console.error(error);
 
   if (error.response) {
-    if (!_.isEmpty(error.response.body.message)) {
-      if (typeof error.response.body.message === "string") {
-        Alert.error(error.response.body.message);
+    const message = _.get(error, "response.body.message");
+    if (message) {
+      if (typeof message === "string") {
+        Alert.error(message);
       } else {
-        Alert.error(_.first(error.response.body.message));
+        Alert.error(_.first(message));
       }
 
       return;

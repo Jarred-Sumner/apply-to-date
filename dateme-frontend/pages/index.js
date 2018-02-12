@@ -176,11 +176,10 @@ class Homepage extends React.Component {
         <article>
           <main>
             <div className="Copy">
-              {/* <img className="Logo Logo-Home" src="/static/large-brand.svg" /> */}
               <img className="Logo Logo-Home" src="/static/animatedlogo.gif" />
               <div className="Copy-title">
                 <Text font="serif" size="36px" lineHeight="44px" weight="bold">
-                  A personal website to get dates
+                  A personal page to get dates
                 </Text>
               </div>
               <div className="Copy-body">
