@@ -8,10 +8,10 @@ import FormField from "../components/FormField";
 import Text from "../components/Text";
 import _ from "lodash";
 import { updateEntities, setCurrentUser, initStore } from "../redux/store";
-import { getFeaturedProfiles, getCurrentUser } from "../api";
+import { getCurrentUser, login } from "../api";
 import { bindActionCreators } from "redux";
-import Router from "next/router";
-import Alert from "../components/Alert";
+import { Router } from "../routes";
+import Alert, { handleApiError } from "../components/Alert";
 import Page from "../components/Page";
 
 class Login extends React.Component {
@@ -34,19 +34,50 @@ class Login extends React.Component {
   setUsername = username => this.setState({ username });
   setPassword = password => this.setState({ password });
 
-  login = evt => {};
+  handleLogin = async evt => {
+    evt.preventDefault();
+    const { isLoggingIn } = this.state;
+    if (isLoggingIn) {
+      return;
+    }
+
+    this.setState({
+      isLoggingIn: true
+    });
+
+    try {
+      const userResponse = await login({
+        username: this.state.username,
+        password: this.state.password
+      });
+
+      this.props.setCurrentUser(userResponse.body.data.id);
+      this.props.updateEntities(userResponse.body);
+
+      const username = _.get(userResponse, "body.data.username");
+      if (username) {
+        Router.push(`/${username}/edit`);
+      } else {
+        Router.push(`/account`);
+      }
+    } catch (exception) {
+      handleApiError(exception);
+    }
+
+    this.setState({ isLoggingIn: false });
+  };
 
   render() {
     const { username, password, isLoggingIn } = this.state;
 
     return (
-      <Page>
+      <Page size="small">
         <Head title="Login | ApplyToDate" />
         <article>
           <main>
             <Text type="PageTitle">Login</Text>
 
-            <form onSubmit={this.login}>
+            <form onSubmit={this.handleLogin}>
               <FormField
                 name="email"
                 type="text"
@@ -67,7 +98,7 @@ class Login extends React.Component {
                 minLength={3}
               />
 
-              <Button>Login</Button>
+              <Button pending={isLoggingIn}>Login</Button>
             </form>
           </main>
 

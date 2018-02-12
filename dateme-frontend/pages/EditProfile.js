@@ -72,7 +72,8 @@ class VerifySocialNetworksContainer extends React.Component {
     super(props);
 
     this.state = {
-      externalAuthentications: []
+      externalAuthentications: [],
+      isLoading: true
     };
   }
 
@@ -80,7 +81,8 @@ class VerifySocialNetworksContainer extends React.Component {
     const response = await getVerifications();
 
     this.setState({
-      externalAuthentications: response.body.data
+      externalAuthentications: response.body.data,
+      isLoading: false
     });
   }
 
@@ -97,8 +99,16 @@ class VerifySocialNetworksContainer extends React.Component {
   };
 
   render() {
+    if (this.state.isLoading) {
+      return null;
+    }
+
     return (
       <VerifyNetworksSection
+        recommendedContactMethod={this.props.recommendedContactMethod}
+        setRecommendedContactMethod={this.props.setRecommendedContactMethod}
+        phone={this.props.phone}
+        setPhone={this.props.setPhone}
         externalAuthentications={this.state.externalAuthentications}
         save={() => this.props.onSave(false)}
         whitelist={["twitter", "facebook", "instagram", "phone"]}
@@ -117,10 +127,15 @@ class Profile extends React.Component {
       name = "",
       tagline = "",
       photos = [],
-      sections = {},
       socialLinks = {},
-      recommendedContactMethod = null
+      recommendedContactMethod = "phone",
+      phone = "",
+      sections: profileSections
     } = profile;
+
+    const sections = _.fromPairs(
+      SECTION_ORDERING.map(key => [key, profileSections[key] || ""])
+    );
 
     this.state = {
       currentPhotoIndex: null,
@@ -129,9 +144,10 @@ class Profile extends React.Component {
       name,
       tagline,
       photos,
+      phone,
       sections,
       socialLinks,
-      recommendedContactMethod,
+      recommendedContactMethod: recommendedContactMethod || "phone",
       externalAuthentications: null
     };
   }
@@ -144,7 +160,9 @@ class Profile extends React.Component {
       tagline,
       photos,
       sections,
-      externalAuthentications
+      externalAuthentications,
+      phone,
+      recommendedContactMethod
     } = this.state;
 
     if (isSavingProfile) {
@@ -157,15 +175,26 @@ class Profile extends React.Component {
 
     return updateProfile({
       id: this.props.profile.id,
-      name,
-      tagline,
-      photos,
-      sections,
+      name: name !== this.props.profile.name ? name : undefined,
+      tagline: tagline !== this.props.profile.tagline ? tagline : undefined,
+      photos: !_.isEqual(photos, this.props.profile.photos)
+        ? photos
+        : undefined,
+      phone: phone !== this.props.profile.phone ? phone : undefined,
+      recommended_contact_method:
+        recommendedContactMethod !== this.props.profile.recommendedContactMethod
+          ? recommendedContactMethod
+          : undefined,
+      sections: _.isEqual(sections, this.props.profile.sections)
+        ? undefined
+        : sections,
       external_authentications:
         externalAuthentications === null
           ? undefined
           : externalAuthentications.map(({ id }) => id),
-      social_links: socialLinks
+      social_links: _.isEqual(socialLinks, this.props.profile.socialLinks)
+        ? undefined
+        : socialLinks
     })
       .then(response => {
         this.props.updateEntities(response.body);
@@ -189,6 +218,7 @@ class Profile extends React.Component {
 
   enableStickyHeader = () => this.setState({ isHeaderSticky: true });
   disableStickyHeader = () => this.setState({ isHeaderSticky: false });
+  setPhone = phone => this.setState({ phone });
 
   setCurrentPhoto = url => {
     this.setState({
@@ -220,7 +250,7 @@ class Profile extends React.Component {
   };
 
   setRecommendedContactMethod = recommendedContactMethod =>
-    this.setState({ setRecommendedContactMethod });
+    this.setState({ recommendedContactMethod });
   setExternalAuthentications = externalAuthentications =>
     this.setState({ externalAuthentications });
   setName = evt => this.setState({ name: evt.target.value });
@@ -239,6 +269,7 @@ class Profile extends React.Component {
       tagline,
       photos,
       socialLinks,
+      phone,
       externalAuthentications,
       recommendedContactMethod
     } = this.state;
@@ -313,6 +344,8 @@ class Profile extends React.Component {
               setRecommendedContactMethod={this.setRecommendedContactMethod}
               setExternalAuthentications={this.setExternalAuthentications}
               onSave={this.handleSaveProfile}
+              setPhone={this.setPhone}
+              phone={phone}
             />
           </div>
         </section>

@@ -25,6 +25,8 @@ export const PLACEHOLDER_BY_PROVIDER = {
 const getUsername = account => {
   if (account.provider === "facebook") {
     return account.name;
+  } else if (account.provider === "twitter") {
+    return `@${account.username}`;
   } else {
     return account.username;
   }
@@ -34,7 +36,7 @@ class ExternalAccount extends React.Component {
   getLabel = () => {
     const { account, phone = "", provider } = this.props;
     if (provider === "phone") {
-      return phone || (account && account.username) || "";
+      return phone || "";
     } else if (account) {
       return getUsername(account);
     } else {

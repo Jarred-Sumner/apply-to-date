@@ -1,9 +1,12 @@
 class Profile < ApplicationRecord
   belongs_to :user
   validates :id, presence: true, uniqueness: true
-  belongs_to :recommended_contact_method, class_name: ExternalAuthentication
   has_many :verified_networks
   has_many :external_authentications, through: :verified_networks
+  validates :recommended_contact_method, presence: true, inclusion: { in: ['phone', 'twitter', 'instagram', 'facebook'] }, :unless => :draft?
+  
+  validates :tagline, presence: true, :if => :visible?
+  validates :photos, presence: true, :if => :visible?
 
   DEFAULT_SECTIONS = [
     'introduction',
@@ -11,6 +14,10 @@ class Profile < ApplicationRecord
     'looking-for',
     'not-looking-for'
   ]
+
+  def draft?
+    !visible?
+  end
 
   def self.build_default_sections
     DEFAULT_SECTIONS.map do |section|

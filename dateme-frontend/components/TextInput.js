@@ -19,6 +19,8 @@ export default class TextInput extends React.Component {
       iconSize,
       inline,
       inputRef,
+      onChangeText,
+      onChange,
       ...otherProps
     } = this.props;
     return (

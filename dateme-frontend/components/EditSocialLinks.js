@@ -11,7 +11,7 @@ export default class EditSocialLinks extends React.Component {
   };
 
   render() {
-    const { socialLinks, blacklist = [] } = this.props;
+    const { socialLinks = {}, blacklist = [] } = this.props;
 
     return (
       <section className="Section Section--socialLinks">

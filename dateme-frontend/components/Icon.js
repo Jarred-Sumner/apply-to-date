@@ -5,7 +5,7 @@ import TwitterBlueIcon from "../static/Icon/icons/twitter-blue.svg";
 
 import FacebookWhiteIcon from "../static/Icon/icons/facebook-white.svg";
 
-import PhoneWhiteIcon from "../static/Icon/icons/facebook-white.svg";
+import PhoneWhiteIcon from "../static/Icon/icons/phone-white.svg";
 
 import InstagramWhiteIcon from "../static/Icon/icons/instagram-white.svg";
 
@@ -32,9 +32,6 @@ const ICON_COMPONENT_BY_TYPE = {
 
 export default ({ type, color = "#ffffff", size = "18px" }) => {
   let Component = ICON_COMPONENT_BY_TYPE[type];
-  if (color && Component[color]) {
-    Component = Component[color];
-  }
 
   return (
     <div className="IconContainer">

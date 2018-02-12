@@ -97,6 +97,13 @@ export const getVerifications = () => {
   return get(`/verifications`);
 };
 
+export const login = session => {
+  console.log(session);
+  return post(`/sessions`, {
+    session
+  });
+};
+
 export const submitApplication = ({
   email,
   name,
