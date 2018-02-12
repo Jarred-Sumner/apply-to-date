@@ -18,6 +18,7 @@ import FeedbackIcon from "../static/Icon/icons/feedback.svg";
 import CaretIcon from "../static/Icon/icons/caret.svg";
 import RightCaretIcon from "../static/Icon/icons/caret-right.svg";
 import SwitchOnIcon from "../static/Icon/icons/switch-on.svg";
+import SwitchOffIcon from "../static/Icon/icons/switch-off.svg";
 import PendingVerifyIcon from "../static/Icon/icons/pending-verify.svg";
 import Hamburger from "../static/Icon/icons/hamburger.svg";
 

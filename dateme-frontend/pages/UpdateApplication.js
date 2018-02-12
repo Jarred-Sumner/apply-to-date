@@ -230,7 +230,9 @@ class UpdateApplication extends React.Component {
         <div className="Section-row">
           <EditSocialLinks
             socialLinks={socialLinks}
-            blacklist={externalAuthentications.map(({ provider }) => provider)}
+            blacklist={this.props.application.externalAuthentications.map(
+              ({ provider }) => provider
+            )}
             setSocialLinks={socialLinks => this.setState({ socialLinks })}
           />
         </div>
