@@ -19,6 +19,7 @@ import CaretIcon from "../static/Icon/icons/caret.svg";
 import RightCaretIcon from "../static/Icon/icons/caret-right.svg";
 import SwitchOnIcon from "../static/Icon/icons/switch-on.svg";
 import SwitchOffIcon from "../static/Icon/icons/switch-off.svg";
+import Hamburger from "../static/Icon/icons/hamburger.svg";
 
 const ICON_COMPONENT_BY_TYPE = {
   email: EmailIcon,
