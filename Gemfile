@@ -22,7 +22,7 @@ gem 'therubyracer', platforms: :ruby
 gem 'coffee-rails', '~> 4.2'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
-
+gem 'addressable', require: 'addressable/uri'
 gem 'aws-sdk', '~> 2'
 gem 'sorcery'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder

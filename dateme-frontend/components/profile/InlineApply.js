@@ -1,8 +1,11 @@
 import Button from "../Button";
-import Router from "../../routes";
+import { Router } from "../../routes";
 import SocialLink from "../SocialLink";
 import Icon from "../Icon";
 import Text from "../Text";
+import TextInput from "../TextInput";
+import { BASE_AUTHORIZE_URL } from "../SocialLogin";
+import qs from "qs";
 
 const STATUS = {
   email: "email",
@@ -10,32 +13,26 @@ const STATUS = {
 };
 
 class EmailForm extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      email: this.props.email || ""
-    };
-  }
-
-  setEmail = evt => this.setState({ email: evt.target.value });
-
   handleSubmit = evt => {
     evt.preventDefault();
-    this.props.setEmail(this.state.email);
+    this.props.onApply();
   };
 
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <input
+        <TextInput
           type="email"
           name="email"
+          required
+          icon={<Icon type="email" size="16px" color="#CCC" />}
           autoComplete="email"
-          onChange={this.setEmail}
+          onChangeText={this.props.setEmail}
           placeholder="Your email"
-          value={this.state.email}
+          value={this.props.email}
+          inline
         />
+
         <Button componentType="button" inline>
           Apply for a date
         </Button>
@@ -43,31 +40,9 @@ class EmailForm extends React.Component {
         <style jsx>{`
           form {
             display: flex;
-            height: 42px;
-          }
-
-          input {
-            font-size: 14px;
-            padding: 14px 22px;
-            border-radius: 33px;
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-            border: 1px solid #bababa;
-            border-right: 0px;
-            line-height: 18px;
-            color: #000;
-            outline: none;
-            width: auto;
-            display: flex;
-            flex: 1;
-          }
-
-          input::-webkit-input-placeholder {
-            color: #c5cbd4;
-          }
-
-          input:focus {
-            border-color: #b0b0b0;
+            border: 1px solid #f0f2f7;
+            padding-left: 24px;
+            border-radius: 100px;
           }
         `}</style>
       </form>
@@ -87,28 +62,57 @@ class SocialNetworkForm extends React.Component {
         </Text>
 
         <div className="SocialLinkGroup">
-          <SocialLink provider="instagram" size="42px" />
-          <SocialLink provider="facebook" size="42px" />
-          <SocialLink provider="twitter" size="42px" />
+          <SocialLink
+            hoverable
+            provider="instagram"
+            width="42px"
+            height="42px"
+            active
+            onClick={() => this.props.loginWith("instagram")}
+          />
+          <SocialLink
+            hoverable
+            provider="facebook"
+            width="42px"
+            height="42px"
+            active
+            onClick={() => this.props.loginWith("facebook")}
+          />
+          <SocialLink
+            hoverable
+            provider="twitter"
+            width="42px"
+            height="42px"
+            active
+            onClick={() => this.props.loginWith("twitter")}
+          />
         </div>
 
         <style jsx>{`
           .Container {
             display: grid;
-            grid-auto-flow: row dense;
-            grid-template-rows: 62px auto 20px;
-            grid-row-gap: 14px;
+            grid-auto-flow: row;
+            grid-template-rows: auto auto auto;
+            grid-row-gap: 24px;
 
-            max-width: 314px;
-            padding: 12px 24px;
+            max-width: 300px;
+            padding: 24px;
             justify-content: center;
             align-items: center;
             border: 1px solid #f0f2f7;
+            border-radius: 4px;
+
+            grid-row: auto;
+            margin-left: auto;
+            margin-right: auto;
           }
 
           .SocialLinkGroup {
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
+            align-items: center;
+            flex-shrink: 0;
+            width: 100%;
           }
         `}</style>
       </div>
@@ -116,4 +120,47 @@ class SocialNetworkForm extends React.Component {
   }
 }
 
-export default class InlineApplication extends React.Component {}
+export default class InlineApplication extends React.Component {
+  constructor(props) {
+    super(props);
+
+    const email = props.email || "";
+    this.state = {
+      email,
+      status: email ? STATUS.social : STATUS.email
+    };
+  }
+
+  setEmail = email => this.setState({ email });
+
+  handleLoginWith = provider => {
+    const params = qs.stringify({
+      applicant_email: this.state.email,
+      profile_id: this.props.profileId
+    });
+
+    const url = `${BASE_AUTHORIZE_URL}/${provider}?${params}`;
+    console.log(url);
+    Router.pushRoute(url, url);
+  };
+
+  render() {
+    const { status, email } = this.state;
+
+    if (status === STATUS.email) {
+      return (
+        <EmailForm
+          email={email}
+          setEmail={this.setEmail}
+          onApply={() =>
+            this.setState({
+              status: STATUS.social
+            })
+          }
+        />
+      );
+    } else {
+      return <SocialNetworkForm loginWith={this.handleLoginWith} />;
+    }
+  }
+}

@@ -8,6 +8,8 @@ import TextInput from "./TextInput";
 
 export { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 
+export { default as SexFormField } from "./FormField/SexFormField";
+
 const Suggestion = ({ suggestion, isSelected }) => (
   <div className={classNames("Wrapper", { "Wrapper--selected": isSelected })}>
     <div className="Suggestion">

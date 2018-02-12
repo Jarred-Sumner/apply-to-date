@@ -36,14 +36,8 @@ const SECTION_LABELS = {
 class Profile extends React.Component {
   static async getInitialProps({ query, store, req, isServer }) {
     const profileResponse = await getProfile(query.id);
-    const userResponse = await getCurrentUser();
 
     store.dispatch(updateEntities(profileResponse.body));
-
-    if (userResponse.body.data) {
-      store.dispatch(setCurrentUser(userResponse.body.data.id));
-      store.dispatch(updateEntities(userResponse.body));
-    }
   }
 
   constructor(props) {

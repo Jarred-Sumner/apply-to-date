@@ -67,6 +67,7 @@ const Button = ({
 
           transition: opacity 0.15s linear;
           transition-property: opacity, transform;
+          white-space: nowrap;
         }
 
         .ButtonText {

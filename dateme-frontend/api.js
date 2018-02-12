@@ -65,14 +65,18 @@ export const verifyAccount = ({
   });
 };
 
-export const saveApplication = ({
+export const updateApplication = ({
   email,
   name,
   photos,
   socialLinks,
   tagline,
+  phone,
   externalAuthentications,
+  recommendedContactMethod,
+  sex,
   sections,
+  status,
   profileId
 }) => {
   return post(`/profiles/${profileId}/apply`, {
@@ -80,11 +84,15 @@ export const saveApplication = ({
       email,
       name,
       photos,
+      sex,
+      phone,
       tagline,
+      status,
       external_authentications: externalAuthentications,
+      recommended_contact_method: recommendedContactMethod,
       sections,
       social_links: socialLinks,
-      status: "pending"
+      status
     }
   });
 };
@@ -101,29 +109,5 @@ export const login = session => {
   console.log(session);
   return post(`/sessions`, {
     session
-  });
-};
-
-export const submitApplication = ({
-  email,
-  name,
-  photos,
-  socialLinks,
-  tagline,
-  externalAuthentications,
-  sections,
-  profileId
-}) => {
-  return post(`/profiles/${profileId}/apply`, {
-    application: {
-      email,
-      name,
-      photos,
-      tagline,
-      external_authentications: externalAuthentications,
-      sections,
-      social_links: socialLinks,
-      status: "submitted"
-    }
   });
 };

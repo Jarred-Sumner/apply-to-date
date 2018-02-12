@@ -20,11 +20,21 @@ const SocialLink = ({
       })}
     >
       <div className="SocialIcon--activeIcon">
-        <SocialIcon active={true} provider={provider} />
+        <SocialIcon
+          width={parseInt(width) * 0.6}
+          height={parseInt(height) * 0.6}
+          active={true}
+          provider={provider}
+        />
       </div>
 
       <div className="SocialIcon--disabledIcon">
-        <SocialIcon active={false} provider={provider} />
+        <SocialIcon
+          width={parseInt(width) * 0.6}
+          height={parseInt(height) * 0.6}
+          active={false}
+          provider={provider}
+        />
       </div>
 
       <style jsx>{`
@@ -58,6 +68,8 @@ const SocialLink = ({
           display: flex;
           justify-content: center;
           align-items: center;
+          flex-shrink: 0;
+          flex-grow: 0;
         }
 
         .SocialLink svg {

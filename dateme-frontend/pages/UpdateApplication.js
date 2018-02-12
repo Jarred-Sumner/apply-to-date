@@ -2,12 +2,10 @@ import Link from "next/link";
 import Head from "../components/head";
 import Nav from "../components/nav";
 import { Router } from "../routes";
+import NextRouter from "next/router";
 import withRedux from "next-redux-wrapper";
 import { updateEntities, setCurrentUser, initStore } from "../redux/store";
 import {
-  getProfile,
-  getCurrentUser,
-  updateProfile,
   createApplication,
   saveApplication,
   getSavedApplication
@@ -17,11 +15,8 @@ import Header from "../components/Header";
 import Text from "../components/Text";
 import EditableText from "../components/EditableText";
 import TextArea from "../components/TextArea";
-import InlineApply from "../components/profile/InlineApply";
-import Lightbox from "react-images";
 import _ from "lodash";
 import titleCase from "title-case";
-import Waypoint from "react-waypoint";
 import Button from "../components/Button";
 import Alert, { handleApiError } from "../components/Alert";
 import LoginGate from "../components/LoginGate";
@@ -62,18 +57,23 @@ const getWidthForText = (text, isPlaceholder) => {
   }
 };
 
-class CreateApplication extends React.Component {
+class UpdateApplication extends React.Component {
   static async getInitialProps({ query, store, req, isServer }) {
     try {
-      const profileResponse = await getProfile(query.id);
-      store.dispatch(updateEntities(profileResponse.body));
+      const response = await getSavedApplication(query.id);
 
-      if (query.applicationId) {
-        const applicationResponse = await getSavedApplication(
-          query.applicationId
-        );
-        store.dispatch(updateEntities(applicationResponse.body));
-      }
+      const profile = _.get(response, "body.data.profile");
+      const entities = {
+        ...response,
+        data: [response.body.data, profile]
+      };
+
+      store.dispatch(updateEntities(entities));
+
+      return {
+        applicationId: query.id,
+        profileId: profile.id
+      };
     } catch (exception) {
       console.error(exception);
     }
@@ -85,19 +85,8 @@ class CreateApplication extends React.Component {
     const { application } = props;
 
     this.state = {
-      currentPhotoIndex: null,
-      isHeaderSticky: false,
-      isSavingProfile: false,
       name: _.get(application, "name", ""),
-      tagline: _.get(application, "tagline", ""),
       photos: _.get(application, "photos", []),
-      email: _.get(application, "email", props.url.query.email || ""),
-      socialLinks: _.get(application, "socialLinks", {}),
-      externalAuthentications: _.get(
-        application,
-        "externalAuthentications",
-        []
-      ),
       sections: _.get(application, "sections", {
         introduction: "",
         why: ""
@@ -114,7 +103,10 @@ class CreateApplication extends React.Component {
       tagline,
       socialLinks,
       externalAuthentications,
-      sections
+      recommendedContactMethod,
+      sex,
+      sections,
+      phone
     } = this.state;
     const { id: profileId } = this.props.profile;
 
@@ -126,33 +118,21 @@ class CreateApplication extends React.Component {
       isSavingProfile: true
     });
 
-    return saveApplication({
+    return updateApplication({
       profileId,
       name,
       tagline,
       email,
+      phone,
       socialLinks,
+      sex,
+      recommendedContactMethod,
       sections,
       externalAuthentications: externalAuthentications.map(({ id }) => id),
-      photos
+      photos,
+      status
     })
       .then(async response => {
-        this.props.updateEntities(response.body);
-        const id = _.get(response, "body.data.id");
-        if (id) {
-          const url =
-            this.props.url.asPath.split("?")[0] +
-            `?${qs.stringify({
-              ...this.props.url.query,
-              applicationId: id
-            })}`;
-          return Router.replaceRoute(url, url, { shallow: false }).then(
-            result => {
-              return response.body;
-            }
-          );
-        }
-
         return response.body;
       })
       .catch(error => {
@@ -164,58 +144,6 @@ class CreateApplication extends React.Component {
         this.setState({ isSavingProfile: false });
         return response;
       });
-  };
-
-  submitApplication = async () => {
-    const {
-      isSavingProfile,
-      email,
-      name,
-      photos,
-      tagline,
-      socialLinks,
-      externalAuthentications,
-      sections
-    } = this.state;
-    const { id: profileId } = this.props.profile;
-
-    if (isSavingProfile) {
-      return;
-    }
-
-    this.setState({
-      isSavingProfile: true
-    });
-
-    return submitApplication({
-      profileId,
-      name,
-      tagline,
-      email,
-      socialLinks,
-      sections,
-      externalAuthentications: externalAuthentications.map(({ id }) => id),
-      photos
-    })
-      .then(response => {
-        this.props.updateEntities(response.body);
-        Alert.success("Applied!");
-      })
-      .catch(error => {
-        handleApiError(error);
-      })
-      .finally(() => {
-        this.setState({ isSavingProfile: false });
-      });
-  };
-
-  enableStickyHeader = () => this.setState({ isHeaderSticky: true });
-  disableStickyHeader = () => this.setState({ isHeaderSticky: false });
-
-  setCurrentPhoto = url => {
-    this.setState({
-      currentPhotoIndex: this.props.profile.photos.indexOf(url)
-    });
   };
 
   setEmail = email => this.setState({ email });
@@ -244,78 +172,20 @@ class CreateApplication extends React.Component {
   };
 
   setName = evt => this.setState({ name: evt.target.value });
-  setTagline = evt => this.setState({ tagline: evt.target.value });
   setPhotoAtIndex = index => url => {
     const photos = this.state.photos.slice();
     photos.splice(index, 1, url);
 
     this.setState({ photos: photos });
   };
-  setExternalAuthentications = externalAuthentications =>
-    this.setState({ externalAuthentications });
 
   render() {
     const { profile } = this.props;
-    const {
-      name,
-      photos,
-      socialLinks,
-      email,
-      externalAuthentications
-    } = this.state;
+    const { photos, socialLinks, email, externalAuthentications } = this.state;
 
     return (
       <Page>
         <Head />
-
-        <section className="Section Section--center Section--title">
-          <div className="Section-row">
-            <Text type="ProfilePageTitle">
-              👋 Hi {profile.name}, I'm{" "}
-              <EditableText
-                value={name}
-                onChange={this.setName}
-                placeholder="Your Name"
-                type="ProfilePageTitle"
-                width={getWidthForText(name || "Your Name", !name)}
-              />
-            </Text>
-          </div>
-
-          <div className="Section-row Section-row--email">
-            <Text type="subtitle">You can reach me at:</Text>
-
-            <FormField
-              name="email"
-              type="email"
-              required
-              icon={<Icon type="email" size="20px" color="#B9BED1" />}
-              value={email}
-              onChange={this.setEmail}
-              placeholder="e.g. example@example.com"
-            />
-
-            <Text weight="semiBold" size="14px" color="#820B0B">
-              You’ll receive updates via email, please make sure this is
-              correct.
-            </Text>
-          </div>
-
-          <VerifyNetworksSection
-            externalAuthentications={externalAuthentications}
-            save={this.saveApplication}
-            whitelist={profile.recommendedContactMethods}
-            setExternalAuthentications={this.setExternalAuthentications}
-          />
-
-          <div className="Section-row">
-            <EditSocialLinks
-              socialLinks={socialLinks}
-              blacklist={profile.recommendedContactMethods}
-              setSocialLinks={socialLinks => this.setState({ socialLinks })}
-            />
-          </div>
-        </section>
 
         <section className="Section Section--photos">
           <Text type="label">Share some pics</Text>
@@ -357,8 +227,18 @@ class CreateApplication extends React.Component {
           })}
         </section>
 
+        <div className="Section-row">
+          <EditSocialLinks
+            socialLinks={socialLinks}
+            blacklist={externalAuthentications.map(({ provider }) => provider)}
+            setSocialLinks={socialLinks => this.setState({ socialLinks })}
+          />
+        </div>
+
         <section className="Section Section--apply">
-          <Button onClick={this.applyForDate}>Submit application</Button>
+          <Button componentType="div" onClick={this.saveApplication}>
+            Update application
+          </Button>
         </section>
         <style jsx>{`
           .Section {
@@ -448,17 +328,17 @@ class CreateApplication extends React.Component {
   }
 }
 
-const CreateApplicationWithStore = withRedux(
+const UpdateApplicationWithStore = withRedux(
   initStore,
   (state, props) => {
-    const { id, applicationId } = _.get(props, "url.query", {});
-
+    const { profileId, applicationId } = props;
+    console.log(state);
     return {
-      profile: state.profile[id],
+      profile: state.profile[profileId],
       application: state.application[applicationId]
     };
   },
   dispatch => bindActionCreators({ updateEntities }, dispatch)
-)(LoginGate(CreateApplication));
+)(LoginGate(UpdateApplication));
 
-export default CreateApplicationWithStore;
+export default UpdateApplicationWithStore;

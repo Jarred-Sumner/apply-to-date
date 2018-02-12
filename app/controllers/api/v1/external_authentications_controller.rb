@@ -43,25 +43,21 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
       ActiveRecord::Base.transaction do
         auth = ExternalAuthentication.update_from_omniauth(auth_hash)
 
-        if auth_params[:application_id].present?
-          application = Application.find_by(id: auth_params[:application_id], status: Application.statuses[:pending])
+        if current_application.present?
+          VerifiedNetwork.create!(
+            external_authentication_id: auth.id,
+            application_id: current_application.id,
+          )
 
-          if application.present?
-            VerifiedNetwork.create!(
-              external_authentication_id: auth.id,
-              application_id: auth_params[:application_id]
-            )
+          current_application.social_links = current_application.social_links.merge(
+            auth.build_social_link_entry
+          )
 
-            application.social_links = application.social_links.merge(
-              auth.build_social_link_entry
-            )
-
-            if application.name.blank? && auth.name.present?
-              application.name = auth.name.split(" ").first
-            end
-
-            application.save!
+          if current_application.name.blank? && auth.name.present?
+            current_application.name = auth.name.split(" ").first
           end
+
+          current_application.save!
         elsif auth_params[:profile_id].present? && current_user.profile.try(:id) == auth_params[:profile_id]
           VerifiedNetwork.create!(
             external_authentication_id: auth.id,
@@ -74,15 +70,21 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
         end
 
         if auth_params[:redirect_path].present?
-          redirect_to Rails.application.secrets[:frontend_url] + auth_params[:redirect_path]
+          redirect_to_frontend auth_params[:redirect_path]
+        elsif current_application.present?
+          redirect_to_frontend("/#{current_application.profile_id}/apply",
+            applicationId: current_application.id,
+            email: current_application.email
+          
+        )
         elsif auth.user.present?
-          redirect_to Rails.application.secrets[:frontend_url] + "/#{auth.user.username}"
+          redirect_to_frontend "/#{auth.user.username}"
         elsif auth_params[:signUp] == 'true'
-          redirect_to Rails.application.secrets[:frontend_url] + "/sign-up/#{auth_hash.provider}/#{auth.id}"
+          redirect_to_frontend "/sign-up/#{auth_hash.provider}/#{auth.id}"
         end
       end
     else
-      redirect_to Rails.application.secrets[:frontend_url] + "?login-failure=true"
+      redirect_to_frontend "/", {"login-failure" => true}
     end
   end
 
@@ -91,6 +93,17 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
   end
 
   protected
+
+  def current_application
+    return @current_application if @current_application
+    return nil if auth_params.blank?
+
+    if auth_params[:application_id].present?
+      @current_application = Application.find_by(id: auth_params[:application_id], status: Application.statuses[:pending])
+    elsif auth_params[:applicant_email].present? && auth_params[:profile_id].present?
+      @current_application = Application.fetch(email: auth_params[:applicant_email], profile_id: auth_params[:profile_id])
+    end
+  end
 
   def auth_hash
     request.env['omniauth.auth']

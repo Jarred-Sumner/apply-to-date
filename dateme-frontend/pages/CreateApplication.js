@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Head from "../components/head";
-import Nav from "../components/nav";
 import { Router } from "../routes";
 import withRedux from "next-redux-wrapper";
 import { updateEntities, setCurrentUser, initStore } from "../redux/store";
@@ -8,9 +7,8 @@ import {
   getProfile,
   getCurrentUser,
   updateProfile,
-  createApplication,
-  saveApplication,
-  getSavedApplication
+  getSavedApplication,
+  updateApplication
 } from "../api";
 import { bindActionCreators } from "redux";
 import Header from "../components/Header";
@@ -27,7 +25,7 @@ import Alert, { handleApiError } from "../components/Alert";
 import LoginGate from "../components/LoginGate";
 import Photo from "../components/EditProfile/Photo";
 import Page from "../components/Page";
-import FormField from "../components/FormField";
+import FormField, { SexFormField } from "../components/FormField";
 import EditSocialLinks from "../components/EditSocialLinks";
 import VerifyNetworksSection from "../components/VerifyNetworksSection";
 import qs from "qs";
@@ -64,38 +62,36 @@ const getWidthForText = (text, isPlaceholder) => {
 
 class CreateApplication extends React.Component {
   static async getInitialProps({ query, store, req, isServer }) {
-    try {
-      const profileResponse = await getProfile(query.id);
-      store.dispatch(updateEntities(profileResponse.body));
+    const profileResponse = await getProfile(query.id);
+    store.dispatch(updateEntities(profileResponse.body));
 
-      if (query.applicationId) {
-        const applicationResponse = await getSavedApplication(
-          query.applicationId
-        );
-        store.dispatch(updateEntities(applicationResponse.body));
-      }
-    } catch (exception) {
-      console.error(exception);
-    }
+    const applicationResponse = await getSavedApplication(query.applicationId);
+    store.dispatch(updateEntities(applicationResponse.body));
   }
 
   constructor(props) {
     super(props);
 
-    const { application } = props;
+    const { application, profile } = props;
 
     this.state = {
       currentPhotoIndex: null,
       isHeaderSticky: false,
       isSavingProfile: false,
       name: _.get(application, "name", ""),
+      recommendedContactMethod:
+        _.get(application, "recommendedContactMethod") ||
+        _.get(profile, "recommendedContactMethod") ||
+        "phone",
+      phone: _.get(application, "phone", ""),
       email: _.get(application, "email", props.url.query.email || ""),
       socialLinks: _.get(application, "socialLinks", {}),
+      sex: _.get(application, "sex", ""),
       externalAuthentications: _.get(application, "externalAuthentications", [])
     };
   }
 
-  saveApplication = async () => {
+  saveApplication = async (status = "pending") => {
     const {
       isSavingProfile,
       email,
@@ -104,7 +100,10 @@ class CreateApplication extends React.Component {
       tagline,
       socialLinks,
       externalAuthentications,
-      sections
+      recommendedContactMethod,
+      sex,
+      sections,
+      phone
     } = this.state;
     const { id: profileId } = this.props.profile;
 
@@ -116,33 +115,21 @@ class CreateApplication extends React.Component {
       isSavingProfile: true
     });
 
-    return saveApplication({
+    return updateApplication({
       profileId,
       name,
       tagline,
       email,
+      phone,
       socialLinks,
+      sex,
+      recommendedContactMethod,
       sections,
       externalAuthentications: externalAuthentications.map(({ id }) => id),
-      photos
+      photos,
+      status
     })
       .then(async response => {
-        this.props.updateEntities(response.body);
-        const id = _.get(response, "body.data.id");
-        if (id) {
-          const url =
-            this.props.url.asPath.split("?")[0] +
-            `?${qs.stringify({
-              ...this.props.url.query,
-              applicationId: id
-            })}`;
-          return Router.replaceRoute(url, url, { shallow: false }).then(
-            result => {
-              return response.body;
-            }
-          );
-        }
-
         return response.body;
       })
       .catch(error => {
@@ -156,47 +143,23 @@ class CreateApplication extends React.Component {
       });
   };
 
-  submitApplication = async () => {
-    const {
-      isSavingProfile,
-      email,
-      name,
-      photos,
-      tagline,
-      socialLinks,
-      externalAuthentications,
-      sections
-    } = this.state;
-    const { id: profileId } = this.props.profile;
+  submitApplication = event => {
+    event.preventDefault();
 
-    if (isSavingProfile) {
-      return;
-    }
-
-    this.setState({
-      isSavingProfile: true
+    this.saveApplication("submitted").then(response => {
+      if (response) {
+        return Router.push(`/a/${this.props.application.id}`);
+      } else {
+        return;
+      }
     });
-
-    return submitApplication({
-      profileId,
-      name,
-      email,
-      socialLinks,
-      externalAuthentications: externalAuthentications.map(({ id }) => id)
-    })
-      .then(response => {
-        this.props.updateEntities(response.body);
-      })
-      .catch(error => {
-        handleApiError(error);
-      })
-      .finally(() => {
-        this.setState({ isSavingProfile: false });
-      });
   };
 
-  contactMethod = () => _.first(this.props.profile.recommendedContactMethods);
+  setRecommendedContactMethod = recommendedContactMethod =>
+    this.setState({ recommendedContactMethod });
+  setPhone = phone => this.setState({ phone });
   setEmail = email => this.setState({ email });
+  setSex = sex => this.setState({ sex });
   setName = evt => this.setState({ name: evt.target.value });
   setExternalAuthentications = externalAuthentications =>
     this.setState({ externalAuthentications });
@@ -208,10 +171,11 @@ class CreateApplication extends React.Component {
       photos,
       socialLinks,
       email,
-      externalAuthentications
+      externalAuthentications,
+      recommendedContactMethod,
+      phone,
+      sex
     } = this.state;
-
-    const contactMethod = this.contactMethod();
 
     return (
       <Page size="small">
@@ -243,23 +207,33 @@ class CreateApplication extends React.Component {
               placeholder="e.g. example@example.com"
             />
 
-            <VerifyNetworksSection
-              externalAuthentications={externalAuthentications}
-              whitelist={contactMethod}
-              save={this.saveApplication}
-              setExternalAuthentications={this.setExternalAuthentications}
-            />
-
             <Text weight="semiBold" size="14px" color="#820B0B">
               You’ll receive updates via email, please make sure this is
               correct.
             </Text>
+
+            <VerifyNetworksSection
+              recommendedContactMethod={recommendedContactMethod}
+              setRecommendedContactMethod={this.setRecommendedContactMethod}
+              phone={phone}
+              setPhone={this.setPhone}
+              save={this.saveApplication}
+              externalAuthentications={externalAuthentications}
+              whitelist={["twitter", "facebook", "instagram", "phone"]}
+              setExternalAuthentications={this.setExternalAuthentications}
+            />
+          </div>
+
+          <div className="Section-row">
+            <SexFormField value={sex} onChange={this.setSex} />
           </div>
 
           <div className="Section-row">
             <EditSocialLinks
               socialLinks={socialLinks}
-              blacklist={[contactMethod]}
+              blacklist={externalAuthentications.map(
+                ({ provider }) => provider
+              )}
               setSocialLinks={socialLinks => this.setState({ socialLinks })}
             />
           </div>

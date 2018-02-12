@@ -21,6 +21,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
         create_profile_params.merge(
           user: @user,
           id: @user.username,
+          visible: false,
           name: @external_authentication.name.try(:split, ' ').try(:first),
         )
       )

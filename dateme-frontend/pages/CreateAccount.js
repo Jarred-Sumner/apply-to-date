@@ -13,7 +13,8 @@ import Router from "next/router";
 import classNames from "classnames";
 import FormField, {
   geocodeByAddress,
-  getLatLng
+  getLatLng,
+  SexFormField
 } from "../components/FormField";
 import Icon from "../components/Icon";
 import ExternalAuthentication, {
@@ -224,29 +225,7 @@ class CreateAccount extends React.Component {
                 />
               </FormField>
 
-              <FormField
-                label="I identify as"
-                type="radio"
-                required
-                name="sex"
-                value={sex}
-                onChange={this.setSex}
-                showBorder={false}
-                radios={[
-                  {
-                    label: "Male",
-                    value: "male"
-                  },
-                  {
-                    label: "Female",
-                    value: "female"
-                  },
-                  {
-                    label: "Other",
-                    value: "other"
-                  }
-                ]}
-              />
+              <SexFormField value={sex} onChange={this.setSex} />
 
               <FormField
                 label="Interested in"
