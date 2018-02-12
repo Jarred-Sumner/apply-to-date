@@ -27,6 +27,11 @@ routes
     page: "PrivacyPolicy"
   })
   .add({
+    name: "TermsOfService",
+    pattern: "/terms-of-service",
+    page: "TermsOfService"
+  })
+  .add({
     name: "profile",
     pattern: "/:id",
     page: "profile"
