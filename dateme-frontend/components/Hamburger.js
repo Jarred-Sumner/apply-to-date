@@ -140,7 +140,7 @@ export default class Hamburger extends React.Component {
             background: #ffffff;
             padding: 2.5em 1.5em 0;
             font-size: 1.15em;
-            box-shadow: 0 7px 27px 0 rgba(221, 231, 243, 0.83);
+            box-shadow: 6px 7px 21px 0 rgba(221, 231, 243, 0.83);
           }
 
           /* Morph shape necessary with bubble or elastic */
