@@ -1,7 +1,15 @@
 import Button from "../Button";
-import Router from "next/router";
+import Router from "../../routes";
+import SocialLink from "../SocialLink";
+import Icon from "../Icon";
+import Text from "../Text";
 
-export default class InlineEmailApplication extends React.Component {
+const STATUS = {
+  email: "email",
+  social: "social"
+};
+
+class EmailForm extends React.Component {
   constructor(props) {
     super(props);
 
@@ -14,13 +22,7 @@ export default class InlineEmailApplication extends React.Component {
 
   handleSubmit = evt => {
     evt.preventDefault();
-
-    Router.push({
-      pathname: `/${this.props.profileId}/apply`,
-      query: {
-        email: this.state.email
-      }
-    });
+    this.props.setEmail(this.state.email);
   };
 
   render() {
@@ -72,3 +74,46 @@ export default class InlineEmailApplication extends React.Component {
     );
   }
 }
+
+class SocialNetworkForm extends React.Component {
+  render() {
+    return (
+      <div className="Container">
+        <Icon type="pending-verify" size="62px" color="#000" />
+
+        <Text size="14px">
+          To finish applying, please connect a social profile to verify your
+          identity.
+        </Text>
+
+        <div className="SocialLinkGroup">
+          <SocialLink provider="instagram" size="42px" />
+          <SocialLink provider="facebook" size="42px" />
+          <SocialLink provider="twitter" size="42px" />
+        </div>
+
+        <style jsx>{`
+          .Container {
+            display: grid;
+            grid-auto-flow: row dense;
+            grid-template-rows: 62px auto 20px;
+            grid-row-gap: 14px;
+
+            max-width: 314px;
+            padding: 12px 24px;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #f0f2f7;
+          }
+
+          .SocialLinkGroup {
+            display: flex;
+            justify-content: space-between;
+          }
+        `}</style>
+      </div>
+    );
+  }
+}
+
+export default class InlineApplication extends React.Component {}
