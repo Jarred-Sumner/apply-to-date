@@ -239,7 +239,8 @@ class Profile extends React.Component {
           }
 
           .ApplicationForm {
-            width: 40rem;
+            max-width: 40rem;
+            width: 100%;
             margin-left: auto;
             margin-right: auto;
           }
@@ -250,6 +251,9 @@ class Profile extends React.Component {
             text-align: center;
             align-items: center;
             justify-content: center;
+          }
+
+          @media (max-width: 500px) {
           }
         `}</style>
       </Page>

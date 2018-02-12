@@ -101,8 +101,7 @@ class Login extends React.Component {
               <Button pending={isLoggingIn}>Login</Button>
             </form>
           </main>
-
-          <footer>
+          <div className="password-link">
             <Link href={"/forgot-password"}>
               <a>
                 <Text size="14px" type="link">
@@ -110,7 +109,7 @@ class Login extends React.Component {
                 </Text>
               </a>
             </Link>
-          </footer>
+          </div>
         </article>
         <style jsx>{`
           article {
@@ -134,11 +133,14 @@ class Login extends React.Component {
             grid-row-gap: 14px;
           }
 
+          .password-link {
+            text-align: center;
+          }
+
           footer {
             display: flex;
             flex-direction: column;
-            text-align: left;
-            padding-left: 22px;
+            text-align: center;
           }
         `}</style>
       </Page>

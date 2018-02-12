@@ -7,10 +7,14 @@ import FeedbackForm from "./FeedbackForm";
 import { isMobile } from "../lib/Mobile";
 
 class Header extends React.Component {
+  showSettings(event) {
+    event.preventDefault();
+  }
+
   renderAuthButtons = () => {
-    if (this.props.loginStatus === LOGIN_STATUSES.loggedIn) {
-      return null;
-    }
+    // if (this.props.loginStatus === LOGIN_STATUSES.loggedIn) {
+    //   return null;
+    // }
     return (
       <div className="Buttons">
         <Button href="/login" fill={false}>
@@ -106,6 +110,12 @@ class Header extends React.Component {
             margin-top: auto;
             margin-bottom: auto;
             display: flex;
+          }
+
+          @media (max-width: 460px) {
+            header {
+              padding: 18px 20px;
+            }
           }
         `}</style>
       </React.Fragment>
