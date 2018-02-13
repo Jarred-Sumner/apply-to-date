@@ -4,7 +4,8 @@ import Button from "./Button";
 import LoginGate, { LOGIN_STATUSES } from "./LoginGate";
 import { AlertHost } from "./Alert";
 import FeedbackForm from "./FeedbackForm";
-import Hamburger from "../components/Hamburger";
+// import Hamburger from "../components/Hamburger";
+import BurgerIcon from "../components/BurgerIcon";
 
 class Header extends React.Component {
   renderAuthButtons = () => {
@@ -61,7 +62,7 @@ class Header extends React.Component {
 
               {showChildren && children}
               <div className="RightSide">
-                <Hamburger />
+                <BurgerIcon />
                 {!showChildren && this.renderButtons()}
               </div>
 
