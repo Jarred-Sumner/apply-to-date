@@ -57,7 +57,51 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
   end
 
   def update
+    @application = Application.find(params[:id])
+    if @application.applicant_id.present? && current_user.try(:id) != @application.applicant_id
+      return render_forbidden
+    end
 
+    ActiveRecord::Base.transaction do
+      if !update_params[:social_links].nil?
+        social_links = ExternalAuthentication.update_social_links(
+          update_params[:social_links]
+        )
+        @application.update!(social_links: social_links)
+      end
+
+      if !params[:application][:photos].nil?
+        photos = Array(params[:application][:photos])
+        # Ensure Photo URLs are valid
+        begin
+          photos.each do |photo|
+            URI.parse(URI.encode(photo))
+          end
+        rescue URI::InvalidURIError
+          raise ArgumentError.new("Please re-upload your photos and try again")
+        end
+
+        @application.update(photos: photos)
+      end
+
+      if params[:application][:sections].present?
+        sections = params[:application][:sections].permit(Application::DEFAULT_SECTIONS)
+        @application.update!(sections: sections)
+      end
+
+      if !update_params[:email].nil?
+        if Application.fetch(email: update_params[:email], profile_id: @application.profile_id)
+          raise ArgumentError.new("Try a different email")
+        end
+
+        @application.update!(email: String(update_params[:email]).downcase)
+      end
+
+    end
+
+    render json: ApplicantApplicationSerializer.new(@application, {
+      include: [:external_authentications, :profile]
+    }).serializable_hash
   end
 
   private def create_params

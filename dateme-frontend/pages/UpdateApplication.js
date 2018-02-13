@@ -6,7 +6,7 @@ import NextRouter from "next/router";
 import withRedux from "next-redux-wrapper";
 import { updateEntities, setCurrentUser, initStore } from "../redux/store";
 import {
-  createApplication,
+  updateExistingApplication,
   saveApplication,
   getSavedApplication
 } from "../api";
@@ -20,10 +20,10 @@ import titleCase from "title-case";
 import Button from "../components/Button";
 import Alert, { handleApiError } from "../components/Alert";
 import LoginGate from "../components/LoginGate";
-import Photo from "../components/EditProfile/Photo";
 import Page from "../components/Page";
 import FormField from "../components/FormField";
 import EditSocialLinks from "../components/EditSocialLinks";
+import EditablePhotos from "../components/EditablePhotos";
 import VerifyNetworksSection from "../components/VerifyNetworksSection";
 import qs from "qs";
 import Icon from "../components/Icon";
@@ -94,43 +94,24 @@ class UpdateApplication extends React.Component {
     };
   }
 
-  saveApplication = async () => {
-    const {
-      isSavingProfile,
-      email,
-      name,
-      photos,
-      tagline,
-      socialLinks,
-      externalAuthentications,
-      recommendedContactMethod,
-      sex,
-      sections,
-      phone
-    } = this.state;
-    const { id: profileId } = this.props.profile;
+  handleUpdateApplication = async () => {
+    const { isSaving, email, photos, socialLinks, sections } = this.state;
+    const { id } = this.props.application;
 
-    if (isSavingProfile) {
+    if (isSaving) {
       return;
     }
 
     this.setState({
-      isSavingProfile: true
+      isSaving: true
     });
 
-    return updateApplication({
-      profileId,
-      name,
-      tagline,
+    return updateExistingApplication({
       email,
-      phone,
-      socialLinks,
-      sex,
-      recommendedContactMethod,
-      sections,
-      externalAuthentications: externalAuthentications.map(({ id }) => id),
       photos,
-      status
+      id,
+      socialLinks,
+      sections
     })
       .then(async response => {
         return response.body;
@@ -141,7 +122,7 @@ class UpdateApplication extends React.Component {
         return null;
       })
       .finally(response => {
-        this.setState({ isSavingProfile: false });
+        this.setState({ isSaving: false });
         return response;
       });
   };
@@ -189,23 +170,10 @@ class UpdateApplication extends React.Component {
 
         <section className="Section Section--photos">
           <Text type="label">Share some pics</Text>
-          <div className="PhotosContainer">
-            <Photo
-              key={photos[0] || 0}
-              url={photos[0]}
-              setURL={this.setPhotoAtIndex(0)}
-            />
-            <Photo
-              key={photos[1] || 1}
-              url={photos[1]}
-              setURL={this.setPhotoAtIndex(1)}
-            />
-            <Photo
-              key={photos[2] || 2}
-              url={photos[2]}
-              setURL={this.setPhotoAtIndex(2)}
-            />
-          </div>
+          <EditablePhotos
+            photos={photos}
+            setPhotoAtIndex={this.setPhotoAtIndex}
+          />
         </section>
         <section className="Section Section--bio">
           {this.paragraphs().map(paragraph => {
@@ -227,7 +195,10 @@ class UpdateApplication extends React.Component {
           })}
         </section>
 
-        <div className="Section-row">
+        <section className="Section Section--profiles">
+          <Text type="title" align="center">
+            Social profiles
+          </Text>
           <EditSocialLinks
             socialLinks={socialLinks}
             blacklist={this.props.application.externalAuthentications.map(
@@ -235,10 +206,14 @@ class UpdateApplication extends React.Component {
             )}
             setSocialLinks={socialLinks => this.setState({ socialLinks })}
           />
-        </div>
+        </section>
 
         <section className="Section Section--apply">
-          <Button componentType="div" onClick={this.saveApplication}>
+          <Button
+            pending={this.state.isSaving}
+            componentType="div"
+            onClick={this.handleUpdateApplication}
+          >
             Update application
           </Button>
         </section>
@@ -288,13 +263,6 @@ class UpdateApplication extends React.Component {
             width: 40rem;
             margin-left: auto;
             margin-right: auto;
-          }
-
-          .PhotosContainer {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            grid-template-rows: 1fr;
-            grid-column-gap: 28px;
           }
 
           .Section--socialLinks {

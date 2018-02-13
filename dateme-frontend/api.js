@@ -97,6 +97,23 @@ export const updateApplication = ({
   });
 };
 
+export const updateExistingApplication = ({
+  email,
+  photos,
+  socialLinks,
+  id,
+  sections
+}) => {
+  return put(`/applications/${id}`, {
+    application: {
+      email,
+      photos,
+      social_links: socialLinks,
+      sections
+    }
+  });
+};
+
 export const getSavedApplication = id => {
   return get(`/applications/${id}`);
 };

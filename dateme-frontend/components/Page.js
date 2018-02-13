@@ -2,7 +2,7 @@ import PageFooter from "./PageFooter";
 import Header from "./Header";
 import classNames from "classnames";
 
-export default ({ headerProps, children, size = "default" }) => {
+export default ({ headerProps, children, size = "default", renderMessage }) => {
   const classes = classNames("PageSize", {
     "PageSize--default": size === "default",
     "PageSize--small": size === "small"
@@ -11,6 +11,7 @@ export default ({ headerProps, children, size = "default" }) => {
   return (
     <React.Fragment>
       <Header {...headerProps} />
+      {renderMessage && renderMessage()}
       <main id="PageRoot" className={classes}>
         {children}
       </main>

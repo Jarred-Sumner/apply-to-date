@@ -1,7 +1,19 @@
 import Text from "./Text";
 import Icon from "./Icon";
 
-export default ({ checked, name, label, onChange, required }) => {
+const SIZE_TO_PX = {
+  default: "13px",
+  small: "11px"
+};
+
+export default ({
+  checked,
+  name,
+  label,
+  onChange,
+  required,
+  size = "default"
+}) => {
   return (
     <React.Fragment>
       <div
@@ -23,7 +35,7 @@ export default ({ checked, name, label, onChange, required }) => {
         </div>
         {label && (
           <label htmlFor={name}>
-            <Text color="#3A405B" size="13px" lineHeight="18px">
+            <Text color="#3A405B" size={SIZE_TO_PX[size]} lineHeight="18px">
               {label}
             </Text>
           </label>

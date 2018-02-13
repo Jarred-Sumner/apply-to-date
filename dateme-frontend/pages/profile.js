@@ -18,6 +18,7 @@ import Thumbnail from "../components/Thumbnail";
 import PageFooter from "../components/PageFooter";
 import Page from "../components/Page";
 import SocialLink from "../components/SocialLink";
+import MessageBar from "../components/MessageBar";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -102,10 +103,23 @@ class Profile extends React.Component {
   };
 
   render() {
-    const { profile } = this.props;
+    const { profile, currentUser } = this.props;
 
     return (
       <Page
+        renderMessage={() =>
+          _.get(currentUser, "username") === profile.id &&
+          !profile.visible && (
+            <MessageBar>
+              <Text size="14px" color="white" lineHeight="19px">
+                Your profile is hidden from others until you{" "}
+                <Link href={`/${profile.id}/edit`}>
+                  <a>go live</a>
+                </Link>
+              </Text>
+            </MessageBar>
+          )
+        }
         headerProps={{
           showChildren: this.state.isHeaderSticky,
           children: (
