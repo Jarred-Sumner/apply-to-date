@@ -25,6 +25,107 @@ body .icon18 img {width: 18px; height: auto;}
 body .circle-image img{width:104px; height:104px;}
 body .full-size img{width:100%; height:auto;}
 
+// cards
+.card {
+    background: rgba(255,255,255,0.0);
+    width: 343px;
+    margin: 0 auto;
+    margin-bottom: 24px;
+}
+
+.card-circle {
+
+    font-family: 'Open Sans', Arial, sans-serif !important;
+    padding: 15px;
+    -webkit-text-size-adjust: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    width: 20px;
+    height: 20px;
+    background-color: #00E2AA;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    font-color: white;
+    color: white;
+    font-weight: 900;
+    margin: 0 auto;
+    top: 5;
+    border: 2px white solid;
+    position: absolute;
+    margin-top: -29px;
+    /* margin-left: 13%; */
+    left: 0; 
+  right: 0; 
+  margin-left: auto; 
+  margin-right: auto;
+
+}
+
+.card .rectangle-content {
+    background: rgba(255,255,255,1.0);
+    padding-bottom: 24px;
+    width: 343px;
+    border-radius: 8px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgba(215,215,215,1.0);
+}
+
+.card-title {
+    font-family: 'Open Sans', Arial, sans-serif !important;
+    margin: 0;
+    -webkit-text-size-adjust: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: rgba(255, 255, 255, 0);
+    height: auto;
+    width: auto;
+    font-weight: 600;
+    font-style: normal;
+    font-size: 16.0px;
+    color: black;
+    line-height: 22.0px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.card .application-icon {
+    font-family: 'Open Sans', Arial, sans-serif !important;
+    margin: 0;
+    -webkit-text-size-adjust: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: rgba(255, 255, 255, 0);
+    /* top: 132px; */
+    height: 87px;
+    width: 70px;
+    /* position: absolute; */
+    /* left: 136px; */
+    margin: 0 auto;
+    margin-top: 26px;
+    
+}
+
+.card-description { 
+    font-family: 'Open Sans', Arial, sans-serif !important;
+    margin: 0;
+    -webkit-text-size-adjust: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: rgba(255, 255, 255, 0);
+    height: auto;
+    width: 80%;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14.0px;
+    color: black;
+    line-height: 19.0px;
+    margin: 0 auto;
+    margin-top: 24px;
+    text-align: center;
+}
+
 @media only screen and (max-width: 640px){
     body body{width:auto!important;}
     body table[class=full2] {width: 100%!important; clear: both; }
