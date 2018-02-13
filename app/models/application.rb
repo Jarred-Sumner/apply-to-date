@@ -14,12 +14,22 @@ class Application < ApplicationRecord
     }.with_indifferent_access
   end
 
+  def self.approval_statuses
+    {
+      :rejected => Application.statuses[:rejected],
+      :submitted => Application.statuses[:submitted],
+      :new => Application.statuses[:submitted],
+      :approved => Application.statuses[:approved],
+      :neutral => Application.statuses[:neutral],
+    }.with_indifferent_access
+  end
+
   enum status: {
     pending: 0,
     submitted: 1,
     rejected: 2,
     approved: 3,
-    meh: 4
+    neutral: 4
   }
 
   belongs_to :applicant, optional: true

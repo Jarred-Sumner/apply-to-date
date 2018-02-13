@@ -30,6 +30,7 @@ import Subheader from "../components/Subheader";
 import Icon from "../components/Icon";
 import TextInput from "../components/TextInput";
 import Switch from "../components/Switch";
+import { isMobile } from "../lib/Mobile";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -322,7 +323,7 @@ class EditProfile extends React.Component {
         headerProps={{
           renderSubheader: () => {
             return (
-              <Subheader spaceBetween>
+              <Subheader bottom={!isMobile()} spaceBetween>
                 <Switch checked={profile.visible} onChange={this.toggleVisible}>
                   {profile.visible ? "Page is live" : "Page is not live"}
                 </Switch>
@@ -539,7 +540,7 @@ class ProfileGate extends React.Component {
 
   render() {
     if (!this.props.profile || this.state.isLoadingProfile) {
-      return null;
+      return <Page isLoading />;
     } else {
       return <EditProfile {...this.props} />;
     }

@@ -1,15 +1,14 @@
 import Link from "next/link";
 
 export default ({ hideText = false }) => {
+  const src = hideText
+    ? "/static/brand-no-text@2x.png"
+    : "/static/brand@2x.png";
   return (
-    <div>
+    <div key={src}>
       <Link href="/">
         <a className="Brand">
-          <img
-            src={
-              hideText ? "/static/brand-no-text@2x.png" : "/static/brand@2x.png"
-            }
-          />
+          <img src={src} />
         </a>
       </Link>
       <style jsx>{`

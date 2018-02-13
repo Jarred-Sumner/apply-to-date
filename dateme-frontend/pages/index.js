@@ -202,7 +202,7 @@ class Homepage extends React.Component {
             <div className="divider" />
 
             <Text size="36px" font="sans-serif" color="#000">
-              Featured profiles
+              Featured pages
             </Text>
 
             <div className="FeaturedProfiles">

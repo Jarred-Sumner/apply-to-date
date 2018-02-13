@@ -2,6 +2,7 @@ class Profile < ApplicationRecord
   belongs_to :user
   validates :id, presence: true, uniqueness: true
   has_many :verified_networks
+  has_many :applications
   has_many :external_authentications, through: :verified_networks
   validates :recommended_contact_method, presence: true, inclusion: { in: ['phone', 'twitter', 'instagram', 'facebook'] }, :unless => :draft?
   

@@ -15,7 +15,8 @@ Rails.application.routes.draw do
         post 'apply' => 'applications#create'
       end
       resources :sessions
-      
+
+      resources :ratings
     end
   end
 

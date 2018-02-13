@@ -70,6 +70,7 @@ export const defaultState = {
   profile: {},
   user: {},
   external_authentication: {},
+  review_application: {},
   application: {},
   currentUserId: null
 };
@@ -94,6 +95,7 @@ export const initStore = (initialState = defaultState) => {
       profile: createEntitiyReducer("profile"),
       user: createEntitiyReducer("user"),
       external_authentication: createEntitiyReducer("external_authentication"),
+      review_application: createEntitiyReducer("review_application"),
       application: createEntitiyReducer("application")
     }),
     initialState,

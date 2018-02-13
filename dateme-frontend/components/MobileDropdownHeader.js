@@ -6,15 +6,12 @@ import { Portal } from "react-portal";
 import Link from "next/link";
 
 export default class MobileDropdownHeader extends React.PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isOpen: false
-    };
-  }
   render() {
     const { isOpen, setOpen } = this.props;
+
+    if (!isOpen) {
+      return null;
+    }
 
     return (
       <div className="MenuContainer">

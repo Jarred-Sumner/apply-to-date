@@ -1,8 +1,52 @@
 import PageFooter from "./PageFooter";
 import Header from "./Header";
 import classNames from "classnames";
+import Head from "../components/head";
 
-export default ({ headerProps, children, size = "default", renderMessage }) => {
+const PageSpinner = ({}) => {
+  return (
+    <div className="Container">
+      <div className="PageSpinner" />
+
+      <style jsx>{`
+        .Container {
+          height: 100vh;
+          width: 100%;
+          display: flex;
+        }
+        .PageSpinner {
+          display: flex;
+          content: "";
+          margin: auto;
+          height: 18px;
+          width: 18px;
+          animation: rotate 1s infinite linear;
+          border: 8px solid #666;
+          border-right-color: transparent;
+          border-radius: 50%;
+        }
+
+        @keyframes rotate {
+          0% {
+            transform: rotate(0deg);
+          }
+
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default ({
+  headerProps,
+  isLoading = false,
+  children,
+  size = "default",
+  renderMessage
+}) => {
   const classes = classNames("PageSize", {
     "PageSize--default": size === "default",
     "PageSize--small": size === "small"
@@ -13,7 +57,9 @@ export default ({ headerProps, children, size = "default", renderMessage }) => {
       <Header {...headerProps} />
       {renderMessage && renderMessage()}
       <main id="PageRoot" className={classes}>
-        {children}
+        {isLoading && <PageSpinner />}
+        {isLoading && <Head />}
+        {!isLoading && children}
       </main>
 
       <footer className={classes}>

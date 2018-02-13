@@ -1,5 +1,5 @@
 class Api::V1::ProfilesController < Api::V1::ApplicationController
-  before_action :require_login, only: :update
+  before_action :require_login, only: [:update]
 
   def index
     profiles = Profile.where(featured: true)

@@ -59,6 +59,7 @@ class Header extends React.Component {
     const {
       isSticky = true,
       showChildren = false,
+      pending = false,
       renderSubheader,
       children
     } = this.props;
@@ -72,13 +73,13 @@ class Header extends React.Component {
             <header>
               <Brand />
 
-              {showChildren && children}
+              {showChildren && !pending && children}
               <div className="RightSide">
                 <BurgerIcon
                   isOpen={isHamburgerOpen}
                   setOpen={this.setHamburgerOpen}
                 />
-                {!showChildren && this.renderButtons()}
+                {!showChildren && !pending && this.renderButtons()}
               </div>
 
               <style jsx>{`

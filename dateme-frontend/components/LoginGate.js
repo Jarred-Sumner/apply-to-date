@@ -3,6 +3,7 @@ import { getProfile, getCurrentUser } from "../api";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import Router from "next/router";
+import Page from "./Page";
 
 export const LOGIN_STATUSES = {
   pending: "pending",
@@ -76,8 +77,20 @@ export default (Component, options = {}) => {
       const { children, ...otherProps } = this.props;
       const { loginStatus } = this.state;
 
-      if (loginRequired && loginStatus !== LOGIN_STATUSES.loggedIn) {
-        return null;
+      if (
+        loginRequired &&
+        [LOGIN_STATUSES.pending, LOGIN_STATUSES.checking].includes(loginStatus)
+      ) {
+        return (
+          <Page
+            headerProps={{
+              pending: true
+            }}
+            isLoading
+          />
+        );
+      } else if (loginRequired && loginStatus === LOGIN_STATUSES.guest) {
+        return <Page>To continue, please login</Page>;
       }
 
       return (

@@ -123,8 +123,21 @@ export const getVerifications = () => {
 };
 
 export const login = session => {
-  console.log(session);
   return post(`/sessions`, {
     session
   });
+};
+
+export const getReviewApplications = status => {
+  return get(`/ratings`, {
+    status
+  });
+};
+
+export const getReviewApplication = id => {
+  return get(`/ratings/${id}`);
+};
+
+export const rateApplication = (id, status) => {
+  return put(`/ratings/${id}`, { status });
 };
