@@ -6,6 +6,7 @@ import { AlertHost } from "./Alert";
 import FeedbackForm from "./FeedbackForm";
 // import Hamburger from "../components/Hamburger";
 import BurgerIcon from "../components/BurgerIcon";
+import MobileDropdownHeader from "../components/MobileDropdownHeader";
 
 class Header extends React.Component {
   renderAuthButtons = () => {
@@ -45,6 +46,15 @@ class Header extends React.Component {
     );
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      isHamburgerOpen: false
+    };
+  }
+
+  setHamburgerOpen = isHamburgerOpen => this.setState({ isHamburgerOpen });
+
   render() {
     const {
       isSticky = true,
@@ -52,6 +62,8 @@ class Header extends React.Component {
       renderSubheader,
       children
     } = this.props;
+
+    const { isHamburgerOpen } = this.state;
 
     return (
       <React.Fragment>
@@ -62,7 +74,10 @@ class Header extends React.Component {
 
               {showChildren && children}
               <div className="RightSide">
-                <BurgerIcon />
+                <BurgerIcon
+                  isOpen={isHamburgerOpen}
+                  setOpen={this.setHamburgerOpen}
+                />
                 {!showChildren && this.renderButtons()}
               </div>
 
@@ -89,6 +104,8 @@ class Header extends React.Component {
                 }
               `}</style>
             </header>
+
+            <MobileDropdownHeader isOpen={isHamburgerOpen} />
 
             {renderSubheader && renderSubheader()}
           </div>
