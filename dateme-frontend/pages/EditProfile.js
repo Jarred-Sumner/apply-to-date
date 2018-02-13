@@ -562,7 +562,11 @@ const ProfileWithStore = withRedux(
       };
     }
   },
-  dispatch => bindActionCreators({ updateEntities, setCurrentUser }, dispatch)
+  dispatch => bindActionCreators({ updateEntities, setCurrentUser }, dispatch),
+  null,
+  {
+    pure: false
+  }
 )(
   LoginGate(ProfileGate, {
     loginRequired: true

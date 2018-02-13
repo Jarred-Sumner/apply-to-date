@@ -17,7 +17,7 @@ function customizer(objValue, srcValue) {
 }
 
 const mergeWithArray = (value, state) => {
-  return _.mergeWith({ ...value }, state, customizer);
+  return _.mergeWith(state, { ...value }, customizer);
 };
 
 const toArray = object => {
@@ -42,8 +42,6 @@ export const updateEntities = response => {
       entities[key].map(entity => [entity.id, entity])
     );
   });
-
-  console.log(entities);
 
   return {
     type: UPDATE_ENTITIES,
