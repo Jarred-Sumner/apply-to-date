@@ -38,15 +38,10 @@ const SocialLink = ({
       </div>
 
       <style jsx>{`
-        .SocialLink {
-          width: ${width};
-          height: ${height};
-        }
-
         .SocialIcon--activeIcon,
         .SocialIcon--disabledIcon {
-          padding: 20%;
-          height: 100%;
+          width: ${width};
+          height: ${height};
         }
       `}</style>
 

@@ -10,4 +10,10 @@ class ApplicationsMailer < ApplicationMailer
 
     mail to: "jarred@jarredsumner.com"
   end
+
+  def confirmed
+    @greeting = "Hi"
+
+    mail to: "jarred@jarredsumner.com"
+  end
 end

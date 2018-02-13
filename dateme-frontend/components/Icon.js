@@ -21,6 +21,7 @@ import SwitchOnIcon from "../static/Icon/icons/switch-on.svg";
 import SwitchOffIcon from "../static/Icon/icons/switch-off.svg";
 import PendingVerifyIcon from "../static/Icon/icons/pending-verify.svg";
 import Hamburger from "../static/Icon/icons/hamburger.svg";
+import Divider from "../static/Icon/icons/divider.svg";
 
 const ICON_COMPONENT_BY_TYPE = {
   email: EmailIcon,
@@ -33,32 +34,40 @@ const ICON_COMPONENT_BY_TYPE = {
   x: XIcon,
   check: CheckIcon,
   feedback: FeedbackIcon,
+  divider: Divider,
   "caret-right": RightCaretIcon,
   "switch-on": SwitchOnIcon,
   "switch-off": SwitchOffIcon,
   "pending-verify": PendingVerifyIcon
 };
 
-export default ({ type, color = "#ffffff", size = "18px" }) => {
+export default ({
+  type,
+  color = "#ffffff",
+  size = "18px",
+  width,
+  inline,
+  height
+}) => {
   let Component = ICON_COMPONENT_BY_TYPE[type];
 
   return (
     <div className="IconContainer">
-      <Component width={size} height={size} />
+      <Component width={width || size} height={height || size} />
       <style jsx>{`
         .IconContainer {
           align-items: center;
-          display: flex;
+          display: ${inline ? "inline-flex" : "flex"}
           flex: 0;
           justify-content: center;
         }
 
         .IconContainer :global(.SVGStroke) {
-          stroke: ${color};
+          stroke: ${color} !important;
         }
 
         .IconContainer :global(.SVGFill) {
-          fill: ${color};
+          fill: ${color} !important;
         }
       `}</style>
     </div>

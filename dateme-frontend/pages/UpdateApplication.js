@@ -27,6 +27,7 @@ import EditablePhotos from "../components/EditablePhotos";
 import VerifyNetworksSection from "../components/VerifyNetworksSection";
 import qs from "qs";
 import Icon from "../components/Icon";
+import Divider from "../components/Divider";
 
 const SECTION_ORDERING = ["introduction", "why"];
 
@@ -42,6 +43,40 @@ const getSectionPlaceholder = (key, profile) => {
     } a little about you. Stand out from the crowd with a good introduction.`,
     why: `Tell ${profile.name} why you want to go on a date with them.`
   }[key];
+};
+
+const HeaderNotice = ({ email }) => {
+  return (
+    <div className="Container">
+      <div className="HeaderNotice">
+        <Icon type="email" color="#00E2AA" size="24px" />
+        <Text size="16px">
+          We've emailed <strong>{email}</strong> with next steps.
+        </Text>
+      </div>
+
+      <Divider />
+
+      <style jsx>{`
+        .HeaderNotice {
+          margin: 24px 0;
+          padding: 24px;
+          display: grid;
+          grid-template-columns: 24px auto;
+          grid-column-gap: 24px;
+          justify-content: center;
+          align-items: center;
+        }
+        .Container {
+          display: flex;
+          flex-direction: column;
+          text-align: center;
+          justify-content: center;
+          align-items: center;
+        }
+      `}</style>
+    </div>
+  );
 };
 
 const ROWS_BY_SECTION = {
@@ -86,6 +121,7 @@ class UpdateApplication extends React.Component {
 
     this.state = {
       name: _.get(application, "name", ""),
+      email: _.get(application, "email", ""),
       photos: _.get(application, "photos", []),
       sections: _.get(application, "sections", {
         introduction: "",
@@ -107,13 +143,13 @@ class UpdateApplication extends React.Component {
     });
 
     return updateExistingApplication({
-      email,
       photos,
       id,
       socialLinks,
       sections
     })
       .then(async response => {
+        Alert.success("Updated.");
         return response.body;
       })
       .catch(error => {
@@ -160,6 +196,18 @@ class UpdateApplication extends React.Component {
     this.setState({ photos: photos });
   };
 
+  hasFilledOutApplication = () => {
+    const { application } = this.props;
+
+    return (
+      !_.isEmpty(application.photos) &&
+      !_.isEmpty(application.sections) &&
+      application.sections.introduction &&
+      application.sections.why &&
+      !_.isEmpty(application.socialLinks)
+    );
+  };
+
   render() {
     const { profile } = this.props;
     const { photos, socialLinks, email, externalAuthentications } = this.state;
@@ -167,6 +215,23 @@ class UpdateApplication extends React.Component {
     return (
       <Page>
         <Head />
+
+        <HeaderNotice email={email} />
+
+        <section className="Section Section--copy">
+          <div className="TextGroup">
+            <Text type="title">
+              {this.hasFilledOutApplication() && (
+                <Icon inline type="check" color="#00E2AA" size="24px" />
+              )}{" "}
+              Increase your chances of dating {profile.name}
+            </Text>
+            <Text>
+              Tell {profile.name} more about you by filling out the rest of your
+              application
+            </Text>
+          </div>
+        </section>
 
         <section className="Section Section--photos">
           <Text type="label">Share some pics</Text>
@@ -228,6 +293,12 @@ class UpdateApplication extends React.Component {
             margin-left: auto;
             margin-right: auto;
             width: 50%;
+          }
+
+          .TextGroup {
+            display: grid;
+            grid-row-gap: 18px;
+            text-align: center;
           }
 
           .Section-row {
