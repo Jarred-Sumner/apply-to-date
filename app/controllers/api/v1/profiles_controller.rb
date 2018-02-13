@@ -28,10 +28,6 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
         profile.update!(tags: Array(update_params[:tags]))
       end
 
-      if !update_params[:visible].nil?
-        profile.update!(visible: String(update_params[:visible]) == 'true')
-      end
-
       if update_params[:sections].present?
         sections = update_params[:sections].permit(Profile::DEFAULT_SECTIONS)
         profile.update!(sections: sections)
@@ -94,9 +90,15 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
         )
         profile.update!(social_links: social_links)
       end
+
+      if !update_params[:visible].nil?
+        profile.update!(visible: String(update_params[:visible]) == 'true')
+      end
     end
 
     render_profile(profile)
+  rescue ActiveRecord::RecordInvalid => e
+    render_validation_error(e)
   end
 
   def render_profile(profile)

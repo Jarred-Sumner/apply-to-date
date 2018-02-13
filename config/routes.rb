@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       post 'verifications/:provider' => 'external_authentications#claim'
 
       get 'applications/:id' => 'applications#show_applicant'
+      put 'applications/:id' => 'applications#update'
 
       get 'images/sign' => 'images#sign'
       resources :users

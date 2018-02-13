@@ -14,7 +14,8 @@ import classNames from "classnames";
 import FormField, {
   geocodeByAddress,
   getLatLng,
-  SexFormField
+  SexFormField,
+  TOSFormField
 } from "../components/FormField";
 import Icon from "../components/Icon";
 import ExternalAuthentication, {
@@ -263,19 +264,9 @@ class CreateAccount extends React.Component {
                 placeholder="e.g. San Francisco, CA"
               />
 
-              <FormField
-                type="checkbox"
-                name="termsOfService"
-                required
+              <TOSFormField
                 onChange={(name, value) => this.setState({ [name]: value })}
-                showBorder={false}
-                checkboxes={[
-                  {
-                    checked: this.state.termsOfService,
-                    label: "I agree to the terms of service and privacy policy",
-                    name: "termsOfService"
-                  }
-                ]}
+                checked={this.state.termsOfService}
               />
 
               <Button>Create account</Button>

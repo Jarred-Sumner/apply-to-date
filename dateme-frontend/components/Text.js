@@ -46,6 +46,12 @@ const Text = ({
           text-decoration: ${textDecoration};
         }
 
+        .Text :global(a),
+        .Text :global(a:visited) {
+          color: ${color};
+          text-decoration: underline;
+        }
+
         .Text--wrap,
         .Text--wrap strong {
           white-space: normal;

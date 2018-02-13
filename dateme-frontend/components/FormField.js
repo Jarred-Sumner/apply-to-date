@@ -9,6 +9,7 @@ import TextInput from "./TextInput";
 export { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 
 export { default as SexFormField } from "./FormField/SexFormField";
+export { default as TOSFormField } from "./FormField/TermsOfService";
 
 const Suggestion = ({ suggestion, isSelected }) => (
   <div className={classNames("Wrapper", { "Wrapper--selected": isSelected })}>
@@ -80,6 +81,7 @@ export default class FormField extends React.Component {
               key={index}
               checked={checkbox.checked}
               label={checkbox.label}
+              size={checkbox.size || "default"}
               name={checkbox.name}
               onChange={this.handleCheckboxChange}
             />

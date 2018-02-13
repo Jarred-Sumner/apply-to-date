@@ -43,6 +43,8 @@ export const updateEntities = response => {
     );
   });
 
+  console.log(entities);
+
   return {
     type: UPDATE_ENTITIES,
     payload: entities

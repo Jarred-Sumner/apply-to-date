@@ -25,11 +25,12 @@ import Alert, { handleApiError } from "../components/Alert";
 import LoginGate from "../components/LoginGate";
 import Photo from "../components/EditProfile/Photo";
 import Page from "../components/Page";
-import FormField, { SexFormField } from "../components/FormField";
+import FormField, { SexFormField, TOSFormField } from "../components/FormField";
 import EditSocialLinks from "../components/EditSocialLinks";
 import VerifyNetworksSection from "../components/VerifyNetworksSection";
 import qs from "qs";
 import Icon from "../components/Icon";
+import MessageBar from "../components/MessageBar";
 
 const SECTION_ORDERING = ["introduction", "why"];
 
@@ -146,6 +147,11 @@ class CreateApplication extends React.Component {
   submitApplication = event => {
     event.preventDefault();
 
+    if (!this.state.termsOfService) {
+      Alert.error("To continue, you must agree to the terms of service");
+      return;
+    }
+
     this.saveApplication("submitted").then(response => {
       if (response) {
         return Router.push(`/a/${this.props.application.id}`);
@@ -178,7 +184,19 @@ class CreateApplication extends React.Component {
     } = this.state;
 
     return (
-      <Page size="small">
+      <Page
+        size="small"
+        renderMessage={() => (
+          <MessageBar>
+            <Text size="14px" color="white" lineHeight="19px">
+              Your application to{" "}
+              <Link href={`/${profile.id}`}>
+                <a>{profile.name}</a>
+              </Link>
+            </Text>
+          </MessageBar>
+        )}
+      >
         <Head />
         <form onSubmit={this.submitApplication}>
           <div className="Section-row">
@@ -208,8 +226,7 @@ class CreateApplication extends React.Component {
             />
 
             <Text weight="semiBold" size="14px" color="#820B0B">
-              You’ll receive updates via email, please make sure this is
-              correct.
+              You’ll hear back via email, please make sure it's correct.
             </Text>
 
             <VerifyNetworksSection
@@ -225,10 +242,6 @@ class CreateApplication extends React.Component {
           </div>
 
           <div className="Section-row">
-            <SexFormField value={sex} onChange={this.setSex} />
-          </div>
-
-          <div className="Section-row">
             <EditSocialLinks
               socialLinks={socialLinks}
               blacklist={externalAuthentications.map(
@@ -237,6 +250,19 @@ class CreateApplication extends React.Component {
               setSocialLinks={socialLinks => this.setState({ socialLinks })}
             />
           </div>
+
+          <div className="Section-row">
+            <SexFormField value={sex} onChange={this.setSex} />
+          </div>
+
+          <TOSFormField
+            checked={this.state.termsOfService || false}
+            onChange={() =>
+              this.setState({
+                termsOfService: !this.state.termsOfService
+              })
+            }
+          />
 
           <Button>
             <Icon type="heart" size="14px" />&nbsp; Ask him out

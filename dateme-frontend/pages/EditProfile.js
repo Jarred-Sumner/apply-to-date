@@ -22,7 +22,7 @@ import Waypoint from "react-waypoint";
 import Button from "../components/Button";
 import Alert, { handleApiError } from "../components/Alert";
 import LoginGate from "../components/LoginGate";
-import Photo from "../components/EditProfile/Photo";
+import EditablePhotos from "../components/EditablePhotos";
 import Page from "../components/Page";
 import EditSocialLinks from "../components/EditSocialLinks";
 import VerifyNetworksSection from "../components/VerifyNetworksSection";
@@ -228,7 +228,7 @@ class EditProfile extends React.Component {
     })
       .then(response => {
         this.props.updateEntities(response.body);
-        if (showAlert) {
+        if (response && showAlert) {
           Alert.success("Saved.");
         }
 
@@ -240,7 +240,10 @@ class EditProfile extends React.Component {
         return false;
       })
       .finally(response => {
-        this.setState({ isSavingProfile: false });
+        this.setState({
+          isSavingProfile: false,
+          visible: this.props.profile.visible
+        });
 
         return response;
       });
@@ -306,7 +309,6 @@ class EditProfile extends React.Component {
       photos,
       socialLinks,
       phone,
-      visible,
       externalAuthentications,
       recommendedContactMethod
     } = this.state;
@@ -321,8 +323,8 @@ class EditProfile extends React.Component {
           renderSubheader: () => {
             return (
               <Subheader spaceBetween>
-                <Switch checked={visible} onChange={this.toggleVisible}>
-                  {visible ? "Page is live" : "Page is not live"}
+                <Switch checked={profile.visible} onChange={this.toggleVisible}>
+                  {profile.visible ? "Page is live" : "Page is not live"}
                 </Switch>
 
                 <div className="Subheader--actions">
@@ -422,23 +424,10 @@ class EditProfile extends React.Component {
 
         <section className="Section Section--photos">
           <Text type="label">Share some pics</Text>
-          <div className="PhotosContainer">
-            <Photo
-              key={photos[0] || 0}
-              url={photos[0]}
-              setURL={this.setPhotoAtIndex(0)}
-            />
-            <Photo
-              key={photos[1] || 1}
-              url={photos[1]}
-              setURL={this.setPhotoAtIndex(1)}
-            />
-            <Photo
-              key={photos[2] || 2}
-              url={photos[2]}
-              setURL={this.setPhotoAtIndex(2)}
-            />
-          </div>
+          <EditablePhotos
+            photos={photos}
+            setPhotoAtIndex={this.setPhotoAtIndex}
+          />
 
           <Lightbox
             images={profile.photos.slice(0, 3).map(src => ({ src }))}
@@ -511,13 +500,6 @@ class EditProfile extends React.Component {
           .Verify {
             margin-left: auto;
             margin-right: auto;
-          }
-
-          .PhotosContainer {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            grid-template-rows: 1fr;
-            grid-column-gap: 28px;
           }
 
           .Subheader--actions {
