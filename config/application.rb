@@ -20,7 +20,7 @@ module Dateme
 
     config.middleware.insert_before 0, Rack::Cors do
       allow do
-        origins 'localhost:3000', '127.0.0.1:3000'
+        origins 'localhost:3000', '127.0.0.1:3000', "applytodate.me", "applytodate.com"
         resource '*', :headers => [
 
         ], :methods => [:get, :post, :put, :options], :credentials => true
