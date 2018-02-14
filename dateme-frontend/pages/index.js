@@ -185,32 +185,43 @@ class Homepage extends React.Component {
               <img className="Logo Logo-Home" src="/static/animatedlogo.gif" />
               <div className="Copy-title">
                 <Text font="serif" size="36px" lineHeight="44px" weight="bold">
-                  A personal page to get dates
+                  Your own game of The Bachelorette
                 </Text>
               </div>
               <div className="Copy-body">
                 <Text size="16px" lineHeight="24px" font="sans-serif">
-                  Free and quick to setup. Start pitching yourself today.
+                  Create a page where people apply to go on a date with you. You
+                  pick the winners.
                 </Text>
               </div>
 
-              <SignupForm />
+              <Text
+                size="16px"
+                lineHeight="24px"
+                font="sans-serif"
+                weight="bold"
+              >
+                Now in private beta.
+              </Text>
+              {/* <SignupForm /> */}
             </div>
           </main>
 
-          <footer>
-            <div className="divider" />
+          {!_.isEmpty(this.props.profiles) && (
+            <footer>
+              <div className="divider" />
 
-            <Text size="36px" font="sans-serif" color="#000">
-              Featured pages
-            </Text>
+              <Text size="36px" font="sans-serif" color="#000">
+                Featured pages
+              </Text>
 
-            <div className="FeaturedProfiles">
-              {this.props.profiles.map(profile => (
-                <FeaturedProfile key={profile.id} profile={profile} />
-              ))}
-            </div>
-          </footer>
+              <div className="FeaturedProfiles">
+                {this.props.profiles.map(profile => (
+                  <FeaturedProfile key={profile.id} profile={profile} />
+                ))}
+              </div>
+            </footer>
+          )}
         </article>
         <PageFooter center />
 

@@ -427,6 +427,7 @@ class EditProfile extends React.Component {
           <Text type="label">Share some pics</Text>
           <EditablePhotos
             photos={photos}
+            size="100%"
             setPhotoAtIndex={this.setPhotoAtIndex}
           />
 

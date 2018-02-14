@@ -9,7 +9,6 @@ import Header from "../components/Header";
 import LoginGate from "../components/LoginGate";
 import Text from "../components/Text";
 import InlineApply from "../components/profile/InlineApply";
-import Lightbox from "react-images";
 import _ from "lodash";
 import titleCase from "title-case";
 import Waypoint from "react-waypoint";
@@ -19,6 +18,7 @@ import PageFooter from "../components/PageFooter";
 import Page from "../components/Page";
 import SocialLinkList from "../components/SocialLinkList";
 import MessageBar from "../components/MessageBar";
+import PhotoGroup from "../components/PhotoGroup";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -53,42 +53,6 @@ class Profile extends React.Component {
   enableStickyHeader = () => this.setState({ isHeaderSticky: true });
   disableStickyHeader = () => this.setState({ isHeaderSticky: false });
 
-  setCurrentPhoto = url => {
-    this.setState({
-      currentPhotoIndex: this.props.profile.photos.indexOf(url)
-    });
-  };
-
-  closeLightbox = () => this.setState({ currentPhotoIndex: null });
-
-  nextPhoto = () => {
-    const { photos } = this.props.profile;
-    const { currentPhotoIndex } = this.state;
-    if (photos.length > currentPhotoIndex + 1) {
-      this.setState({
-        currentPhotoIndex: currentPhotoIndex + 1
-      });
-    } else {
-      this.setState({
-        currentPhotoIndex: 0
-      });
-    }
-  };
-
-  previousPhoto = () => {
-    const { photos } = this.props.profile;
-    const { currentPhotoIndex } = this.state;
-    if (currentPhotoIndex - 1 > 0) {
-      this.setState({
-        currentPhotoIndex: currentPhotoIndex - 1
-      });
-    } else {
-      this.setState({
-        currentPhotoIndex: 0
-      });
-    }
-  };
-
   paragraphs = () => {
     const { sections } = this.props.profile;
 
@@ -104,7 +68,6 @@ class Profile extends React.Component {
 
   render() {
     const { profile, currentUser } = this.props;
-
     return (
       <Page
         renderMessage={() =>
@@ -152,25 +115,11 @@ class Profile extends React.Component {
             </div>
           </section>
         </Waypoint>
-        <section className="Section Section--photos">
-          {_.slice(profile.photos || [], 0, 3).map((url, index) => (
-            <Thumbnail
-              url={url}
-              isLast={index === 2}
-              onClick={() => this.setCurrentPhoto(url)}
-              key={url}
-            />
-          ))}
 
-          <Lightbox
-            images={_.slice(profile.photos || [], 0, 3).map(src => ({ src }))}
-            isOpen={_.isNumber(this.state.currentPhotoIndex)}
-            currentImage={this.state.currentPhotoIndex || 0}
-            onClickPrev={this.previousPhoto}
-            onClickNext={this.nextPhoto}
-            onClose={this.closeLightbox}
-          />
+        <section className="Section">
+          <PhotoGroup size="100%" photos={profile.photos} />
         </section>
+
         <section className="Section Section--bio">
           {this.paragraphs().map(paragraph => {
             return (
@@ -193,17 +142,6 @@ class Profile extends React.Component {
             display: grid;
             grid-row-gap: 2rem;
             max-width: 100%;
-          }
-
-          .Section--socialLinks {
-            display: grid;
-            justify-content: center;
-            margin-left: auto;
-            padding-left: 18px;
-            padding-right: 18px;
-            margin-right: auto;
-            grid-auto-flow: column;
-            grid-column-gap: 32px;
           }
 
           .HeaderForm {
@@ -238,20 +176,6 @@ class Profile extends React.Component {
             width: 100%;
             margin-left: auto;
             margin-right: auto;
-          }
-
-          .Section--photos {
-            align-items: flex-start;
-            display: flex;
-            text-align: center;
-            align-items: center;
-            justify-content: center;
-          }
-
-          @media (max-width: 500px) {
-            .Section--photos {
-              display: block;
-            }
           }
         `}</style>
       </Page>

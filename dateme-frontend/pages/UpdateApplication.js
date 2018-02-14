@@ -51,7 +51,7 @@ const HeaderNotice = ({ email }) => {
       <div className="HeaderNotice">
         <Icon type="email" color="#00E2AA" size="24px" />
         <Text size="16px">
-          We've emailed <strong>{email}</strong> with next steps.
+          You'll hear back at <strong>{email}</strong>
         </Text>
       </div>
 
@@ -277,9 +277,11 @@ class UpdateApplication extends React.Component {
           <Button
             pending={this.state.isSaving}
             componentType="div"
+            size="large"
             onClick={this.handleUpdateApplication}
           >
-            Update application
+            <Icon type="check" size="16px" color="white" /> &nbsp; Update
+            application
           </Button>
         </section>
         <style jsx>{`

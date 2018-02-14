@@ -1,40 +1,66 @@
 import Photo from "./EditProfile/Photo";
 import _ from "lodash";
+import Thumbnail from "./Thumbnail";
+import Lightbox from "react-images";
 
 export default class PhotoGroup extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      currentPhotoIndex: 0
+      currentPhotoIndex: null
     };
   }
 
-  setCurrentPhoto = currentPhotoIndex => {
-    this.setState({
-      currentPhotoIndex
-    });
+  nextPhoto = () => {
+    const { photos } = this.props;
+    const { currentPhotoIndex } = this.state;
+    if (photos.length > currentPhotoIndex + 1) {
+      this.setState({
+        currentPhotoIndex: currentPhotoIndex + 1
+      });
+    } else {
+      this.setState({
+        currentPhotoIndex: 0
+      });
+    }
   };
 
-  onClickNext = () => this.setCurrentPhoto();
+  previousPhoto = () => {
+    const { photos } = this.props;
+    const { currentPhotoIndex } = this.state;
+    if (currentPhotoIndex - 1 > 0) {
+      this.setState({
+        currentPhotoIndex: currentPhotoIndex - 1
+      });
+    } else {
+      this.setState({
+        currentPhotoIndex: 0
+      });
+    }
+  };
+
+  closeLightbox = () => this.setState({ currentPhotoIndex: null });
 
   render() {
-    const { photos, setPhotoAtIndex, max = 3 } = this.props;
+    const { photos, max = 3, size } = this.props;
     const { currentPhotoIndex } = this.state;
 
     return (
       <div className="PhotosContainer">
         {_.range(0, max).map(index => (
-          <Photo
+          <Thumbnail
+            isLast={max - 1 === index}
             key={photos[index] || index}
             url={photos[index]}
-            setURL={setPhotoAtIndex(index)}
+            size={size}
+            onClick={() => this.setState({ currentPhotoIndex: index })}
           />
         ))}
 
         <Lightbox
           images={_.slice(photos || [], 0, 3).map(src => ({ src }))}
-          isOpen={_.isNumber(this.state.currentPhotoIndex)}
+          isOpen={_.isNumber(currentPhotoIndex)}
           currentImage={currentPhotoIndex || 0}
           onClickPrev={this.previousPhoto}
           onClickNext={this.nextPhoto}
@@ -43,8 +69,8 @@ export default class PhotoGroup extends React.Component {
         <style jsx>{`
           .PhotosContainer {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            grid-template-rows: 1fr;
+            grid-template-columns: auto auto auto;
+            grid-template-rows: auto;
             grid-column-gap: 28px;
           }
 

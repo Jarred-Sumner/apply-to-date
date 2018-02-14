@@ -9,13 +9,15 @@ import CropModal from "../CropModal";
 import { BASE_HOSTNAME } from "../../api";
 import Icon from "../Icon";
 
-const EditableThumbnail = ({ url, onRemove }) => {
+const EditableThumbnail = ({ url, onRemove, size = "206px" }) => {
   return (
     <div className="container">
-      <Thumbnail isLast url={url} />
+      <Thumbnail size={size} isLast url={url} />
 
       <div className="Button" onClick={onRemove}>
-        <Button color="white" icon={<Icon type="x" size="12px" />} />
+        <Button color="black" circle>
+          <Icon type="x" size="12px" />
+        </Button>
       </div>
 
       <style jsx>{`
@@ -23,8 +25,8 @@ const EditableThumbnail = ({ url, onRemove }) => {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 100%;
-          height: 206px;
+          width: ${size};
+          height: ${size};
           position: relative;
 
           cursor: pointer;
@@ -39,7 +41,6 @@ const EditableThumbnail = ({ url, onRemove }) => {
           top: -16px;
           right: -16px;
           border-radius: 50%;
-          border: 1px solid #ccc;
           opacity: 0;
           transition: opacity 0.1s linear;
         }
@@ -56,7 +57,7 @@ const Status = {
   error: "error"
 };
 
-const UploadPhoto = ({ file, status }) => {
+const UploadPhoto = ({ file, status, size }) => {
   return (
     <div className="container">
       <div className="wrapper">
@@ -73,8 +74,10 @@ const UploadPhoto = ({ file, status }) => {
           align-items: center;
           justify-content: center;
           flex-direction: column;
-          width: auto;
-          height: 100%;
+          width: ${size};
+          height: ${size};
+          min-width: 206px;
+          min-height: 206px;
         }
 
         .Button {
@@ -85,8 +88,10 @@ const UploadPhoto = ({ file, status }) => {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 100%;
-          height: 206px;
+          width: ${size};
+          height: ${size};
+          min-width: 206px;
+          min-height: 206px;
 
           border: 2px dashed #e3e3e6;
           border-radius: 4px;
@@ -184,6 +189,7 @@ export default class Photo extends React.Component {
 
   render() {
     const { status, file, url } = this.state;
+    const { size } = this.props;
 
     return (
       <div className="container">
@@ -200,9 +206,10 @@ export default class Photo extends React.Component {
                 onRemove={this.handleDeletePhoto}
                 url={url}
                 isLast
+                size={size}
               />
             ) : (
-              <UploadPhoto url={url} status={status} />
+              <UploadPhoto size={size} url={url} status={status} />
             )}
           </Dropzone>
           <CropModal

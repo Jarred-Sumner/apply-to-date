@@ -3,10 +3,13 @@ import ViewApplication from "./ViewApplication";
 import RateApplication from "./RateApplication";
 import Head from "./head";
 import Text from "./Text";
+import ApplicationsBreadcrumbs from "./ApplicationsBreadcrumbs";
 
 export default ({ application, isLoading, onYes, onNo }) => (
-  <Page isLoading={isLoading} size="small">
+  <Page isLoading={isLoading}>
     <Head title="Review Application | AskToMeet" />
+
+    <ApplicationsBreadcrumbs />
 
     {application && (
       <article>
@@ -34,8 +37,9 @@ export default ({ application, isLoading, onYes, onNo }) => (
 
     <style jsx>{`
       article {
-        margin-top: 6rem;
-        margin-bottom: 3rem;
+        margin-top: 24px;
+        margin-left: auto;
+        margin-right: auto;
         width: 100%;
         position: relative;
       }

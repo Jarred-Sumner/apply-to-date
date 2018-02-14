@@ -2,6 +2,7 @@ import _ from "lodash";
 import { createStore, applyMiddleware, combineReducers } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunkMiddleware from "redux-thunk";
+import { camelizeAttributes } from "../lib/jsonapi";
 
 export const UPDATE_ENTITIES = "UPDATE_ENTITIES";
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
@@ -39,7 +40,7 @@ export const updateEntities = response => {
 
   _.keys(entities).forEach(key => {
     entities[key] = _.fromPairs(
-      entities[key].map(entity => [entity.id, entity])
+      entities[key].map(entity => [entity.id, camelizeAttributes(entity)])
     );
   });
 

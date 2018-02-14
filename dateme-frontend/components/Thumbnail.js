@@ -1,29 +1,48 @@
 import classNames from "classnames";
+import Text from "./Text";
 
-export default ({ onClick, url, isLast = false }) => (
+export default ({ onClick, size = "126px", url, isLast = false }) => (
   <div
     className={classNames("photo", {
       "photo--last": isLast,
       "photo--hoverable": !!onClick
     })}
-    key={url}
+    key={url || undefined}
     onClick={onClick}
   >
-    <img src={url} />
+    {url ? (
+      <img src={url} />
+    ) : (
+      <div className="Placeholder">
+        <Text color="white" size="12px">
+          no photo
+        </Text>
+      </div>
+    )}
 
     <style jsx>{`
       .photo {
         flex: 1;
-        margin-right: 2em;
         align-self: flex-start;
-        max-width: 400px;
+      }
+
+      .Placeholder {
+        width: ${size};
+        height: ${size};
+        background-color: rgba(0, 0, 0, 0.75);
+        border: 1px solid #b9bed1;
+        border-radius: 6px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
 
       img {
-        width: 100%;
-        object-fit: contain;
-        background: #d8d8d8;
-        box-shadow: 0 0 20px 0 rgba(160, 160, 160, 0.5);
+        width: ${size};
+        height: ${size};
+        object-fit: cover;
+        background: transparent;
+        box-shadow: 0 0 20px rgba(160, 160, 160, 0.5);
         border-radius: 6px;
         cursor: pointer;
         transition: transform 0.1s linear;

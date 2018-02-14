@@ -37,7 +37,7 @@ routes
     page: "ReviewSpecificApplication"
   })
   .add({
-    name: "ReviewApplication",
+    name: "/applications",
     pattern: "/applications",
     page: "ReviewApplication"
   })
@@ -52,7 +52,7 @@ routes
     page: "CreateApplication"
   })
   .add({
-    name: "UpdateApplication",
+    name: "/a/:id",
     pattern: "/a/:id",
     page: "UpdateApplication"
   })

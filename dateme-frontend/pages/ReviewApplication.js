@@ -52,14 +52,16 @@ class ReviewApplication extends React.PureComponent {
       isRating: true
     });
 
-    return rateApplication(this.state.application.id, status).then(response => {
-      this.setState({
-        isRating: false,
-        isLoadingApplication: true
-      });
+    return rateApplication(this.state.application.id, status)
+      .then(response => {
+        this.setState({
+          isLoadingApplication: true
+        });
 
-      this.loadNextApplication();
-    });
+        this.loadNextApplication();
+      })
+      .catch(error => handleApiError(error))
+      .finally(() => this.setState({ isRating: false }));
   };
 
   handleYes = () => {

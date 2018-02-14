@@ -118,6 +118,11 @@ const Button = ({
           color: #0ec2d0;
         }
 
+        .Button--large {
+          padding: 16px 24px;
+          font-size: 14px;
+        }
+
         .Button--normal {
           padding: 10px 24px;
         }
@@ -220,6 +225,7 @@ const Button = ({
         .ButtonText {
           margin-left: auto;
           margin-right: auto;
+          align-items: center;
         }
 
         .IconContainer--right {

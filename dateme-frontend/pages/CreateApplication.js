@@ -64,7 +64,7 @@ const getWidthForText = (text, isPlaceholder) => {
 class CreateApplication extends React.Component {
   static async getInitialProps({ query, store, req, isServer }) {
     const profileResponse = await getProfile(query.id);
-    store.dispatch(updateEntities(profileResponse.body));
+    store.dispatch(updateEntities([_.get(profileResponse, "body.data")]));
 
     const applicationResponse = await getSavedApplication(query.applicationId);
     store.dispatch(updateEntities(applicationResponse.body));
@@ -265,7 +265,7 @@ class CreateApplication extends React.Component {
           />
 
           <Button>
-            <Icon type="heart" size="14px" />&nbsp; Ask him out
+            <Icon type="heart" size="14px" />&nbsp; Ask {profile.name} out
           </Button>
         </form>
 

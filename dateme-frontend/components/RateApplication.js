@@ -27,7 +27,7 @@ export default class RateApplication extends React.Component {
             text-align: center;
             margin-top: 14px;
             position: absolute;
-            left: -152px;
+            left: calc(-62px + -56px);
 
             grid-template-rows: min-content 124px;
             width: 124px;

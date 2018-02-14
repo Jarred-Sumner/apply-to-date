@@ -3,6 +3,7 @@ import Text from "./Text";
 import _ from "lodash";
 import { SECTION_ORDERING, SECTION_LABELS } from "../pages/CreateApplication";
 import SocialLinkList from "./SocialLinkList";
+import PhotoGroup from "./PhotoGroup";
 
 export default class ViewApplication extends React.Component {
   paragraphs = () => {
@@ -19,47 +20,44 @@ export default class ViewApplication extends React.Component {
   };
 
   render() {
-    const { photoUrl, name, tagline, socialLinks } = this.props.application;
+    const {
+      photos,
+      name,
+      tagline,
+      socialLinks,
+      sections
+    } = this.props.application;
     return (
       <section className="ViewApplication">
-        {photoUrl && (
-          <div className="Photo">
-            <Thumbnail url={photoUrl} />
-          </div>
-        )}
         <div className="Title">
-          <Text type="ProfilePageTitle" align="center">
+          <Text size="14px" weight="bold">
             {name}
           </Text>
         </div>
 
-        {tagline && (
-          <div className="Tagline">
-            <Text type="Tagline" align="center">
-              {tagline}
-            </Text>
-          </div>
-        )}
+        <PhotoGroup size="141px" photos={photos} />
 
         <div className="SocialLinks">
-          <SocialLinkList socialLinks={socialLinks} />
+          <SocialLinkList centered={false} socialLinks={socialLinks} />
         </div>
 
-        <div className="Bio">
-          {this.paragraphs().map(paragraph => {
-            return (
-              <div
-                key={paragraph.title}
-                className="Section-row Section-row--bio"
-              >
-                <Text className="Section-title" type="title">
-                  {paragraph.title}
-                </Text>
-                <Text type="paragraph">{paragraph.body}</Text>
-              </div>
-            );
-          })}
-        </div>
+        {!_.isEmpty(this.paragraphs()) && (
+          <div className="Bio">
+            {this.paragraphs().map(paragraph => {
+              return (
+                <div
+                  key={paragraph.title}
+                  className="Section-row Section-row--bio"
+                >
+                  <Text className="Section-title" type="title">
+                    {paragraph.title}
+                  </Text>
+                  <Text type="paragraph">{paragraph.body}</Text>
+                </div>
+              );
+            })}
+          </div>
+        )}
 
         <style jsx>{`
           .ViewApplication {
@@ -71,13 +69,14 @@ export default class ViewApplication extends React.Component {
             border-radius: 4px;
             width: 100%;
             max-width: 473px;
+            margin-left: auto;
+            margin-right: auto;
             flex: 0 0 auto;
-            text-align: center;
             background-color: white;
           }
 
-          .Photo {
-            margin-top: -100px;
+          .SocialLinks {
+            text-align: left;
           }
 
           .Section-row {

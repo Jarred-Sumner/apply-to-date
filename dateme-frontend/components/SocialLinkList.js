@@ -1,7 +1,9 @@
 import SocialLink from "./SocialLink";
 import _ from "lodash";
-export default ({ socialLinks }) => (
-  <section>
+import classNames from "classnames";
+
+export default ({ socialLinks, centered = true }) => (
+  <section className={classNames({ "Section--centered": centered })}>
     {_.map(
       socialLinks,
       (url, provider) =>
@@ -12,13 +14,15 @@ export default ({ socialLinks }) => (
     <style jsx>{`
       section {
         display: grid;
-        justify-content: center;
-        margin-left: auto;
-        padding-left: 18px;
-        padding-right: 18px;
-        margin-right: auto;
         grid-auto-flow: column;
         grid-column-gap: 32px;
+        justify-content: flex-start;
+      }
+
+      .Section--centered {
+        justify-content: center;
+        margin-left: auto;
+        margin-right: auto;
       }
     `}</style>
   </section>

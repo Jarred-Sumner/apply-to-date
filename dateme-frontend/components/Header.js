@@ -7,6 +7,7 @@ import FeedbackForm from "./FeedbackForm";
 // import Hamburger from "../components/Hamburger";
 import BurgerIcon from "../components/BurgerIcon";
 import MobileDropdownHeader from "../components/MobileDropdownHeader";
+import BetaGate from "./BetaGate";
 
 class Header extends React.Component {
   renderAuthButtons = () => {
@@ -74,13 +75,15 @@ class Header extends React.Component {
               <Brand />
 
               {showChildren && !pending && children}
-              <div className="RightSide">
-                <BurgerIcon
-                  isOpen={isHamburgerOpen}
-                  setOpen={this.setHamburgerOpen}
-                />
-                {!showChildren && !pending && this.renderButtons()}
-              </div>
+              <BetaGate>
+                <div className="RightSide">
+                  <BurgerIcon
+                    isOpen={isHamburgerOpen}
+                    setOpen={this.setHamburgerOpen}
+                  />
+                  {!showChildren && !pending && this.renderButtons()}
+                </div>
+              </BetaGate>
 
               <style jsx>{`
                 header {
