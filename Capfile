@@ -27,13 +27,13 @@ install_plugin Capistrano::SCM::Git
 #   https://github.com/capistrano/passenger
 #
 require "capistrano/rvm"
+require 'capistrano/rails/logs'
 # require "capistrano/rbenv"
 # require "capistrano/chruby"
 require "capistrano/bundler"
 require "capistrano/rails/assets"
 require "capistrano/rails/migrations"
 require 'capistrano/rails/console'
-require 'capistrano3/unicorn'
 
 
 # Load custom tasks from `lib/capistrano/tasks` if you have any defined

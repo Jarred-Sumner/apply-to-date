@@ -23,8 +23,6 @@ set :deploy_to, "/home/rails/rails_project"
 # Default value for :linked_files is []
 append :linked_files, "config/secrets.yml.key"
 
-set :unicorn_rack_env, "production"
-
 # Default value for linked_dirs is []
 append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
 
@@ -37,11 +35,3 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/syst
 # Default value for keep_releases is 5
 # set :keep_releases, 5
 
-# Uncomment the following to require manually verifying the host key before first deploy.
-# set :ssh_options, verify_host_key: :secure
-after 'deploy:publishing', 'deploy:restart'
-namespace :deploy do
-  task :restart do
-    invoke 'unicorn:restart'
-  end
-end
