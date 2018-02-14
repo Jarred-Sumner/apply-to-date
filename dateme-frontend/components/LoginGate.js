@@ -33,6 +33,7 @@ export default (Component, options = {}) => {
       if (
         typeof window !== "undefined" &&
         loginStatus !== LOGIN_STATUSES.checking &&
+        !options.skipRequest &&
         !this.props.currentUser
       ) {
         this.setState({

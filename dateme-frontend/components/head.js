@@ -1,10 +1,25 @@
 import NextHead from "next/head";
 import { string } from "prop-types";
 import RootStyles from "./Root";
+import ReactGA from "react-ga";
+import FullStory from "./FullStory";
+import Router from "next/router";
 
 const defaultDescription = "";
 const defaultOGURL = "";
 const defaultOGImage = "";
+
+if (typeof window !== "undefined") {
+  ReactGA.initialize("UA-30285081-15", {
+    debug: process.env.NODE_ENV !== "production",
+    titleCase: false
+  });
+
+  ReactGA.pageview(window.location.pathname);
+  Router.onRouteChangeComplete = url => {
+    ReactGA.pageview(url);
+  };
+}
 
 const Head = props => (
   <React.Fragment>
@@ -47,6 +62,7 @@ const Head = props => (
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_ad15stG5b8YA-oVUoneLHmIW7pWpa3w&libraries=places"
       />
     </NextHead>
+    <FullStory />
     <RootStyles />
   </React.Fragment>
 );
