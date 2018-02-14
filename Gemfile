@@ -36,6 +36,8 @@ gem 'premailer-rails'
 gem "letter_opener", :group => :development
 # Use Capistrano for deployment
 gem 'capistrano-rails', group: :development
+gem "sentry-raven"
+
 
 gem 'unicorn'
 

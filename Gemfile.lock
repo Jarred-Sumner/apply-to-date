@@ -236,6 +236,8 @@ GEM
     selenium-webdriver (3.8.0)
       childprocess (~> 0.5)
       rubyzip (~> 1.0)
+    sentry-raven (2.7.2)
+      faraday (>= 0.7.6, < 1.0)
     sorcery (0.11.0)
       bcrypt (~> 3.1)
       oauth (~> 0.4, >= 0.4.4)
@@ -311,6 +313,7 @@ DEPENDENCIES
   rails (~> 5.1.4)
   sass-rails (~> 5.0)
   selenium-webdriver
+  sentry-raven
   sorcery
   therubyracer
   turbolinks (~> 5)
