@@ -8,7 +8,7 @@
     "prod-status": "pm2 deploy production exec \"cd dateme-frontend; pm2 l\"",
     "logs": "pm2 deploy production exec \"cd dateme-frontend; pm2 logs\"",
     "deploy":
-      "pm2 deploy ecosystem.config.js production && pm2 deploy production exec \"cd dateme-frontend; pm2 start all\""
+      "pm2 deploy ecosystem.config.js production && pm2 deploy production exec \"cd dateme-frontend; pm2 restart all\""
   },
   "babel": {
     "presets": ["next/babel"],
