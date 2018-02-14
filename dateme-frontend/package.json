@@ -6,8 +6,9 @@
     "start": "NODE_ENV=production NODE_SRC=\".\" node server.js",
     "prod-status": "pm2 deploy production exec \"cd dateme-frontend; pm2 l\"",
     "logs": "pm2 deploy production exec \"cd dateme-frontend; pm2 logs\"",
-    "deploy":
-      "pm2 deploy ecosystem.config.js production --force && NODE_ENV=production yarn install && NODE_ENV=production yarn build && pm2 startOrRestart ecosystem.config.js --env production"
+    "deploy": "pm2 deploy ecosystem.config.js production --force",
+    "postdeploy":
+      "cd dateme-frontend; NODE_ENV=production yarn build && pm2 startOrRestart ecosystem.config.js --env production"
   },
   "babel": {
     "presets": ["next/babel"],
