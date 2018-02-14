@@ -8,7 +8,7 @@
     "logs": "pm2 deploy production exec \"cd dateme-frontend; pm2 logs\"",
     "deploy": "pm2 deploy ecosystem.config.js production --force",
     "postdeploy":
-      "cd dateme-frontend; NODE_ENV=production yarn build && pm2 startOrRestart ecosystem.config.js --env production"
+      "NODE_ENV=production yarn install && NODE_ENV=production yarn build && pm2 startOrRestart ecosystem.config.js --env production"
   },
   "babel": {
     "presets": ["next/babel"],
