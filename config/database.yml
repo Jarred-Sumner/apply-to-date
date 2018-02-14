@@ -24,3 +24,4 @@ test:
 production:
   <<: *default
   database: dateme-production
+  password: <%= ENV["RAIL_RAIL_POSTGRESS_PASS"] %>

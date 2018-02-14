@@ -23,6 +23,8 @@ gem 'coffee-rails', '~> 4.2'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
 gem 'addressable', require: 'addressable/uri'
+gem 'capistrano3-unicorn'
+
 gem 'aws-sdk', '~> 2'
 gem 'sorcery'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -39,6 +41,9 @@ gem 'omniauth-twitter'
 gem 'omniauth-instagram'
 gem 'omniauth-facebook'
 gem 'omniauth-google-oauth2'
+gem "capistrano", "~> 3.10"
+  gem 'capistrano-passenger'
+  gem 'capistrano-rails-console', require: false
 
 gem 'koala'
 
