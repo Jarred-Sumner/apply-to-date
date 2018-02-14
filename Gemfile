@@ -24,7 +24,7 @@ gem 'coffee-rails', '~> 4.2'
 gem 'turbolinks', '~> 5'
 gem 'addressable', require: 'addressable/uri'
 gem 'capistrano3-unicorn', require: 'capistrano3/unicorn'
-
+gem 'capistrano-rvm'
 gem 'aws-sdk', '~> 2'
 gem 'sorcery'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -36,6 +36,7 @@ gem 'premailer-rails'
 gem "letter_opener", :group => :development
 # Use Capistrano for deployment
 gem 'capistrano-rails', group: :development
+
 gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'omniauth-instagram'
