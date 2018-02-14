@@ -13,7 +13,7 @@ import EmailIcon from "../static/Icon/input_field_icons/email.svg";
 import HeartIcon from "../static/Icon/input_field_icons/heart.svg";
 
 import XIcon from "../static/Icon/icons/x.svg";
-import CheckIcon from "../static/Icon/icons/Check.svg";
+import CheckIcon from "../static/Icon/icons/check.svg";
 import FeedbackIcon from "../static/Icon/icons/feedback.svg";
 import CaretIcon from "../static/Icon/icons/caret.svg";
 import RightCaretIcon from "../static/Icon/icons/caret-right.svg";
