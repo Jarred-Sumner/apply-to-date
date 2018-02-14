@@ -8,5 +8,5 @@ const express = require("express");
 app.prepare().then(() => {
   express()
     .use(handler)
-    .listen(3000);
+    .listen(parseInt(process.env.PORT || 3000, 10));
 });
