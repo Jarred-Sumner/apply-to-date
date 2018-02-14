@@ -32,9 +32,9 @@ import qs from "qs";
 import Icon from "../components/Icon";
 import MessageBar from "../components/MessageBar";
 
-const SECTION_ORDERING = ["introduction", "why"];
+export const SECTION_ORDERING = ["introduction", "why"];
 
-const SECTION_LABELS = {
+export const SECTION_LABELS = {
   introduction: "Introduction",
   why: "Why I want to go on a date with you"
 };

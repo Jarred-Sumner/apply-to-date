@@ -8,130 +8,84 @@ import FormField from "../components/FormField";
 import Text from "../components/Text";
 import _ from "lodash";
 import { updateEntities, setCurrentUser, initStore } from "../redux/store";
-import { getCurrentUser, login } from "../api";
+import { getReviewApplications, rateApplication } from "../api";
 import { bindActionCreators } from "redux";
 import { Router } from "../routes";
 import Alert, { handleApiError } from "../components/Alert";
-import Page from "../components/Page";
 import LoginGate from "../components/LoginGate";
+import ReviewApplicationContainer from "../components/ReviewApplicationContainer";
 
-class Gate extends React.Component {
+class ReviewApplication extends React.PureComponent {
   constructor(props) {
     super(props);
 
     this.state = {
+      isRating: false,
       application: null,
-      isLoading: true
+      isLoadingApplication: true
     };
   }
 
-  loadNext = () => {};
-}
+  async componentDidMount() {
+    this.loadNextApplication();
+  }
 
-class Login extends React.PureComponent {
-  constructor(props) {
-    super(props);
+  loadNextApplication = async () => {
+    const response = await getReviewApplications({
+      status: "submitted",
+      limit: 1
+    });
 
-    this.state = {
+    this.setState({
+      application: _.first(response.body.data),
+      isLoadingApplication: false,
       isRating: false
-    };
-  }
+    });
+  };
 
-  static async getInitialProps({ query, store, req, isServer }) {
-    const profileResponse = await getProfile(query.id);
-    store.dispatch(updateEntities(profileResponse.body));
+  rate = status => {
+    if (this.state.isRating) {
+      return;
+    }
 
-    const applicationResponse = await getSavedApplication(query.applicationId);
-    store.dispatch(updateEntities(applicationResponse.body));
-  }
+    this.setState({
+      isRating: true
+    });
+
+    return rateApplication(this.state.application.id, status).then(response => {
+      this.setState({
+        isRating: false,
+        isLoadingApplication: true
+      });
+
+      this.loadNextApplication();
+    });
+  };
+
+  handleYes = () => {
+    this.rate("approved");
+  };
+
+  handleNo = () => {
+    this.rate("rejected");
+  };
 
   render() {
+    const { application, isLoadingApplication, isRating } = this.state;
+
     return (
-      <Page size="small">
-        <Head title="Login | ApplyToDate" />
-        <article>
-          <main>
-            <Text type="PageTitle">Login</Text>
-
-            <form onSubmit={this.handleLogin}>
-              <FormField
-                name="email"
-                type="text"
-                placeholder="e.g. ylukem or lucy@shipfirstlabs.com"
-                value={username}
-                label="Username or email"
-                onChange={this.setUsername}
-                required
-              />
-
-              <FormField
-                name="password"
-                type="password"
-                value={password}
-                label="Password"
-                onChange={this.setPassword}
-                required
-                minLength={3}
-              />
-
-              <Button pending={isLoggingIn}>Login</Button>
-            </form>
-          </main>
-          <div className="password-link">
-            <Link href={"/forgot-password"}>
-              <a>
-                <Text size="14px" type="link">
-                  Forgot your password?
-                </Text>
-              </a>
-            </Link>
-          </div>
-        </article>
-        <style jsx>{`
-          article {
-            margin-top: 6rem;
-            margin-bottom: 3rem;
-          }
-
-          main {
-            display: flex;
-            flex-direction: column;
-            text-align: center;
-
-            justify-content: center;
-          }
-
-          form {
-            display: grid;
-            margin-top: 32px;
-            margin-bottom: 14px;
-            grid-auto-rows: auto;
-            grid-row-gap: 14px;
-          }
-
-          .password-link {
-            text-align: center;
-          }
-
-          footer {
-            display: flex;
-            flex-direction: column;
-            text-align: center;
-          }
-        `}</style>
-      </Page>
+      <ReviewApplicationContainer
+        application={application}
+        isLoading={isLoadingApplication}
+        onYes={this.handleYes}
+        onNo={this.handleNo}
+      />
     );
   }
 }
 
-const LoginWithStore = withRedux(
-  initStore,
-  (state, props) => {
-    return {
-      currentUser: state.currentUserId ? state.user[state.currentUserId] : null
-    };
-  },
-  dispatch => bindActionCreators({ updateEntities, setCurrentUser }, dispatch)
-)(LoginGate(Login, { loginRequired: true }));
+const ReviewApplicationWithStore = withRedux(initStore)(
+  LoginGate(ReviewApplication, { loginRequired: true })
+);
 
-export default LoginWithStore;
+export default ReviewApplicationWithStore;

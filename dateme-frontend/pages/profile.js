@@ -17,7 +17,7 @@ import Button from "../components/Button";
 import Thumbnail from "../components/Thumbnail";
 import PageFooter from "../components/PageFooter";
 import Page from "../components/Page";
-import SocialLink from "../components/SocialLink";
+import SocialLinkList from "../components/SocialLinkList";
 import MessageBar from "../components/MessageBar";
 
 const SECTION_ORDERING = [
@@ -145,20 +145,7 @@ class Profile extends React.Component {
               <Text type="Tagline">{profile.tagline}</Text>
             </div>
 
-            <div className="Section--socialLinks">
-              {_.map(
-                profile.socialLinks,
-                (url, provider) =>
-                  url && (
-                    <SocialLink
-                      provider={provider}
-                      url={url}
-                      key={provider}
-                      active
-                    />
-                  )
-              )}
-            </div>
+            <SocialLinkList socialLinks={profile.socialLinks} />
 
             <div className="Section-row ApplicationForm">
               <InlineApply profileId={this.props.profile.id} />

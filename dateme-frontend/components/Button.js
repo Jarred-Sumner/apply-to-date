@@ -14,6 +14,7 @@ const Button = ({
   color = "black",
   icon,
   rightIcon,
+  circle = false,
   pending = false,
   disabled = false
 }) => {
@@ -21,10 +22,13 @@ const Button = ({
   const classes = classNames("Button", {
     "Button--iconOnly": !children && !!icon,
     "Button--icon": !!icon,
+    "Button--circle": !!circle,
     "Button--black--fill": color === "black" && fill,
     "Button--black--unfill": color === "black" && !fill,
     "Button--green--fill": color === "green" && fill,
     "Button--green--unfill": color === "green" && !fill,
+    "Button--red--fill": color === "red" && fill,
+    "Button--red--unfill": color === "red" && !fill,
     "Button--white--fill": color === "white" && fill,
     "Button--white--unfill": color === "white" && !fill,
     "Button--twitter--fill": color === "twitter" && fill,
@@ -100,13 +104,18 @@ const Button = ({
         }
 
         .Button--green--fill {
-          background-color: #4be1ab;
+          background-color: #0ec2d0;
+          color: #fff;
+        }
+
+        .Button--red--fill {
+          background-color: #860f06;
           color: #fff;
         }
 
         .Button--green--unfill {
-          border-color: #4be1ab;
-          color: #4be1ab;
+          border-color: #0ec2d0;
+          color: #0ec2d0;
         }
 
         .Button--normal {
@@ -122,6 +131,15 @@ const Button = ({
           height: 30px;
           margin-top: auto;
           margin-bottom: auto;
+        }
+
+        .Button--circle {
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          padding: 0px;
+          align-items: center;
+          justify-content: center;
         }
 
         .Button.Button--iconOnly {
