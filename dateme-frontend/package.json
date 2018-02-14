@@ -8,7 +8,7 @@
     "logs": "pm2 deploy production exec \"cd dateme-frontend; pm2 logs\"",
     "deploy": "pm2 deploy ecosystem.config.js production --force",
     "postdeploy":
-      "NODE_ENV=production yarn install && NODE_ENV=production yarn build && pm2 startOrRestart ecosystem.config.js --env production"
+      "yarn build && pm2 startOrRestart ecosystem.config.js --env production"
   },
   "babel": {
     "presets": ["next/babel"],
@@ -62,6 +62,7 @@
   "dependencies": {
     "@zeit/next-css": "^0.0.7",
     "@zeit/next-less": "^0.0.9",
+    "babel-plugin-inline-react-svg": "^0.5.2",
     "bluebird": "^3.5.1",
     "classnames": "^2.2.5",
     "cookie-parser": "^1.4.3",
@@ -113,8 +114,7 @@
     "style-loader": "^0.20.1",
     "superagent": "^3.8.2",
     "superagent-jsonapify": "^1.4.5",
-    "title-case": "^2.1.1",
-    "babel-plugin-inline-react-svg": "^0.5.2"
+    "title-case": "^2.1.1"
   },
   "devDependencies": {
     "case-sensitive-paths-webpack-plugin": "^2.1.1",
