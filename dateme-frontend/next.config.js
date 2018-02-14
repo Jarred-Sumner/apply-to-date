@@ -23,12 +23,23 @@ module.exports = {
     });
 
     config.plugins.push(extractCSSPlugin);
-    config.plugins.push(
-      new Dotenv({
-        path: path.join(__dirname, ".env"),
-        systemvars: true
-      })
-    );
+
+    if (process.env.NODE_ENV === "production") {
+      config.plugins.push(
+        new Dotenv({
+          path: path.join(__dirname, ".env.production"),
+          systemvars: true
+        })
+      );
+    } else {
+      config.plugins.push(
+        new Dotenv({
+          path: path.join(__dirname, ".env.development"),
+          systemvars: true
+        })
+      );
+    }
+
     config.plugins.push(new CaseSensitivePathsPlugin());
     return config;
   }
