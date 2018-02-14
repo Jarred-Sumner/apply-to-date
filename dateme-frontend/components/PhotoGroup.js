@@ -43,7 +43,7 @@ export default class PhotoGroup extends React.Component {
   closeLightbox = () => this.setState({ currentPhotoIndex: null });
 
   render() {
-    const { photos, max = 3, size } = this.props;
+    const { photos, max = 3, size, showPlaceholder } = this.props;
     const { currentPhotoIndex } = this.state;
 
     return (
@@ -54,6 +54,7 @@ export default class PhotoGroup extends React.Component {
             key={photos[index] || index}
             url={photos[index]}
             size={size}
+            showPlaceholder={showPlaceholder}
             onClick={() => this.setState({ currentPhotoIndex: index })}
           />
         ))}
@@ -69,8 +70,7 @@ export default class PhotoGroup extends React.Component {
         <style jsx>{`
           .PhotosContainer {
             display: grid;
-            grid-template-columns: auto auto auto;
-            grid-template-rows: auto;
+            grid-auto-flow: column;
             grid-column-gap: 28px;
           }
 

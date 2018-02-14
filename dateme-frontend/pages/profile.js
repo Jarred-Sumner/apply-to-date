@@ -129,7 +129,11 @@ class Profile extends React.Component {
         </Waypoint>
 
         <section className="Section">
-          <PhotoGroup size="100%" photos={profile.photos} />
+          <PhotoGroup
+            size="206px"
+            showPlaceholder={false}
+            photos={profile.photos}
+          />
         </section>
 
         <section className="Section Section--bio">

@@ -1,7 +1,13 @@
 import classNames from "classnames";
 import Text from "./Text";
 
-export default ({ onClick, size = "126px", url, isLast = false }) => (
+export default ({
+  onClick,
+  size = "126px",
+  url,
+  isLast = false,
+  showPlaceholder = true
+}) => (
   <div
     className={classNames("photo", {
       "photo--last": isLast,
@@ -13,11 +19,13 @@ export default ({ onClick, size = "126px", url, isLast = false }) => (
     {url ? (
       <img src={url} />
     ) : (
-      <div className="Placeholder">
-        <Text color="white" size="12px">
-          no photo
-        </Text>
-      </div>
+      showPlaceholder && (
+        <div className="Placeholder">
+          <Text color="white" size="12px">
+            no photo
+          </Text>
+        </div>
+      )
     )}
 
     <style jsx>{`
