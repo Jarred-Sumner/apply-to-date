@@ -23,7 +23,7 @@ gem 'coffee-rails', '~> 4.2'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
 gem 'addressable', require: 'addressable/uri'
-gem 'capistrano3-unicorn', require: 'capistrano3/unicorn'
+gem 'capistrano3-unicorn'#, require: 'capistrano3/unicorn'
 gem 'capistrano-rvm'
 gem 'aws-sdk', '~> 2'
 gem 'sorcery'
