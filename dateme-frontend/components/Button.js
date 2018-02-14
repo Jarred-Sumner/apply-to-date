@@ -7,6 +7,7 @@ const Button = ({
   prefetch,
   className,
   children,
+  target,
   inline,
   fill = true,
   size = "normal",
@@ -289,7 +290,12 @@ const Button = ({
         </button>
       )}
       {realComponentType === "a" && (
-        <a onClick={onClick} href={href} className={classes}>
+        <a
+          target={target || undefined}
+          onClick={onClick}
+          href={href}
+          className={classes}
+        >
           <div className="IconContainer IconContainer--left">
             {!pending && icon}
           </div>

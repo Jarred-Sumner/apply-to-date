@@ -25,6 +25,14 @@ import Alert, { handleApiError } from "../components/Alert";
 import Page from "../components/Page";
 import Checkbox from "../components/Checkbox";
 
+const getDefaultUsername = externalAccount => {
+  if (externalAccount && externalAccount.username) {
+    return externalAccount.username;
+  } else {
+    return "";
+  }
+};
+
 class CreateAccount extends React.Component {
   static async getInitialProps({ store, query }) {
     const response = await getVerification(query.id);
@@ -37,7 +45,7 @@ class CreateAccount extends React.Component {
 
     this.state = {
       email: this.props.url.query.email || "",
-      username: "",
+      username: getDefaultUsername(props.externalAccount),
       password: "",
       passwordConfirmation: "",
       location: "",

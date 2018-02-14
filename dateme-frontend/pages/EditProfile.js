@@ -76,7 +76,7 @@ const getProfileFromProps = props => {
   const profile = props.profile || {};
   const {
     name = "",
-    tagline = "",
+    tagline,
     photos = [],
     socialLinks = {},
     recommendedContactMethod = "phone",
@@ -91,7 +91,7 @@ const getProfileFromProps = props => {
 
   return {
     name,
-    tagline,
+    tagline: tagline || "",
     photos: photos || [],
     phone,
     sections,
@@ -294,7 +294,9 @@ class EditProfile extends React.Component {
   setExternalAuthentications = externalAuthentications =>
     this.setState({ externalAuthentications });
   setName = evt => this.setState({ name: evt.target.value });
-  setTagline = evt => this.setState({ tagline: evt.target.value });
+  setTagline = tagline => {
+    this.setState({ tagline });
+  };
   setPhotoAtIndex = index => url => {
     const photos = this.state.photos.slice();
     photos.splice(index, 1, url);
@@ -341,6 +343,7 @@ class EditProfile extends React.Component {
                         size="xsmall"
                         href={profile.url}
                         color="green"
+                        target="_blank"
                         fill
                       >
                         <Icon type="caret-right" size="10px" />
@@ -376,14 +379,11 @@ class EditProfile extends React.Component {
         </section>
 
         <section className="Section Section-row--Tagline">
-          <EditableText
+          <TextArea
             placeholder="Enter a short TLDR of yourself"
             type="Tagline"
             value={tagline}
-            maxLength={74}
             onChange={this.setTagline}
-            maxWidth="100%"
-            width={"100%"}
           />
         </section>
 
@@ -478,10 +478,6 @@ class EditProfile extends React.Component {
             width: 50%;
           }
 
-          .Section-row {
-            grid-row: 1fr;
-          }
-
           .Section-title {
             margin-bottom: 14px;
           }
@@ -493,6 +489,7 @@ class EditProfile extends React.Component {
           .Section-row--bio {
             display: grid;
             grid-row-gap: 1rem;
+            width: 100%;
           }
 
           .Section--center {

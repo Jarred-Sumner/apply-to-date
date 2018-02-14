@@ -5,14 +5,14 @@
     "build": "NODE_SRC=\".\" next build",
     "start": "NODE_ENV=production NODE_SRC=\".\" node server.js",
     "prod-status": "pm2 deploy production exec \"cd dateme-frontend; pm2 l\"",
-    "logs":
-      "ssh -t root@165.227.58.224 \"cd /root/applytodate/current/dateme-frontend; pm2 logs\"",
+    "logs": "ssh -t root@165.227.58.224 \"cd /root/applytodate/current/dateme-frontend; pm2 logs\"",
     "deploy": "pm2 deploy ecosystem.config.js production --force",
-    "postdeploy":
-      "yarn build && pm2 startOrRestart ecosystem.config.js --env production"
+    "postdeploy": "yarn build && pm2 startOrRestart ecosystem.config.js --env production"
   },
   "babel": {
-    "presets": ["next/babel"],
+    "presets": [
+      "next/babel"
+    ],
     "plugins": [
       [
         "inline-react-svg",
@@ -21,7 +21,11 @@
             "plugins": [
               {
                 "removeAttrs": {
-                  "attrs": ["(data-name)", "(width)", "(height)"]
+                  "attrs": [
+                    "(data-name)",
+                    "(width)",
+                    "(height)"
+                  ]
                 }
               },
               {
@@ -85,6 +89,7 @@
     "raven-js": "^3.22.1",
     "rc-switch": "^1.6.0",
     "react": "^16.2.0",
+    "react-autosize-textarea": "^3.0.2",
     "react-burger-menu": "^2.2.3",
     "react-cropper": "^1.0.1",
     "react-dom": "^16.2.0",
@@ -93,6 +98,7 @@
     "react-hamburger-menu": "^1.0.0",
     "react-image-crop": "^3.0.10",
     "react-images": "^0.5.16",
+    "react-input-autosize": "^2.2.1",
     "react-markdown": "^3.1.5",
     "react-onclickoutside": "^6.7.1",
     "react-places-autocomplete": "^6.1.1",

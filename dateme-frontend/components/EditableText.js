@@ -1,28 +1,24 @@
 import classNames from "classnames";
+import Input from "react-input-autosize";
 
 export default class EditableText extends React.PureComponent {
   render() {
-    const {
-      className,
-      width = "auto",
-      minWidth,
-      maxWidth,
-      type,
-      ...otherProps
-    } = this.props;
+    const { className, type, maxWidth, maxHeight, ...otherProps } = this.props;
 
     return (
       <React.Fragment>
-        <input
-          className={classNames(className, {
+        <Input
+          inputClassName={classNames("EditableText", {
             "EditableText--ProfilePageTitle": type === "ProfilePageTitle",
             "EditableText--Tagline": type === "Tagline"
           })}
           type="text"
+          maxWidth={maxWidth}
+          maxHeight={maxHeight}
           {...otherProps}
         />
-        <style jsx>{`
-          input {
+        <style jsx global>{`
+          .EditableText {
             display: inline-flex;
             padding-bottom: 4px;
             appearance: none;
@@ -31,16 +27,10 @@ export default class EditableText extends React.PureComponent {
             padding: 0;
             border: 0;
             border-bottom: 1px dashed #b9bed1;
-            width: ${width};
-            min-width: ${minWidth || "unset"};
-            max-width: ${maxWidth || "unset"};
             box-shadow: none;
           }
 
-          input:focus,
-          select:focus,
-          textarea:focus,
-          button:focus {
+          .EditableText:focus {
             outline: none;
           }
 
@@ -50,15 +40,6 @@ export default class EditableText extends React.PureComponent {
             font-size: 36px;
             line-height: 35px;
             font-weight: 700;
-          }
-
-          .EditableText--Tagline {
-            font-family: Frank Ruhl Libre, serif;
-            color: #000;
-            font-size: 18px;
-            line-height: 19px;
-            text-align: center;
-            font-weight: 400;
           }
         `}</style>
       </React.Fragment>
