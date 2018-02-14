@@ -38,7 +38,7 @@ gem "letter_opener", :group => :development
 gem 'capistrano-rails', group: :development
 gem "sentry-raven"
 gem 'capistrano-rails-logs-tail'
-
+gem 'capistrano-passenger'
 
 gem 'unicorn'
 
