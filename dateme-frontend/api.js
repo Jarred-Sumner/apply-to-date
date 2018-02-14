@@ -3,7 +3,7 @@ import superagentJsonapify from "superagent-jsonapify";
 
 superagentJsonapify(request);
 
-export const BASE_HOSTNAME = "http://localhost:3001/api/v1";
+export const BASE_HOSTNAME = process.env.BASE_HOSTNAME;
 
 const buildUrl = path => `${BASE_HOSTNAME}${path}`;
 const get = (path, options = {}) =>
