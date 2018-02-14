@@ -13,7 +13,8 @@ module.exports = {
       },
       env_production: {
         NODE_ENV: "production",
-        NODE_SRC: "./"
+        NODE_SRC: "./",
+        PORT: "3001"
       }
     }
   ],
@@ -29,8 +30,7 @@ module.exports = {
       ref: "origin/master",
       repo: "git@github.com:Jarred-Sumner/dateme.git",
       path: "/root/applytodate",
-      "post-deploy":
-        "cd ./dateme-frontend && yarn install && yarn postdeploy && yarn start",
+      "post-deploy": "cd ./dateme-frontend && yarn install && yarn postdeploy",
       env: {
         NODE_ENV: "production"
       }
