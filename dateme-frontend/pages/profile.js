@@ -19,6 +19,7 @@ import PageFooter from "../components/PageFooter";
 import Page from "../components/Page";
 import SocialLinkList from "../components/SocialLinkList";
 import MessageBar from "../components/MessageBar";
+import Typed from "react-typed";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -137,7 +138,17 @@ class Profile extends React.Component {
           <section className="Section Section--center Section--title">
             <div className="Section-row">
               <Text type="ProfilePageTitle">
-                👋 Hi, I'm {titleCase(profile.name)}.
+                👋 &nbsp;
+                <Typed
+                  strings={[
+                    `Hi, I'm ${titleCase(profile.name)}.`,
+                    "We should meet.",
+                    "Leave me a note."
+                  ]}
+                  typeSpeed={60}
+                  backSpeed={30}
+                  loop={true}
+                />
               </Text>
             </div>
 
