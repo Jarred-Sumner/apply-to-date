@@ -3,12 +3,12 @@
   "scripts": {
     "dev": "NODE_ENV=development NODE_SRC=\".\" node server.js",
     "build": "NODE_SRC=\".\" next build",
-    "start": "NODE_ENV=production NODE_SRC=\".\" node server.js"
+    "start": "NODE_ENV=production NODE_SRC=\".\" node server.js",
+    "postdeploy":
+      "NODE_ENV=production yarn build && yarn start && pm2 reload ecosystem.config.js --env production"
   },
   "babel": {
-    "presets": [
-      "next/babel"
-    ],
+    "presets": ["next/babel"],
     "plugins": [
       [
         "inline-react-svg",
@@ -17,11 +17,7 @@
             "plugins": [
               {
                 "removeAttrs": {
-                  "attrs": [
-                    "(data-name)",
-                    "(width)",
-                    "(height)"
-                  ]
+                  "attrs": ["(data-name)", "(width)", "(height)"]
                 }
               },
               {
