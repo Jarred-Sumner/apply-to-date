@@ -29,7 +29,10 @@ module.exports = {
       ref: "origin/master",
       repo: "git@github.com:Jarred-Sumner/dateme.git",
       path: "/root/applytodate",
-      "post-deploy": "cd ./dateme-frontend && yarn install && yarn postdeploy"
+      "post-deploy": "cd ./dateme-frontend && yarn install && yarn postdeploy",
+      env: {
+        NODE_ENV: "production"
+      }
     }
   }
 };

@@ -4,11 +4,10 @@
     "dev": "NODE_ENV=development NODE_SRC=\".\" node server.js",
     "build": "NODE_SRC=\".\" next build",
     "start": "NODE_ENV=production NODE_SRC=\".\" node server.js",
-    "postdeploy": "NODE_ENV=production yarn build",
     "prod-status": "pm2 deploy production exec \"cd dateme-frontend; pm2 l\"",
     "logs": "pm2 deploy production exec \"cd dateme-frontend; pm2 logs\"",
     "deploy":
-      "pm2 deploy ecosystem.config.js production && pm2 deploy production exec \"cd dateme-frontend; pm2 restart all\""
+      "pm2 deploy ecosystem.config.js production --force && NODE_ENV=production yarn install && NODE_ENV=production yarn build && pm2 startOrRestart ecosystem.config.js --env production"
   },
   "babel": {
     "presets": ["next/babel"],
@@ -113,10 +112,10 @@
     "style-loader": "^0.20.1",
     "superagent": "^3.8.2",
     "superagent-jsonapify": "^1.4.5",
-    "title-case": "^2.1.1"
+    "title-case": "^2.1.1",
+    "babel-plugin-inline-react-svg": "^0.5.2"
   },
   "devDependencies": {
-    "babel-plugin-inline-react-svg": "^0.5.2",
     "case-sensitive-paths-webpack-plugin": "^2.1.1",
     "extract-text-webpack-plugin": "^3.0.2"
   }
