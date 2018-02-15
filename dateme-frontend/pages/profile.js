@@ -97,6 +97,8 @@ class Profile extends React.Component {
           url={process.env.DOMAIN + this.props.url.asPath}
           title={`Apply to date ${this.props.profile.name} | applytodate`}
           favicon={_.sample(profile.photos)}
+          username={profile.id}
+          gender={profile.sex}
           ogImage={_.first(profile.photos)}
         />
         <Waypoint

@@ -23,7 +23,7 @@ if (typeof window !== "undefined") {
 
 const Head = props => (
   <React.Fragment>
-    <NextHead>
+    <NextHead prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# profile: http://ogp.me/ns/profile#">
       <meta charSet="UTF-8" />
       <title>{props.title || ""}</title>
       <meta
@@ -36,6 +36,12 @@ const Head = props => (
         sizes="192x192"
         href={props.favicon || "/static/favicon.ico"}
       />
+      <meta property="fb:app_id" content="2014016792189722" />
+      <meta name="og:type" content={props.type} />
+      {props.username && (
+        <meta name="profile:username" content={props.username} />
+      )}
+      {props.gender && <meta name="profile:gender" content={props.gender} />}
       <link
         rel="apple-touch-icon"
         href={props.favicon || "/static/favicon.ico"}
