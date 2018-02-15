@@ -86,11 +86,7 @@ class Profile extends React.Component {
         }
         headerProps={{
           showChildren: this.state.isHeaderSticky,
-          children: (
-            <div className="HeaderForm">
-              {/* <InlineApply profileId={this.props.profile.id} /> */}
-            </div>
-          )
+          children: <div className="HeaderForm" />
         }}
       >
         <Head
@@ -100,7 +96,6 @@ class Profile extends React.Component {
           favicon={_.sample(profile.photos)}
           username={profile.id}
           type="profile"
-          gender={profile.sex}
           ogImage={_.first(profile.photos)}
         />
         <Waypoint

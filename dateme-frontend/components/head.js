@@ -10,7 +10,7 @@ const defaultOGURL = "";
 const defaultOGImage = "";
 
 if (typeof window !== "undefined") {
-  ReactGA.initialize("UA-30285081-15", {
+  ReactGA.initialize(process.env.GOOGLE_ANALYTICS, {
     debug: process.env.NODE_ENV !== "production",
     titleCase: false
   });
@@ -23,7 +23,7 @@ if (typeof window !== "undefined") {
 
 const Head = props => (
   <React.Fragment>
-    <NextHead prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# profile: http://ogp.me/ns/profile#">
+    <NextHead>
       <meta charSet="UTF-8" />
       <title>{props.title || ""}</title>
       <meta
