@@ -8,6 +8,8 @@ module.exports = {
     {
       name: "frontend",
       script: "server.js",
+      instances: "max",
+      exec_mode: "cluster",
       env: {
         COMMON_VARIABLE: "true"
       },

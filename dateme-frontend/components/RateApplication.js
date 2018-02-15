@@ -26,11 +26,9 @@ export default class RateApplication extends React.Component {
             display: grid;
             text-align: center;
             margin-top: 14px;
-            position: absolute;
-            left: calc(-62px + -56px);
 
             grid-template-rows: min-content 124px;
-            width: 124px;
+            width: auto;
             margin-right: auto;
             grid-auto-flow: row;
             grid-row-gap: 28px;

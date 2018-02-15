@@ -68,10 +68,6 @@ export default class ViewApplication extends React.Component {
             border: 1px solid #e8edf3;
             border-radius: 4px;
             width: 100%;
-            max-width: 473px;
-            margin-left: auto;
-            margin-right: auto;
-            flex: 0 0 auto;
             background-color: white;
           }
 

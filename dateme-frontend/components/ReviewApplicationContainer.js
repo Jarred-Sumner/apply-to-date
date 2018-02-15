@@ -38,10 +38,11 @@ export default ({ application, isLoading, onYes, onNo }) => (
     <style jsx>{`
       article {
         margin-top: 24px;
-        margin-left: auto;
-        margin-right: auto;
         width: 100%;
-        position: relative;
+        display: grid;
+        grid-auto-flow: column;
+        grid-column-gap: 24px;
+        justify-content: center;
       }
 
       div {
