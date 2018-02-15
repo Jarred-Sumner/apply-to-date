@@ -93,7 +93,11 @@ class Profile extends React.Component {
           )
         }}
       >
-        <Head />
+        <Head
+          title={`Apply to date ${this.props.profile.name} | applytodate`}
+          favicon={_.sample(profile.photos)}
+          ogImage={_.first(profile.photos)}
+        />
         <Waypoint
           onEnter={this.disableStickyHeader}
           onLeave={this.enableStickyHeader}

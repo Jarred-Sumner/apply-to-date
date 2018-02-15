@@ -197,7 +197,13 @@ class CreateApplication extends React.Component {
           </MessageBar>
         )}
       >
-        <Head />
+        <Head
+          title={
+            profile && `Your application to date ${profile.name} | applytodate`
+          }
+          favicon={profile && _.sample(profile.photos)}
+          ogImage={profile && _.first(profile.photos)}
+        />
         <form onSubmit={this.submitApplication}>
           <div className="Section-row">
             <Text type="ProfilePageTitle">
