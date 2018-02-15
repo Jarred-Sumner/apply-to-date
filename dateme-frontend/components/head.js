@@ -38,6 +38,7 @@ const Head = props => (
       />
       <meta property="fb:app_id" content="2014016792189722" />
       <meta property="og:type" content={props.type || "website"} />
+      {props.disableGoogle && <meta name="googlebot" content="noindex" />}
       {props.username && (
         <meta property="profile:username" content={props.username} />
       )}

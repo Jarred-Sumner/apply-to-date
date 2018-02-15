@@ -90,6 +90,7 @@ class Profile extends React.Component {
         }}
       >
         <Head
+          disableGoogle
           url={process.env.DOMAIN + this.props.url.asPath}
           title={`Apply to date ${profile.name}`}
           description={profile.tagline}
