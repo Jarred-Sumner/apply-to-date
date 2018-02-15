@@ -95,9 +95,11 @@ class Profile extends React.Component {
       >
         <Head
           url={process.env.DOMAIN + this.props.url.asPath}
-          title={`Apply to date ${this.props.profile.name} | applytodate`}
+          title={`Apply to date ${profile.name}`}
+          description={profile.tagline}
           favicon={_.sample(profile.photos)}
           username={profile.id}
+          type="profile"
           gender={profile.sex}
           ogImage={_.first(profile.photos)}
         />
