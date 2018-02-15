@@ -58,13 +58,17 @@ export default class CropModal extends React.Component {
   handleCropChange = (crop, pixelCrop) => this.setState({ crop, pixelCrop });
 
   handleConfirm = async () => {
-    const blob = await getCroppedImg(
-      this.state.file,
-      this.state.pixelCrop,
-      this.state.file.name || "image.jpeg"
-    );
+    if (this.state.pixelCrop) {
+      const blob = await getCroppedImg(
+        this.state.file,
+        this.state.pixelCrop,
+        this.state.file.name || "image.jpeg"
+      );
 
-    this.props.onCrop(blob);
+      this.props.onCrop(blob);
+    } else {
+      this.props.onCrop(this.state.file);
+    }
   };
 
   render() {
