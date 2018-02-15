@@ -88,7 +88,7 @@ class Profile extends React.Component {
           showChildren: this.state.isHeaderSticky,
           children: (
             <div className="HeaderForm">
-              <InlineApply profileId={this.props.profile.id} />
+              {/* <InlineApply profileId={this.props.profile.id} /> */}
             </div>
           )
         }}

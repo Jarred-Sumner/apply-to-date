@@ -16,6 +16,7 @@ export default class TextInput extends React.Component {
       required,
       value,
       icon,
+      className,
       iconSize,
       inline,
       inputRef,
@@ -28,7 +29,7 @@ export default class TextInput extends React.Component {
     } = this.props;
     return (
       <div
-        className={classNames("Container", {
+        className={classNames("Container", className, {
           "Container--inline": inline,
           "Container--block": !inline,
           "Container--disabled": !!disabled,

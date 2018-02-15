@@ -20,7 +20,7 @@ const Button = ({
   disabled = false
 }) => {
   const realComponentType = href ? "a" : componentType;
-  const classes = classNames("Button", {
+  const classes = classNames("Button", className, {
     "Button--iconOnly": !children && !!icon,
     "Button--icon": !!icon,
     "Button--circle": !!circle,
