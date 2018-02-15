@@ -89,6 +89,16 @@ export default ({
           margin-left: auto;
           margin-right: auto;
         }
+
+        @media (max-width: 500px) {
+          .PageSize--default {
+            max-width: 100%;
+          }
+
+          .PageSize--small {
+            max-width: 100%;
+          }
+        }
       `}</style>
     </React.Fragment>
   );

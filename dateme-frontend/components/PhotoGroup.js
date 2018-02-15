@@ -80,6 +80,7 @@ export default class PhotoGroup extends React.Component {
               grid-template-rows: unset;
               grid-auto-flow: row;
               grid-row-gap: 28px;
+              justify-content: center;
             }
           }
         `}</style>

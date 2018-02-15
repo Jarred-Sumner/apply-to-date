@@ -167,7 +167,7 @@ class Profile extends React.Component {
           }
 
           .Section-row {
-            grid-row: 1fr;
+            width: 100%;
           }
 
           .Section-title {
