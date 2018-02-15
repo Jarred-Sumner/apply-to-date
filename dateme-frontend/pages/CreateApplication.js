@@ -198,6 +198,7 @@ class CreateApplication extends React.Component {
         )}
       >
         <Head
+          url={process.env.DOMAIN + this.props.url.asPath}
           title={
             profile && `Your application to date ${profile.name} | applytodate`
           }
