@@ -37,11 +37,13 @@ const Head = props => (
         href={props.favicon || "/static/favicon.ico"}
       />
       <meta property="fb:app_id" content="2014016792189722" />
-      <meta name="og:type" content={props.type} />
+      <meta property="og:type" content={props.type || "website"} />
       {props.username && (
-        <meta name="profile:username" content={props.username} />
+        <meta property="profile:username" content={props.username} />
       )}
-      {props.gender && <meta name="profile:gender" content={props.gender} />}
+      {props.gender && (
+        <meta property="profile:gender" content={props.gender} />
+      )}
       <link
         rel="apple-touch-icon"
         href={props.favicon || "/static/favicon.ico"}
