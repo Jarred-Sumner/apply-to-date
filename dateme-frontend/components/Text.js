@@ -54,7 +54,7 @@ const Text = ({
 
         .Text--wrap,
         .Text--wrap strong {
-          white-space: normal;
+          white-space: pre-wrap;
           word-wrap: break-word;
           word-break: break-word;
         }
