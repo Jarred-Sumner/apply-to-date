@@ -65,7 +65,7 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
           )
 
           current_user.profile.update(
-            recommended_contact_methods: current_user.profile.external_authentications.pluck(:provider).uniq
+            recommended_contact_methods: current_user.profile.external_authentications.pluck(:provider).uniq,
             recommended_contact_method: auth.provider,
           )
         end
