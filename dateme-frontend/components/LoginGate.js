@@ -2,7 +2,7 @@ import { updateEntities, setCurrentUser } from "../redux/store";
 import { getProfile, getCurrentUser } from "../api";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import Router from "next/router";
+import { Router } from "../routes";
 import Page from "./Page";
 
 export const LOGIN_STATUSES = {
@@ -75,7 +75,7 @@ export default (Component, options = {}) => {
 
     render() {
       const { loginRequired = false } = options;
-      const { children, ...otherProps } = this.props;
+      const { children, isProbablyLoggedIn, ...otherProps } = this.props;
       const { loginStatus } = this.state;
 
       if (
@@ -85,7 +85,8 @@ export default (Component, options = {}) => {
         return (
           <Page
             headerProps={{
-              pending: true
+              pending: true,
+              isProbablyLoggedIn
             }}
             isLoading
           />
@@ -95,7 +96,11 @@ export default (Component, options = {}) => {
       }
 
       return (
-        <Component loginStatus={loginStatus} {...otherProps}>
+        <Component
+          isProbablyLoggedIn={isProbablyLoggedIn}
+          loginStatus={loginStatus}
+          {...otherProps}
+        >
           {children}
         </Component>
       );
@@ -107,6 +112,8 @@ export default (Component, options = {}) => {
   return connect(
     (state, props) => {
       return {
+        isProbablyLoggedIn: !!state.currentUserId,
+        currentUserId: state.currentUserId,
         currentUser:
           state && state.currentUserId ? state.user[state.currentUserId] : null
       };
