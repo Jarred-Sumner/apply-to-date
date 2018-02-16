@@ -22,6 +22,12 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
 
     ActiveRecord::Base.transaction do
       @application = Application.where(profile_id: params[:profile_id], email: email).first_or_initialize
+      @application.social_links = ExternalAuthentication.update_social_links(social_links)
+
+      @application.verified_networks.destroy_all
+      external_authentications.each do |id|
+        VerifiedNetwork.create!(application_id: @application.id, external_authentication_id: id)
+      end
 
       @application.update!(create_params.merge(
         email: email,
@@ -29,12 +35,6 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
         applicant_id: current_user.try(:id)
       ))
 
-      @application.verified_networks.destroy_all
-      external_authentications.each do |id|
-        VerifiedNetwork.create!(application_id: @application.id, external_authentication_id: id)
-      end
-
-      @application.social_links = ExternalAuthentication.update_social_links(social_links)
     end
 
     render json: ApplicantApplicationSerializer.new(@application, {
