@@ -5,15 +5,17 @@ class ApplicationsMailer < ApplicationMailer
   #
   #   en.applications_mailer.approved.subject
   #
-  def approved
-    @greeting = "Hi"
+  def approved(application_id)
+    @application = Application.find(application_id)
+    @profile = @application.profile
 
-    mail to: "jarred@jarredsumner.com"
+    mail to: @application.email, subject: "#{@profile.name} wants to go on a date with you."
   end
 
-  def confirmed
-    @greeting = "Hi"
+  def confirmed(application_id)
+    @application = Application.find(application_id)
+    @profile = @application.profile
 
-    mail to: "jarred@jarredsumner.com"
+    mail to: @application.email, subject: "It takes courage to ask someone out"
   end
 end

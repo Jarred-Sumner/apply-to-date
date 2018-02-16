@@ -245,6 +245,8 @@ GEM
       bcrypt (~> 3.1)
       oauth (~> 0.4, >= 0.4.4)
       oauth2 (~> 1.0, >= 0.8.0)
+    sparkpost_rails (1.5.0)
+      rails (>= 4.0, < 5.2)
     sprockets (3.7.1)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -319,6 +321,7 @@ DEPENDENCIES
   selenium-webdriver
   sentry-raven
   sorcery
+  sparkpost_rails
   therubyracer
   turbolinks (~> 5)
   tzinfo-data

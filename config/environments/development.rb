@@ -12,7 +12,7 @@ Rails.application.configure do
   # Show full error reports.
   config.consider_all_requests_local = true
 
-  config.action_mailer.delivery_method = :letter_opener
+  # config.action_mailer.delivery_method = :letter_opener
 
 
   # Enable/disable caching. By default caching is disabled.
@@ -30,7 +30,9 @@ Rails.application.configure do
   end
 
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
+  config.action_controller.asset_host = 'http://localhost:3001'
+  config.action_mailer.asset_host = 'http://localhost:3001'
 
   config.action_mailer.perform_caching = false
 
