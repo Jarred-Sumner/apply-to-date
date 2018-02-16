@@ -62,11 +62,7 @@ export default class Hamburger extends React.Component {
     return (
       <div className="HamburgerContainer">
         <Portal>
-          <Menu
-            outerContainerId="PageRoot"
-            customBurgerIcon={<img src="../static/Icon/icons/hamburger.svg" />}
-            right
-          >
+          <Menu outerContainerId="PageRoot" right>
             <Link href="/login">
               <a className="hamburgerlink">
                 <Text type="hamburgerlink">Login</Text>

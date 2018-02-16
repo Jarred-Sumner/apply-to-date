@@ -32,14 +32,24 @@ routes
     page: "TermsOfService"
   })
   .add({
-    name: "ReviewSpecificApplication",
-    pattern: "/applications/:id",
-    page: "ReviewSpecificApplication"
-  })
-  .add({
     name: "/applications",
     pattern: "/applications",
     page: "ReviewApplication"
+  })
+  .add({
+    name: "/applications/liked",
+    pattern: "/applications/liked",
+    page: "LikedApplications"
+  })
+  .add({
+    name: "/applications/passed",
+    pattern: "/applications/passed",
+    page: "PassedApplications"
+  })
+  .add({
+    name: "ReviewSpecificApplication",
+    pattern: "/applications/:id",
+    page: "ReviewSpecificApplication"
   })
   .add({
     name: "profile",

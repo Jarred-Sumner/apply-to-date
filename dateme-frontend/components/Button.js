@@ -100,7 +100,13 @@ const Button = ({
         }
 
         .Button--black--unfill {
-          border-color: #000000;
+          border-color: #333;
+          color: #333;
+        }
+
+        .Button--black--unfill:hover {
+          border-color: #000;
+          background-color: #fafafa;
           color: #000;
         }
 

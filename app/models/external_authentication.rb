@@ -161,7 +161,7 @@ class ExternalAuthentication < ApplicationRecord
     if provider == 'twitter'
       social_links[provider] = info['urls']['Twitter']
     elsif provider == 'facebook'
-      social_links[provider] = "https://www.facebook.com/app_scoped_user_id/#{uid}?access_token=#{access_token}"
+      social_links[provider] = "https://www.facebook.com/app_scoped_user_id/#{uid}"
     elsif provider == 'instagram'
       social_links[provider] = "https://instagram.com/#{username}"
     end

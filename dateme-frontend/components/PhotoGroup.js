@@ -55,7 +55,11 @@ export default class PhotoGroup extends React.Component {
             url={photos[index]}
             size={size}
             showPlaceholder={showPlaceholder}
-            onClick={() => this.setState({ currentPhotoIndex: index })}
+            onClick={
+              photos[index]
+                ? () => this.setState({ currentPhotoIndex: index })
+                : undefined
+            }
           />
         ))}
 

@@ -1,9 +1,26 @@
 import SocialLink from "./SocialLink";
 import _ from "lodash";
 import classNames from "classnames";
+import Icon from "./Icon";
+import Button from "./Button";
 
-export default ({ socialLinks, centered = true }) => (
+const PhoneButton = ({ phone }) => {
+  return (
+    <Button
+      color="black"
+      icon={<Icon type="phone" size="12px" color="#333" />}
+      fill={false}
+      size="small"
+      href={`sms://${phone}`}
+    >
+      {phone}
+    </Button>
+  );
+};
+
+export default ({ socialLinks, phone, centered = true }) => (
   <section className={classNames({ "Section--centered": centered })}>
+    {phone && <PhoneButton phone={phone} />}
     {_.map(
       socialLinks,
       (url, provider) =>

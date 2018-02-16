@@ -14,12 +14,16 @@ class Api::V1::RatingsController < Api::V1::ApplicationController
     applications = current_user
       .profile
       .applications
+      .includes(:external_authentications)
       .order("created_at DESC")
       .where(status: status)
       .limit([Integer(params[:limit] || 25), 25].min)
       .offset([Integer(params[:offset] || 0), 0].max)
     
       render json: ReviewApplicationSerializer.new(applications, {
+        include: [
+          :external_authentications
+        ],
         meta: {
           total: count,
         }
@@ -36,16 +40,25 @@ class Api::V1::RatingsController < Api::V1::ApplicationController
       .find(params[:id])
 
     application.update!(status: status)
-    render json: ReviewApplicationSerializer.new(application).serializable_hash
+    render json: ReviewApplicationSerializer.new(application, {
+      include: [
+          :external_authentications
+      ],
+    }).serializable_hash
   end
 
   def show
     application = current_user
       .profile
       .applications
+      .includes(:external_authentications)
       .find(params[:id])
 
-    render json: ReviewApplicationSerializer.new(application).serializable_hash
+    render json: ReviewApplicationSerializer.new(application, {
+      include: [
+          :external_authentications
+      ],
+    }).serializable_hash
   end
 
 

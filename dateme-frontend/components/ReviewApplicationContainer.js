@@ -7,7 +7,7 @@ import ApplicationsBreadcrumbs from "./ApplicationsBreadcrumbs";
 
 export default ({ application, isLoading, onYes, onNo }) => (
   <Page isLoading={isLoading}>
-    <Head title="Review Application | AskToMeet" />
+    <Head title="Review Application | Apply to date" />
 
     <ApplicationsBreadcrumbs />
 

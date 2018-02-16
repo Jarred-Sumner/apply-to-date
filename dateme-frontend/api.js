@@ -128,9 +128,9 @@ export const login = session => {
   });
 };
 
-export const getReviewApplications = status => {
+export const getReviewApplications = options => {
   return get(`/ratings`, {
-    status
+    ...options
   });
 };
 

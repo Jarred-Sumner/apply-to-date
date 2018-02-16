@@ -4,6 +4,8 @@
     "dev": "NODE_ENV=development NODE_SRC=\".\" node server.js",
     "build": "NODE_SRC=\".\" next build",
     "start": "NODE_ENV=production NODE_SRC=\".\" node server.js",
+    "ssh": "ssh root@165.227.58.224",
+    "htop": "ssh -t root@165.227.58.224 htop",
     "prod-status": "pm2 deploy production exec \"cd dateme-frontend; pm2 l\"",
     "logs":
       "ssh -t root@165.227.58.224 \"cd /root/applytodate/current/dateme-frontend; pm2 logs\"",

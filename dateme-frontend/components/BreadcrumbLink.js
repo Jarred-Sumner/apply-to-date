@@ -14,9 +14,9 @@ const BreadcrumbLink = ({ href, children, isActive }) => {
       <Text
         casing="uppercase"
         color="#343E5C"
-        size="16px"
+        size="14px"
         weight="bold"
-        lineHeight="17px"
+        lineHeight="18px"
       >
         {children}
       </Text>

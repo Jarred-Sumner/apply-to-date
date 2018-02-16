@@ -21,7 +21,13 @@ export default ({
     ) : (
       showPlaceholder && (
         <div className="Placeholder">
-          <Text color="white" size="12px">
+          <Text
+            color="white"
+            casing="uppercase"
+            weight="semiBold"
+            letterSpacing="0.5px"
+            size="12px"
+          >
             no photo
           </Text>
         </div>
@@ -43,6 +49,7 @@ export default ({
         display: flex;
         justify-content: center;
         align-items: center;
+        pointer-events: none;
       }
 
       img {

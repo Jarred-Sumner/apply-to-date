@@ -14,8 +14,8 @@ export default class ApplicationsBreadcrumbs extends React.Component {
             grid-auto-flow: column dense;
             grid-column-gap: 24px;
             grid-auto-columns: min-content min-content min-content;
-            margin-top: 24px;
-            margin-bottom: 24px;
+            margin-top: 48px;
+            margin-bottom: 48px;
             justify-content: center;
             text-align: center;
           }
