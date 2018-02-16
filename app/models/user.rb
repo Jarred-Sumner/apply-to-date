@@ -8,6 +8,6 @@ class User < ApplicationRecord
   validates :password_confirmation, presence: true, if: -> { new_record? || changes[:crypted_password] }
 
   validates :email, uniqueness: true, presence: true, format: /\A([^@\s]+)@((?:[-a-z0-9l]+\.)+[a-z]{2,})\Z/i
-  validates :username, uniqueness: true, presence: true, format:  /[a-zA-Z0-9]+/
+  validates :username, uniqueness: true, presence: true, format: { with: /[a-zA-Z0-9\-\_\.]*/ }
   validates :sex, presence: true, inclusion: { in: ['male', 'female', 'other']}
 end

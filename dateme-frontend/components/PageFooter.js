@@ -10,7 +10,7 @@ export default ({ center = false }) => {
         <Brand hideText />
 
         <div className="links">
-          <Link href="/contact-us">
+          <Link href="mailto:lucy@shipfirstlabs.com?subject=Hi">
             <a>
               <Text type="footerlink">Contact us</Text>
             </a>

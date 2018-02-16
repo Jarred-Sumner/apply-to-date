@@ -19,6 +19,8 @@ import withLogin from "../lib/withLogin";
 
 class VerifyAccount extends React.Component {
   render() {
+    const email = _.get(this.props, "url.query.email");
+
     return (
       <div>
         <Head title="Create account | ApplyToDate" />
@@ -61,9 +63,9 @@ class VerifyAccount extends React.Component {
             </div>
 
             <Link
-              href={`/sign-up?email=${encodeURIComponent(
-                _.get(this.props, "url.query.email")
-              )}`}
+              href={`/sign-up?${
+                email ? "email=" + encodeURIComponent(email) : ""
+              }`}
             >
               <a>
                 <Text underline size="14px" align="center">
