@@ -40,7 +40,7 @@ class EmailForm extends React.Component {
           componentType="button"
           inline={!isMobile()}
         >
-          Apply for a date
+          Get started
         </Button>
 
         <style jsx>{`
@@ -85,75 +85,75 @@ class EmailForm extends React.Component {
   }
 }
 
-class SocialNetworkForm extends React.Component {
-  render() {
-    return (
-      <div className="Container">
-        <Icon type="pending-verify" size="62px" color="#000" />
+// class SocialNetworkForm extends React.Component {
+//   render() {
+//     return (
+//       <div className="Container">
+//         <Icon type="pending-verify" size="62px" color="#000" />
 
-        <Text size="14px">
-          To finish applying, please connect a social profile to verify your
-          identity.
-        </Text>
+//         <Text size="14px">
+//           To finish applying, please connect a social profile to verify your
+//           identity.
+//         </Text>
 
-        <div className="SocialLinkGroup">
-          <SocialLink
-            hoverable
-            provider="instagram"
-            width="42px"
-            height="42px"
-            active
-            onClick={() => this.props.loginWith("instagram")}
-          />
-          <SocialLink
-            hoverable
-            provider="facebook"
-            width="42px"
-            height="42px"
-            active
-            onClick={() => this.props.loginWith("facebook")}
-          />
-          <SocialLink
-            hoverable
-            provider="twitter"
-            width="42px"
-            height="42px"
-            active
-            onClick={() => this.props.loginWith("twitter")}
-          />
-        </div>
+//         <div className="SocialLinkGroup">
+//           <SocialLink
+//             hoverable
+//             provider="instagram"
+//             width="42px"
+//             height="42px"
+//             active
+//             onClick={() => this.props.loginWith("instagram")}
+//           />
+//           <SocialLink
+//             hoverable
+//             provider="facebook"
+//             width="42px"
+//             height="42px"
+//             active
+//             onClick={() => this.props.loginWith("facebook")}
+//           />
+//           <SocialLink
+//             hoverable
+//             provider="twitter"
+//             width="42px"
+//             height="42px"
+//             active
+//             onClick={() => this.props.loginWith("twitter")}
+//           />
+//         </div>
 
-        <style jsx>{`
-          .Container {
-            display: grid;
-            grid-auto-flow: row;
-            grid-template-rows: auto auto auto;
-            grid-row-gap: 24px;
+//         <style jsx>{`
+//           .Container {
+//             display: grid;
+//             grid-auto-flow: row;
+//             grid-template-rows: auto auto auto;
+//             grid-row-gap: 24px;
 
-            max-width: 300px;
-            padding: 24px;
-            justify-content: center;
-            align-items: center;
-            border: 1px solid #f0f2f7;
-            border-radius: 4px;
+//             max-width: 300px;
+//             padding: 24px;
+//             justify-content: center;
+//             align-items: center;
+//             border: 1px solid #f0f2f7;
+//             border-radius: 4px;
 
-            grid-row: auto;
-            margin-left: auto;
-            margin-right: auto;
-          }
+//             grid-row: auto;
+//             margin-left: auto;
+//             margin-right: auto;
+//           }
 
-          .SocialLinkGroup {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            flex-shrink: 0;
-            width: 100%;
-          }
-        `}</style>
-      </div>
-    );
-  }
-}
+//           .SocialLinkGroup {
+//             display: flex;
+//             justify-content: space-around;
+//             align-items: center;
+//             flex-shrink: 0;
+//             width: 100%;
+//           }
+//         `}</style>
+//       </div>
+//     );
+//   }
+// }
 
 export default class InlineApplication extends React.Component {
   constructor(props) {
@@ -168,34 +168,24 @@ export default class InlineApplication extends React.Component {
 
   setEmail = email => this.setState({ email });
 
-  handleLoginWith = provider => {
+  handleApply = provider => {
     const params = qs.stringify({
-      applicant_email: this.state.email,
-      profile_id: this.props.profileId
+      email: this.state.email
     });
 
-    const url = `${BASE_AUTHORIZE_URL}/${provider}?${params}`;
-    console.log(url);
+    const url = `/${this.props.profileId}/apply?${params}`;
     Router.pushRoute(url, url);
   };
 
   render() {
     const { status, email } = this.state;
 
-    if (status === STATUS.email) {
-      return (
-        <EmailForm
-          email={email}
-          setEmail={this.setEmail}
-          onApply={() =>
-            this.setState({
-              status: STATUS.social
-            })
-          }
-        />
-      );
-    } else {
-      return <SocialNetworkForm loginWith={this.handleLoginWith} />;
-    }
+    return (
+      <EmailForm
+        email={email}
+        setEmail={this.setEmail}
+        onApply={this.handleApply}
+      />
+    );
   }
 }

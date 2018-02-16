@@ -43,7 +43,7 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
 
       if !update_params[:tagline].nil?
         if update_params[:tagline].blank?
-          raise ArgumentError.new("Please include a TLDR beneath your name")
+          raise ArgumentError.new("Please include a short self-summary your name")
         end
 
         profile.update!(tagline: update_params[:tagline])
@@ -92,13 +92,20 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
       end
 
       if !update_params[:visible].nil?
-        profile.update!(visible: String(update_params[:visible]) == 'true')
+        visible = String(update_params[:visible]) == 'true'
+        if profile.photos.blank? && visible
+          raise ArgumentError.new("Please include at least one photo")
+        end
+
+        profile.update!(visible: visible)
       end
     end
 
     render_profile(profile)
   rescue ActiveRecord::RecordInvalid => e
     render_validation_error(e)
+  rescue ArgumentError => e
+    render_error(message: e.message)
   end
 
   def render_profile(profile)

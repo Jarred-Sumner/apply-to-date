@@ -64,31 +64,39 @@ const getWidthForText = (text, isPlaceholder) => {
 class CreateApplication extends React.Component {
   static async getInitialProps({ query, store, req, isServer }) {
     const profileResponse = await getProfile(query.id);
-    store.dispatch(updateEntities([_.get(profileResponse, "body.data")]));
+    store.dispatch(updateEntities(profileResponse.body));
 
-    const applicationResponse = await getSavedApplication(query.applicationId);
-    store.dispatch(updateEntities(applicationResponse.body));
+    if (query.applicationId) {
+      const applicationResponse = await getSavedApplication(
+        query.applicationId
+      );
+      store.dispatch(updateEntities(applicationResponse.body));
+    }
   }
 
   constructor(props) {
     super(props);
 
-    const { application, profile } = props;
+    const { profile } = props;
 
     this.state = {
       currentPhotoIndex: null,
       isHeaderSticky: false,
       isSavingProfile: false,
-      name: _.get(application, "name", ""),
+      name: _.get(props, "application.name", ""),
       recommendedContactMethod:
-        _.get(application, "recommendedContactMethod") ||
+        _.get(props, "application.recommendedContactMethod") ||
         _.get(profile, "recommendedContactMethod") ||
         "phone",
-      phone: _.get(application, "phone", ""),
-      email: _.get(application, "email", props.url.query.email || ""),
-      socialLinks: _.get(application, "socialLinks", {}),
-      sex: _.get(application, "sex", ""),
-      externalAuthentications: _.get(application, "externalAuthentications", [])
+      phone: _.get(props, "application.phone", ""),
+      email: _.get(props, "application.email", props.url.query.email || ""),
+      socialLinks: _.get(props, "application.socialLinks", {}),
+      sex: _.get(props, "application.sex", ""),
+      externalAuthentications: _.get(
+        props,
+        "application.externalAuthentications",
+        []
+      )
     };
   }
 
@@ -131,6 +139,17 @@ class CreateApplication extends React.Component {
       status
     })
       .then(async response => {
+        if (response.body) {
+          const urlParams = {
+            ..._.get(this.props, "url.query"),
+            applicationId: _.get(response, "body.data.id")
+          };
+
+          return Router.replaceRoute(
+            `${this.props.url.asPath.split("?")[0]}?${qs.stringify(urlParams)}`
+          ).then(() => response.body);
+        }
+
         return response.body;
       })
       .catch(error => {

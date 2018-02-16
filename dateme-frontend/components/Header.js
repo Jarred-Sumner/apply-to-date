@@ -21,7 +21,7 @@ class Header extends React.Component {
           Sign in
         </Button>
 
-        <Button href="/sign-up" fill>
+        <Button href="/sign-up/verify" fill>
           Get your own page
         </Button>
 

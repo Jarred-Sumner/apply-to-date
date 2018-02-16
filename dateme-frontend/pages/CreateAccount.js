@@ -24,6 +24,7 @@ import ExternalAuthentication, {
 import Alert, { handleApiError } from "../components/Alert";
 import Page from "../components/Page";
 import Checkbox from "../components/Checkbox";
+import LoginGate from "../components/LoginGate";
 
 const getDefaultUsername = externalAccount => {
   if (externalAccount && externalAccount.username) {
@@ -35,9 +36,11 @@ const getDefaultUsername = externalAccount => {
 
 class CreateAccount extends React.Component {
   static async getInitialProps({ store, query }) {
-    const response = await getVerification(query.id);
+    if (query.id) {
+      const response = await getVerification(query.id);
 
-    store.dispatch(updateEntities(response.body));
+      store.dispatch(updateEntities(response.body));
+    }
   }
 
   constructor(props) {
@@ -102,7 +105,7 @@ class CreateAccount extends React.Component {
     }
 
     createAccount({
-      external_authentication_id: this.props.externalAccount.id,
+      external_authentication_id: _.get(this.props, "externalAccount.id"),
       profile: {
         latitude: latLng ? latLng.lat : null,
         longitude: latLng ? latLng.lat : null,
@@ -173,17 +176,19 @@ class CreateAccount extends React.Component {
           <main>
             <Text type="PageTitle">Create account</Text>
 
-            <div className="Row">
-              <ExternalAuthentication
-                account={this.props.externalAccount}
-                provider={this.props.externalAccount.provider}
-              />
+            {this.props.externalAccount && (
+              <div className="Row">
+                <ExternalAuthentication
+                  account={this.props.externalAccount}
+                  provider={provider}
+                />
 
-              <Text size="16px">
-                Thanks for verifying with {EXTERNAL_ACCOUNT_LABELS[provider]}!
-                Let's get you setup.
-              </Text>
-            </div>
+                <Text size="16px">
+                  Thanks for verifying with {EXTERNAL_ACCOUNT_LABELS[provider]}!
+                  Let's get you setup.
+                </Text>
+              </div>
+            )}
 
             <form onSubmit={this.submit}>
               <FormField
@@ -336,11 +341,10 @@ const CreateAccountWithStore = withRedux(
   initStore,
   (state, props) => {
     return {
-      currentUser: state.currentUserId ? state.user[state.currentUserId] : null,
       externalAccount: state.external_authentication[props.url.query.id]
     };
   },
   dispatch => bindActionCreators({ updateEntities, setCurrentUser }, dispatch)
-)(CreateAccount);
+)(LoginGate(CreateAccount));
 
 export default CreateAccountWithStore;

@@ -58,6 +58,14 @@ class VerifyAccount extends React.Component {
                 Twitter
               </Button>
             </div>
+
+            <Link href="/sign-up">
+              <a>
+                <Text underline size="14px" align="center">
+                  Skip
+                </Text>
+              </a>
+            </Link>
           </main>
         </Page>
         <style jsx>{`

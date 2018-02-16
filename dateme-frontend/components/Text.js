@@ -14,7 +14,8 @@ const Text = ({
   textDecoration = "none",
   letterSpacing = "default",
   align = "inherit",
-  wrap = null
+  wrap = null,
+  underline = false
 }) => {
   const classes = classNames("Text", className, {
     "Text--extraBold": weight == "extraBold",
@@ -28,7 +29,8 @@ const Text = ({
     "Text--paragraph": type === "paragraph",
     "Text--title": type === "title",
     "Text--wrap": wrap === true,
-    "Text--noWrap": wrap === false
+    "Text--noWrap": wrap === false,
+    "Text--underline": !!underline
   });
 
   return (
@@ -75,6 +77,10 @@ const Text = ({
           white-space: nowrap;
           word-wrap: none;
           word-break: none;
+        }
+
+        .Text--underline {
+          text-decoration: underline;
         }
 
         .Text--serif {

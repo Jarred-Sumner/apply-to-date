@@ -2,8 +2,6 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 
   def create
     ActiveRecord::Base.transaction do
-      @external_authentication = ExternalAuthentication.find(params[:external_authentication_id])
-
       if create_params[:sex].blank?
         return render_error(message: "Please choose your gender")
       end
@@ -14,19 +12,22 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 
       @user = User.create!(create_params.merge(password_confirmation: create_params[:password]))
 
-      @external_authentication.user = @user
-      @external_authentication.save!
-
       @profile = Profile.create!(
         create_profile_params.merge(
           user: @user,
           id: @user.username,
           visible: false,
-          name: @external_authentication.name.try(:split, ' ').try(:first),
+          name: @external_authentication.try(:name).try(:split, ' ').try(:first),
         )
       )
 
-      VerifiedNetwork.create!(profile_id: @profile.id, external_authentication_id: @external_authentication.id)
+      if params[:external_authentication_id].present?
+        @external_authentication = ExternalAuthentication.find(params[:external_authentication_id])
+        @external_authentication.user = @user
+        @external_authentication.save!
+
+        VerifiedNetwork.create!(profile_id: @profile.id, external_authentication_id: @external_authentication.id)
+      end
 
       auto_login(@user, true)
       render json: UserSerializer.new(@user, {include: [:profile]}).serializable_hash

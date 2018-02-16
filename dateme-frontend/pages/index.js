@@ -112,7 +112,7 @@ class SignupForm extends React.Component {
     evt.preventDefault();
 
     Router.push({
-      pathname: `/sign-up`,
+      pathname: `/sign-up/verify`,
       query: {
         email: this.state.email
       }
@@ -185,7 +185,7 @@ class Homepage extends React.Component {
               <img className="Logo Logo-Home" src="/static/animatedlogo.gif" />
               <div className="Copy-title">
                 <Text font="serif" size="36px" lineHeight="44px" weight="bold">
-                  Your own game of The Bachelorette
+                  Your own game of The Bachelor(ette)
                 </Text>
               </div>
               <div className="Copy-body">
@@ -195,15 +195,7 @@ class Homepage extends React.Component {
                 </Text>
               </div>
 
-              <Text
-                size="16px"
-                lineHeight="24px"
-                font="sans-serif"
-                weight="bold"
-              >
-                Now in private beta.
-              </Text>
-              {/* <SignupForm /> */}
+              <SignupForm />
             </div>
           </main>
 

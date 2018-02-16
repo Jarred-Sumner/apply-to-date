@@ -380,7 +380,7 @@ class EditProfile extends React.Component {
 
         <section className="Section Section-row--Tagline">
           <TextArea
-            placeholder="Enter a short TLDR of yourself"
+            placeholder="Enter a short self-summary"
             type="Tagline"
             value={tagline}
             onChange={this.setTagline}
