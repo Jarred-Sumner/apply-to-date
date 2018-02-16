@@ -115,25 +115,6 @@ const newStore = (initialState, reducers) => {
   );
 };
 
-const persistConfig = {
-  key: "root",
-  storage: storage,
-  blacklist: ["currentUserId"]
-};
-
 export const initStore = (initialState = defaultState, { isServer }) => {
-  if (isServer) {
-    return newStore(initialState, createReducers());
-  } else {
-    const store = newStore(
-      initialState,
-      persistReducer(persistConfig, createReducers())
-    );
-
-    persistStore(store, null, () => {
-      window.loadedReduxStore = true;
-    });
-
-    return store;
-  }
+  return newStore(initialState, createReducers());
 };
