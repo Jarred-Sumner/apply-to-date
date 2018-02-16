@@ -30,6 +30,7 @@ import Icon from "../components/Icon";
 import TextInput from "../components/TextInput";
 import Switch from "../components/Switch";
 import { isMobile } from "../lib/Mobile";
+import withLogin from "../lib/withLogin";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -556,9 +557,11 @@ const ProfileWithStore = withRedux(
     pure: false
   }
 )(
-  LoginGate(ProfileGate, {
-    loginRequired: true
-  })
+  withLogin(
+    LoginGate(ProfileGate, {
+      loginRequired: true
+    })
+  )
 );
 
 export default ProfileWithStore;

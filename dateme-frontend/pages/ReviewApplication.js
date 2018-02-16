@@ -14,6 +14,7 @@ import { Router } from "../routes";
 import Alert, { handleApiError } from "../components/Alert";
 import LoginGate from "../components/LoginGate";
 import ReviewApplicationContainer from "../components/ReviewApplicationContainer";
+import withLogin from "../lib/withLogin";
 
 class ReviewApplication extends React.PureComponent {
   constructor(props) {
@@ -87,7 +88,7 @@ class ReviewApplication extends React.PureComponent {
 }
 
 const ReviewApplicationWithStore = withRedux(initStore)(
-  LoginGate(ReviewApplication, { loginRequired: true })
+  withLogin(LoginGate(ReviewApplication, { loginRequired: true }))
 );
 
 export default ReviewApplicationWithStore;

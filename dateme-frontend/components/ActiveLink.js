@@ -15,7 +15,7 @@ const ActiveLink = Component =>
       return (
         <Component
           isActive={[href, ...additionalMatches].includes(
-            window.location.pathname
+            typeof window !== "undefined" ? window.location.pathname : undefined
           )}
           href={href}
           onClick={handleClick}

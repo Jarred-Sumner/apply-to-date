@@ -1,48 +1,133 @@
 import Brand from "./Brand";
 import Sticky from "react-stickynode";
 import Button from "./Button";
-import LoginGate, { LOGIN_STATUSES } from "./LoginGate";
+import LoginGate, { LOGIN_STATUSES, isProbablyLoggedIn } from "./LoginGate";
 import { AlertHost } from "./Alert";
 import FeedbackForm from "./FeedbackForm";
 // import Hamburger from "../components/Hamburger";
 import BurgerIcon from "../components/BurgerIcon";
 import MobileDropdownHeader from "../components/MobileDropdownHeader";
 import BetaGate from "./BetaGate";
+import Link from "next/link";
+import Icon from "./Icon";
+import ActiveLink from "./ActiveLink";
+import Text from "./Text";
+import classNames from "classnames";
 
-class Header extends React.Component {
-  renderAuthButtons = () => {
-    if (this.props.loginStatus === LOGIN_STATUSES.loggedIn) {
-      return null;
-    }
+const NavLink = ActiveLink(({ children, href, isActive }) => {
+  return (
+    <a
+      href={href}
+      className={classNames("Container", {
+        "Container--active": isActive,
+        "Container--inactive": !isActive
+      })}
+    >
+      {children}
 
+      <style jsx>{`
+        .Container {
+          display: flex;
+          transition: opacity 0.1s linear;
+          text-decoration: none;
+        }
+        .Container--inactive {
+          opacity: 0.75;
+        }
+
+        .Container--inactive:hover,
+        .Container--active {
+          opacity: 1;
+        }
+      `}</style>
+    </a>
+  );
+});
+
+const HeaderLinks = ({ isProbablyLoggedIn }) => {
+  if (isProbablyLoggedIn) {
     return (
       <div className="Buttons">
-        <Button href="/login" fill={false}>
-          Sign in
-        </Button>
+        <NavLink href={"/page/edit"}>
+          <Icon color="#333" type="user" size="12px" />
+          &nbsp;
+          <Text casing="uppercase" weight="semiBold" size="12px">
+            Edit page
+          </Text>
+        </NavLink>
 
-        <Button href="/sign-up/verify" fill>
-          Get your own page
-        </Button>
+        <NavLink href={"/applications"}>
+          <Icon color="#333" type="heart" size="14px" />
+          &nbsp;
+          <Text casing="uppercase" weight="semiBold" size="12px">
+            Review applications
+          </Text>
+        </NavLink>
 
         <style jsx>{`
           .Buttons {
             margin-left: auto;
+            margin-right: 28px;
             display: grid;
             grid-template-columns: auto auto;
             grid-template-rows: 1fr;
-            grid-column-gap: 14px;
+            grid-column-gap: 28px;
+            align-items: center;
+          }
+
+          @media (max-width: 500px) {
+            .Buttons {
+              display: none;
+            }
           }
         `}</style>
       </div>
     );
-  };
+  } else {
+    return (
+      <div className="Buttons">
+        <NavLink href={"/login"}>
+          <Text casing="uppercase" weight="semiBold" size="12px">
+            Login
+          </Text>
+        </NavLink>
 
+        <NavLink href={"/sign-up/verify"}>
+          <Icon color="#333" type="user" size="12px" />
+          &nbsp;
+          <Text casing="uppercase" weight="semiBold" size="12px">
+            Sign up
+          </Text>
+        </NavLink>
+
+        <style jsx>{`
+          .Buttons {
+            margin-left: auto;
+            margin-right: 28px;
+            display: grid;
+            grid-template-columns: auto auto;
+            grid-template-rows: 1fr;
+            grid-column-gap: 28px;
+            align-items: center;
+          }
+
+          @media (max-width: 500px) {
+            .Buttons {
+              display: none;
+            }
+          }
+        `}</style>
+      </div>
+    );
+  }
+};
+
+class Header extends React.Component {
   renderButtons = () => {
     return (
       <React.Fragment>
+        <HeaderLinks isProbablyLoggedIn={this.props.isProbablyLoggedIn} />
         <FeedbackForm />
-        {this.renderAuthButtons()}
       </React.Fragment>
     );
   };
@@ -74,16 +159,14 @@ class Header extends React.Component {
             <header>
               <Brand />
 
-              {showChildren && !pending && children}
-              <BetaGate>
-                <div className="RightSide">
-                  <BurgerIcon
-                    isOpen={isHamburgerOpen}
-                    setOpen={this.setHamburgerOpen}
-                  />
-                  {!showChildren && !pending && this.renderButtons()}
-                </div>
-              </BetaGate>
+              {showChildren && children}
+              <div className="RightSide">
+                <BurgerIcon
+                  isOpen={isHamburgerOpen}
+                  setOpen={this.setHamburgerOpen}
+                />
+                {!showChildren && this.renderButtons()}
+              </div>
 
               <style jsx>{`
                 header {
@@ -109,7 +192,10 @@ class Header extends React.Component {
               `}</style>
             </header>
 
-            <MobileDropdownHeader isOpen={isHamburgerOpen} />
+            <MobileDropdownHeader
+              isProbablyLoggedIn={this.props.isProbablyLoggedIn}
+              isOpen={isHamburgerOpen}
+            />
 
             {renderSubheader && renderSubheader()}
           </div>

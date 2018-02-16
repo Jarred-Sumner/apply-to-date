@@ -28,6 +28,7 @@ import VerifyNetworksSection from "../components/VerifyNetworksSection";
 import qs from "qs";
 import Icon from "../components/Icon";
 import Divider from "../components/Divider";
+import withLogin from "../lib/withLogin";
 
 const SECTION_ORDERING = ["introduction", "why"];
 
@@ -382,6 +383,6 @@ const UpdateApplicationWithStore = withRedux(
     };
   },
   dispatch => bindActionCreators({ updateEntities }, dispatch)
-)(LoginGate(UpdateApplication));
+)(withLogin(LoginGate(UpdateApplication)));
 
 export default UpdateApplicationWithStore;

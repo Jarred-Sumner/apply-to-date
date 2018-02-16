@@ -9,6 +9,10 @@ const settings = {
 
 class FullStoryWrapper extends React.Component {
   render() {
+    if (process.env.NODE_ENV !== "production") {
+      return null;
+    }
+
     return (
       <FullStory
         settings={settings}

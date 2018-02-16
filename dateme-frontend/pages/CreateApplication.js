@@ -31,6 +31,7 @@ import VerifyNetworksSection from "../components/VerifyNetworksSection";
 import qs from "qs";
 import Icon from "../components/Icon";
 import MessageBar from "../components/MessageBar";
+import withLogin from "../lib/withLogin";
 
 export const SECTION_ORDERING = ["introduction", "why"];
 
@@ -332,6 +333,6 @@ const CreateApplicationWithStore = withRedux(
     };
   },
   dispatch => bindActionCreators({ updateEntities }, dispatch)
-)(LoginGate(CreateApplication));
+)(withLogin(LoginGate(CreateApplication)));
 
 export default CreateApplicationWithStore;

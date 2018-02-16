@@ -22,6 +22,7 @@ import SwitchOffIcon from "../static/Icon/icons/switch-off.svg";
 import PendingVerifyIcon from "../static/Icon/icons/pending-verify.svg";
 import Hamburger from "../static/Icon/icons/hamburger.svg";
 import Divider from "../static/Icon/icons/divider.svg";
+import User from "../static/Icon/icons/user.svg";
 
 const ICON_COMPONENT_BY_TYPE = {
   email: EmailIcon,
@@ -38,7 +39,8 @@ const ICON_COMPONENT_BY_TYPE = {
   "caret-right": RightCaretIcon,
   "switch-on": SwitchOnIcon,
   "switch-off": SwitchOffIcon,
-  "pending-verify": PendingVerifyIcon
+  "pending-verify": PendingVerifyIcon,
+  user: User
 };
 
 export default ({

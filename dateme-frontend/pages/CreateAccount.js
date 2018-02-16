@@ -25,6 +25,7 @@ import Alert, { handleApiError } from "../components/Alert";
 import Page from "../components/Page";
 import Checkbox from "../components/Checkbox";
 import LoginGate from "../components/LoginGate";
+import withLogin from "../lib/withLogin";
 
 const getDefaultUsername = externalAccount => {
   if (externalAccount && externalAccount.username) {
@@ -345,6 +346,6 @@ const CreateAccountWithStore = withRedux(
     };
   },
   dispatch => bindActionCreators({ updateEntities, setCurrentUser }, dispatch)
-)(LoginGate(CreateAccount));
+)(withLogin(LoginGate(CreateAccount)));
 
 export default CreateAccountWithStore;

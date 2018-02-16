@@ -3,6 +3,9 @@ import { createStore, applyMiddleware, combineReducers } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunkMiddleware from "redux-thunk";
 import { camelizeAttributes } from "../lib/jsonapi";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import { compose } from "recompose";
 
 export const UPDATE_ENTITIES = "UPDATE_ENTITIES";
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
@@ -59,6 +62,10 @@ export const setCurrentUser = user => {
 
 export const currentUser = (state = null, action) => {
   if (action && action.type === SET_CURRENT_USER) {
+    if (typeof document !== "undefined") {
+      document.cookie = "currentUserId=" + action.payload;
+    }
+
     return action.payload;
   } else {
     return state;
@@ -77,27 +84,56 @@ export const defaultState = {
 export const createEntitiyReducer = entityType => {
   return (_state, action) => {
     const state = _state || defaultState[entityType];
-    if (action && action.type === UPDATE_ENTITIES) {
-      if (action.payload[entityType]) {
-        return mergeWithArray(action.payload[entityType], state);
-      }
+    if (
+      action &&
+      action.type === UPDATE_ENTITIES &&
+      action.payload &&
+      action.payload[entityType]
+    ) {
+      return mergeWithArray(action.payload[entityType], state);
     }
-
     return state;
   };
 };
 
-export const initStore = (initialState = defaultState) => {
+const createReducers = persist => {
+  return combineReducers({
+    currentUserId: currentUser,
+    profile: createEntitiyReducer("profile"),
+    user: createEntitiyReducer("user"),
+    external_authentication: createEntitiyReducer("external_authentication"),
+    review_application: createEntitiyReducer("review_application"),
+    application: createEntitiyReducer("application")
+  });
+};
+
+const newStore = (initialState, reducers) => {
   return createStore(
-    combineReducers({
-      currentUserId: currentUser,
-      profile: createEntitiyReducer("profile"),
-      user: createEntitiyReducer("user"),
-      external_authentication: createEntitiyReducer("external_authentication"),
-      review_application: createEntitiyReducer("review_application"),
-      application: createEntitiyReducer("application")
-    }),
+    reducers,
     initialState,
     composeWithDevTools(applyMiddleware(thunkMiddleware))
   );
+};
+
+const persistConfig = {
+  key: "root",
+  storage: storage,
+  blacklist: ["currentUserId"]
+};
+
+export const initStore = (initialState = defaultState, { isServer }) => {
+  if (isServer) {
+    return newStore(initialState, createReducers());
+  } else {
+    const store = newStore(
+      initialState,
+      persistReducer(persistConfig, createReducers())
+    );
+
+    persistStore(store, null, () => {
+      window.loadedReduxStore = true;
+    });
+
+    return store;
+  }
 };

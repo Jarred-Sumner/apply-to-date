@@ -13,6 +13,7 @@ import { bindActionCreators } from "redux";
 import { Router } from "../routes";
 import Alert, { handleApiError } from "../components/Alert";
 import Page from "../components/Page";
+import withLogin from "../lib/withLogin";
 
 class Login extends React.Component {
   constructor(props) {
@@ -156,6 +157,6 @@ const LoginWithStore = withRedux(
     };
   },
   dispatch => bindActionCreators({ updateEntities, setCurrentUser }, dispatch)
-)(Login);
+)(withLogin(Login));
 
 export default LoginWithStore;

@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default class MobileDropdownHeader extends React.PureComponent {
   render() {
-    const { isOpen, setOpen } = this.props;
+    const { isOpen, setOpen, isProbablyLoggedIn } = this.props;
 
     if (!isOpen) {
       return null;
@@ -21,44 +21,47 @@ export default class MobileDropdownHeader extends React.PureComponent {
             "menu--closed": !isOpen
           })}
         >
-          <li>
-            <Link href="/contact-us">
-              <a>
-                <Text type="footerlink">Contact us</Text>
-              </a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/contact-us">
-              <a>
-                <Text type="footerlink">Contact us</Text>
-              </a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/contact-us">
-              <a>
-                <Text type="footerlink">Contact us</Text>
-              </a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/contact-us">
-              <a>
-                <Text type="footerlink">Contact us</Text>
-              </a>
-            </Link>
-          </li>
+          {isProbablyLoggedIn && (
+            <li>
+              <Link href="/page/edit">
+                <a>
+                  <Text type="footerlink">Edit page</Text>
+                </a>
+              </Link>
+            </li>
+          )}
+          {isProbablyLoggedIn && (
+            <li>
+              <Link href="/applications">
+                <a>
+                  <Text type="footerlink">Review applications</Text>
+                </a>
+              </Link>
+            </li>
+          )}
+          {!isProbablyLoggedIn && (
+            <li>
+              <Link href="/login">
+                <a>
+                  <Text type="footerlink">Login</Text>
+                </a>
+              </Link>
+            </li>
+          )}
+          {!isProbablyLoggedIn && (
+            <li>
+              <Link href="/sign-up/verify">
+                <a>
+                  <Text type="footerlink">Sign up</Text>
+                </a>
+              </Link>
+            </li>
+          )}
         </ul>
 
         <style jsx>{`
           .MenuContainer {
             background-color: #f9f9f9;
-          }
-
-          .menu--closed {
-            max-height: 0;
-            transition: background 0.2s ease-out;
           }
 
           ul {
@@ -80,27 +83,8 @@ export default class MobileDropdownHeader extends React.PureComponent {
             background-color: #f4f4f4;
           }
 
-          li:hover {
-            background-color: red;
-          }
-
           .menu {
-            transition: max-height 0.2s ease-out;
             background-color: #f9f9f9;
-          }
-
-          @media (min-width: 48em) {
-            li {
-              float: left;
-            }
-            li a {
-              padding: 20px 30px;
-            }
-            .menu {
-              clear: none;
-              float: right;
-              max-height: none;
-            }
           }
         `}</style>
       </div>

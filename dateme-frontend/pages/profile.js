@@ -20,6 +20,7 @@ import SocialLinkList from "../components/SocialLinkList";
 import MessageBar from "../components/MessageBar";
 import PhotoGroup from "../components/PhotoGroup";
 import Typed from "react-typed";
+import withLogin from "../lib/withLogin";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -212,6 +213,6 @@ const ProfileWithStore = withRedux(
     };
   },
   dispatch => bindActionCreators({ updateEntities }, dispatch)
-)(LoginGate(Profile));
+)(withLogin(LoginGate(Profile)));
 
 export default ProfileWithStore;

@@ -13,6 +13,7 @@ import { bindActionCreators } from "redux";
 import Router from "next/router";
 import Alert from "../components/Alert";
 import Page from "../components/Page";
+import withLogin from "../lib/withLogin";
 
 class PrivacyPolicy extends React.PureComponent {
   render() {

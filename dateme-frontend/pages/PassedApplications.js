@@ -16,6 +16,7 @@ import LoginGate from "../components/LoginGate";
 import Page from "../components/Page";
 import ApplicationsBreadcrumbs from "../components/ApplicationsBreadcrumbs";
 import ApplicationList from "../components/ApplicationList";
+import withLogin from "../lib/withLogin";
 
 class PassedApplications extends React.PureComponent {
   constructor(props) {
@@ -59,7 +60,7 @@ class PassedApplications extends React.PureComponent {
 }
 
 const PassedApplicationWithStore = withRedux(initStore)(
-  LoginGate(PassedApplications, { loginRequired: true })
+  withLogin(LoginGate(PassedApplications, { loginRequired: true }))
 );
 
 export default PassedApplicationWithStore;

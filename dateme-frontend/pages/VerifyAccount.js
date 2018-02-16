@@ -15,6 +15,7 @@ import Icon from "../components/Icon";
 import Page from "../components/Page";
 
 import { BASE_AUTHORIZE_URL } from "../components/SocialLogin";
+import withLogin from "../lib/withLogin";
 
 class VerifyAccount extends React.Component {
   render() {
@@ -110,6 +111,6 @@ const VerifyAccountWithStore = withRedux(
     };
   },
   dispatch => bindActionCreators({ updateEntities, setCurrentUser }, dispatch)
-)(VerifyAccount);
+)(withLogin(VerifyAccount));
 
 export default VerifyAccountWithStore;

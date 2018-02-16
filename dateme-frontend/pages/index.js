@@ -11,6 +11,7 @@ import { getFeaturedProfiles, getCurrentUser } from "../api";
 import { bindActionCreators } from "redux";
 import Router from "next/router";
 import PageFooter from "../components/PageFooter";
+import withLogin from "../lib/withLogin";
 
 const FeaturedProfile = ({ profile }) => {
   return (
@@ -300,6 +301,6 @@ const HomepageWithStore = withRedux(
     };
   },
   dispatch => bindActionCreators({ updateEntities, setCurrentUser }, dispatch)
-)(Homepage);
+)(withLogin(Homepage));
 
 export default HomepageWithStore;

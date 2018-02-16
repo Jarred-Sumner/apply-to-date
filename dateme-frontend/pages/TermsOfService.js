@@ -13,6 +13,7 @@ import { bindActionCreators } from "redux";
 import Router from "next/router";
 import Alert from "../components/Alert";
 import Page from "../components/Page";
+import withLogin from "../lib/withLogin";
 
 class TermsOfService extends React.Component {
   constructor(props) {
@@ -207,6 +208,6 @@ const TermsOfServiceWithStore = withRedux(
     };
   },
   dispatch => bindActionCreators({ updateEntities, setCurrentUser }, dispatch)
-)(TermsOfService);
+)(withLogin(TermsOfService));
 
 export default TermsOfServiceWithStore;
