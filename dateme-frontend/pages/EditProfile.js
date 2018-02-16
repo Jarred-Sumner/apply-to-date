@@ -15,7 +15,6 @@ import Header from "../components/Header";
 import Text from "../components/Text";
 import EditableText from "../components/EditableText";
 import TextArea from "../components/TextArea";
-import Lightbox from "react-images";
 import _ from "lodash";
 import titleCase from "title-case";
 import Waypoint from "react-waypoint";
@@ -429,15 +428,6 @@ class EditProfile extends React.Component {
             photos={photos}
             size="100%"
             setPhotoAtIndex={this.setPhotoAtIndex}
-          />
-
-          <Lightbox
-            images={profile.photos.slice(0, 3).map(src => ({ src }))}
-            isOpen={_.isNumber(this.state.currentPhotoIndex)}
-            currentImage={this.state.currentPhotoIndex || 0}
-            onClickPrev={this.previousPhoto}
-            onClickNext={this.nextPhoto}
-            onClose={this.closeLightbox}
           />
         </section>
         <section className="Section Section--bio">

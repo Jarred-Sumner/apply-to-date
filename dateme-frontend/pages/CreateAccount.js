@@ -282,7 +282,7 @@ class CreateAccount extends React.Component {
                 checked={this.state.termsOfService}
               />
 
-              <Button>Create account</Button>
+              <Button pending={this.state.isSubmitting}>Create account</Button>
             </form>
           </main>
         </Page>

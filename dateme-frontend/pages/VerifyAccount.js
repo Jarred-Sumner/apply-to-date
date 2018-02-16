@@ -59,7 +59,11 @@ class VerifyAccount extends React.Component {
               </Button>
             </div>
 
-            <Link href="/sign-up">
+            <Link
+              href={`/sign-up?email=${encodeURIComponent(
+                _.get(this.props, "url.query.email")
+              )}`}
+            >
               <a>
                 <Text underline size="14px" align="center">
                   Skip
