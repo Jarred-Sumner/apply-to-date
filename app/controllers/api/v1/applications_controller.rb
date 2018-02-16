@@ -9,7 +9,7 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
         raise ArgumentError.new("Please include at least one social profile")
       end
 
-      if params[:application][:external_authentications].blank? && create_params[:phone].present?
+      if params[:application][:external_authentications].blank? && create_params[:phone].blank?
         raise ArgumentError.new("Please verify your Facebook, SMS, Instagram, or Twitter first.")
       end
     end
