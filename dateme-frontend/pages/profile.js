@@ -70,6 +70,10 @@ class Profile extends React.Component {
 
   render() {
     const { profile, currentUser } = this.props;
+    if (!profile) {
+      return <Page isLoading />;
+    }
+
     return (
       <Page
         renderMessage={() =>
