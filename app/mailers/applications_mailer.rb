@@ -12,6 +12,13 @@ class ApplicationsMailer < ApplicationMailer
     mail to: @application.email, subject: "#{@profile.name} wants to go on a date with you."
   end
 
+  def submitted(application_id)
+    @application = Application.find(application_id)
+    @profile = @application.profile
+
+    mail to: @profile.user.email, subject: "#{@application.name} wants to go on a date with you"
+  end
+
   def confirmed(application_id)
     @application = Application.find(application_id)
     @profile = @application.profile

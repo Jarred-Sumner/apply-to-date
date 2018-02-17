@@ -65,7 +65,11 @@ export default _.memoize((Component, options = {}) => {
         ...otherProps
       } = this.props;
 
-      if ((isProbablyLoggedIn && allowIncomplete) || currentUser) {
+      if (
+        (isProbablyLoggedIn && allowIncomplete) ||
+        currentUser ||
+        !loginRequired
+      ) {
         return (
           <Component
             isProbablyLoggedIn={isProbablyLoggedIn}
