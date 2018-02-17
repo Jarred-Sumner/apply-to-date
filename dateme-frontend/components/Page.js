@@ -49,7 +49,8 @@ export default ({
 }) => {
   const classes = classNames("PageSize", {
     "PageSize--default": size === "default",
-    "PageSize--small": size === "small"
+    "PageSize--small": size === "small",
+    "PageSize--large": size === "large"
   });
 
   return (
@@ -75,6 +76,10 @@ export default ({
           padding-left: 14px;
           padding-right: 14px;
           max-width: 710px;
+        }
+
+        .PageSize--large {
+          max-width: 960px;
         }
 
         .PageSize--default {

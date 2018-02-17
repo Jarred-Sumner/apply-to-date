@@ -69,7 +69,7 @@ const EmptyState = ({ profileId }) => {
 };
 
 export default ({ application, isLoading, onYes, onNo, currentUser }) => (
-  <Page isLoading={isLoading}>
+  <Page size="large" isLoading={isLoading}>
     <Head title="Review Application | Apply to date" />
 
     <ApplicationsBreadcrumbs />

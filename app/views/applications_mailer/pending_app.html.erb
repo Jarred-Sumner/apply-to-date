@@ -181,7 +181,7 @@
 												<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
 													<tbody><tr>
 														<td valign="middle" width="350" style="text-align: center; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 30px; color: #ffffff; line-height: 30px; font-weight: 700;" class="fullCenter">
-															<span style="font-family:open sans;"><span style="color:#000000;">Tieshun asked you out!</span></span>
+															<span style="font-family:open sans;"><span style="color:#000000;"><%= @application.name %> asked you out!</span></span>
 														</td>
 													</tr>
 												</tbody></table>
@@ -202,7 +202,7 @@
 												<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
 													<tbody><tr>
 														<td valign="middle" width="350" style="text-align: center; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 14px; color: #ffffff; line-height: 24px;" class="fullCenter">
-															<p style="background-color: #ffffff;"><span style="font-family:open sans;"><span style="color:#000000;">Let him know whether you're interested or not.  </span></span></p><span style="color:#000000;"></span><span style="color:#000000;"></span><span style="color:#000000;"></span>
+															<p style="background-color: #ffffff;"><span style="font-family:open sans;"><span style="color:#000000;">Let <%= @gender_name %> know whether you're interested or not.  </span></span></p><span style="color:#000000;"></span><span style="color:#000000;"></span><span style="color:#000000;"></span>
 														</td>
 													</tr>
 												</tbody></table>
@@ -226,7 +226,7 @@
                                                 <span class="featuredHolder"><span class="featuredHolder"><span class="featuredHolder"><span class="featuredHolder"><table border="0" cellpadding="0" cellspacing="0" align="center">
                                                     <tbody><tr>
                                                         <td align="center" height="38" bgcolor="#222526" style="border-top-left-radius: 30px; border-top-right-radius: 30px; border-bottom-right-radius: 30px; border-bottom-left-radius: 30px; padding-left: 25px; padding-right: 25px; font-weight: 600; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; color: #ffffff; font-size: 14px;">
-                                                            <span style="font-family:open sans;"><a href="#" style="color: #ffffff; font-size: 14px; text-decoration: none; line-height: 34px; width: 100%;">See Tieshun's Application</a>
+                                                            <span style="font-family:open sans;"><a href="<%= raw @application_url %>" style="color: #ffffff; font-size: 14px; text-decoration: none; line-height: 34px; width: 100%;">Check out <%= @application.name %></a>
                                                         </td>
                                                     </tr>
                                                 </tbody></table>

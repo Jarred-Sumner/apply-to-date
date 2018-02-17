@@ -27,9 +27,34 @@ class ReviewSpecificApplication extends React.PureComponent {
     };
   }
 
-  handleYes = () => {};
+  rate = status => {
+    if (this.state.isRating) {
+      return;
+    }
 
-  handleNo = () => {};
+    this.setState({
+      isRating: true
+    });
+
+    return rateApplication(this.state.application.id, status)
+      .then(response => {
+        this.setState({
+          isLoadingApplication: true
+        });
+      })
+      .catch(error => handleApiError(error))
+      .finally(() => this.setState({ isRating: false }));
+  };
+
+  handleYes = async () => {
+    await this.rate("approved");
+    Router.replaceRoute("/applications");
+  };
+
+  handleNo = async () => {
+    await this.rate("rejected");
+    Router.replaceRoute("/applications");
+  };
 
   async componentDidMount() {
     const response = await getReviewApplication(this.props.url.query.id);
@@ -46,6 +71,8 @@ class ReviewSpecificApplication extends React.PureComponent {
       <ReviewApplicationContainer
         application={application}
         currentUser={this.props.currentUser}
+        onYes={this.handleYes}
+        onNo={this.handleNo}
         isLoading={isLoadingApplication}
         isRating={isRating}
       />

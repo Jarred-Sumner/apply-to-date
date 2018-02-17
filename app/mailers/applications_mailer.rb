@@ -17,6 +17,13 @@ class ApplicationsMailer < ApplicationMailer
     @profile = @application.profile
     @profile_name = @profile.name
 
+    @gender_name = @application.sex == 'male' ? 'him' : 'her'
+    @gender_name = "them" if @application.sex != 'male' && @application.sex != 'female'
+    @application_url = Api::V1::ApplicationController.build_frontend_uri(
+      "/applications/#{@application.id}",
+      {}
+    )
+
     mail to: @profile.user.email, subject: "#{@application.name} asked you out!"
   end
 

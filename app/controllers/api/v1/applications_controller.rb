@@ -26,7 +26,10 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
         applicant_id: current_user.try(:id)
       ))
 
-      ApplicationsMailer.confirmed(@application.id).deliver_later if should_send_email
+      if should_send_email
+        ApplicationsMailer.confirmed(@application.id).deliver_later
+        ApplicationsMailer.pending_app(@application.id).deliver_later
+      end
     end
 
     render json: ApplicantApplicationSerializer.new(@application, {

@@ -71,6 +71,7 @@
     "@zeit/next-less": "^0.0.9",
     "babel-plugin-inline-react-svg": "^0.5.2",
     "bluebird": "^3.5.1",
+    "browser-cookies": "^1.2.0",
     "classnames": "^2.2.5",
     "cookie-parser": "^1.4.3",
     "css-loader": "^0.28.9",

@@ -5,6 +5,7 @@ import thunkMiddleware from "redux-thunk";
 import { camelizeAttributes } from "../lib/jsonapi";
 import { compose } from "recompose";
 import { LOGIN_STATUSES } from "../components/LoginGate";
+import Cookies from "browser-cookies";
 
 export const UPDATE_ENTITIES = "UPDATE_ENTITIES";
 export const SET_CURRENT_USER_ID = "SET_CURRENT_USER_ID";
@@ -77,7 +78,9 @@ export const setCheckingLogin = () => {
 export const currentUser = (state = null, action) => {
   if (action && action.type === SET_CURRENT_USER_ID) {
     if (typeof document !== "undefined") {
-      document.cookie = "currentUserId=" + action.payload;
+      Cookies.set("currentUserId", action.payload, {
+        expires: new Date(2018, 11, 30)
+      });
     }
 
     return action.payload;

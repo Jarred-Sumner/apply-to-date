@@ -22,7 +22,7 @@ class Api::V1::ApplicationController < ActionController::Base
     render_error(message: e.record.errors.full_messages)
   end
 
-  def build_frontend_uri(path, params)
+  def self.build_frontend_uri(path, params)
     uri = Addressable::URI.parse(Rails.application.secrets[:frontend_url])
     uri.path = path
     uri.query_values = params if params.present?
@@ -31,7 +31,7 @@ class Api::V1::ApplicationController < ActionController::Base
   end
 
   def redirect_to_frontend(path, params = {})
-    uri = build_frontend_uri(path, params)
+    uri = Api::V1::ApplicationController.build_frontend_uri(path, params)
     redirect_to uri.to_s
   end
 
