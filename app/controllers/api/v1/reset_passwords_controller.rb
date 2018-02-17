@@ -7,7 +7,9 @@ class Api::V1::ResetPasswordsController < Api::V1::ApplicationController
     end
 
     ActiveRecord::Base.transaction do
-      @user.change_password!(params[:password])
+      @user.password = params[:password]
+      @user.password_confirmation = params[:password]
+      @user.save!
       @user.generate_reset_password_token!
       auto_login(@user, true)
     end

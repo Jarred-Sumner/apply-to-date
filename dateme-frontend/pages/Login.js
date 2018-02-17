@@ -63,7 +63,7 @@ class Login extends React.Component {
 
       const username = _.get(userResponse, "body.data.username");
       if (username) {
-        Router.push(`/${username}/edit`);
+        Router.pushRoute(`/${username}/edit`);
       } else {
         Router.pushRoute(`/account`);
       }
