@@ -15,6 +15,16 @@ if (typeof window !== "undefined") {
     titleCase: false
   });
 
+  ReactGA.plugin.require("cleanUrlTracker");
+  ReactGA.plugin.require("eventTracker");
+  ReactGA.plugin.require("impressionTracker");
+  ReactGA.plugin.require("maxScrollTracker");
+  ReactGA.plugin.require("mediaQueryTracker");
+  ReactGA.plugin.require("outboundFormTracker");
+  ReactGA.plugin.require("outboundLinkTracker");
+  ReactGA.plugin.require("pageVisibilityTracker");
+  ReactGA.plugin.require("socialWidgetTracker");
+
   ReactGA.pageview(window.location.pathname);
   Router.onRouteChangeComplete = url => {
     ReactGA.pageview(url);
@@ -73,6 +83,11 @@ const Head = props => (
         key="Frank Ruhl"
         href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre:300,400,500,700,900"
         rel="stylesheet"
+      />
+      <script
+        type="text/javascript"
+        key="autotrack"
+        src="https://cdnjs.cloudflare.com/ajax/libs/autotrack/2.4.1/autotrack.js"
       />
     </NextHead>
     <FullStory />
