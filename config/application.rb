@@ -18,12 +18,12 @@ module Dateme
     config.autoload_paths << "#{Rails.root}/app/serializers"
     config.read_encrypted_secrets = true
     
+    config.action_mailer.delivery_method = :mailgun
+    config.action_mailer.mailgun_settings = {
+        api_key: Rails.application.secrets[:mailgun],
+        domain: 'mail.applytodate.com'
+    }
 
-    SparkPostRails.configure do |c|
-      c.api_key = Rails.application.secrets[:sparkpost]
-    end
-
-    config.action_mailer.delivery_method = :sparkpost
 
     config.middleware.insert_before 0, Rack::Cors do
       allow do
