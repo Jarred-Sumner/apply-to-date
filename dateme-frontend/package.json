@@ -114,6 +114,7 @@
     "react-router": "^4.2.0",
     "react-s-alert": "^1.4.1",
     "react-s3-uploader": "^4.6.2",
+    "react-share": "^2.0.0",
     "react-social-login": "^3.4.2",
     "react-spinkit": "^3.0.0",
     "react-stickynode": "^1.4.1",
