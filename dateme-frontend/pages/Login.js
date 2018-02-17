@@ -65,7 +65,7 @@ class Login extends React.Component {
       if (username) {
         Router.push(`/${username}/edit`);
       } else {
-        Router.push(`/account`);
+        Router.pushRoute(`/account`);
       }
     } catch (exception) {
       handleApiError(exception);

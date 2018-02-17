@@ -32,6 +32,6 @@ class ApplicationsMailer < ApplicationMailer
     @profile = @application.profile
     @profile_name = @profile.name
 
-    mail to: @application.email, subject: "Thanks for asking out #{@profile_name}"
+    mail to: @application.email, subject: "You asked out #{@profile_name}"
   end
 end
