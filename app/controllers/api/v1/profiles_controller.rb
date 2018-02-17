@@ -9,13 +9,13 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
 
   def show
     if current_user.try(:username) == params[:id]
-      profile = Profile.includes(:external_authentications).find(params[:id])
+      profile = Profile.includes(:external_authentications).find_by(id: params[:id])
 
       render json: PrivateProfileSerializer.new(profile, {
         include: [:external_authentications]
       }).serializable_hash
     else
-      profile = Profile.where(visible: true).find(params[:id])
+      profile = Profile.where(visible: true).find_by(id: params[:id])
       render_profile(profile)
     end
   end
@@ -109,7 +109,7 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
   end
 
   def render_profile(profile)
-    if current_user.present? && profile.user_id == current_user.id
+    if current_user.present? && profile.try(:user_id) == current_user.id
       render json: PrivateProfileSerializer.new(profile).serializable_hash
     else
       render json: ProfileSerializer.new(profile).serializable_hash

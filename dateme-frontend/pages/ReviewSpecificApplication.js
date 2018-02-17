@@ -45,6 +45,7 @@ class ReviewSpecificApplication extends React.PureComponent {
     return (
       <ReviewApplicationContainer
         application={application}
+        currentUser={this.props.currentUser}
         isLoading={isLoadingApplication}
         isRating={isRating}
       />

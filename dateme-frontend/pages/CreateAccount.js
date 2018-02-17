@@ -346,6 +346,6 @@ const CreateAccountWithStore = withRedux(
     };
   },
   dispatch => bindActionCreators({ updateEntities, setCurrentUser }, dispatch)
-)(withLogin(LoginGate(CreateAccount)));
+)(LoginGate(CreateAccount));
 
 export default CreateAccountWithStore;

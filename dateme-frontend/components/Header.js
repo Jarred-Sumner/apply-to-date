@@ -1,7 +1,7 @@
 import Brand from "./Brand";
 import Sticky from "react-stickynode";
 import Button from "./Button";
-import LoginGate, { LOGIN_STATUSES, isProbablyLoggedIn } from "./LoginGate";
+import LoginGate, { LOGIN_STATUSES } from "./LoginGate";
 import { AlertHost } from "./Alert";
 import FeedbackForm from "./FeedbackForm";
 // import Hamburger from "../components/Hamburger";
@@ -47,9 +47,14 @@ const NavLink = ActiveLink(({ children, href, isActive }) => {
 
 const HeaderLinks = ({ isProbablyLoggedIn, currentUser }) => {
   if (isProbablyLoggedIn) {
+    const editPageHref = `/${_.get(
+      currentUser || {},
+      "username",
+      "page"
+    )}/edit`;
     return (
       <div className="Buttons">
-        <NavLink href={`/${_.get(currentUser || {}, "username", "page")}/edit`}>
+        <NavLink key={editPageHref} href={editPageHref}>
           <Icon color="#333" type="user" size="12px" />
           &nbsp;
           <Text casing="uppercase" weight="semiBold" size="12px">
@@ -57,7 +62,7 @@ const HeaderLinks = ({ isProbablyLoggedIn, currentUser }) => {
           </Text>
         </NavLink>
 
-        <NavLink href={"/applications"}>
+        <NavLink key={"/applications"} href={"/applications"}>
           <Icon color="#333" type="heart" size="14px" />
           &nbsp;
           <Text casing="uppercase" weight="semiBold" size="12px">
@@ -87,13 +92,13 @@ const HeaderLinks = ({ isProbablyLoggedIn, currentUser }) => {
   } else {
     return (
       <div className="Buttons">
-        <NavLink href={"/login"}>
+        <NavLink key="/login" href={"/login"}>
           <Text casing="uppercase" weight="semiBold" size="12px">
             Login
           </Text>
         </NavLink>
 
-        <NavLink href={"/sign-up/verify"}>
+        <NavLink key="/sign-up/verify" href={"/sign-up/verify"}>
           <Icon color="#333" type="user" size="12px" />
           &nbsp;
           <Text casing="uppercase" weight="semiBold" size="12px">
@@ -210,4 +215,6 @@ class Header extends React.Component {
   }
 }
 
-export default LoginGate(Header);
+export default LoginGate(Header, {
+  allowIncomplete: true
+});

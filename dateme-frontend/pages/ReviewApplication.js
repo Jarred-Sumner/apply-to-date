@@ -75,11 +75,11 @@ class ReviewApplication extends React.PureComponent {
 
   render() {
     const { application, isLoadingApplication, isRating } = this.state;
-
     return (
       <ReviewApplicationContainer
         application={application}
-        isLoading={isLoadingApplication}
+        currentUser={this.props.currentUser}
+        isLoading={isLoadingApplication || !this.props.currentUser}
         onYes={this.handleYes}
         onNo={this.handleNo}
       />
@@ -87,8 +87,8 @@ class ReviewApplication extends React.PureComponent {
   }
 }
 
-const ReviewApplicationWithStore = withRedux(initStore)(
-  withLogin(LoginGate(ReviewApplication, { loginRequired: true }))
-);
+const ReviewApplicationWithStore = withRedux(initStore, null, null, null, {
+  pure: false
+})(LoginGate(ReviewApplication, { loginRequired: true }));
 
 export default ReviewApplicationWithStore;

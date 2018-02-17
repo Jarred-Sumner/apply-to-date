@@ -64,17 +64,15 @@ const Head = props => (
       <meta property="og:image:height" content="630" />
 
       <link
+        key="Open Sans"
         href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,700,900"
         rel="stylesheet"
       />
 
       <link
+        key="Frank Ruhl"
         href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre:300,400,500,700,900"
         rel="stylesheet"
-      />
-      <script
-        type="text/javascript"
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_ad15stG5b8YA-oVUoneLHmIW7pWpa3w&libraries=places"
       />
     </NextHead>
     <FullStory />
