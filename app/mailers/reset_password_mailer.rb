@@ -5,9 +5,13 @@ class ResetPasswordMailer < ApplicationMailer
   #
   #   en.reset_password_mailer.rreset_password_email.subject
   #
-  def rreset_password_email
-    @greeting = "Hi"
+  def reset_password_email(user_id)
+    user = User.find(user_id)
+    @reset_password_url = Api::V1::ApplicationController.build_frontend_uri(
+      "/reset-password/#{user.reset_password_token}",
+      {}
+    )
 
-    mail to: "to@example.org"
+    mail to: user.email, subject: "Reset your ApplyToDate password"
   end
 end

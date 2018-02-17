@@ -13,49 +13,41 @@ import {
   setLoginStatus,
   initStore
 } from "../redux/store";
-import { getCurrentUser, login } from "../api";
+import { getCurrentUser, resetPassword } from "../api";
 import { bindActionCreators } from "redux";
 import { Router } from "../routes";
 import Alert, { handleApiError } from "../components/Alert";
 import Page from "../components/Page";
 import withLogin from "../lib/withLogin";
 
-class Login extends React.Component {
+class ResetPassword extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      username: "",
       password: "",
-      isLoggingIn: false
+      isResettingPassword: false
     };
   }
 
-  componentDidMount() {
-    if (this.props.url.query.from) {
-      Alert.error("To continue, please login");
-    }
-  }
-
-  setUsername = username => this.setState({ username });
   setPassword = password => this.setState({ password });
 
-  handleLogin = async evt => {
+  handleResetPassword = async evt => {
     evt.preventDefault();
-    const { isLoggingIn } = this.state;
-    if (isLoggingIn) {
+    const { isResettingPassword } = this.state;
+    if (isResettingPassword) {
       return;
     }
 
     this.setState({
-      isLoggingIn: true
+      isResettingPassword: true
     });
 
     try {
-      const userResponse = await login({
-        username: this.state.username,
-        password: this.state.password
-      });
+      const userResponse = await resetPassword(
+        this.props.url.query.id,
+        this.state.password
+      );
 
       this.props.setCurrentUser(userResponse.body.data.id);
       this.props.updateEntities(userResponse.body);
@@ -67,56 +59,40 @@ class Login extends React.Component {
       } else {
         Router.push(`/account`);
       }
+
+      Alert.success("Your password has been reset");
     } catch (exception) {
       handleApiError(exception);
     }
 
-    this.setState({ isLoggingIn: false });
+    this.setState({ isResettingPassword: false });
   };
 
   render() {
-    const { username, password, isLoggingIn } = this.state;
+    const { username, password, isResettingPassword } = this.state;
 
     return (
       <Page size="small">
-        <Head title="Login | ApplyToDate" />
+        <Head title="Reset Password | ApplyToDate" />
         <article>
           <main>
-            <Text type="PageTitle">Login</Text>
+            <Text type="PageTitle">Reset Password</Text>
 
-            <form onSubmit={this.handleLogin}>
-              <FormField
-                name="email"
-                type="text"
-                placeholder="e.g. ylukem or lucy@shipfirstlabs.com"
-                value={username}
-                label="Username or email"
-                onChange={this.setUsername}
-                required
-              />
-
+            <form onSubmit={this.handleResetPassword}>
               <FormField
                 name="password"
                 type="password"
                 value={password}
                 label="Password"
                 onChange={this.setPassword}
+                autoFocus
                 required
                 minLength={3}
               />
 
-              <Button pending={isLoggingIn}>Login</Button>
+              <Button pending={isResettingPassword}>Reset Password</Button>
             </form>
           </main>
-          <div className="password-link">
-            <Link href={"/forgot-password"}>
-              <a>
-                <Text size="14px" type="link">
-                  Forgot your password?
-                </Text>
-              </a>
-            </Link>
-          </div>
         </article>
         <style jsx>{`
           article {
@@ -155,7 +131,7 @@ class Login extends React.Component {
   }
 }
 
-const LoginWithStore = withRedux(
+const ResetPasswordWithStore = withRedux(
   initStore,
   (state, props) => {
     return {
@@ -167,6 +143,6 @@ const LoginWithStore = withRedux(
       { updateEntities, setCurrentUser, setLoginStatus },
       dispatch
     )
-)(withLogin(Login));
+)(withLogin(ResetPassword));
 
-export default LoginWithStore;
+export default ResetPasswordWithStore;

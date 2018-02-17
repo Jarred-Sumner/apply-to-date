@@ -27,6 +27,16 @@ routes
     page: "Login"
   })
   .add({
+    name: "reset-password",
+    pattern: "/reset-password/:id",
+    page: "ResetPassword"
+  })
+  .add({
+    name: "forgot-password",
+    pattern: "/forgot-password",
+    page: "ForgotPassword"
+  })
+  .add({
     name: "PrivacyPolicy",
     pattern: "/privacy-policy",
     page: "PrivacyPolicy"

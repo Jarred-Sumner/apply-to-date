@@ -8,6 +8,8 @@ Rails.application.routes.draw do
 
       get 'applications/:id' => 'applications#show_applicant'
       put 'applications/:id' => 'applications#update'
+      post 'forgot-password' => 'forgot_passwords#create'
+      post 'reset-password/:id' => 'reset_passwords#create'
 
       get 'images/sign' => 'images#sign'
       resources :users

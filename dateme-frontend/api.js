@@ -128,6 +128,18 @@ export const login = session => {
   });
 };
 
+export const resetPassword = (token, password) => {
+  return post(`/reset-password/${token}`, {
+    password
+  });
+};
+
+export const forgotPassword = username => {
+  return post(`/forgot-password`, {
+    username
+  });
+};
+
 export const getReviewApplications = options => {
   return get(`/ratings`, {
     ...options
