@@ -34,7 +34,7 @@ const Head = props => (
       <link
         rel="icon"
         sizes="192x192"
-        href={props.favicon || "/static/favicon.ico"}
+        href={props.favicon || "/static/favicon.png"}
       />
       <meta property="fb:app_id" content="2014016792189722" />
       <meta property="og:type" content={props.type || "website"} />
@@ -47,9 +47,9 @@ const Head = props => (
       )}
       <link
         rel="apple-touch-icon"
-        href={props.favicon || "/static/favicon.ico"}
+        href={props.favicon || "/static/favicon.png"}
       />
-      <link rel="icon" href={props.favicon || "/static/favicon.ico"} />
+      <link rel="icon" href={props.favicon || "/static/favicon.png"} />
       <meta property="og:url" content={props.url || defaultOGURL} />
       <meta property="og:title" content={props.title || ""} />
       <meta
