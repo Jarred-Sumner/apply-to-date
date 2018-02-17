@@ -13,6 +13,7 @@ import Icon from "./Icon";
 import ActiveLink from "./ActiveLink";
 import Text from "./Text";
 import classNames from "classnames";
+import _ from "lodash";
 
 const NavLink = ActiveLink(({ children, href, isActive }) => {
   return (
@@ -44,11 +45,11 @@ const NavLink = ActiveLink(({ children, href, isActive }) => {
   );
 });
 
-const HeaderLinks = ({ isProbablyLoggedIn }) => {
+const HeaderLinks = ({ isProbablyLoggedIn, currentUser }) => {
   if (isProbablyLoggedIn) {
     return (
       <div className="Buttons">
-        <NavLink href={"/page/edit"}>
+        <NavLink href={`/${_.get(currentUser || {}, "username", "page")}/edit`}>
           <Icon color="#333" type="user" size="12px" />
           &nbsp;
           <Text casing="uppercase" weight="semiBold" size="12px">
@@ -126,7 +127,10 @@ class Header extends React.Component {
   renderButtons = () => {
     return (
       <React.Fragment>
-        <HeaderLinks isProbablyLoggedIn={this.props.isProbablyLoggedIn} />
+        <HeaderLinks
+          isProbablyLoggedIn={this.props.isProbablyLoggedIn}
+          currentUser={this.props.currentUser}
+        />
         <FeedbackForm />
       </React.Fragment>
     );

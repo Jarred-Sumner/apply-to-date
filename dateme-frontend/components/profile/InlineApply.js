@@ -40,7 +40,8 @@ class EmailForm extends React.Component {
           componentType="button"
           inline={!isMobile()}
         >
-          Ask {this.props.profileName} out
+          <Icon type="heart" size="14px" />&nbsp; Ask {this.props.profileName}{" "}
+          out
         </Button>
 
         <style jsx>{`

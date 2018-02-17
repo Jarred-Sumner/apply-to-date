@@ -1,7 +1,7 @@
 import FormField from "../FormField";
 
 export default ({
-  label = "I identify as",
+  label = "Gender",
   required = true,
   onChange,
   value,

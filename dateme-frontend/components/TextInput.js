@@ -25,6 +25,7 @@ export default class TextInput extends React.Component {
       onChange,
       children,
       rounded,
+      fake = false,
       ...otherProps
     } = this.props;
     return (
@@ -39,24 +40,32 @@ export default class TextInput extends React.Component {
       >
         {icon && <div className="IconContainer">{icon}</div>}
 
-        <input
-          {...otherProps}
-          name={name}
-          ref={inputRef}
-          onChange={this.handleChange}
-          required={required}
-          value={value}
-          disabled={disabled}
-        />
+        {fake ? (
+          <div className="Input" {...otherProps}>
+            {value}
+          </div>
+        ) : (
+          <input
+            className="Input"
+            {...otherProps}
+            name={name}
+            ref={inputRef}
+            onChange={this.handleChange}
+            required={required}
+            value={value}
+            disabled={disabled}
+          />
+        )}
 
         {children}
 
         <style jsx>{`
-          input {
+          .Input {
             appearance: none;
             box-shadow: none;
             background-color: transparent;
             width: 100%;
+            display: flex;
             outline: none;
             font-family: Open Sans, sans-serif;
             font-size: 14px;
@@ -78,7 +87,7 @@ export default class TextInput extends React.Component {
             border: 0;
           }
 
-          .Container--block input {
+          .Container--block .Input {
             padding: 12px 24px;
           }
 
