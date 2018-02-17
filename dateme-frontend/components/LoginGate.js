@@ -1,9 +1,15 @@
-import { updateEntities, setCurrentUser } from "../redux/store";
+import {
+  updateEntities,
+  setCurrentUser,
+  setLoginStatus,
+  setCheckingLogin
+} from "../redux/store";
 import { getProfile, getCurrentUser } from "../api";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Router } from "../routes";
-import Page from "./Page";
+import _ from "lodash";
+import withLogin from "../lib/withLogin";
 
 export const LOGIN_STATUSES = {
   pending: "pending",
@@ -12,112 +18,92 @@ export const LOGIN_STATUSES = {
   guest: "guest"
 };
 
-export default (Component, options = {}) => {
+export default _.memoize((Component, options = {}) => {
   class LoginGate extends React.Component {
     constructor(props) {
       super(props);
-
-      if (props.currentUser) {
-        this.state = {
-          loginStatus: LOGIN_STATUSES.loggedIn
-        };
-      } else {
-        this.state = {
-          loginStatus: LOGIN_STATUSES.pending
-        };
-      }
     }
 
     async componentDidMount() {
-      const { loginStatus } = this.state;
+      const {
+        loginStatus,
+        currentUser,
+        setCheckingLogin,
+        setLoginStatus,
+        setCurrentUser,
+        updateEntities
+      } = this.props;
+
       if (
         typeof window !== "undefined" &&
-        loginStatus !== LOGIN_STATUSES.checking &&
         !options.skipRequest &&
-        !this.props.currentUser
+        loginStatus !== LOGIN_STATUSES.checking
       ) {
-        this.setState({
-          loginStatus: LOGIN_STATUSES.checking
-        });
-
+        setCheckingLogin();
         const userResponse = await getCurrentUser();
+        const user = _.get(userResponse, "body.data", null);
 
-        if (userResponse.body.data) {
-          this.props.setCurrentUser(userResponse.body.data.id);
-          this.props.updateEntities(userResponse.body);
-
-          this.setState({
-            loginStatus: LOGIN_STATUSES.loggedIn
-          });
+        if (user) {
+          setCurrentUser(user.id);
+          updateEntities(userResponse.body);
+          setLoginStatus(user);
         } else {
-          this.setState({
-            loginStatus: LOGIN_STATUSES.guest
-          });
-        }
-      }
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-      if (prevState.status !== this.state.status) {
-        const { status } = this.state;
-
-        if (status === LOGIN_STATUSES.guest) {
-          if (options.loginRequired && !this.props.currentUser) {
-            Router.push(
-              `/login?from=${encodeURIComponent(
-                this.props.url.pathname + this.props.url.search
-              )}`
-            );
-          }
+          setCurrentUser(null);
+          setLoginStatus(null);
         }
       }
     }
 
     render() {
-      const { loginRequired = false } = options;
-      const { children, isProbablyLoggedIn, ...otherProps } = this.props;
-      const { loginStatus } = this.state;
+      const { loginRequired = false, allowIncomplete = false } = options;
+      const {
+        children,
+        isProbablyLoggedIn,
+        loginStatus,
+        currentUser,
+        currentUserId,
+        ...otherProps
+      } = this.props;
 
       if (
-        loginRequired &&
-        [LOGIN_STATUSES.pending, LOGIN_STATUSES.checking].includes(loginStatus)
+        (isProbablyLoggedIn && allowIncomplete) ||
+        currentUser ||
+        !loginRequired
       ) {
         return (
-          <Page
-            headerProps={{
-              pending: true,
-              isProbablyLoggedIn
-            }}
-            isLoading
-          />
+          <Component
+            isProbablyLoggedIn={isProbablyLoggedIn}
+            loginStatus={loginStatus}
+            currentUser={currentUser}
+            currentUserId={currentUserId}
+            {...otherProps}
+          >
+            {children}
+          </Component>
         );
-      } else if (loginRequired && loginStatus === LOGIN_STATUSES.guest) {
-        return <Page>To continue, please login</Page>;
+      } else {
+        return null;
       }
-
-      return (
-        <Component
-          isProbablyLoggedIn={isProbablyLoggedIn}
-          loginStatus={loginStatus}
-          {...otherProps}
-        >
-          {children}
-        </Component>
-      );
     }
   }
 
-  LoginGate.getInitialProps = Component.getInitialProps;
-
-  return connect(
+  const ConnectedLoginGate = connect(
     (state, props) => {
       return {
         isProbablyLoggedIn: !!state.currentUserId,
         currentUserId: state.currentUserId,
-        currentUser:
-          state && state.currentUserId ? state.user[state.currentUserId] : null
+        currentUser: state.user[state.currentUserId],
+        loginStatus: state.loginStatus
       };
     },
-    dispatch => bindActionCreators({ updateEntities, setCurrentUser }, dispatch)
+    dispatch =>
+      bindActionCreators(
+        { updateEntities, setCurrentUser, setLoginStatus, setCheckingLogin },
+        dispatch
+      )
   )(LoginGate);
-};
+
+  ConnectedLoginGate.getInitialProps = Component.getInitialProps;
+
+  return withLogin(ConnectedLoginGate);
+});

@@ -1,10 +1,9 @@
 import classNames from "classnames";
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
 import Text from "./Text";
 import Link from "next/link";
 
-export default class BurgerIcon extends React.PureComponent {
+export default class BurgerIcon extends React.Component {
   render() {
     const { isOpen, setOpen } = this.props;
 

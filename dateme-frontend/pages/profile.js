@@ -21,6 +21,7 @@ import MessageBar from "../components/MessageBar";
 import PhotoGroup from "../components/PhotoGroup";
 import Typed from "react-typed";
 import withLogin from "../lib/withLogin";
+import { Router } from "../routes";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -50,6 +51,20 @@ class Profile extends React.Component {
       currentPhotoIndex: null,
       isHeaderSticky: false
     };
+  }
+
+  async componentDidMount() {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const profileResponse = await getProfile(this.props.url.query.id);
+
+    this.props.updateEntities(profileResponse.body);
+
+    if (!_.get(profileResponse, "body.data.id")) {
+      Router.replaceRoute("/page-not-found", "/page-not-found");
+    }
   }
 
   enableStickyHeader = () => this.setState({ isHeaderSticky: true });
@@ -97,7 +112,7 @@ class Profile extends React.Component {
         <Head
           disableGoogle
           url={process.env.DOMAIN + this.props.url.asPath}
-          title={`Apply to date ${profile.name}`}
+          title={`Apply to date ${profile.name || ""}`}
           description={profile.tagline}
           favicon={_.sample(profile.photos)}
           username={profile.id}
@@ -216,7 +231,11 @@ const ProfileWithStore = withRedux(
       profile: state.profile[props.url.query.id]
     };
   },
-  dispatch => bindActionCreators({ updateEntities }, dispatch)
-)(withLogin(LoginGate(Profile)));
+  dispatch => bindActionCreators({ updateEntities }, dispatch),
+  null,
+  {
+    pure: false
+  }
+)(LoginGate(Profile));
 
 export default ProfileWithStore;

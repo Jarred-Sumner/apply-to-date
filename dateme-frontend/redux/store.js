@@ -3,12 +3,12 @@ import { createStore, applyMiddleware, combineReducers } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunkMiddleware from "redux-thunk";
 import { camelizeAttributes } from "../lib/jsonapi";
-import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
 import { compose } from "recompose";
+import { LOGIN_STATUSES } from "../components/LoginGate";
 
 export const UPDATE_ENTITIES = "UPDATE_ENTITIES";
-export const SET_CURRENT_USER = "SET_CURRENT_USER";
+export const SET_CURRENT_USER_ID = "SET_CURRENT_USER_ID";
+export const SET_LOGIN_STATUS = "SET_LOGIN_STATUS";
 
 function customizer(objValue, srcValue) {
   if (objValue && objValue.id && objValue.id === srcValue.id) {
@@ -55,13 +55,27 @@ export const updateEntities = response => {
 
 export const setCurrentUser = user => {
   return {
-    type: SET_CURRENT_USER,
+    type: SET_CURRENT_USER_ID,
     payload: user
   };
 };
 
+export const setLoginStatus = user => {
+  return {
+    type: SET_LOGIN_STATUS,
+    payload: user ? LOGIN_STATUSES.loggedIn : LOGIN_STATUSES.guest
+  };
+};
+
+export const setCheckingLogin = () => {
+  return {
+    type: SET_LOGIN_STATUS,
+    payload: LOGIN_STATUSES.checking
+  };
+};
+
 export const currentUser = (state = null, action) => {
-  if (action && action.type === SET_CURRENT_USER) {
+  if (action && action.type === SET_CURRENT_USER_ID) {
     if (typeof document !== "undefined") {
       document.cookie = "currentUserId=" + action.payload;
     }
@@ -78,7 +92,16 @@ export const defaultState = {
   external_authentication: {},
   review_application: {},
   application: {},
-  currentUserId: null
+  currentUserId: null,
+  loginStatus: "pending"
+};
+
+export const loginStatus = (state = defaultState.loginStatus, action) => {
+  if (action && action.type === SET_LOGIN_STATUS) {
+    return action.payload;
+  } else {
+    return state;
+  }
 };
 
 export const createEntitiyReducer = entityType => {
@@ -99,6 +122,7 @@ export const createEntitiyReducer = entityType => {
 const createReducers = persist => {
   return combineReducers({
     currentUserId: currentUser,
+    loginStatus: loginStatus,
     profile: createEntitiyReducer("profile"),
     user: createEntitiyReducer("user"),
     external_authentication: createEntitiyReducer("external_authentication"),
@@ -107,7 +131,7 @@ const createReducers = persist => {
   });
 };
 
-const newStore = (initialState, reducers) => {
+const newStore = (initialState = defaultState, reducers) => {
   return createStore(
     reducers,
     initialState,

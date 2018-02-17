@@ -57,6 +57,11 @@ routes
     page: "ReviewSpecificApplication"
   })
   .add({
+    name: "ProfileNotFound",
+    pattern: "/page-not-found",
+    page: "ProfileNotFound"
+  })
+  .add({
     name: "profile",
     pattern: "/:id",
     page: "profile"

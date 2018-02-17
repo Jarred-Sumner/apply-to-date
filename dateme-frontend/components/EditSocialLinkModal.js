@@ -36,9 +36,15 @@ const PLACEHOLDER_BY_PROVIDER = {
   youtube: "your youtube username .g. jarredsumner"
 };
 
+const DEFAULT_BY_PROVIDER = {
+  facebook: "https://facebook.com/",
+  twitter: "@",
+  medium: "@"
+};
+
 const isProfileValid = (url, provider) => {
   if (provider === "facebook") {
-    return is.facebook.profile(url);
+    return true;
   } else if (provider === "youtube") {
     return is.youtube.name(url);
   } else if (provider === "twitter" || provider === "medium") {
@@ -67,7 +73,7 @@ export default class EditSocialLinkModal extends React.Component {
 
     if (!url) {
       this.state = {
-        url: ""
+        url: DEFAULT_BY_PROVIDER[provider] || ""
       };
 
       return;
@@ -81,6 +87,12 @@ export default class EditSocialLinkModal extends React.Component {
       url: normalizedUrl
     };
   }
+
+  moveCaretToEnd = evt => {
+    const temp = evt.target.value;
+    evt.target.value = "";
+    evt.target.value = temp;
+  };
 
   onChangeURL = url => this.setState({ url });
 
@@ -135,6 +147,7 @@ export default class EditSocialLinkModal extends React.Component {
               placeholder={PLACEHOLDER_BY_PROVIDER[provider]}
               name={provider}
               autoFocus
+              onFocus={this.moveCaretToEnd}
               autoCorrect={false}
               autoCapitalize={false}
               onChange={this.onChangeURL}

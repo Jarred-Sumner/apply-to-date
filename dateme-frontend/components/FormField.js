@@ -1,10 +1,18 @@
 import Text from "./Text";
 import classNames from "classnames";
-import PlacesAutocomplete from "react-places-autocomplete";
+import UnwrappedPlacesAutocomplete from "react-places-autocomplete";
 import Checkbox from "./Checkbox";
 import _ from "lodash";
 import Radio from "./Radio";
 import TextInput from "./TextInput";
+import scriptLoader from "react-async-script-loader";
+
+const PlacesAutocomplete = scriptLoader(
+  "https://maps.googleapis.com/maps/api/js?key=AIzaSyD_ad15stG5b8YA-oVUoneLHmIW7pWpa3w&libraries=places"
+)(
+  ({ isScriptLoaded, ...props }) =>
+    isScriptLoaded ? <UnwrappedPlacesAutocomplete {...props} /> : null
+);
 
 export { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 
@@ -55,7 +63,13 @@ export default class FormField extends React.Component {
     this.inputRef && this.inputRef.focus();
   };
 
-  setFocused = isFocused => this.setState({ isFocused });
+  setFocused = (isFocused, evt) => {
+    if (isFocused && !this.state.isFocused && this.props.onFocus) {
+      this.props.onFocus(evt);
+    }
+
+    this.setState({ isFocused });
+  };
 
   renderInput = () => {
     const {
@@ -162,8 +176,8 @@ export default class FormField extends React.Component {
             autoComplete: "off",
             autoCorrect: "off",
             autoCapitalize: "off",
-            onFocus: () => this.setFocused(true),
-            onBlur: () => this.setFocused(false),
+            onFocus: evt => this.setFocused(true, evt),
+            onBlur: evt => this.setFocused(false, evt),
             name,
             type: "search",
             disabled,
@@ -183,8 +197,8 @@ export default class FormField extends React.Component {
           autoCapitalize={autoCapitalize}
           autoCorrect={autoCorrect}
           value={value}
-          onFocus={() => this.setFocused(true)}
-          onBlur={() => this.setFocused(false)}
+          onFocus={evt => this.setFocused(true, evt)}
+          onBlur={evt => this.setFocused(false, evt)}
           inputRef={inputRef => (this.inputRef = inputRef)}
           onKeyUp={onKeyUp}
           disabled={disabled}

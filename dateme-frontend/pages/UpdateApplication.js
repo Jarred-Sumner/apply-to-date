@@ -376,13 +376,12 @@ const UpdateApplicationWithStore = withRedux(
   initStore,
   (state, props) => {
     const { profileId, applicationId } = props;
-    console.log(state);
     return {
       profile: state.profile[profileId],
       application: state.application[applicationId]
     };
   },
   dispatch => bindActionCreators({ updateEntities }, dispatch)
-)(withLogin(LoginGate(UpdateApplication)));
+)(LoginGate(UpdateApplication));
 
 export default UpdateApplicationWithStore;

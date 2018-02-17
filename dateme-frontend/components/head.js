@@ -15,6 +15,16 @@ if (typeof window !== "undefined") {
     titleCase: false
   });
 
+  ReactGA.plugin.require("cleanUrlTracker");
+  ReactGA.plugin.require("eventTracker");
+  ReactGA.plugin.require("impressionTracker");
+  ReactGA.plugin.require("maxScrollTracker");
+  ReactGA.plugin.require("mediaQueryTracker");
+  ReactGA.plugin.require("outboundFormTracker");
+  ReactGA.plugin.require("outboundLinkTracker");
+  ReactGA.plugin.require("pageVisibilityTracker");
+  ReactGA.plugin.require("socialWidgetTracker");
+
   ReactGA.pageview(window.location.pathname);
   Router.onRouteChangeComplete = url => {
     ReactGA.pageview(url);
@@ -34,7 +44,7 @@ const Head = props => (
       <link
         rel="icon"
         sizes="192x192"
-        href={props.favicon || "/static/favicon.ico"}
+        href={props.favicon || "/static/favicon.png"}
       />
       <meta property="fb:app_id" content="2014016792189722" />
       <meta property="og:type" content={props.type || "website"} />
@@ -47,9 +57,9 @@ const Head = props => (
       )}
       <link
         rel="apple-touch-icon"
-        href={props.favicon || "/static/favicon.ico"}
+        href={props.favicon || "/static/favicon.png"}
       />
-      <link rel="icon" href={props.favicon || "/static/favicon.ico"} />
+      <link rel="icon" href={props.favicon || "/static/favicon.png"} />
       <meta property="og:url" content={props.url || defaultOGURL} />
       <meta property="og:title" content={props.title || ""} />
       <meta
@@ -64,17 +74,20 @@ const Head = props => (
       <meta property="og:image:height" content="630" />
 
       <link
+        key="Open Sans"
         href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,700,900"
         rel="stylesheet"
       />
 
       <link
+        key="Frank Ruhl"
         href="https://fonts.googleapis.com/css?family=Frank+Ruhl+Libre:300,400,500,700,900"
         rel="stylesheet"
       />
       <script
         type="text/javascript"
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_ad15stG5b8YA-oVUoneLHmIW7pWpa3w&libraries=places"
+        key="autotrack"
+        src="https://cdnjs.cloudflare.com/ajax/libs/autotrack/2.4.1/autotrack.js"
       />
     </NextHead>
     <FullStory />

@@ -17,7 +17,8 @@ gem 'pg', '~> 0.18'
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'therubyracer', platforms: :ruby
-gem 'sparkpost_rails'
+gem 'mailgun_rails'
+
 
 
 # Use CoffeeScript for .coffee assets and views
@@ -44,6 +45,9 @@ gem 'capistrano-passenger'
 
 gem 'unicorn'
 
+gem 'pry-rails'
+gem 'pry-coolline'
+gem 'pry-awesome_print'
 gem 'omniauth'
 gem 'omniauth-twitter'
 gem 'omniauth-instagram'

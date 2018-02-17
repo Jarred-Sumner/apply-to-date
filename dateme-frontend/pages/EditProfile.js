@@ -333,6 +333,7 @@ class EditProfile extends React.Component {
                 <div className="Subheader--actions">
                   <TextInput
                     rounded
+                    fake
                     disabled
                     readOnly
                     type="url"
@@ -496,6 +497,7 @@ class EditProfile extends React.Component {
             display: grid;
             grid-auto-flow: column;
             grid-column-gap: 14px;
+            width: max-content;
           }
 
           .OpenButton {

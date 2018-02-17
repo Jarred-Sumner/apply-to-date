@@ -333,6 +333,6 @@ const CreateApplicationWithStore = withRedux(
     };
   },
   dispatch => bindActionCreators({ updateEntities }, dispatch)
-)(withLogin(LoginGate(CreateApplication)));
+)(LoginGate(CreateApplication));
 
 export default CreateApplicationWithStore;
