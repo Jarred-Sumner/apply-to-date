@@ -15,7 +15,8 @@ class ApplicationsMailer < ApplicationMailer
   def confirmed(application_id)
     @application = Application.find(application_id)
     @profile = @application.profile
+    @profile_name = @profile.name
 
-    mail to: @application.email, subject: "It takes courage to ask someone out"
+    mail to: @application.email, subject: "Thanks for asking out #{@profile_name}"
   end
 end

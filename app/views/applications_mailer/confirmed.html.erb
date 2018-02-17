@@ -181,7 +181,7 @@
 												<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
 													<tbody><tr>
 														<td valign="middle" width="350" style="text-align: center; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 30px; color: #ffffff; line-height: 30px; font-weight: 700;" class="fullCenter">
-															<span style="font-family:open sans;"><span style="color:#000000;">Thanks for asking Lucy out</span></span>
+															<span style="font-family:open sans;"><span style="color:#000000;">Thanks for asking <%= @profile_name %> out</span></span>
 														</td>
 													</tr>
 												</tbody></table>
@@ -247,9 +247,9 @@
 												<div class="card">
 												<div class="card-circle">1</div>
 													<div class="rectangle-content">
-														<div class="card-title">Lucy reads your application</div>
+														<div class="card-title"><%= @profile_name %> reads your application</div>
 														<div class="application-icon"><%= image_tag "email/confirmed/application_icon.png"%></div>
-														<div class="card-description">Your application has been sent to Lucy! Sit tight — you’ll hear back if Lucy wants to go on a date with you.</div>
+														<div class="card-description">Your application has been sent to <%= @profile_name %> and will be looked over shortly.</div>
 													</div>
 												
 												</div>
@@ -259,7 +259,7 @@
 													<div class="rectangle-content">
 														<div class="card-title">Contact information exchanged</div>
 														<div class="application-icon"><%= image_tag "email/confirmed/contact_information.png"%></div>
-														<div class="card-description">Your application has been sent to Lucy! Sit tight — you’ll hear back if Lucy wants to go on a date with you.</div>
+														<div class="card-description">If <%= @profile_name %> wants to go on a date with you, you'll get an email</div>
 													</div>
 												
 												</div>
@@ -269,14 +269,53 @@
 													<div class="rectangle-content">
 														<div class="card-title">Go on a date!</div>
 														<div class="application-icon"><%= image_tag "email/confirmed/date.png"%></div>
-														<div class="card-description">Your application has been sent to Lucy! Sit tight — you’ll hear back if Lucy wants to go on a date with you.</div>
+														<div class="card-description"></div>
 													</div>
 												
 												</div>
 												</tr>
 											</tbody></table>
 
-															
+															                        			
+									
+									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile">
+										<tbody><tr>
+											<td align="center" width="450" valign="middle">
+											
+												<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
+													<tbody><tr>
+														<td valign="middle" width="350" style="text-align: left; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 26px; color: #0c0c0c; line-height: 34px; font-weight: 300;" class="fullCenter">
+															What if I don't hear back?
+														</td>
+													</tr>
+												</tbody></table>
+												
+											</td>
+										</tr>
+									</tbody></table>
+									
+									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile">
+										<tbody><tr>
+											<td width="450" valign="middle" align="center" height="30">
+											</td>
+										</tr>
+									</tbody></table>
+									
+									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile">
+										<tbody><tr>
+											<td align="center" width="450" valign="middle">
+											
+												<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
+													<tbody><tr>
+														<td valign="middle" width="450" style="text-align: left; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 14px; color: #a9a9a9; line-height: 24px;" class="fullCenter">
+															<span style="color:#000000;">Don't worry. <%= @profile_name %> might just be busy, and if it turns out they're not interested, at least you asked. You miss every shot you don't take.</span>
+														</td>
+													</tr>
+												</tbody></table>
+												
+											</td>
+										</tr>
+			
 									
 									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile" bgcolor="#FFFFFF" style="background-color: #ffffff;">
 										<tbody><tr>
@@ -287,7 +326,6 @@
 									
 									
 									
-
 									
 									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile">
 										<tbody><tr>
@@ -307,7 +345,7 @@
 												<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
 													<tbody><tr>
 														<td valign="middle" width="450" style="text-align: center; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 14px; color: #a9a9a9; line-height: 24px;" class="fullCenter">
-															Copyright 2018 Apply To Date
+															Copyright 2018 Ship First Labs, Inc
 														</td>
 													</tr>
 													<tr>

@@ -133,7 +133,7 @@ class Profile extends React.Component {
             <SocialLinkList socialLinks={profile.socialLinks} />
 
             <div className="Section-row ApplicationForm">
-              <InlineApply profileId={this.props.profile.id} />
+              <InlineApply profileName={profile.name} profileId={profile.id} />
             </div>
           </section>
         </Waypoint>

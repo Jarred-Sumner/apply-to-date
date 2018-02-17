@@ -40,7 +40,7 @@ class EmailForm extends React.Component {
           componentType="button"
           inline={!isMobile()}
         >
-          Get started
+          Ask {this.props.profileName} out
         </Button>
 
         <style jsx>{`
@@ -184,6 +184,7 @@ export default class InlineApplication extends React.Component {
       <EmailForm
         email={email}
         setEmail={this.setEmail}
+        profileName={this.props.profileName}
         onApply={this.handleApply}
       />
     );

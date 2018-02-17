@@ -4,16 +4,6 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
     social_links = params[:application][:social_links].try(:to_unsafe_h) || {}
     external_authentications = params[:application][:external_authentications]
 
-    if create_params[:status] == 'submitted'
-      if params[:application][:social_links].blank?
-        raise ArgumentError.new("Please include at least one social profile")
-      end
-
-      if params[:application][:external_authentications].blank? && create_params[:phone].blank?
-        raise ArgumentError.new("Please verify your Facebook, SMS, Instagram, or Twitter first.")
-      end
-    end
-
     if create_params[:email].blank? 
       raise ArgumentError.new("Please include your email")
     end
@@ -22,6 +12,7 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
 
     ActiveRecord::Base.transaction do
       @application = Application.where(profile_id: params[:profile_id], email: email).first_or_initialize
+      should_send_email = !@application.persisted?
       @application.social_links = ExternalAuthentication.update_social_links(social_links)
 
       @application.verified_networks.destroy_all
@@ -35,6 +26,7 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
         applicant_id: current_user.try(:id)
       ))
 
+      ApplicationsMailer.confirmed(@application.id).deliver_later if should_send_email
     end
 
     render json: ApplicantApplicationSerializer.new(@application, {

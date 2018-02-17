@@ -40,10 +40,7 @@ class Application < ApplicationRecord
   validates :email, presence: true, uniqueness: { scope: [:user_id] }
   validates :profile, presence: true
   validates :name, presence: true, :unless => :pending?
-  validates :social_links, presence: true, :unless => :pending?
   validates :sex, presence: true, inclusion: { in: ['male', 'female', 'other'] }, unless: :pending?
-  validates :recommended_contact_method, presence: true, inclusion: { in: ['twitter', 'facebook', 'phone', 'instagram']}, unless: :pending?
-  validates :phone, presence: true, :if => lambda { |o| o.recommended_contact_method == 'phone' }
 
   def self.fetch(email: nil, profile_id: nil)
     profile = Profile.find_by(id: profile_id, visible: true)

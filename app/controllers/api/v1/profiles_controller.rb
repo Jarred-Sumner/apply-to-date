@@ -43,7 +43,7 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
 
       if !update_params[:tagline].nil?
         if update_params[:tagline].blank?
-          raise ArgumentError.new("Please include a short self-summary your name")
+          raise ArgumentError.new("Please include a short self-summary")
         end
 
         profile.update!(tagline: update_params[:tagline])
