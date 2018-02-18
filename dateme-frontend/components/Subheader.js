@@ -65,7 +65,7 @@ export default ({
               background-color: white;
               display: flex;
               align-items: center;
-              padding: 10px 40px;
+              padding: 21px 40px;
               flex: 1;
               border-top: 1px solid #e8e8e8;
               position: fixed;
