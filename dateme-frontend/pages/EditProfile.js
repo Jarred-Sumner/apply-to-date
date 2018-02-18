@@ -29,7 +29,7 @@ import Subheader from "../components/Subheader";
 import Icon from "../components/Icon";
 import TextInput from "../components/TextInput";
 import Switch from "../components/Switch";
-import { isMobile } from "../lib/Mobile";
+import { getMobileDetect } from "../lib/Mobile";
 import withLogin from "../lib/withLogin";
 
 const SECTION_ORDERING = [
@@ -109,6 +109,8 @@ class VerifySocialNetworksContainer extends React.Component {
       externalAuthentications: [],
       isLoading: true
     };
+
+    this.isMobile = false;
   }
 
   async componentDidMount() {
@@ -118,6 +120,8 @@ class VerifySocialNetworksContainer extends React.Component {
       externalAuthentications: response.body.data,
       isLoading: false
     });
+
+    this.isMobile = getMobileDetect().mobile();
   }
 
   componentWillReceiveProps(props) {
@@ -325,32 +329,34 @@ class EditProfile extends React.Component {
         headerProps={{
           renderSubheader: () => {
             return (
-              <Subheader bottom={!isMobile()} spaceBetween>
+              <Subheader bottom={!this.isMobile} spaceBetween>
                 <Switch checked={profile.visible} onChange={this.toggleVisible}>
                   {profile.visible ? "Page is live" : "Page is not live"}
                 </Switch>
 
                 <div className="Subheader--actions">
-                  <TextInput
-                    rounded
-                    fake
-                    disabled
-                    readOnly
-                    type="url"
-                    value={profile.url}
-                  >
-                    <div className="OpenButton">
-                      <Button
-                        size="xsmall"
-                        href={profile.url}
-                        color="green"
-                        target="_blank"
-                        fill
-                      >
-                        <Icon type="caret-right" size="10px" />
-                      </Button>
-                    </div>
-                  </TextInput>
+                  <div className="Subheader--Input">
+                    <TextInput
+                      rounded
+                      fake
+                      disabled
+                      readOnly
+                      type="url"
+                      value={profile.url}
+                    >
+                      <div className="OpenButton">
+                        <Button
+                          size="xsmall"
+                          href={profile.url}
+                          color="green"
+                          target="_blank"
+                          fill
+                        >
+                          <Icon type="caret-right" size="10px" />
+                        </Button>
+                      </div>
+                    </TextInput>
+                  </div>
                   <Button
                     componentType="div"
                     color="green"
@@ -504,6 +510,12 @@ class EditProfile extends React.Component {
             margin-right: 8px;
             margin-top: auto;
             margin-bottom: auto;
+          }
+
+          @media (max-width: 500px) {
+            .Subheader--Input {
+              display: none;
+            }
           }
         `}</style>
       </Page>

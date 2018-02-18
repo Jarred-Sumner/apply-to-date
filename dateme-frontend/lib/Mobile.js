@@ -2,7 +2,7 @@ import MobileDetect from "mobile-detect";
 
 var mobileDetect;
 
-const getMobileDetect = () => {
+export const getMobileDetect = () => {
   if (typeof window !== "undefined") {
     if (!mobileDetect) {
       mobileDetect = new MobileDetect(window.navigator.userAgent, 600);

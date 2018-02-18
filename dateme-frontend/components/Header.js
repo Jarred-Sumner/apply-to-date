@@ -174,7 +174,9 @@ class Header extends React.Component {
                   isOpen={isHamburgerOpen}
                   setOpen={this.setHamburgerOpen}
                 />
-                {!showChildren && this.renderButtons()}
+                <div className="DesktopHeader">
+                  {!showChildren && this.renderButtons()}
+                </div>
               </div>
 
               <style jsx>{`
@@ -193,9 +195,17 @@ class Header extends React.Component {
                   display: flex;
                 }
 
+                .DesktopHeader {
+                  display: flex;
+                }
+
                 @media (max-width: 460px) {
                   header {
                     padding: 18px 20px;
+                  }
+
+                  .DesktopHeader {
+                    display: none;
                   }
                 }
               `}</style>
