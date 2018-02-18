@@ -29,7 +29,7 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
       end
 
       if update_params[:sections].present?
-        sections = update_params[:sections].permit(Profile::DEFAULT_SECTIONS)
+        sections = update_params[:sections].permit(Profile::DEFAULT_SECTIONS).to_unsafe_h.map { |k, v| [k, v.strip] }.to_h
         profile.update!(sections: sections)
       end
 
