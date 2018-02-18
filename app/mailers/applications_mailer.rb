@@ -34,4 +34,5 @@ class ApplicationsMailer < ApplicationMailer
 
     mail to: @application.email, subject: "You asked out #{@profile_name}"
   end
+  
 end
