@@ -172,7 +172,10 @@ class CreateAccount extends React.Component {
 
     return (
       <div>
-        <Head title="Create account | Apply to Date" />
+        <Head
+          title="Create account | Apply to Date"
+          description="Sign up to Apply to Date and get a personal page where people apply to go on a date with you."
+        />
         <Page>
           <main>
             <Text type="PageTitle">Create account</Text>

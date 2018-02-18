@@ -5,9 +5,10 @@ import ReactGA from "react-ga";
 import FullStory from "./FullStory";
 import Router from "next/router";
 
-const defaultDescription = "";
+const defaultDescription =
+  "Create a page where people apply to go on a date with you. You pick the winners.";
 const defaultOGURL = "";
-const defaultOGImage = "";
+const defaultOGImage = "/static/default-cover.png";
 
 if (typeof window !== "undefined") {
   ReactGA.initialize(process.env.GOOGLE_ANALYTICS, {

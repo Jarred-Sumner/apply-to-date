@@ -179,8 +179,7 @@ class Homepage extends React.Component {
     return (
       <div>
         <Head
-          title="Apply to Date – Your own game of The Bachelor(ette)"
-          description="Create a page where people apply to go on a date with you. You pick the winners."
+          title="Apply to Date – your own game of The Bachelor(ette)"
           url={`${process.env.DOMAIN}/`}
         />
         <Header />

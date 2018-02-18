@@ -79,7 +79,10 @@ class Login extends React.Component {
 
     return (
       <Page size="small">
-        <Head title="Login | Apply to Date" />
+        <Head
+          title="Login | Apply to Date"
+          description="Login to your Apply to Date account."
+        />
         <article>
           <main>
             <Text type="PageTitle">Login</Text>
