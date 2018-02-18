@@ -55,7 +55,7 @@ class ForgotPassword extends React.Component {
 
     return (
       <Page size="small">
-        <Head title="Forgot Password | ApplyToDate" />
+        <Head title="Forgot Password | Apply to Date" />
 
         <article>
           <main>

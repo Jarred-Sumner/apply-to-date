@@ -19,7 +19,7 @@ class PrivacyPolicy extends React.PureComponent {
   render() {
     return (
       <Page>
-        <Head title="Privacy Policy | ApplyToDate" />
+        <Head title="Privacy Policy | Apply to Date" />
         <article>
           <main>
             <Text type="PageTitle">Privacy Policy</Text>
@@ -40,8 +40,8 @@ class PrivacyPolicy extends React.PureComponent {
               </p>
               <p>
                 The terms used in this Privacy Policy have the same meanings as
-                in our Terms and Conditions, which is accessible at ApplyToDate
-                unless otherwise defined in this Privacy Policy.
+                in our Terms and Conditions, which is accessible at Apply to
+                Date unless otherwise defined in this Privacy Policy.
               </p>
             </Text>
 

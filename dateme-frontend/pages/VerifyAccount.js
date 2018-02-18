@@ -23,7 +23,7 @@ class VerifyAccount extends React.Component {
 
     return (
       <div>
-        <Head title="Create account | ApplyToDate" />
+        <Head title="Create account | Apply to Date" />
         <Page>
           <main>
             <Text type="PageTitle">Create account</Text>

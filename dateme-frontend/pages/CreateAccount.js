@@ -125,7 +125,7 @@ class CreateAccount extends React.Component {
     })
       .then(response => {
         console.log(response);
-        Alert.success("Welcome to ApplyToDate!");
+        Alert.success("Welcome to Apply to Date!");
         Router.push(`/${username}/edit`);
       })
       .catch(error => {
@@ -172,7 +172,7 @@ class CreateAccount extends React.Component {
 
     return (
       <div>
-        <Head title="Create account | ApplyToDate" />
+        <Head title="Create account | Apply to Date" />
         <Page>
           <main>
             <Text type="PageTitle">Create account</Text>

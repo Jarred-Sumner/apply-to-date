@@ -40,7 +40,7 @@ class TermsOfService extends React.Component {
 
     return (
       <Page>
-        <Head title="Terms Of Service | ApplyToDate" />
+        <Head title="Terms Of Service | Apply to Date" />
         <article>
           <main>
             <Text type="PageTitle">Terms of Service</Text>
@@ -56,10 +56,10 @@ class TermsOfService extends React.Component {
                 try to translate the website into other languages, or make
                 derivative versions. the website itself, and all the trade
                 marks, copyright, database rights and other intellectual
-                property rights related to it, still belong to ApplyToDate.{" "}
+                property rights related to it, still belong to Apply to Date.{" "}
               </p>
               <p>
-                ApplyToDate is committed to ensuring that the website is as
+                Apply to Date is committed to ensuring that the website is as
                 useful and efficient as possible. For that reason, we reserve
                 the right to make changes to the website or to charge for its
                 services, at any time and for any reason. We will never charge
@@ -67,7 +67,7 @@ class TermsOfService extends React.Component {
                 to you exactly what you’re paying for.{" "}
               </p>
               <p>
-                ApplyToDate's website stores and processes personal data that
+                Apply to Date's website stores and processes personal data that
                 you have provided to us, in order to provide our Service. It’s
                 your responsibility to keep your phone and access to the website
                 secure. We therefore recommend that you do not jailbreak or root
@@ -75,15 +75,15 @@ class TermsOfService extends React.Component {
                 restrictions and limitations imposed by the official operating
                 system of your device. It could make your phone vulnerable to
                 malware/viruses/malicious programs, compromise your phone’s
-                security features and it could mean that the ApplyToDate website
-                won’t work properly or at all.
+                security features and it could mean that the Apply to Date
+                website won’t work properly or at all.
               </p>
               <p>
-                You should be aware that there are certain things that
-                ApplyToDate will not take responsibility for. Certain functions
-                of the website will require the website to have an active
-                internet connection. The connection can be Wi-Fi, or provided by
-                your mobile network provider, but ApplyToDate cannot take
+                You should be aware that there are certain things that Apply to
+                Date will not take responsibility for. Certain functions of the
+                website will require the website to have an active internet
+                connection. The connection can be Wi-Fi, or provided by your
+                mobile network provider, but Apply to Date cannot take
                 responsibility for the website not working at full functionality
                 if you don’t have access to Wi-Fi, and you don’t have any of
                 your data allowance left.
@@ -103,19 +103,19 @@ class TermsOfService extends React.Component {
                 received permission from the bill payer for using the website.
               </p>
               <p>
-                Along the same lines, ApplyToDate cannot always take
+                Along the same lines, Apply to Date cannot always take
                 responsibility for the way you use the website i.e. You need to
                 make sure that your device stays charged – if it runs out of
-                battery and you can’t turn it on to avail the Service,
-                ApplyToDate cannot accept responsibility
+                battery and you can’t turn it on to avail the Service, Apply to
+                Date cannot accept responsibility
               </p>
               <p>
-                With respect to ApplyToDate’s responsibility for your use of the
-                website, when you’re using the website, it’s important to bear
-                in mind that although we endeavour to ensure that it is updated
-                and correct at all times, we do rely on third parties to provide
-                information to us so that we can make it available to you.
-                ApplyToDate accepts no liability for any loss, direct or
+                With respect to Apply to Date’s responsibility for your use of
+                the website, when you’re using the website, it’s important to
+                bear in mind that although we endeavour to ensure that it is
+                updated and correct at all times, we do rely on third parties to
+                provide information to us so that we can make it available to
+                you. Apply to Date accepts no liability for any loss, direct or
                 indirect, you experience as a result of relying wholly on this
                 functionality of the website.
               </p>

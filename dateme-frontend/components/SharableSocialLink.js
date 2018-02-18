@@ -21,13 +21,24 @@ const PROVIDER_TO_SHARE_BUTTON = {
   twitter: TwitterShareButton
 };
 
-export default ({ provider, url, appId, width, height, ...otherProps }) => {
+export default ({
+  provider,
+  url,
+  title,
+  image,
+  appId,
+  width,
+  height,
+  ...otherProps
+}) => {
   const ShareButton = PROVIDER_TO_SHARE_BUTTON[provider];
   invariant(ShareButton, "provider must be twitter or facebook");
 
   return (
     <ShareButton
       url={url}
+      quote={provider === "facebook" ? title : undefined}
+      title={provider === "twitter" ? title : undefined}
       hashtag={provider === "facebook" ? "#applytodate" : undefined}
       hashtags={provider === "twitter" ? ["applytodate"] : undefined}
     >

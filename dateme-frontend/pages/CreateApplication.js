@@ -220,7 +220,8 @@ class CreateApplication extends React.Component {
         <Head
           url={process.env.DOMAIN + this.props.url.asPath}
           title={
-            profile && `Your application to date ${profile.name} | applytodate`
+            profile &&
+            `Your application to date ${profile.name} | Apply to Date`
           }
           favicon={profile && _.sample(profile.photos)}
           ogImage={profile && _.first(profile.photos)}

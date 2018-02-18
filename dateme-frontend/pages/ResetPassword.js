@@ -73,7 +73,7 @@ class ResetPassword extends React.Component {
 
     return (
       <Page size="small">
-        <Head title="Reset Password | ApplyToDate" />
+        <Head title="Reset Password | Apply to Date" />
         <article>
           <main>
             <Text type="PageTitle">Reset Password</Text>

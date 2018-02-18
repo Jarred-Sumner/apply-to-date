@@ -12,6 +12,6 @@ class ResetPasswordMailer < ApplicationMailer
       {}
     )
 
-    mail to: user.email, subject: "Reset your ApplyToDate password"
+    mail to: user.email, subject: "Reset your Apply to Date password"
   end
 end
