@@ -8,6 +8,7 @@ import { bindActionCreators } from "redux";
 import Header from "../components/Header";
 import LoginGate from "../components/LoginGate";
 import Text from "../components/Text";
+import Icon from "../components/Icon";
 import InlineApply from "../components/profile/InlineApply";
 import _ from "lodash";
 import titleCase from "title-case";
@@ -106,7 +107,13 @@ class Profile extends React.Component {
         }
         headerProps={{
           showChildren: this.state.isHeaderSticky,
-          children: <div className="HeaderForm" />
+          children: (
+            <div className="HeaderApply">
+              <Button size="large" href={`/${profile.id}/apply`}>
+                <Icon type="heart" size="14px" />&nbsp; Ask {profile.name} out
+              </Button>
+            </div>
+          )
         }}
       >
         <Head
@@ -148,7 +155,9 @@ class Profile extends React.Component {
             <SocialLinkList socialLinks={profile.socialLinks} />
 
             <div className="Section-row ApplicationForm">
-              <InlineApply profileName={profile.name} profileId={profile.id} />
+              <Button size="large" href={`/${profile.id}/apply`}>
+                <Icon type="heart" size="14px" />&nbsp; Ask {profile.name} out
+              </Button>
             </div>
           </section>
         </Waypoint>
@@ -212,9 +221,13 @@ class Profile extends React.Component {
             text-align: center;
           }
 
+          .HeaderApply {
+            justify-self: center;
+            align-self: center;
+          }
+
           .ApplicationForm {
-            max-width: 40rem;
-            width: 100%;
+            max-width: max-content;
             margin-left: auto;
             margin-right: auto;
           }
