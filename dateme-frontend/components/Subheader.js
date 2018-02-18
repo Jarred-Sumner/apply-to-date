@@ -1,12 +1,20 @@
 import classNames from "classnames";
 import { Portal } from "react-portal";
 
-export default ({ children, bottom = false, spaceBetween }) => {
+export default ({
+  children,
+  bottom = false,
+  center = false,
+  fade = false,
+  spaceBetween
+}) => {
   if (!bottom) {
     return (
       <div
         className={classNames("Subheader", {
-          "Subheader--spaceBetween": spaceBetween
+          "Subheader--spaceBetween": spaceBetween,
+          "Subheader--center": center,
+          "Subheader--fade": fade
         })}
       >
         {children}
@@ -24,6 +32,19 @@ export default ({ children, bottom = false, spaceBetween }) => {
           .Subheader--spaceBetween {
             justify-content: space-between;
           }
+
+          .Subheader--center {
+            justify-content: center;
+          }
+
+          .Subheader--fade {
+            border: 0;
+            background: linear-gradient(
+              -180deg,
+              rgba(255, 255, 255, 0.16) 0%,
+              #ffffff 100%
+            );
+          }
         `}</style>
       </div>
     );
@@ -32,7 +53,9 @@ export default ({ children, bottom = false, spaceBetween }) => {
       <Portal>
         <div
           className={classNames("Subheader", {
-            "Subheader--spaceBetween": spaceBetween
+            "Subheader--spaceBetween": spaceBetween,
+            "Subheader--center": center,
+            "Subheader--fade": fade
           })}
         >
           {children}
@@ -53,6 +76,19 @@ export default ({ children, bottom = false, spaceBetween }) => {
 
             .Subheader--spaceBetween {
               justify-content: space-between;
+            }
+
+            .Subheader--center {
+              justify-content: center;
+            }
+
+            .Subheader--fade {
+              border: 0;
+              background: linear-gradient(
+                -180deg,
+                rgba(255, 255, 255, 0.16) 0%,
+                #ffffff 100%
+              );
             }
           `}</style>
         </div>

@@ -23,6 +23,8 @@ import PhotoGroup from "../components/PhotoGroup";
 import Typed from "react-typed";
 import withLogin from "../lib/withLogin";
 import { Router } from "../routes";
+import { getMobileDetect } from "../lib/Mobile";
+import Subheader from "../components/Subheader";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -52,12 +54,16 @@ class Profile extends React.Component {
       currentPhotoIndex: null,
       isHeaderSticky: false
     };
+
+    this.isMobile = false;
   }
 
   async componentDidMount() {
     if (typeof window === "undefined") {
       return;
     }
+
+    this.isMobile = getMobileDetect().mobile();
 
     const profileResponse = await getProfile(this.props.url.query.id);
 
@@ -106,12 +112,25 @@ class Profile extends React.Component {
           )
         }
         headerProps={{
-          showChildren: this.state.isHeaderSticky,
+          showChildren: this.state.isHeaderSticky && !this.isMobile,
+          renderSubheader:
+            this.isMobile &&
+            this.state.isHeaderSticky &&
+            (() => {
+              return (
+                <Subheader bottom center fade>
+                  <Button size="large" href={`/${profile.id}/apply`}>
+                    <Icon type="heart" size="14px" />&nbsp; Ask {profile.name}{" "}
+                    out
+                  </Button>
+                </Subheader>
+              );
+            }),
           children: (
             <div className="HeaderApply">
-              {/* <Button size="large" href={`/${profile.id}/apply`}>
+              <Button size="large" href={`/${profile.id}/apply`}>
                 <Icon type="heart" size="14px" />&nbsp; Ask {profile.name} out
-              </Button> */}
+              </Button>
             </div>
           )
         }}
@@ -126,41 +145,41 @@ class Profile extends React.Component {
           type="profile"
           ogImage={_.first(profile.photos)}
         />
-        <Waypoint
-          onEnter={this.disableStickyHeader}
-          onLeave={this.enableStickyHeader}
-        >
-          <section className="Section Section--center Section--title">
-            <div className="Section-row">
-              <Text type="ProfilePageTitle">
-                👋 &nbsp;
-                <Typed
-                  strings={[
-                    `Hi, I'm ${titleCase(profile.name)}.`,
-                    "We should meet.",
-                    "Leave me a note."
-                  ]}
-                  typeSpeed={60}
-                  backSpeed={30}
-                  backDelay={4000}
-                  loop={true}
-                />
-              </Text>
-            </div>
 
-            <div className="Section-row">
-              <Text type="Tagline">{profile.tagline}</Text>
-            </div>
+        <section className="Section Section--center Section--title">
+          <div className="Section-row">
+            <Text type="ProfilePageTitle">
+              👋 &nbsp;
+              <Typed
+                strings={[
+                  `Hi, I'm ${titleCase(profile.name)}.`,
+                  "We should meet.",
+                  "Leave me a note."
+                ]}
+                typeSpeed={60}
+                backSpeed={30}
+                backDelay={4000}
+                loop={true}
+              />
+            </Text>
+          </div>
 
-            <SocialLinkList socialLinks={profile.socialLinks} />
+          <div className="Section-row">
+            <Text type="Tagline">{profile.tagline}</Text>
+          </div>
 
+          <SocialLinkList socialLinks={profile.socialLinks} />
+          <Waypoint
+            onEnter={this.disableStickyHeader}
+            onLeave={this.enableStickyHeader}
+          >
             <div className="Section-row ApplicationForm">
               <Button size="large" href={`/${profile.id}/apply`}>
                 <Icon type="heart" size="14px" />&nbsp; Ask {profile.name} out
               </Button>
             </div>
-          </section>
-        </Waypoint>
+          </Waypoint>
+        </section>
 
         <section className="Section">
           <PhotoGroup
@@ -222,8 +241,12 @@ class Profile extends React.Component {
           }
 
           .HeaderApply {
-            justify-self: center;
-            align-self: center;
+            position: absolute;
+            left: 0;
+            right: 0;
+            width: min-content;
+            margin-left: auto;
+            margin-right: auto;
           }
 
           .ApplicationForm {
