@@ -109,9 +109,9 @@ class Profile extends React.Component {
           showChildren: this.state.isHeaderSticky,
           children: (
             <div className="HeaderApply">
-              <Button size="large" href={`/${profile.id}/apply`}>
+              {/* <Button size="large" href={`/${profile.id}/apply`}>
                 <Icon type="heart" size="14px" />&nbsp; Ask {profile.name} out
-              </Button>
+              </Button> */}
             </div>
           )
         }}
