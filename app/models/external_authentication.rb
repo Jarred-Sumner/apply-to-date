@@ -164,6 +164,10 @@ class ExternalAuthentication < ApplicationRecord
       social_links[provider] = "https://www.facebook.com/app_scoped_user_id/#{uid}"
     elsif provider == 'instagram'
       social_links[provider] = "https://instagram.com/#{username}"
+    elsif provider == 'linkedin'
+      social_links[provider] = info.try(:[], "urls").try(:[], "public_profile")
+    elsif provider == 'medium'
+      social_links[provider] = "https://instagram.com/@#{username}"
     end
 
     social_links

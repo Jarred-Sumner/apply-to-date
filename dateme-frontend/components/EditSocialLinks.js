@@ -11,7 +11,7 @@ export default class EditSocialLinks extends React.Component {
   };
 
   render() {
-    const { socialLinks = {}, blacklist = [] } = this.props;
+    const { socialLinks = {}, blacklist = [], save } = this.props;
 
     return (
       <section className="Section Section--socialLinks">
@@ -20,6 +20,7 @@ export default class EditSocialLinks extends React.Component {
             hoverable
             provider="twitter"
             url={socialLinks["twitter"]}
+            save={save}
             setURL={this.setSocialLink("twitter")}
           />
         )}
@@ -28,6 +29,7 @@ export default class EditSocialLinks extends React.Component {
             hoverable
             provider="facebook"
             url={socialLinks["facebook"]}
+            save={save}
             setURL={this.setSocialLink("facebook")}
           />
         )}
@@ -36,6 +38,7 @@ export default class EditSocialLinks extends React.Component {
             hoverable
             provider="youtube"
             url={socialLinks["youtube"]}
+            save={save}
             setURL={this.setSocialLink("youtube")}
           />
         )}
@@ -44,6 +47,7 @@ export default class EditSocialLinks extends React.Component {
             hoverable
             provider="medium"
             url={socialLinks["medium"]}
+            save={save}
             setURL={this.setSocialLink("medium")}
           />
         )}
@@ -52,6 +56,7 @@ export default class EditSocialLinks extends React.Component {
             hoverable
             provider="snapchat"
             url={socialLinks["snapchat"]}
+            save={save}
             setURL={this.setSocialLink("snapchat")}
           />
         )}
@@ -60,6 +65,7 @@ export default class EditSocialLinks extends React.Component {
             hoverable
             provider="instagram"
             url={socialLinks["instagram"]}
+            save={save}
             setURL={this.setSocialLink("instagram")}
           />
         )}
@@ -68,6 +74,7 @@ export default class EditSocialLinks extends React.Component {
             hoverable
             provider="linkedin"
             url={socialLinks["linkedin"]}
+            save={save}
             setURL={this.setSocialLink("linkedin")}
           />
         )}
@@ -76,6 +83,7 @@ export default class EditSocialLinks extends React.Component {
             hoverable
             provider="dribbble"
             url={socialLinks["dribbble"]}
+            save={save}
             setURL={this.setSocialLink("dribbble")}
           />
         )}
