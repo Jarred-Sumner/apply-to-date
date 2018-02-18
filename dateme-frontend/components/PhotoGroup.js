@@ -43,7 +43,13 @@ export default class PhotoGroup extends React.Component {
   closeLightbox = () => this.setState({ currentPhotoIndex: null });
 
   render() {
-    const { photos, max = 3, size, showPlaceholder } = this.props;
+    const {
+      photos,
+      max = 3,
+      size,
+      showPlaceholder,
+      circle = false
+    } = this.props;
     const { currentPhotoIndex } = this.state;
 
     return (
@@ -53,6 +59,7 @@ export default class PhotoGroup extends React.Component {
             isLast={max - 1 === index}
             key={photos[index] || index}
             url={photos[index]}
+            circle={circle}
             size={size}
             showPlaceholder={showPlaceholder}
             onClick={
@@ -76,6 +83,7 @@ export default class PhotoGroup extends React.Component {
             display: grid;
             grid-auto-flow: column;
             grid-column-gap: 28px;
+            justify-content: center;
           }
 
           @media (max-width: 500px) {
@@ -84,7 +92,6 @@ export default class PhotoGroup extends React.Component {
               grid-template-rows: unset;
               grid-auto-flow: row;
               grid-row-gap: 28px;
-              justify-content: center;
             }
           }
         `}</style>

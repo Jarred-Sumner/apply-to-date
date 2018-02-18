@@ -21,7 +21,8 @@ export default class TextArea extends React.Component {
       <React.Fragment>
         <TextareaAutosize
           className={classNames("TextArea", {
-            "TextArea--Tagline": type === "Tagline"
+            "TextArea--Tagline": type === "Tagline",
+            "TextArea--ProfilePageTitle": type === "ProfilePageTitle"
           })}
           {...otherProps}
           name={name}
@@ -48,6 +49,16 @@ export default class TextArea extends React.Component {
 
           .TextArea::-moz-placeholder {
             color: #b9bed1;
+          }
+
+          .TextArea--ProfilePageTitle {
+            font-family: Frank Ruhl Libre, serif;
+            color: #000;
+            font-size: 36px;
+            line-height: 35px;
+            text-align: center;
+            font-weight: 700;
+            outline: none;
           }
 
           .TextArea--Tagline {

@@ -3139,6 +3139,10 @@ jss@^9.3.2:
     symbol-observable "^1.1.0"
     warning "^3.0.0"
 
+jump.js@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/jump.js/-/jump.js-1.0.1.tgz#0de2b1631ba9a1c2c6b8572ad277d877e8503600"
+
 junk@^1.0.1:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/junk/-/junk-1.0.3.tgz#87be63488649cbdca6f53ab39bec9ccd2347f592"
@@ -4641,6 +4645,13 @@ react-s3-uploader@^4.6.2:
     object-assign "^2.0.0"
     prop-types "^15.5.8"
     uuid "^3.1.0"
+
+react-scrollable-anchor@^0.6.1:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/react-scrollable-anchor/-/react-scrollable-anchor-0.6.1.tgz#fd6e78026c744f76414053d06903b82adccb54d9"
+  dependencies:
+    jump.js "1.0.1"
+    prop-types "^15.5.10"
 
 react-scrolllock@^2.0.1:
   version "2.0.1"

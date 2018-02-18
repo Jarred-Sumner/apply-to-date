@@ -18,29 +18,35 @@ const PhoneButton = ({ phone }) => {
   );
 };
 
-export default ({ socialLinks, phone, centered = true }) => (
-  <section className={classNames({ "Section--centered": centered })}>
-    {phone && <PhoneButton phone={phone} />}
-    {_.map(
-      socialLinks,
-      (url, provider) =>
-        url && (
-          <SocialLink provider={provider} url={url} key={provider} active />
-        )
-    )}
-    <style jsx>{`
-      section {
-        display: grid;
-        grid-auto-flow: column;
-        grid-column-gap: 32px;
-        justify-content: flex-start;
-      }
+export default ({ socialLinks, phone, centered = true }) => {
+  if (_.isEmpty(_.filter(_.values(socialLinks), _.identity)) && !phone) {
+    return null;
+  }
 
-      .Section--centered {
-        justify-content: center;
-        margin-left: auto;
-        margin-right: auto;
-      }
-    `}</style>
-  </section>
-);
+  return (
+    <section className={classNames({ "Section--centered": centered })}>
+      {phone && <PhoneButton phone={phone} />}
+      {_.map(
+        socialLinks,
+        (url, provider) =>
+          url && (
+            <SocialLink provider={provider} url={url} key={provider} active />
+          )
+      )}
+      <style jsx>{`
+        section {
+          display: grid;
+          grid-auto-flow: column;
+          grid-column-gap: 32px;
+          justify-content: flex-start;
+        }
+
+        .Section--centered {
+          justify-content: center;
+          margin-left: auto;
+          margin-right: auto;
+        }
+      `}</style>
+    </section>
+  );
+};

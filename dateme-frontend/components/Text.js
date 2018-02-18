@@ -15,7 +15,8 @@ const Text = ({
   letterSpacing = "default",
   align = "inherit",
   wrap = null,
-  underline = false
+  underline = false,
+  highlightId
 }) => {
   const classes = classNames("Text", className, {
     "Text--extraBold": weight == "extraBold",
@@ -30,7 +31,8 @@ const Text = ({
     "Text--title": type === "title",
     "Text--wrap": wrap === true,
     "Text--noWrap": wrap === false,
-    "Text--underline": !!underline
+    "Text--underline": !!underline,
+    [`Highlight--${highlightId}`]: !!highlightId
   });
 
   return (

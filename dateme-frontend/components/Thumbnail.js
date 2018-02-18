@@ -6,12 +6,14 @@ export default ({
   size = "126px",
   url,
   isLast = false,
+  circle,
   showPlaceholder = true
 }) => (
   <div
     className={classNames("photo", {
       "photo--last": isLast,
-      "photo--hoverable": !!onClick
+      "photo--hoverable": !!onClick,
+      "photo--circle": !!circle
     })}
     key={url || undefined}
     onClick={onClick}
@@ -69,6 +71,11 @@ export default ({
 
       .photo--last {
         margin-right: 0;
+      }
+
+      .photo--circle .Placeholder,
+      .photo--circle img {
+        border-radius: 50%;
       }
 
       @media (max-width: 500px) {

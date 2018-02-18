@@ -52,7 +52,11 @@ class Profile extends React.Component {
 
     this.state = {
       currentPhotoIndex: null,
-      isHeaderSticky: false
+      isHeaderSticky: false,
+      selectedElementId:
+        typeof window !== "undefined"
+          ? window.location.hash.split("#")[1]
+          : null
     };
 
     this.isMobile = false;
@@ -72,7 +76,22 @@ class Profile extends React.Component {
     if (!_.get(profileResponse, "body.data.id")) {
       Router.replaceRoute("/page-not-found", "/page-not-found");
     }
+
+    window.addEventListener("hashchange", this.setSelectedElementId);
   }
+
+  componentWillUnmount() {
+    if (typeof window !== "undefined") {
+      window.removeEventListener("hashchange", this.setSelectedElementId);
+    }
+  }
+
+  setSelectedElementId = evt => {
+    evt.preventDefault();
+    window.setTimeout(() => {
+      this.setState({ selectedElementId: window.location.hash.split("#")[1] });
+    }, 10);
+  };
 
   enableStickyHeader = () => this.setState({ isHeaderSticky: true });
   disableStickyHeader = () => this.setState({ isHeaderSticky: false });
@@ -84,6 +103,7 @@ class Profile extends React.Component {
 
     return _.sortBy(filledSections, key => SECTION_ORDERING.indexOf(key)).map(
       section => ({
+        key: section,
         title: SECTION_LABELS[section],
         body: sections[section]
       })
@@ -147,8 +167,20 @@ class Profile extends React.Component {
         />
 
         <section className="Section Section--center Section--title">
+          {profile.photos.length === 1 && (
+            <div className="Section-row Section-row--centered">
+              <PhotoGroup
+                size="192px"
+                showPlaceholder={false}
+                photos={profile.photos}
+                circle
+                max={1}
+              />
+            </div>
+          )}
+
           <div className="Section-row">
-            <Text type="ProfilePageTitle">
+            <Text highlightId="title" type="ProfilePageTitle">
               👋 &nbsp;
               <Typed
                 strings={[
@@ -165,7 +197,9 @@ class Profile extends React.Component {
           </div>
 
           <div className="Section-row">
-            <Text type="Tagline">{profile.tagline}</Text>
+            <Text highlightId="tagline" type="Tagline">
+              {profile.tagline}
+            </Text>
           </div>
 
           <SocialLinkList socialLinks={profile.socialLinks} />
@@ -181,25 +215,27 @@ class Profile extends React.Component {
           </Waypoint>
         </section>
 
-        <section className="Section">
-          <PhotoGroup
-            size="206px"
-            showPlaceholder={false}
-            photos={profile.photos}
-          />
-        </section>
+        {profile.photos.length > 1 && (
+          <section className="Section">
+            <PhotoGroup
+              size="206px"
+              showPlaceholder={false}
+              photos={profile.photos}
+            />
+          </section>
+        )}
 
         <section className="Section Section--bio">
           {this.paragraphs().map(paragraph => {
             return (
-              <div
-                key={paragraph.title}
-                className="Section-row Section-row--bio"
-              >
+              <div key={paragraph.key} className="Section-row Section-row--bio">
                 <Text className="Section-title" type="title">
                   {paragraph.title}
                 </Text>
-                <Text type="paragraph">{paragraph.body}</Text>
+
+                <Text highlightId={paragraph.key} type="paragraph">
+                  {paragraph.body}
+                </Text>
               </div>
             );
           })}
@@ -236,6 +272,12 @@ class Profile extends React.Component {
             grid-row-gap: 1rem;
           }
 
+          .Section--row--center {
+            justify-content: center;
+            margin-left: auto;
+            margin-right: auto;
+          }
+
           .Section--center {
             text-align: center;
           }
@@ -253,6 +295,27 @@ class Profile extends React.Component {
             max-width: max-content;
             margin-left: auto;
             margin-right: auto;
+          }
+        `}</style>
+        <style jsx global>{`
+          .Highlight--${this.state.selectedElementId} {
+            background-color: rgba(255, 219, 87, 1);
+            animation: show-selected-element 5s linear;
+            animation-fill-mode: forwards;
+          }
+
+          @keyframes show-selected-element {
+            0% {
+              background-color: rgba(255, 219, 87, 1);
+            }
+
+            50% {
+              background-color: rgba(255, 219, 87, 0.5);
+            }
+
+            100% {
+              background-color: transparent;
+            }
           }
         `}</style>
       </Page>
