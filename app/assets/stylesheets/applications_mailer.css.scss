@@ -186,6 +186,35 @@ body .full-size img {
   text-align: center;
 }
 
+.link-box {
+    /* link box: */
+border: 1px solid #C5CBD4;
+border-radius: 100px;
+}
+
+.link-icon {
+    background: rgba(255,255,255,0.0);
+    top: 11px;
+    height: 18px;
+    width: 19px;
+    position: absolute;
+    margin: 0;
+    left: 18px;
+}
+
+.url-link {
+    height: auto;
+    width: auto;
+    position: absolute;
+    margin: 0;
+    left: 49px;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 14.0px;
+    color: rgba(0,0,0,1.0);
+    text-align: left;
+}
+
 @media only screen and (max-width: 640px) {
   body body {
     width: auto !important;
