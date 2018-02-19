@@ -18,7 +18,8 @@ gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 gem 'therubyracer', platforms: :ruby
 gem 'mailgun_rails'
-
+gem 'omniauth-linkedin-oauth2'
+gem 'omniauth-medium', github: 'hugodias/omniauth-medium'
 
 
 # Use CoffeeScript for .coffee assets and views

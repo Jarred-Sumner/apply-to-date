@@ -426,6 +426,7 @@ class EditProfile extends React.Component {
           </div>
           <EditSocialLinks
             socialLinks={socialLinks}
+            save={this.handleSaveProfile}
             setSocialLinks={socialLinks => this.setState({ socialLinks })}
           />
         </section>

@@ -64,10 +64,19 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
             profile_id: auth_params[:profile_id]
           )
 
-          current_user.profile.update(
-            recommended_contact_methods: current_user.profile.external_authentications.pluck(:provider).uniq,
-            recommended_contact_method: auth.provider,
-          )
+          if auth_params[:from_social_link] == 'true'
+            current_user.profile.update(
+              social_links: current_user.profile.social_links.merge(
+                auth.build_social_link_entry
+              )
+            )
+          else
+            current_user.profile.update(
+              recommended_contact_methods: current_user.profile.external_authentications.pluck(:provider).uniq,
+              recommended_contact_method: auth.provider,
+            )
+          end
+
         end
 
         if auth_params[:redirect_path].present?
