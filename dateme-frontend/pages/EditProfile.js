@@ -374,7 +374,7 @@ class EditProfile extends React.Component {
         <Head />
         <section className="Section Section--center Section--title">
           <Text type="ProfilePageTitle">
-            👋 Hi, I'm{" "}
+            <div className="name-intro">👋 Hi, I'm: </div>
             <EditableText
               value={name}
               onChange={this.setName}
@@ -443,9 +443,17 @@ class EditProfile extends React.Component {
           {this.paragraphs().map(paragraph => {
             return (
               <div key={paragraph.key} className="Section-row Section-row--bio">
-                <Text className="Section-title" type="title">
-                  {paragraph.title}
-                </Text>
+                <div class="section-row">
+                  <Text className="Section-title" type="title">
+                    {paragraph.title}
+                  </Text>
+                  <a
+                    className="example-link"
+                    href={`https://applytodate.com/lucy#${paragraph.key}`}
+                  >
+                    See an example
+                  </a>
+                </div>
                 <TextArea
                   name={paragraph.key}
                   rows={paragraph.rows}
@@ -511,6 +519,22 @@ class EditProfile extends React.Component {
             margin-right: 8px;
             margin-top: auto;
             margin-bottom: auto;
+          }
+
+          .name-intro {
+            margin-right: 40px;
+            margin-bottom: 24px;
+          }
+
+          .example-link {
+            color: #333;
+            text-decoration: underline;
+            float: right;
+            margin-top: 20px;
+          }
+
+          .Section-row--Tagline {
+            margin-top: 2rem;
           }
 
           @media (max-width: 500px) {
