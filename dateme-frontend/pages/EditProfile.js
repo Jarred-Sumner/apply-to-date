@@ -48,13 +48,13 @@ const SECTION_LABELS = {
 
 const SECTION_PLACEHOLDERS = {
   introduction:
-    "Give a short summary of yourself and what you’re looking for. This should be a longer version of your TLDR.",
+    "Optional: Give a short summary of yourself (likes, dislikes, hobbies, etc)",
   background:
-    "Give some background about yourself (optional), in more detail than your introduction",
+    "Optional: Give some background about yourself, in more detail than your introduction. Where are you from? How did you get to where you are now?",
   "looking-for":
-    "Tell your applicants what you're looking for (e.g. a girl/boyfriend, or just a date for an event)",
+    "Optional: Tell your applicants what you're looking for (e.g. a girl/boyfriend, or just a date for an event)",
   "not-looking-for":
-    "Tell your applicants what you're NOT looking for (e.g. no hookups)"
+    "Optional: Tell your applicants what you're NOT looking for (e.g. no hookups)"
 };
 
 const ROWS_BY_SECTION = {
@@ -387,7 +387,7 @@ class EditProfile extends React.Component {
 
         <section className="Section Section-row--Tagline">
           <TextArea
-            placeholder="Enter a short self-summary"
+            placeholder="Enter a one-liner about yourself"
             type="Tagline"
             value={tagline}
             onChange={this.setTagline}
