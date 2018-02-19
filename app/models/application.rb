@@ -61,9 +61,15 @@ class Application < ApplicationRecord
     DEFAULT_SECTIONS.map { |s| [s, '']}.to_h
   end
 
+  def build_default_sections
+    sections = self.sections || {}
+
+    DEFAULT_SECTIONS.map { |s| [s, sections[s] || '']}.to_h
+  end
+
   before_validation on: :create do
     self.user ||= profile.user
-    self.sections ||= Application.build_default_sections
+    self.sections = build_default_sections
   end
 
   before_create do
