@@ -93,16 +93,21 @@ class CreateApplication extends React.Component {
       currentPhotoIndex: null,
       isHeaderSticky: false,
       isSavingProfile: false,
-      name: _.get(props, "application.name", ""),
-      phone: _.get(props, "application.phone", ""),
-      email: _.get(props, "application.email", props.url.query.email || ""),
+      name:
+        _.get(props, "url.query.name") || _.get(props, "application.name", ""),
+      phone:
+        _.get(props, "url.query.phone") ||
+        _.get(props, "application.phone", ""),
+      email:
+        _.get(props, "url.query.email") ||
+        _.get(props, "application.email", props.url.query.email || ""),
       socialLinks: _.pick(props.url.query, [
         "twitter",
         "facebook",
         "instagram",
         "linkedin"
       ]),
-      sex: _.get(props, "application.sex", ""),
+      sex: _.get(props, "url.query.sex") || _.get(props, "application.sex", ""),
       externalAuthentications: buildExternalAuthentications({
         application: _.get(props, "application"),
         url: _.get(props, "url")
@@ -185,6 +190,24 @@ class CreateApplication extends React.Component {
         return;
       }
     });
+  };
+
+  saveToQueryString = () => {
+    const urlParams = {
+      ..._.get(this.props, "url.query"),
+      name: this.state.name,
+      phone: this.state.phone,
+      email: this.state.email,
+      sex: this.state.sex
+    };
+
+    return Router.replaceRoute(
+      `${this.props.url.asPath.split("?")[0]}?${qs.stringify(urlParams)}`,
+      `${this.props.url.asPath.split("?")[0]}?${qs.stringify(urlParams)}`,
+      {
+        shallow: true
+      }
+    );
   };
 
   setRecommendedContactMethod = recommendedContactMethod =>
@@ -294,6 +317,7 @@ class CreateApplication extends React.Component {
           <div className="Section-row">
             <EditSocialLinks
               socialLinks={socialLinks}
+              save={this.saveToQueryString}
               whitelist={["twitter", "facebook", "instagram", "linkedin"]}
               allowOAuth
             />

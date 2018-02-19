@@ -45,17 +45,17 @@ export default class EditableSocialLink extends React.Component {
 
     if (this.props.save) {
       const response = await this.props.save(false);
-      if (!response) {
-        return;
-      }
+      redirectPath = this.buildRedirectPath(provider);
 
-      if (_.get(response, "data.type") === "application") {
-        const id = _.get(response, "data.id");
-        redirectPath =
-          redirectPath + `&application_id=${encodeURIComponent(id)}`;
-      } else if (_.get(response, "data.type") === "profile") {
-        const id = _.get(response, "data.id");
-        redirectPath = redirectPath + `&profile_id=${encodeURIComponent(id)}`;
+      if (response) {
+        if (_.get(response, "data.type") === "application") {
+          const id = _.get(response, "data.id");
+          redirectPath =
+            redirectPath + `&application_id=${encodeURIComponent(id)}`;
+        } else if (_.get(response, "data.type") === "profile") {
+          const id = _.get(response, "data.id");
+          redirectPath = redirectPath + `&profile_id=${encodeURIComponent(id)}`;
+        }
       }
     }
 
