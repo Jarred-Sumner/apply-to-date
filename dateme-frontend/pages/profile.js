@@ -26,6 +26,7 @@ import { Router } from "../routes";
 import { getMobileDetect } from "../lib/Mobile";
 import Subheader from "../components/Subheader";
 import { animateScroll } from "react-scroll";
+import Linkify from "react-linkify";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -218,7 +219,14 @@ class Profile extends React.Component {
 
           <div className="Section-row">
             <Text highlightId="tagline" type="Tagline">
-              {profile.tagline}
+              <Linkify
+                properties={{
+                  target: "_blank",
+                  className: "LinkifyLink"
+                }}
+              >
+                {profile.tagline}
+              </Linkify>
             </Text>
           </div>
 
@@ -254,7 +262,14 @@ class Profile extends React.Component {
                 </Text>
 
                 <Text highlightId={paragraph.key} type="paragraph">
-                  {paragraph.body}
+                  <Linkify
+                    properties={{
+                      target: "_blank",
+                      className: "LinkifyLink"
+                    }}
+                  >
+                    {paragraph.body}
+                  </Linkify>
                 </Text>
               </div>
             );
@@ -322,6 +337,16 @@ class Profile extends React.Component {
             background-color: rgba(255, 219, 87, 1);
             animation: show-selected-element 5s linear;
             animation-fill-mode: forwards;
+          }
+
+          a.LinkifyLink,
+          a.LinkifyLink:visited {
+            color: #109877 !important;
+            text-decoration: none !important;
+          }
+
+          a.LinkifyLink:hover {
+            color: #109877;
           }
 
           @keyframes show-selected-element {
