@@ -78,9 +78,13 @@ export const setCheckingLogin = () => {
 export const currentUser = (state = null, action) => {
   if (action && action.type === SET_CURRENT_USER_ID) {
     if (typeof document !== "undefined") {
-      Cookies.set("currentUserId", action.payload, {
-        expires: new Date(2018, 11, 30)
-      });
+      if (action.payload) {
+        Cookies.set("currentUserId", action.payload, {
+          expires: new Date(2018, 11, 30)
+        });
+      } else {
+        Cookies.erase("currentUserId");
+      }
     }
 
     return action.payload;
