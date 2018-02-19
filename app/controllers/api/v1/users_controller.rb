@@ -27,7 +27,8 @@ class Api::V1::UsersController < Api::V1::ApplicationController
         @external_authentication.save!
 
         VerifiedNetwork.create!(profile_id: @profile.id, external_authentication_id: @external_authentication.id)
-      end
+        @profile.update(recommended_contact_method: @external_authentication.provider)
+      end      
 
       auto_login(@user, true)
       render json: UserSerializer.new(@user, {include: [:profile]}).serializable_hash

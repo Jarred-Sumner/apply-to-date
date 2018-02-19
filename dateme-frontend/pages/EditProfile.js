@@ -426,7 +426,6 @@ class EditProfile extends React.Component {
           </div>
           <EditSocialLinks
             socialLinks={socialLinks}
-            externalAuthentications={externalAuthentications}
             save={this.handleSaveProfile}
             setSocialLinks={socialLinks => this.setState({ socialLinks })}
           />
