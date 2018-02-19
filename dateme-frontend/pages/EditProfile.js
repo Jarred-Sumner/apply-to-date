@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Head from "../components/head";
 import Nav from "../components/nav";
-import Router from "next/router";
+import { Router } from "../routes";
 import withRedux from "next-redux-wrapper";
 import { updateEntities, setCurrentUser, initStore } from "../redux/store";
 import {
@@ -563,6 +563,18 @@ class ProfileGate extends React.Component {
       this.setState({
         isLoadingProfile: false
       });
+
+      if (
+        _.get(this.props.url, "query.id") !== this.props.currentUser.username
+      ) {
+        Router.replaceRoute(
+          `/${this.props.currentUser.username}/edit`,
+          `/${this.props.currentUser.username}/edit`,
+          {
+            shallow: true
+          }
+        );
+      }
     });
   }
 
