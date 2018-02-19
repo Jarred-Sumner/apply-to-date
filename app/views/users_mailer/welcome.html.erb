@@ -157,7 +157,7 @@
 													<tbody><tr>
 														<td width="265" class="">
 															<a href="#" style="text-decoration: none;">
-																<img src="https://applytodate.com/static/animatedlogo.gif" width="56" alt="" border="0" class="hover">
+																<%= image_tag "email/welcome/animatedlogo.gif", width: "56", alt: "", border: "", class: "hover" %>
 															</a>
 														</td>
 													</tr>
@@ -204,7 +204,7 @@
 												<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
 													<tbody><tr>
 														<td valign="middle" width="350" style="text-align: center; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 14px; color: #ffffff; line-height: 24px;" class="fullCenter">
-															<span style="color:#000000;">We're excited to have you on board and help you find your perfect match. Here's a quick guide on how to get started.</span>
+															<span style="color:#000000;">We're excited to help you go on better dates with more <%= @preferred_gender %>. Here's a quick guide on how to get started.</span>
 														</td>
 													</tr>
 												</tbody></table>
@@ -248,7 +248,13 @@
 												<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
 													<tbody><tr>
 														<td valign="middle" width="450" style="text-align: left; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 14px; color: #a9a9a9; line-height: 24px;" class="fullCenter">
-															<font color="#000000">If you need help or want us to take a look at your page, just reply back to this email! The more information you include, the more applicants you'll get.&nbsp;</font><br><br><font color="#000000">We suggest linking to at least one social profile and having at least 2 photos.&nbsp;</font>
+															<font color="#000000">The more information you include, the more <%= @preferred_gender %> who will ask you out.&nbsp;</font><br><br><font color="#000000">We suggest:
+															<ul>
+																<li>Link to at least one social profile</li>
+																<li>Upload two or more pics of yourself</li>
+																<li>Write a little about you</li>
+															</ul>
+															</font>
 														</td>
 													</tr>
 												</tbody></table>
@@ -267,11 +273,12 @@
 									<span class="featuredHolder"><span class="featuredHolder"><span class="featuredHolder"><table border="0" cellpadding="0" cellspacing="0" align="center">
 										<tbody><tr>
 											<td align="center" height="38" bgcolor="#222526" style="border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; padding-left: 25px; padding-right: 25px; font-weight: 600; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; color: #ffffff; font-size: 14px;">
-												<a  href="#" style="color: #ffffff; font-size: 14px; text-decoration: none; line-height: 34px; width: 100%;">F</a>ill out your profile
+												<a href="<%= raw @edit_profile_url %>%" style="color: #ffffff; font-size: 14px; text-decoration: none; line-height: 34px; width: 100%;">Fill out your page</a>
 											</td>
 										</tr>
 									</tbody></table></span></span></span>
-									
+									<br><br>
+															If you want help filling out your profile, just reply to this email.
 								</td>
 							</tr>
 						</tbody></table>
@@ -311,13 +318,27 @@
 															<div class="url-area">
 																<div class="link-box">
 
-																	<div class="url-link" style="margin-top: 10px;">http://www.applytodate.me/lucy</div>
+																	<a href="<%= raw @profile_url %>" class="url-link" style="margin-top: 10px; text-decoration: none; display: block;"><%= raw @profile_url %></a>
 																</div>
 															</div>
 														</div>
 														
 														
-														<font color="#000000">Share your page with people! We suggest putting your page in your Tinder bio, Instagram, Facebook, and Twitter.</font>
+														<font color="#000000">
+															Share your page on the internet. Seriously.<br /> <br /> Link to your page in:
+																<br />
+																<ul>
+																	<li>your Tinder bio</li>
+																	<li>Instagram</li>
+																	<li>Facebook</li>
+																	<li>OkCupid</li>
+																	<li>Twitter</li>
+																</ul>
+																<br />
+															Be shameless, because the people who are "too embarrassed" are the people who won't go on as many dates as you.
+															<br /><br />
+															And, don't worry – we've already hidden your page from Google.
+															</font>
 														</td>
 													</tr>
 												</tbody></table>
@@ -368,7 +389,7 @@
 																<tbody><tr>
 																	<td width="450" class="full-size" style="line-height: 1px;">
 																		<a href="#" style="text-decoration: none;">
-																			<img src="https://www.flipkey.com/blog/wp-content/uploads/iStock_000082695665_Small.jpg" width="100%" alt="" border="0" class="hover">
+																			<%= image_tag "email/welcome/romantic-date.jpg", width: "100%", border: "0", class: "hover", alt: "" %>
 																		</a>
 																	</td>
 																</tr>
@@ -392,7 +413,7 @@
 												<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
 													<tbody><tr>
 														<td valign="middle" width="450" style="text-align: left; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 14px; color: #a9a9a9; line-height: 24px;" class="fullCenter">
-															<p><font color="#000000">Watch the applications roll in! We'll exchange your preferred contact information with matches.</font><br></p>
+															<p><font color="#000000">Watch the applications roll in! We'll exchange your preferred contact information with the applications you approve.</font><br></p>
 														</td>
 													</tr>
 												</tbody></table>

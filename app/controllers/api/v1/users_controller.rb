@@ -31,8 +31,10 @@ class Api::V1::UsersController < Api::V1::ApplicationController
       end      
 
       auto_login(@user, true)
-      render json: UserSerializer.new(@user, {include: [:profile]}).serializable_hash
     end
+
+    UsersMailer.welcome(@user.id).deliver_later
+    render json: UserSerializer.new(@user, {include: [:profile]}).serializable_hash
   rescue ActiveRecord::RecordInvalid => e
     render_validation_error(e)
   end
