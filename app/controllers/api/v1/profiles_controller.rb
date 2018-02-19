@@ -42,7 +42,7 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
       end
 
       if !update_params[:tagline].nil?
-        if update_params[:tagline].blank?
+        if update_params[:tagline].blank? && profile.visible?
           raise ArgumentError.new("Please include a short self-summary")
         end
 
@@ -74,6 +74,7 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
         authentications.each do |auth|
           VerifiedNetwork.create!(profile_id: profile.id, external_authentication: auth)
         end
+        
       end
 
       if !update_params[:phone].nil?

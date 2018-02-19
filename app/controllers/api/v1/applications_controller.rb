@@ -2,7 +2,7 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
 
   def create
     social_links = params[:application][:social_links].try(:to_unsafe_h) || {}
-    external_authentications = params[:application][:external_authentications]
+    external_authentications = ExternalAuthentication.where(id: Array(params[:application][:external_authentications]))
 
     if create_params[:email].blank? 
       raise ArgumentError.new("Please include your email")
@@ -12,12 +12,11 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
 
     ActiveRecord::Base.transaction do
       @application = Application.where(profile_id: params[:profile_id], email: email).first_or_initialize
-      should_send_email = !@application.persisted?
+      @should_send_email = !@application.persisted?
+      
       @application.social_links = ExternalAuthentication.update_social_links(social_links)
-
-      @application.verified_networks.destroy_all
-      external_authentications.each do |id|
-        VerifiedNetwork.create!(application_id: @application.id, external_authentication_id: id)
+      external_authentications.each do |auth| 
+        @application.social_links = @application.social_links.merge(auth.build_social_link_entry)
       end
 
       @application.update!(create_params.merge(
@@ -26,10 +25,15 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
         applicant_id: current_user.try(:id)
       ))
 
-      if should_send_email
-        ApplicationsMailer.confirmed(@application.id).deliver_later
-        ApplicationsMailer.pending_app(@application.id).deliver_later
+      @application.verified_networks.destroy_all
+      external_authentications.each do |auth|
+        VerifiedNetwork.create!(application_id: @application.id, external_authentication_id: auth.id)
       end
+    end
+
+    if @should_send_email
+      ApplicationsMailer.confirmed(@application.id).deliver_later
+      ApplicationsMailer.pending_app(@application.id).deliver_later
     end
 
     render json: ApplicantApplicationSerializer.new(@application, {

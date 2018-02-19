@@ -129,6 +129,7 @@ class UpdateApplication extends React.Component {
         "externalAuthentications",
         []
       ),
+      socialLinks: _.get(application, "socialLinks", {}),
       sections: _.get(application, "sections", {
         introduction: "",
         why: ""
