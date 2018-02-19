@@ -311,6 +311,13 @@ class CreateApplication extends React.Component {
           <div className="Section-subrow">
             <Text type="subtitle">My online profiles are:</Text>
             <Text type="validation" align="center">
+              {!_.isEmpty(
+                _.values(this.state.socialLinks).filter(_.identity)
+              ) && (
+                <React.Fragment>
+                  <Icon inline type="check" color="#00E2AA" size="12px" />&nbsp;
+                </React.Fragment>
+              )}
               At least one is required
             </Text>
           </div>
