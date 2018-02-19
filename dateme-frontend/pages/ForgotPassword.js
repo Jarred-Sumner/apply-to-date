@@ -68,8 +68,8 @@ class ForgotPassword extends React.Component {
               <div className="Spacer">
                 <Icon type="check" size="72px" color="#0ACA9B" />
                 <Text type="paragraph">
-                  Check your inbox for a link to reset that will let you reset
-                  your password
+                  Check your inbox for a link that will let you reset your
+                  password
                 </Text>
               </div>
             ) : (
