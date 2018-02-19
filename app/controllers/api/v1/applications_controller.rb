@@ -24,7 +24,7 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
       @application.update!(create_params.merge(
         email: email,
         status: Application.submission_statuses[create_params[:status]],
-        sections: sections,
+        sections: sections.present? ? sections : Application.build_default_sections,
         applicant_id: current_user.try(:id)
       ))
 
