@@ -190,29 +190,33 @@ body .full-size img {
     /* link box: */
 border: 1px solid #C5CBD4;
 border-radius: 100px;
+height: 42px;
 }
 
 .link-icon {
     background: rgba(255,255,255,0.0);
-    top: 11px;
+    top: 10px;
     height: 18px;
     width: 19px;
     position: absolute;
     margin: 0;
     left: 18px;
+    display: inline-block; 
 }
 
 .url-link {
     height: auto;
     width: auto;
     position: absolute;
-    margin: 0;
-    left: 49px;
     font-weight: 400;
     font-style: normal;
     font-size: 14.0px;
     color: rgba(0,0,0,1.0);
-    text-align: left;
+    margin-top: 9px;
+    // margin-left: 20px;
+    // padding-top: 10px;
+    // padding-bottom: 10px;
+    text-align: center
 }
 
 @media only screen and (max-width: 640px) {
