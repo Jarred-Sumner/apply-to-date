@@ -19,9 +19,12 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
         @application.social_links = @application.social_links.merge(auth.build_social_link_entry)
       end
 
+      sections = params[:application][:sections].permit(Application::DEFAULT_SECTIONS)
+
       @application.update!(create_params.merge(
         email: email,
         status: Application.submission_statuses[create_params[:status]],
+        sections: sections,
         applicant_id: current_user.try(:id)
       ))
 

@@ -17,6 +17,7 @@ class Profile < ApplicationRecord
     end
   end
   
+  validates :name, presence: true, :if => :visible?
   validates :tagline, presence: true, :if => :visible?
   validates :photos, presence: true, :if => :visible?
 
