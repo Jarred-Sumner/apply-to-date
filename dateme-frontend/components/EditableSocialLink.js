@@ -1,5 +1,7 @@
 import SocialLink from "./SocialLink";
 import EditSocialLinkModal from "./EditSocialLinkModal";
+import Button from "./Button";
+import Icon from "./Icon";
 import { Router } from "../routes";
 import { BASE_AUTHORIZE_URL, SUPPORTED_PROVIDERS } from "./SocialLogin";
 
@@ -12,8 +14,12 @@ export default class EditableSocialLink extends React.Component {
     };
   }
 
+  shouldRedirect = () =>
+    SUPPORTED_PROVIDERS.includes(this.props.provider) &&
+    (this.props.allowOAuth || this.props.save || this.props.url === true);
+
   setIsEditing = isEditing => {
-    if (SUPPORTED_PROVIDERS.includes(this.props.provider) && this.props.save) {
+    if (this.shouldRedirect()) {
       this.onRedirectLogin(this.props.provider);
     } else {
       this.setState({ isEditing });
@@ -35,18 +41,22 @@ export default class EditableSocialLink extends React.Component {
   };
 
   onRedirectLogin = async provider => {
-    const response = await this.props.save(false);
-    if (!response) {
-      return;
-    }
-
     let redirectPath = this.buildRedirectPath(provider);
-    if (_.get(response, "data.type") === "application") {
-      const id = _.get(response, "data.id");
-      redirectPath = redirectPath + `&application_id=${encodeURIComponent(id)}`;
-    } else if (_.get(response, "data.type") === "profile") {
-      const id = _.get(response, "data.id");
-      redirectPath = redirectPath + `&profile_id=${encodeURIComponent(id)}`;
+
+    if (this.props.save) {
+      const response = await this.props.save(false);
+      if (!response) {
+        return;
+      }
+
+      if (_.get(response, "data.type") === "application") {
+        const id = _.get(response, "data.id");
+        redirectPath =
+          redirectPath + `&application_id=${encodeURIComponent(id)}`;
+      } else if (_.get(response, "data.type") === "profile") {
+        const id = _.get(response, "data.id");
+        redirectPath = redirectPath + `&profile_id=${encodeURIComponent(id)}`;
+      }
     }
 
     Router.push(redirectPath);
@@ -66,22 +76,52 @@ export default class EditableSocialLink extends React.Component {
     const { provider, url = "", setURL } = this.props;
 
     return (
-      <React.Fragment>
+      <div className="Container">
         <SocialLink
           onClick={() => this.setIsEditing(true)}
           provider={provider}
           hoverable
           active={!!url}
         />
-        <EditSocialLinkModal
-          open={this.state.isEditing}
-          provider={provider}
-          url={url}
-          setURL={this.setURL}
-          onClose={() => this.setIsEditing(false)}
-          isSaving={false}
-        />
-      </React.Fragment>
+        {this.shouldRedirect() &&
+          !!url && (
+            <div className="Button" onClick={() => this.setURL(null)}>
+              <Button color="black" circle>
+                <Icon type="x" size="12px" />
+              </Button>
+            </div>
+          )}
+        {!this.shouldRedirect() && (
+          <EditSocialLinkModal
+            open={this.state.isEditing}
+            provider={provider}
+            url={url}
+            setURL={this.setURL}
+            onClose={() => this.setIsEditing(false)}
+            isSaving={false}
+          />
+        )}
+        <style jsx>{`
+          .Container {
+            position: relative;
+          }
+
+          .Button {
+            position: absolute;
+            top: 0;
+            right: 0;
+            border-radius: 50%;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.1s linear;
+          }
+
+          .Container:hover .Button {
+            opacity: 1;
+            pointer-events: all;
+          }
+        `}</style>
+      </div>
     );
   }
 }

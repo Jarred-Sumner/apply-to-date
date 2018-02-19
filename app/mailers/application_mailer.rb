@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'support@applytodate.com'
+  default from: 'Apply to Date <notifs@applytodate.com>'
   layout 'mailer'
 end

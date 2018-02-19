@@ -23,9 +23,8 @@ class Api::V1::ApplicationController < ActionController::Base
   end
 
   def self.build_frontend_uri(path, params)
-    uri = Addressable::URI.parse(Rails.application.secrets[:frontend_url])
-    uri.path = path
-    uri.query_values = params if params.present?
+    uri = Addressable::URI.parse(Rails.application.secrets[:frontend_url] + path)
+    uri.query_values = (uri.query_values || {}).merge(params) if params.present?
 
     uri
   end

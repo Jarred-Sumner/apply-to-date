@@ -124,6 +124,11 @@ class UpdateApplication extends React.Component {
       name: _.get(application, "name", ""),
       email: _.get(application, "email", ""),
       photos: _.get(application, "photos", []),
+      externalAuthentications: _.get(
+        application,
+        "externalAuthentications",
+        []
+      ),
       sections: _.get(application, "sections", {
         introduction: "",
         why: ""
@@ -267,9 +272,10 @@ class UpdateApplication extends React.Component {
           </Text>
           <EditSocialLinks
             socialLinks={socialLinks}
-            blacklist={this.props.application.externalAuthentications.map(
-              ({ provider }) => provider
+            externalAuthentications={_.fromPairs(
+              externalAuthentications.map(({ provider }) => [provider, true])
             )}
+            save={this.handleUpdateApplication}
             setSocialLinks={socialLinks => this.setState({ socialLinks })}
           />
         </section>

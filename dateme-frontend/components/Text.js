@@ -210,6 +210,12 @@ export default ({ type, children, ...otherProps }) => {
         {children}
       </Text>
     );
+  } else if (type === "validation") {
+    return (
+      <Text {...otherProps} color="#E20000" size="14px" weight="semiBold">
+        {children}
+      </Text>
+    );
   } else if (type === "label") {
     return (
       <Text

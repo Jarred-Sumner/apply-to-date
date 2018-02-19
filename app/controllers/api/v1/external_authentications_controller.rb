@@ -43,6 +43,7 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
       ActiveRecord::Base.transaction do
         auth = ExternalAuthentication.update_from_omniauth(auth_hash)
 
+        Rails.logger.info "AUTH PARAMS: #{auth_params.inspect}"
         if current_application.present?
           VerifiedNetwork.create!(
             external_authentication_id: auth.id,
@@ -80,7 +81,13 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
         end
 
         if auth_params[:redirect_path].present?
-          redirect_to_frontend auth_params[:redirect_path]
+          opts = {}
+
+          if auth_params[:redirect_path].include?("/apply")
+            opts[auth.provider] = auth.id
+          end
+
+          redirect_to_frontend auth_params[:redirect_path], opts
         elsif current_application.present?
           redirect_to_frontend("/#{current_application.profile_id}/apply",
             applicationId: current_application.id,
@@ -109,7 +116,7 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
     return nil if auth_params.blank?
 
     if auth_params[:application_id].present?
-      @current_application = Application.find_by(id: auth_params[:application_id], status: Application.statuses[:pending])
+      @current_application = Application.find_by(id: auth_params[:application_id])
     elsif auth_params[:applicant_email].present? && auth_params[:profile_id].present?
       @current_application = Application.fetch(email: auth_params[:applicant_email], profile_id: auth_params[:profile_id])
     end

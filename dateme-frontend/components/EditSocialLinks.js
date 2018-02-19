@@ -10,83 +10,126 @@ export default class EditSocialLinks extends React.Component {
     };
   };
 
-  render() {
-    const { socialLinks = {}, blacklist = [], save } = this.props;
+  renderNetworks = () => {
+    const {
+      socialLinks = {},
+      blacklist = [],
+      whitelist,
+      externalAuthentications = {},
+      save,
+      allowOAuth = false
+    } = this.props;
 
+    if (whitelist) {
+      return whitelist.map(provider => (
+        <EditableSocialLink
+          hoverable
+          key={provider}
+          provider={provider}
+          url={socialLinks[provider] || externalAuthentications[provider]}
+          save={save}
+          allowOAuth={allowOAuth}
+          setURL={this.setSocialLink(provider)}
+        />
+      ));
+    } else {
+      return (
+        <React.Fragment>
+          {!blacklist.includes("twitter") && (
+            <EditableSocialLink
+              hoverable
+              provider="twitter"
+              url={socialLinks["twitter"] || externalAuthentications["twitter"]}
+              save={save}
+              allowOAuth={allowOAuth}
+              setURL={this.setSocialLink("twitter")}
+            />
+          )}
+          {!blacklist.includes("facebook") && (
+            <EditableSocialLink
+              hoverable
+              provider="facebook"
+              url={
+                socialLinks["facebook"] || externalAuthentications["facebook"]
+              }
+              save={save}
+              allowOAuth={allowOAuth}
+              setURL={this.setSocialLink("facebook")}
+            />
+          )}
+          {!blacklist.includes("youtube") && (
+            <EditableSocialLink
+              hoverable
+              provider="youtube"
+              url={socialLinks["youtube"] || externalAuthentications["youtube"]}
+              save={save}
+              allowOAuth={allowOAuth}
+              setURL={this.setSocialLink("youtube")}
+            />
+          )}
+          {!blacklist.includes("medium") && (
+            <EditableSocialLink
+              hoverable
+              provider="medium"
+              url={socialLinks["medium"] || externalAuthentications["medium"]}
+              save={save}
+              allowOAuth={allowOAuth}
+              setURL={this.setSocialLink("medium")}
+            />
+          )}
+          {!blacklist.includes("snapchat") && (
+            <EditableSocialLink
+              hoverable
+              provider="snapchat"
+              url={socialLinks["snapchat"]}
+              save={save}
+              allowOAuth={allowOAuth}
+              setURL={this.setSocialLink("snapchat")}
+            />
+          )}
+          {!blacklist.includes("instagram") && (
+            <EditableSocialLink
+              hoverable
+              provider="instagram"
+              url={
+                socialLinks["instagram"] || externalAuthentications["instagram"]
+              }
+              save={save}
+              allowOAuth={allowOAuth}
+              setURL={this.setSocialLink("instagram")}
+            />
+          )}
+          {!blacklist.includes("linkedin") && (
+            <EditableSocialLink
+              hoverable
+              provider="linkedin"
+              url={
+                socialLinks["linkedin"] || externalAuthentications["linkedin"]
+              }
+              save={save}
+              allowOAuth={allowOAuth}
+              setURL={this.setSocialLink("linkedin")}
+            />
+          )}
+          {!blacklist.includes("dribbble") && (
+            <EditableSocialLink
+              hoverable
+              provider="dribbble"
+              url={socialLinks["dribbble"]}
+              save={save}
+              allowOAuth={allowOAuth}
+              setURL={this.setSocialLink("dribbble")}
+            />
+          )}
+        </React.Fragment>
+      );
+    }
+  };
+
+  render() {
     return (
       <section className="Section Section--socialLinks">
-        {!blacklist.includes("twitter") && (
-          <EditableSocialLink
-            hoverable
-            provider="twitter"
-            url={socialLinks["twitter"]}
-            save={save}
-            setURL={this.setSocialLink("twitter")}
-          />
-        )}
-        {!blacklist.includes("facebook") && (
-          <EditableSocialLink
-            hoverable
-            provider="facebook"
-            url={socialLinks["facebook"]}
-            save={save}
-            setURL={this.setSocialLink("facebook")}
-          />
-        )}
-        {!blacklist.includes("youtube") && (
-          <EditableSocialLink
-            hoverable
-            provider="youtube"
-            url={socialLinks["youtube"]}
-            save={save}
-            setURL={this.setSocialLink("youtube")}
-          />
-        )}
-        {!blacklist.includes("medium") && (
-          <EditableSocialLink
-            hoverable
-            provider="medium"
-            url={socialLinks["medium"]}
-            save={save}
-            setURL={this.setSocialLink("medium")}
-          />
-        )}
-        {!blacklist.includes("snapchat") && (
-          <EditableSocialLink
-            hoverable
-            provider="snapchat"
-            url={socialLinks["snapchat"]}
-            save={save}
-            setURL={this.setSocialLink("snapchat")}
-          />
-        )}
-        {!blacklist.includes("instagram") && (
-          <EditableSocialLink
-            hoverable
-            provider="instagram"
-            url={socialLinks["instagram"]}
-            save={save}
-            setURL={this.setSocialLink("instagram")}
-          />
-        )}
-        {!blacklist.includes("linkedin") && (
-          <EditableSocialLink
-            hoverable
-            provider="linkedin"
-            url={socialLinks["linkedin"]}
-            save={save}
-            setURL={this.setSocialLink("linkedin")}
-          />
-        )}
-        {!blacklist.includes("dribbble") && (
-          <EditableSocialLink
-            hoverable
-            provider="dribbble"
-            url={socialLinks["dribbble"]}
-            save={save}
-            setURL={this.setSocialLink("dribbble")}
-          />
-        )}
+        {this.renderNetworks()}
         <style jsx>{`
           .Section--socialLinks {
             display: grid;

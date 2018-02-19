@@ -5,8 +5,7 @@ export const SUPPORTED_PROVIDERS = [
   "facebook",
   "instagram",
   "twitter",
-  "linkedin",
-  "medium"
+  "linkedin"
 ];
 
 export default SocialLoginButtonHOC;

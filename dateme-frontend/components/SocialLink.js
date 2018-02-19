@@ -28,18 +28,8 @@ const SocialLink = ({
         />
       </div>
 
-      <div className="SocialIcon--disabledIcon">
-        <SocialIcon
-          width={parseInt(width) * 0.6}
-          height={parseInt(height) * 0.6}
-          active={false}
-          provider={provider}
-        />
-      </div>
-
       <style jsx>{`
-        .SocialIcon--activeIcon,
-        .SocialIcon--disabledIcon {
+        .SocialIcon--activeIcon {
           width: ${width};
           height: ${height};
         }
@@ -71,59 +61,39 @@ const SocialLink = ({
           display: flex;
         }
 
-        .SocialLink--hoverable:hover .SocialIcon--activeIcon {
-          display: flex;
-        }
-
         .SocialLink--hoverable {
           cursor: pointer;
-        }
-
-        .SocialLink--disabled {
-          border: 1px dashed #b9bed1;
         }
 
         .SocialLink--hoverable:hover {
           border-color: transparent;
         }
 
-        .SocialLink--hoverable:hover .SocialIcon--disabledIcon,
-        .SocialLink--disabled .SocialIcon--activeIcon {
-          display: none;
+        .SocialLink--disabled {
+          opacity: 0.75;
         }
 
-        .SocialIcon--hoverable .SocialIcon--activeIcon,
-        .SocialLink--active .SocialIcon--disabledIcon {
-          display: none;
-        }
-
-        .SocialLink--hoverable.SocialLink--twitter:hover,
-        .SocialLink--active.SocialLink--twitter {
+        .SocialLink--twitter {
           background-color: #55acee;
         }
 
-        .SocialLink--hoverable.SocialLink--snapchat:hover,
-        .SocialLink--active.SocialLink--snapchat {
+        .SocialLink--snapchat {
           background-color: #ffe400;
         }
 
-        .SocialLink--hoverable.SocialLink--linkedin:hover,
-        .SocialLink--active.SocialLink--linkedin {
+        .SocialLink--linkedin {
           background-color: #0077b5;
         }
 
-        .SocialLink--hoverable.SocialLink--dribbble:hover,
-        .SocialLink--active.SocialLink--dribbble {
+        .SocialLink--dribbble {
           background-color: #f26798;
         }
 
-        .SocialLink--hoverable.SocialLink--youtube:hover,
-        .SocialLink--active.SocialLink--youtube {
+        .SocialLink--youtube {
           background-color: #ce1312;
         }
 
-        .SocialLink--hoverable.SocialLink--instagram:hover,
-        .SocialLink--active.SocialLink--instagram {
+        .SocialLink--instagram {
           background-image: linear-gradient(
             -110deg,
             #99389b 0%,
@@ -133,14 +103,17 @@ const SocialLink = ({
           );
         }
 
-        .SocialLink--hoverable.SocialLink--medium:hover,
-        .SocialLink--active.SocialLink--medium {
+        .SocialLink--medium {
           background-color: white;
         }
 
-        .SocialLink--hoverable.SocialLink--facebook:hover,
-        .SocialLink--active.SocialLink--facebook {
+        .SocialLink--facebook {
           background-color: #3b5998;
+        }
+
+        .SocialLink--hoverable:hover,
+        .SocialLink--active {
+          opacity: 1;
         }
       `}</style>
     </div>

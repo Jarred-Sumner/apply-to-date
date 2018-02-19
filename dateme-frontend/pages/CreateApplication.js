@@ -62,6 +62,15 @@ const getWidthForText = (text, isPlaceholder) => {
   }
 };
 
+const buildExternalAuthentications = ({ application = {}, url }) => {
+  return [
+    ..._.get(application, "externalAuthentications", []).map(({ id }) => id),
+    ..._.values(
+      _.pick(url.query, ["twitter", "facebook", "instagram", "linkedin"])
+    )
+  ];
+};
+
 class CreateApplication extends React.Component {
   static async getInitialProps({ query, store, req, isServer }) {
     const profileResponse = await getProfile(query.id);
@@ -85,19 +94,19 @@ class CreateApplication extends React.Component {
       isHeaderSticky: false,
       isSavingProfile: false,
       name: _.get(props, "application.name", ""),
-      recommendedContactMethod:
-        _.get(props, "application.recommendedContactMethod") ||
-        _.get(profile, "recommendedContactMethod") ||
-        "phone",
       phone: _.get(props, "application.phone", ""),
       email: _.get(props, "application.email", props.url.query.email || ""),
-      socialLinks: _.get(props, "application.socialLinks", {}),
+      socialLinks: _.pick(props.url.query, [
+        "twitter",
+        "facebook",
+        "instagram",
+        "linkedin"
+      ]),
       sex: _.get(props, "application.sex", ""),
-      externalAuthentications: _.get(
-        props,
-        "application.externalAuthentications",
-        []
-      )
+      externalAuthentications: buildExternalAuthentications({
+        application: _.get(props, "application"),
+        url: _.get(props, "url")
+      })
     };
   }
 
@@ -107,15 +116,17 @@ class CreateApplication extends React.Component {
       email,
       name,
       photos,
-      tagline,
-      socialLinks,
       externalAuthentications,
-      recommendedContactMethod,
       sex,
       sections,
       phone
     } = this.state;
     const { id: profileId } = this.props.profile;
+
+    if (_.isEmpty(externalAuthentications)) {
+      Alert.error("Please include an online profile");
+      return;
+    }
 
     if (isSavingProfile) {
       return;
@@ -128,16 +139,11 @@ class CreateApplication extends React.Component {
     return updateApplication({
       profileId,
       name,
-      tagline,
       email,
       phone,
-      socialLinks,
       sex,
-      recommendedContactMethod,
-      sections,
-      externalAuthentications: externalAuthentications.map(({ id }) => id),
-      photos,
-      status
+      status,
+      externalAuthentications
     })
       .then(async response => {
         if (response.body) {
@@ -186,7 +192,7 @@ class CreateApplication extends React.Component {
   setPhone = phone => this.setState({ phone });
   setEmail = email => this.setState({ email });
   setSex = sex => this.setState({ sex });
-  setName = evt => this.setState({ name: evt.target.value });
+  setName = name => this.setState({ name });
   setExternalAuthentications = externalAuthentications =>
     this.setState({ externalAuthentications });
 
@@ -200,7 +206,8 @@ class CreateApplication extends React.Component {
       externalAuthentications,
       recommendedContactMethod,
       phone,
-      sex
+      sex,
+      isSavingProfile
     } = this.state;
 
     return (
@@ -229,23 +236,28 @@ class CreateApplication extends React.Component {
         <form onSubmit={this.submitApplication}>
           <div className="Section-row">
             <Text type="ProfilePageTitle">
-              👋 Hi I'm{" "}
-              <EditableText
-                value={name}
-                onChange={this.setName}
-                placeholder="Your Name"
-                type="ProfilePageTitle"
-                width={getWidthForText(name || "Your Name", !name)}
-              />
+              👋 Hi {profile ? profile.name + "," : ""} I'm:
             </Text>
           </div>
 
-          <div className="Section-row Section-row--email">
-            <Text type="subtitle">You can reach me at:</Text>
+          <div className="Section-row">
+            <FormField
+              name="name"
+              type="text"
+              label="Name"
+              required
+              icon={<Icon type="user" size="20px" color="#B9BED1" />}
+              value={name}
+              onChange={this.setName}
+              placeholder="Your name"
+            />
+          </div>
 
+          <div className="Section-row">
             <FormField
               name="email"
               type="email"
+              label="Email"
               required
               icon={<Icon type="email" size="20px" color="#B9BED1" />}
               value={email}
@@ -253,29 +265,37 @@ class CreateApplication extends React.Component {
               placeholder="e.g. example@example.com"
             />
 
-            <Text weight="semiBold" size="14px" color="#820B0B">
-              You’ll hear back via email, please make sure it's correct.
-            </Text>
-
-            <VerifyNetworksSection
-              recommendedContactMethod={recommendedContactMethod}
-              setRecommendedContactMethod={this.setRecommendedContactMethod}
-              phone={phone}
-              setPhone={this.setPhone}
-              save={this.saveApplication}
-              externalAuthentications={externalAuthentications}
-              whitelist={["twitter", "facebook", "instagram", "phone"]}
-              setExternalAuthentications={this.setExternalAuthentications}
-            />
+            <div className="Section-subrow">
+              <Text type="validation" align="center">
+                You’ll receive updates via email, please make sure this is
+                correct
+              </Text>
+            </div>
           </div>
 
+          <div className="Section-row Section-row--phone">
+            <FormField
+              name="phone"
+              label="SMS number (optional but recommended)"
+              type="tel"
+              required={false}
+              icon={<Icon type="phone" size="20px" color="#B9BED1" />}
+              value={phone}
+              onChange={this.setPhone}
+              placeholder="e.g. 925200055555"
+            />
+          </div>
+          <div className="Section-subrow">
+            <Text type="subtitle">My online profiles are:</Text>
+            <Text type="validation" align="center">
+              At least one is required
+            </Text>
+          </div>
           <div className="Section-row">
             <EditSocialLinks
               socialLinks={socialLinks}
-              blacklist={externalAuthentications.map(
-                ({ provider }) => provider
-              )}
-              setSocialLinks={socialLinks => this.setState({ socialLinks })}
+              whitelist={["twitter", "facebook", "instagram", "linkedin"]}
+              allowOAuth
             />
           </div>
 
@@ -292,7 +312,7 @@ class CreateApplication extends React.Component {
             }
           />
 
-          <Button>
+          <Button pending={isSavingProfile}>
             <Icon type="heart" size="14px" />&nbsp; Ask {profile.name} out
           </Button>
         </form>
@@ -302,7 +322,7 @@ class CreateApplication extends React.Component {
             display: grid;
             margin-top: 2rem;
             grid-auto-flow: row dense;
-            grid-row-gap: 2rem;
+            grid-row-gap: 28px;
             width: 100%;
             text-align: center;
           }
@@ -311,11 +331,12 @@ class CreateApplication extends React.Component {
             width: 100%;
           }
 
-          .Section-row--email {
+          .Section-subrow {
+            grid-auto-flow: row dense;
+            grid-row-gap: 14px;
             display: grid;
-            grid-row-gap: 1rem;
-            margin-left: auto;
-            margin-right: auto;
+            margin-top: 7px;
+            margin-bottom: 7px;
           }
         `}</style>
       </Page>

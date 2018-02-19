@@ -81,7 +81,7 @@ export default class EditSocialLinkModal extends React.Component {
 
     const normalizedUrl = URL_ONLY_PROVIDERS.includes(provider)
       ? url
-      : _.last(url.split("/"));
+      : _.last((url || "").split("/"));
 
     this.state = {
       url: normalizedUrl
