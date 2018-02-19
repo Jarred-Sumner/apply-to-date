@@ -40,6 +40,11 @@ class Api::V1::RatingsController < Api::V1::ApplicationController
       .find(params[:id])
 
     application.update!(status: status)
+
+    if status == Application.statuses[:approved]
+      ApplicationsMailer.approved(application.id).deliver_later
+    end
+
     render json: ReviewApplicationSerializer.new(application, {
       include: [
           :external_authentications

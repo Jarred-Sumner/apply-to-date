@@ -8,7 +8,11 @@ class ApplicationsMailer < ApplicationMailer
   def approved(application_id)
     @application = Application.find(application_id)
     @profile = @application.profile
-
+    @profile_url = Api::V1::ApplicationController.build_frontend_uri(
+      "/#{@profile.id}",
+      {}
+    )
+    
     mail to: @application.email, subject: "#{@profile.name} wants to go on a date with you."
   end
 
