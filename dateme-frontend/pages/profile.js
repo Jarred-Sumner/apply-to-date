@@ -25,6 +25,7 @@ import withLogin from "../lib/withLogin";
 import { Router } from "../routes";
 import { getMobileDetect } from "../lib/Mobile";
 import Subheader from "../components/Subheader";
+import { animateScroll } from "react-scroll";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -77,6 +78,7 @@ class Profile extends React.Component {
       Router.replaceRoute("/page-not-found", "/page-not-found");
     }
 
+    this.setSelectedElementId();
     window.addEventListener("hashchange", this.setSelectedElementId);
   }
 
@@ -87,9 +89,27 @@ class Profile extends React.Component {
   }
 
   setSelectedElementId = evt => {
-    evt.preventDefault();
+    if (evt) {
+      evt.preventDefault();
+    }
+
     window.setTimeout(() => {
-      this.setState({ selectedElementId: window.location.hash.split("#")[1] });
+      const selectedElementClassName = window.location.hash.split("#")[1];
+      if (selectedElementClassName) {
+        const element = document.querySelector(
+          `.Highlight--${selectedElementClassName}`
+        );
+
+        if (!element) {
+          return;
+        }
+
+        const offset = element.getBoundingClientRect().top;
+        const HEADER_OFFSET = 70;
+        const PADDING = 28;
+        animateScroll.scrollMore(offset - HEADER_OFFSET - PADDING);
+        this.setState({ selectedElementId: selectedElementClassName });
+      }
     }, 10);
   };
 
