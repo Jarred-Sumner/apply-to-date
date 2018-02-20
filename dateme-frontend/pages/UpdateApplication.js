@@ -221,7 +221,7 @@ class UpdateApplication extends React.Component {
 
     return (
       <Page>
-        <Head />
+        <Head disableGoogle />
 
         <HeaderNotice email={email} />
 
@@ -247,6 +247,21 @@ class UpdateApplication extends React.Component {
             setPhotoAtIndex={this.setPhotoAtIndex}
           />
         </section>
+
+        <section className="Section Section--profiles">
+          <Text type="title" align="center">
+            Social profiles
+          </Text>
+          <EditSocialLinks
+            socialLinks={socialLinks}
+            externalAuthentications={_.fromPairs(
+              externalAuthentications.map(({ provider }) => [provider, true])
+            )}
+            save={this.handleUpdateApplication}
+            setSocialLinks={socialLinks => this.setState({ socialLinks })}
+          />
+        </section>
+
         <section className="Section Section--bio">
           {this.paragraphs().map(paragraph => {
             return (
@@ -265,20 +280,6 @@ class UpdateApplication extends React.Component {
               </div>
             );
           })}
-        </section>
-
-        <section className="Section Section--profiles">
-          <Text type="title" align="center">
-            Social profiles
-          </Text>
-          <EditSocialLinks
-            socialLinks={socialLinks}
-            externalAuthentications={_.fromPairs(
-              externalAuthentications.map(({ provider }) => [provider, true])
-            )}
-            save={this.handleUpdateApplication}
-            setSocialLinks={socialLinks => this.setState({ socialLinks })}
-          />
         </section>
 
         <section className="Section Section--apply">

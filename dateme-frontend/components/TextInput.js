@@ -68,6 +68,8 @@ export default class TextInput extends React.Component {
             display: flex;
             outline: none;
             font-family: Open Sans, sans-serif;
+            align-items: center;
+            align-content: center;
             font-size: 14px;
             color: rgba(0, 0, 0, 0.75);
             border: 0;

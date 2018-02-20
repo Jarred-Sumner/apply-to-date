@@ -26,6 +26,7 @@ import Page from "../components/Page";
 import Checkbox from "../components/Checkbox";
 import LoginGate from "../components/LoginGate";
 import withLogin from "../lib/withLogin";
+import { buildEditProfileURL } from "../lib/routeHelpers";
 
 const getDefaultUsername = externalAccount => {
   if (externalAccount && externalAccount.username) {
@@ -126,7 +127,7 @@ class CreateAccount extends React.Component {
       .then(response => {
         console.log(response);
         Alert.success("Welcome to Apply to Date!");
-        Router.push(`/${username}/edit`);
+        Router.push(buildEditProfileURL(username));
       })
       .catch(error => {
         console.error(error);

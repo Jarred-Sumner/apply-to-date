@@ -155,6 +155,10 @@ class ExternalAuthentication < ApplicationRecord
     auth
   end
 
+  def url
+    build_social_link_entry[provider]
+  end
+
   def build_social_link_entry
     social_links = {}
 
@@ -170,6 +174,6 @@ class ExternalAuthentication < ApplicationRecord
       social_links[provider] = "https://instagram.com/@#{username}"
     end
 
-    social_links
+    social_links.with_indifferent_access
   end
 end

@@ -181,6 +181,7 @@ class Homepage extends React.Component {
         <Head
           title="Apply to Date – your own game of The Bachelor(ette)"
           url={`${process.env.DOMAIN}/`}
+          disableGogole={false}
         />
         <Header />
         <article>

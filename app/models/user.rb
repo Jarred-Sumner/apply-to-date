@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+  BLACKLISTED_USERNAMES = File.readlines("#{Rails.root}/config/blacklisted-usernames.txt").map(&:strip)
+  PROBABLY_FAKE_ACCOUNTS = ['test', 'poop', 'jarred', 'jane', 'lucy', 'example', 'fake', "+"]
+
   authenticates_with_sorcery!
   has_one :profile
   has_many :external_authentications, through: :profile
@@ -10,4 +13,13 @@ class User < ApplicationRecord
   validates :email, uniqueness: true, presence: true, format: /\A([^@\s]+)@((?:[-a-z0-9l]+\.)+[a-z]{2,})\Z/i
   validates :username, uniqueness: true, presence: true, format: { with: /[a-zA-Z0-9\-\_\.]*/ }
   validates :sex, presence: true, inclusion: { in: ['male', 'female', 'other']}
+
+  def self.blacklisted_username?(username)
+    BLACKLISTED_USERNAMES.include?(username)
+  end
+
+  def self.real_accounts
+    fake_emails = PROBABLY_FAKE_ACCOUNTS.map { |email| "%#{email}%"}
+    User.where.not("lower(email) ~~ ANY('{#{fake_emails.join(",")}}')")
+  end
 end

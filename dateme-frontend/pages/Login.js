@@ -19,6 +19,7 @@ import { Router } from "../routes";
 import Alert, { handleApiError } from "../components/Alert";
 import Page from "../components/Page";
 import withLogin from "../lib/withLogin";
+import { buildEditProfileURL } from "../lib/routeHelpers";
 
 class Login extends React.Component {
   constructor(props) {
@@ -61,11 +62,15 @@ class Login extends React.Component {
       this.props.updateEntities(userResponse.body);
       this.props.setLoginStatus(userResponse.body.data);
 
-      const username = _.get(userResponse, "body.data.username");
-      if (username) {
-        Router.pushRoute(`/${username}/edit`);
+      if (this.props.url.query.from) {
+        Router.pushRoute(this.props.url.query.from);
       } else {
-        Router.pushRoute(`/account`);
+        const username = _.get(userResponse, "body.data.username");
+        if (username) {
+          Router.pushRoute(buildEditProfileURL(username));
+        } else {
+          Router.pushRoute(`/account`);
+        }
       }
     } catch (exception) {
       handleApiError(exception);

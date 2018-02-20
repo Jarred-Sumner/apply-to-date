@@ -4,9 +4,8 @@ import RateApplication from "./RateApplication";
 import Head from "./head";
 import Text from "./Text";
 import ApplicationsBreadcrumbs from "./ApplicationsBreadcrumbs";
-import InlineTextForm from "./InlineTextForm";
-import copy from "copy-to-clipboard";
 import SharableSocialLink from "./SharableSocialLink";
+import CopyURLForm from "./CopyURLForm";
 
 const EmptyState = ({ profileId }) => {
   const url = `${process.env.DOMAIN}/${profileId}`;
@@ -23,13 +22,7 @@ const EmptyState = ({ profileId }) => {
         </Text>
       </div>
 
-      <InlineTextForm
-        type="url"
-        value={url}
-        readOnly
-        onSubmit={() => copy(url)}
-        buttonChildren={"Copy URL"}
-      />
+      <CopyURLForm url={url} />
 
       <div>
         <SharableSocialLink

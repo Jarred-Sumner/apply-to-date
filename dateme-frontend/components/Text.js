@@ -50,6 +50,10 @@ const Text = ({
           text-decoration: ${textDecoration};
         }
 
+        .Text--noWrap {
+          white-space: nowrap;
+        }
+
         .Text :global(a),
         .Text :global(a:visited) {
           color: ${color};

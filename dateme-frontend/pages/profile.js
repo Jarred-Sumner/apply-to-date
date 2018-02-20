@@ -23,8 +23,11 @@ import PhotoGroup from "../components/PhotoGroup";
 import Typed from "react-typed";
 import withLogin from "../lib/withLogin";
 import { Router } from "../routes";
+import { buildProfileURL, buildEditProfileURL } from "../lib/routeHelpers";
 import { getMobileDetect } from "../lib/Mobile";
 import Subheader from "../components/Subheader";
+import { animateScroll } from "react-scroll";
+import Linkify from "react-linkify";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -77,6 +80,7 @@ class Profile extends React.Component {
       Router.replaceRoute("/page-not-found", "/page-not-found");
     }
 
+    this.setSelectedElementId();
     window.addEventListener("hashchange", this.setSelectedElementId);
   }
 
@@ -87,9 +91,27 @@ class Profile extends React.Component {
   }
 
   setSelectedElementId = evt => {
-    evt.preventDefault();
+    if (evt) {
+      evt.preventDefault();
+    }
+
     window.setTimeout(() => {
-      this.setState({ selectedElementId: window.location.hash.split("#")[1] });
+      const selectedElementClassName = window.location.hash.split("#")[1];
+      if (selectedElementClassName) {
+        const element = document.querySelector(
+          `.Highlight--${selectedElementClassName}`
+        );
+
+        if (!element) {
+          return;
+        }
+
+        const offset = element.getBoundingClientRect().top;
+        const HEADER_OFFSET = 70;
+        const PADDING = 28;
+        animateScroll.scrollMore(offset - HEADER_OFFSET - PADDING);
+        this.setState({ selectedElementId: selectedElementClassName });
+      }
     }, 10);
   };
 
@@ -124,7 +146,7 @@ class Profile extends React.Component {
             <MessageBar>
               <Text size="14px" color="white" lineHeight="19px">
                 Your profile is hidden from others until you{" "}
-                <Link href={`/${profile.id}/edit`}>
+                <Link href={buildEditProfileURL(profile.id)}>
                   <a>go live</a>
                 </Link>
               </Text>
@@ -157,7 +179,7 @@ class Profile extends React.Component {
       >
         <Head
           disableGoogle
-          url={process.env.DOMAIN + this.props.url.asPath}
+          url={buildProfileURL(profile.id)}
           title={`Apply to date ${profile.name || ""}`}
           description={profile.tagline}
           favicon={_.sample(profile.photos)}
@@ -198,7 +220,14 @@ class Profile extends React.Component {
 
           <div className="Section-row">
             <Text highlightId="tagline" type="Tagline">
-              {profile.tagline}
+              <Linkify
+                properties={{
+                  target: "_blank",
+                  className: "LinkifyLink"
+                }}
+              >
+                {profile.tagline}
+              </Linkify>
             </Text>
           </div>
 
@@ -234,7 +263,14 @@ class Profile extends React.Component {
                 </Text>
 
                 <Text highlightId={paragraph.key} type="paragraph">
-                  {paragraph.body}
+                  <Linkify
+                    properties={{
+                      target: "_blank",
+                      className: "LinkifyLink"
+                    }}
+                  >
+                    {paragraph.body}
+                  </Linkify>
                 </Text>
               </div>
             );
@@ -304,6 +340,16 @@ class Profile extends React.Component {
             animation-fill-mode: forwards;
           }
 
+          a.LinkifyLink,
+          a.LinkifyLink:visited {
+            color: #109877 !important;
+            text-decoration: none !important;
+          }
+
+          a.LinkifyLink:hover {
+            color: #109877;
+          }
+
           @keyframes show-selected-element {
             0% {
               background-color: rgba(255, 219, 87, 1);
@@ -327,7 +373,7 @@ const ProfileWithStore = withRedux(
   initStore,
   (state, props) => {
     return {
-      profile: state.profile[props.url.query.id]
+      profile: state.profile[decodeURI(props.url.query.id)]
     };
   },
   dispatch => bindActionCreators({ updateEntities }, dispatch),

@@ -54,6 +54,19 @@ export default _.memoize((Component, options = {}) => {
       }
     }
 
+    componentDidUpdate(prevProps, prevState) {
+      if (
+        typeof window !== "undefined" &&
+        prevProps.loginStatus !== LOGIN_STATUSES.guest &&
+        this.props.loginStatus === LOGIN_STATUSES.guest &&
+        options.loginRequired
+      ) {
+        Router.pushRoute(
+          `/login?from=${encodeURIComponent(this.props.url.asPath)}`
+        );
+      }
+    }
+
     render() {
       const { loginRequired = false, allowIncomplete = false } = options;
       const {

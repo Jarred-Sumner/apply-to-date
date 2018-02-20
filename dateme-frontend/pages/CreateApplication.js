@@ -84,6 +84,51 @@ class CreateApplication extends React.Component {
     }
   }
 
+  getDefaultValues = (props, state) => {
+    return _.defaultsDeep(
+      {
+        name: _.get(state, "name") || undefined,
+        phone: _.get(state, "phone") || undefined,
+        email: _.get(state, "email") || undefined,
+        socialLinks: _.get(state, "socialLinks") || undefined,
+        sex: _.get(state, "sex") || undefined
+      },
+      {
+        name: _.get(props, "url.query.name", undefined),
+        phone: _.get(props, "url.query.phone", undefined),
+        email: _.get(props, "url.query.email", undefined),
+        socialLinks: _.pick(props.url.query, [
+          "twitter",
+          "facebook",
+          "instagram",
+          "linkedin"
+        ]),
+        sex: _.get(props, "url.query.sex", undefined)
+      },
+      {
+        name: _.get(props, "application.name", undefined),
+        phone: _.get(props, "application.phone", undefined),
+        email: _.get(props, "application.email", undefined),
+        sections: _.get(props, "application.sections", undefined),
+        sex: _.get(props, "application.sex", undefined)
+      },
+      {
+        name: _.get(props, "currentUser.profile.name", undefined),
+        phone: _.get(props, "currentUser.profile.phone", undefined),
+        email: _.get(props, "currentUser.email", undefined),
+        sections: _.get(props, "currentUser.profile.sections", undefined),
+        sex: _.get(props, "currentUser.sex", undefined)
+      },
+      {
+        name: "",
+        email: "",
+        phone: "",
+        sections: {},
+        sex: ""
+      }
+    );
+  };
+
   constructor(props) {
     super(props);
 
@@ -93,26 +138,18 @@ class CreateApplication extends React.Component {
       currentPhotoIndex: null,
       isHeaderSticky: false,
       isSavingProfile: false,
-      name:
-        _.get(props, "url.query.name") || _.get(props, "application.name", ""),
-      phone:
-        _.get(props, "url.query.phone") ||
-        _.get(props, "application.phone", ""),
-      email:
-        _.get(props, "url.query.email") ||
-        _.get(props, "application.email", props.url.query.email || ""),
-      socialLinks: _.pick(props.url.query, [
-        "twitter",
-        "facebook",
-        "instagram",
-        "linkedin"
-      ]),
-      sex: _.get(props, "url.query.sex") || _.get(props, "application.sex", ""),
+      ...this.getDefaultValues(props, {}),
       externalAuthentications: buildExternalAuthentications({
         application: _.get(props, "application"),
         url: _.get(props, "url")
       })
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!prevProps.currentUser && this.props.currentUser) {
+      this.setState(this.getDefaultValues(this.props, this.state));
+    }
   }
 
   saveApplication = async (status = "pending") => {
@@ -124,6 +161,7 @@ class CreateApplication extends React.Component {
       externalAuthentications,
       sex,
       sections,
+      socialLinks,
       phone
     } = this.state;
     const { id: profileId } = this.props.profile;
@@ -146,6 +184,7 @@ class CreateApplication extends React.Component {
       name,
       email,
       phone,
+      sections,
       sex,
       status,
       externalAuthentications
@@ -178,7 +217,7 @@ class CreateApplication extends React.Component {
   submitApplication = event => {
     event.preventDefault();
 
-    if (!this.state.termsOfService) {
+    if (!this.state.termsOfService && !this.props.currentUser) {
       Alert.error("To continue, you must agree to the terms of service");
       return;
     }
@@ -220,7 +259,7 @@ class CreateApplication extends React.Component {
     this.setState({ externalAuthentications });
 
   render() {
-    const { profile } = this.props;
+    const { profile, currentUser } = this.props;
     const {
       name,
       photos,
@@ -253,8 +292,9 @@ class CreateApplication extends React.Component {
             profile &&
             `Your application to date ${profile.name} | Apply to Date`
           }
-          favicon={profile && _.sample(profile.photos)}
+          favicon={profile && _.first(profile.photos)}
           ogImage={profile && _.first(profile.photos)}
+          disableGoogle
         />
         <form onSubmit={this.submitApplication}>
           <div className="Section-row">
@@ -334,14 +374,16 @@ class CreateApplication extends React.Component {
             <SexFormField value={sex} onChange={this.setSex} />
           </div>
 
-          <TOSFormField
-            checked={this.state.termsOfService || false}
-            onChange={() =>
-              this.setState({
-                termsOfService: !this.state.termsOfService
-              })
-            }
-          />
+          {!currentUser && (
+            <TOSFormField
+              checked={this.state.termsOfService || false}
+              onChange={() =>
+                this.setState({
+                  termsOfService: !this.state.termsOfService
+                })
+              }
+            />
+          )}
 
           <Button pending={isSavingProfile}>
             <Icon type="heart" size="14px" />&nbsp; Ask {profile.name} out
@@ -381,7 +423,7 @@ const CreateApplicationWithStore = withRedux(
     const { id, applicationId } = _.get(props, "url.query", {});
 
     return {
-      profile: state.profile[id],
+      profile: state.profile[decodeURI(id)],
       application: state.application[applicationId]
     };
   },

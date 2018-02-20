@@ -10,6 +10,10 @@ class Api::V1::UsersController < Api::V1::ApplicationController
         return render_error(message: "Please fill out the interested in section")
       end
 
+      if User.blacklisted_username?(create_params[:username])
+        return render_error(message: "Please choose a different username :)")
+      end
+
       @user = User.create!(create_params.merge(password_confirmation: create_params[:password]))
 
       @profile = Profile.create!(

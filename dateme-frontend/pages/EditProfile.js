@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Head from "../components/head";
 import Nav from "../components/nav";
-import Router from "next/router";
+import { Router } from "../routes";
 import withRedux from "next-redux-wrapper";
 import { updateEntities, setCurrentUser, initStore } from "../redux/store";
 import {
@@ -31,6 +31,14 @@ import TextInput from "../components/TextInput";
 import Switch from "../components/Switch";
 import { getMobileDetect } from "../lib/Mobile";
 import withLogin from "../lib/withLogin";
+import SharableSocialLink from "../components/SharableSocialLink";
+import CopyURLForm from "../components/CopyURLForm";
+import {
+  buildEditProfileURL,
+  buildProfileURL,
+  buildProfileShareURL
+} from "../lib/routeHelpers";
+import Sticky from "react-stickynode";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -327,51 +335,63 @@ class EditProfile extends React.Component {
     return (
       <Page
         headerProps={{
-          renderSubheader: () => {
-            return (
-              <Subheader bottom={!this.isMobile} spaceBetween>
-                <Switch checked={profile.visible} onChange={this.toggleVisible}>
-                  {profile.visible ? "Page is live" : "Page is not live"}
-                </Switch>
+          isSticky: false,
+          renderSubheader: () => (
+            <Sticky>
+              <div id="StickySubheader">
+                <Subheader bottom={false} center>
+                  <div className="Subheader">
+                    <div className="Subheader-text Subheader-text--desktop">
+                      <Text
+                        align="right"
+                        wrap={false}
+                        weight="bold"
+                        size="14px"
+                      >
+                        To get more applications, link to your page on
+                        Tinder/Instagram
+                      </Text>
+                    </div>
+                    <div className="Subheader-text Subheader-text--mobile">
+                      <Text
+                        align="right"
+                        wrap={false}
+                        weight="bold"
+                        size="14px"
+                      >
+                        Share
+                      </Text>
+                    </div>
+                    <div className="Subheader-urlWrapper">
+                      <CopyURLForm
+                        hideInputOnMobile
+                        url={buildProfileShareURL(profile.id)}
+                      />
+                    </div>
+                    <div className="Subheader-buttons">
+                      <SharableSocialLink
+                        provider="twitter"
+                        width="36px"
+                        height="36px"
+                        url={buildProfileShareURL(profile.id)}
+                      />
 
-                <div className="Subheader--actions">
-                  <div className="Subheader--Input">
-                    <TextInput
-                      rounded
-                      fake
-                      disabled
-                      readOnly
-                      type="url"
-                      value={profile.url}
-                    >
-                      <div className="OpenButton">
-                        <Button
-                          size="xsmall"
-                          href={profile.url}
-                          color="green"
-                          target="_blank"
-                          fill
-                        >
-                          <Icon type="caret-right" size="10px" />
-                        </Button>
-                      </div>
-                    </TextInput>
+                      <SharableSocialLink
+                        provider="facebook"
+                        width="36px"
+                        height="36px"
+                        url={buildProfileShareURL(profile.id)}
+                      />
+                    </div>
                   </div>
-                  <Button
-                    componentType="div"
-                    color="green"
-                    pending={this.state.isSavingProfile}
-                    onClick={this.handleSaveProfile}
-                  >
-                    Save
-                  </Button>
-                </div>
-              </Subheader>
-            );
-          }
+                </Subheader>
+              </div>
+            </Sticky>
+          )
         }}
       >
-        <Head />
+        <Head title="Edit Page | Apply to Date" />
+
         <section className="Section Section--center Section--title">
           <Text type="ProfilePageTitle">
             <div className="name-intro">👋 Hi, I'm: </div>
@@ -447,12 +467,11 @@ class EditProfile extends React.Component {
                   <Text className="Section-title" type="title">
                     {paragraph.title}
                   </Text>
-                  <a
-                    className="example-link"
-                    href={`https://applytodate.com/lucy#${paragraph.key}`}
-                  >
-                    See an example
-                  </a>
+                  <Link href={`/lucy#${paragraph.key}`} target="_blank">
+                    <a className="example-link" target="_blank">
+                      See an example
+                    </a>
+                  </Link>
                 </div>
                 <TextArea
                   name={paragraph.key}
@@ -466,6 +485,46 @@ class EditProfile extends React.Component {
             );
           })}
         </section>
+
+        <Subheader bottom spaceBetween>
+          <Switch checked={profile.visible} onChange={this.toggleVisible}>
+            {profile.visible ? "Page is live" : "Page is not live"}
+          </Switch>
+
+          <div className="Footer--actions">
+            <div className="Footer--Input">
+              <TextInput
+                rounded
+                fake
+                disabled
+                readOnly
+                type="url"
+                value={profile.url}
+              >
+                <div className="OpenButton">
+                  <Button
+                    size="xsmall"
+                    href={profile.url}
+                    color="green"
+                    target="_blank"
+                    fill
+                  >
+                    <Icon type="caret-right" size="10px" />
+                  </Button>
+                </div>
+              </TextInput>
+            </div>
+            <Button
+              componentType="div"
+              color="green"
+              pending={this.state.isSavingProfile}
+              onClick={this.handleSaveProfile}
+            >
+              Save
+            </Button>
+          </div>
+        </Subheader>
+
         <style jsx>{`
           .Section {
             margin-top: 4rem;
@@ -508,7 +567,7 @@ class EditProfile extends React.Component {
             margin-right: auto;
           }
 
-          .Subheader--actions {
+          .Footer--actions {
             display: grid;
             grid-auto-flow: column;
             grid-column-gap: 14px;
@@ -537,8 +596,48 @@ class EditProfile extends React.Component {
             margin-top: 2rem;
           }
 
-          @media (max-width: 500px) {
-            .Subheader--Input {
+          .Subheader-buttons {
+            display: grid;
+            grid-auto-flow: column dense;
+            grid-column-gap: 14px;
+            grid-template-columns: min-content min-content;
+          }
+
+          .Subheader-urlWrapper {
+            display: grid;
+            width: 100%;
+          }
+
+          .Subheader {
+            display: grid;
+            grid-auto-flow: column;
+            grid-column-gap: 14px;
+            align-items: center;
+            width: 100%;
+            justify-content: center;
+            grid-template-columns: 1fr 1fr 1fr;
+          }
+
+          .Subheader-text {
+            text-align: right;
+          }
+
+          .Subheader-text--mobile {
+            display: none;
+          }
+
+          @media (max-width: 900px) {
+            .Subheader-text--mobile {
+              display: flex;
+            }
+
+            .Subheader-text--desktop {
+              display: none;
+            }
+          }
+
+          @media (max-width: 600px) {
+            .Footer--Input {
               display: none;
             }
           }
@@ -563,6 +662,18 @@ class ProfileGate extends React.Component {
       this.setState({
         isLoadingProfile: false
       });
+
+      if (
+        _.get(this.props.url, "query.id") !== this.props.currentUser.username
+      ) {
+        Router.replaceRoute(
+          buildEditProfileURL(this.props.currentUser.username),
+          buildEditProfileURL(this.props.currentUser.username),
+          {
+            shallow: true
+          }
+        );
+      }
     });
   }
 
