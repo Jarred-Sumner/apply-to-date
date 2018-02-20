@@ -58,7 +58,7 @@ const FeaturedProfile = ({ profile }) => {
           }
 
           .Profile:hover img {
-            filter: saturate(1);
+            opacity: 0.85;
           }
 
           .Title {
@@ -77,8 +77,8 @@ const FeaturedProfile = ({ profile }) => {
             display: flex;
             width: 250px;
             height: 250px;
-
-            filter: saturate(0);
+            opacity: 1;
+            transition: opacity 0.1s linear;
           }
 
           @media (max-width: 500px) {
