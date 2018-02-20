@@ -16,6 +16,10 @@ class Profile < ApplicationRecord
       end
     end
   end
+
+  def self.real
+    Profile.where(visible: true).where(id: User.real_accounts.pluck(:id))
+  end
   
   validates :name, presence: true, :if => :visible?
   validates :tagline, presence: true, :if => :visible?
