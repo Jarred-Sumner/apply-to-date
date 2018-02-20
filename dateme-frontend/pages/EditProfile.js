@@ -33,7 +33,11 @@ import { getMobileDetect } from "../lib/Mobile";
 import withLogin from "../lib/withLogin";
 import SharableSocialLink from "../components/SharableSocialLink";
 import CopyURLForm from "../components/CopyURLForm";
-import { buildEditProfileURL, buildProfileURL } from "../lib/routeHelpers";
+import {
+  buildEditProfileURL,
+  buildProfileURL,
+  buildProfileShareURL
+} from "../lib/routeHelpers";
 import Sticky from "react-stickynode";
 
 const SECTION_ORDERING = [
@@ -361,7 +365,7 @@ class EditProfile extends React.Component {
                     <div className="Subheader-urlWrapper">
                       <CopyURLForm
                         hideInputOnMobile
-                        url={buildProfileURL(profile.id)}
+                        url={buildProfileShareURL(profile.id)}
                       />
                     </div>
                     <div className="Subheader-buttons">
@@ -369,14 +373,14 @@ class EditProfile extends React.Component {
                         provider="twitter"
                         width="36px"
                         height="36px"
-                        url={buildProfileURL(profile.id)}
+                        url={buildProfileShareURL(profile.id)}
                       />
 
                       <SharableSocialLink
                         provider="facebook"
                         width="36px"
                         height="36px"
-                        url={buildProfileURL(profile.id)}
+                        url={buildProfileShareURL(profile.id)}
                       />
                     </div>
                   </div>

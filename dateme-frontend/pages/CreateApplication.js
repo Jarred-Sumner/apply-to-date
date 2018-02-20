@@ -292,7 +292,7 @@ class CreateApplication extends React.Component {
             profile &&
             `Your application to date ${profile.name} | Apply to Date`
           }
-          favicon={profile && _.sample(profile.photos)}
+          favicon={profile && _.first(profile.photos)}
           ogImage={profile && _.first(profile.photos)}
           disableGoogle
         />
