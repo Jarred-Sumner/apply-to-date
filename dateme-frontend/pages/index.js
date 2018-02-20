@@ -69,7 +69,8 @@ const FeaturedProfile = ({ profile }) => {
 
           img {
             object-fit: cover;
-            width: 100%;
+            width: 250px;
+            height: 250px;
             display: flex;
             flex: 0;
             filter: saturate(0);
