@@ -8,7 +8,7 @@ class Api::V1::ImagesController < Api::V1::ApplicationController
     key = "#{SecureRandom.urlsafe_base64}-#{params[:objectName]}".gsub(/[^\w\d_\-\.]/, '')
 
     presigner = Aws::S3::Presigner.new
-    url = presigner.presigned_url(:put_object, bucket: Rails.application.secrets[:bucket_name], key: key)
+    url = presigner.presigned_url(:put_object, bucket: Rails.application.secrets[:bucket_name], key: key, acl: 'public-read')
 
     render json: {
       signedUrl: url.to_s,

@@ -154,7 +154,8 @@ export default class Photo extends React.Component {
       signingUrl: "/images/sign",
       onFinishS3Put: this.handleUploadComplete,
       onError: this.handleUploadError,
-      server: BASE_HOSTNAME
+      server: BASE_HOSTNAME,
+      uploadRequestHeaders: process.env.IS_USING_SPACES === "FALSE" ? {} : null
     });
 
     Alert.info("Uploading...please wait");
