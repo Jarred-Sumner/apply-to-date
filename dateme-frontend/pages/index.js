@@ -286,14 +286,30 @@ class Homepage extends React.Component {
           .FeaturedProfiles {
             display: grid;
             grid-column-gap: 2rem;
-            grid-auto-flow: column dense;
+            grid-row-gap: 2rem;
             text-align: center;
             justify-content: center;
-            grid-auto-columns: 250px;
-            width: max-content;
+            margin-left: auto;
+            margin-right: auto;
+            grid-template-columns: 250px 250px 250px 250px;
+            grid-template-rows: 1fr 1fr 1fr 1fr;
           }
 
-          @media (max-width: 500px) {
+          @media (max-width: 1100px) {
+            .FeaturedProfiles {
+              grid-template-columns: 250px 250px 250px;
+              grid-template-rows: 1fr 1fr 1fr;
+            }
+          }
+
+          @media (max-width: 900px) {
+            .FeaturedProfiles {
+              grid-template-columns: 250px 250px;
+              grid-template-rows: 1fr 1fr;
+            }
+          }
+
+          @media (max-width: 554px) {
             .FeaturedProfiles-wrapper {
               padding-left: 14px;
               padding-right: 14px;
@@ -302,9 +318,9 @@ class Homepage extends React.Component {
             .FeaturedProfiles {
               grid-auto-flow: row dense;
               grid-auto-rows: auto;
+              grid-template-columns: 250px;
+              grid-template-rows: 1fr;
               justify-content: center;
-              margin-left: auto;
-              margin-right: auto;
             }
           }
         `}</style>
