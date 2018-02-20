@@ -76,12 +76,16 @@ export default ({
       .photo--circle .Placeholder,
       .photo--circle img {
         border-radius: 50%;
+        box-shadow: none;
       }
 
       @media (max-width: 500px) {
         .photo {
           margin-right: 0;
           margin-top: 2em;
+        }
+        .photo.photo--last.photo--hoverable.photo--circle {
+          margin-top: 0em;
         }
       }
     `}</style>
