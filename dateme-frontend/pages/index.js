@@ -43,7 +43,9 @@ const FeaturedProfile = ({ profile }) => {
             text-decoration: none;
             text-align: left;
             width: 100%;
+            height: 100%;
             border-radius: 6px;
+            flex-shrink: 0;
             transition: transform 0.1s linear;
             transition-property: transform;
             display: flex;
@@ -181,7 +183,7 @@ class Homepage extends React.Component {
         <Head
           title="Apply to Date – your own game of The Bachelor(ette)"
           url={`${process.env.DOMAIN}/`}
-          disableGogole={false}
+          disableGoogle={false}
         />
         <Header />
         <article>
@@ -203,25 +205,27 @@ class Homepage extends React.Component {
               <SignupForm />
             </div>
           </main>
-
-          {!_.isEmpty(this.props.profiles) && (
-            <footer>
-              <div className="divider" />
-
-              <Text size="36px" font="sans-serif" color="#000">
-                Featured pages
-              </Text>
-
-              <div className="FeaturedProfiles">
-                {this.props.profiles.map(profile => (
-                  <FeaturedProfile key={profile.id} profile={profile} />
-                ))}
-              </div>
-            </footer>
-          )}
         </article>
-        <PageFooter center />
 
+        {!_.isEmpty(this.props.profiles) && (
+          <footer>
+            <div className="divider" />
+
+            <Text size="36px" font="sans-serif" color="#000">
+              Featured pages
+            </Text>
+
+            <div className="FeaturedProfiles">
+              {this.props.profiles.map(profile => (
+                <FeaturedProfile key={profile.id} profile={profile} />
+              ))}
+            </div>
+          </footer>
+        )}
+
+        <article>
+          <PageFooter center />
+        </article>
         <style jsx>{`
           article {
             max-width: 710px;
@@ -243,6 +247,7 @@ class Homepage extends React.Component {
             display: flex;
             flex-direction: column;
             text-align: center;
+            width: 100%;
           }
 
           .divider {
@@ -274,15 +279,25 @@ class Homepage extends React.Component {
           }
 
           .FeaturedProfiles {
-            margin-top: 4rem;
-            margin-bottom: 6rem;
+            padding-top: 4rem;
+            padding-bottom: 6rem;
             display: grid;
             grid-column-gap: 2rem;
-            grid-template-rows: 1fr;
             grid-auto-flow: column dense;
             text-align: center;
             justify-content: center;
-            grid-auto-columns: minmax(auto, 300px);
+            grid-auto-columns: 250px;
+            overflow-x: auto;
+            height: 100%;
+            width: 100vw;
+          }
+
+          .FeaturedProfiles:last-child {
+            margin-right: 28px;
+          }
+
+          .FeaturedProfiles:first-child {
+            margin-left: 28px;
           }
 
           @media (max-width: 500px) {
