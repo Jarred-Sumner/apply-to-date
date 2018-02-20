@@ -22,6 +22,8 @@ class Api::V1::UsersController < Api::V1::ApplicationController
         return render_error(message: "Please don't include a ! in your username :)")
       elsif username.include?("?")
         return render_error(message: "Please don't include a ? in your username :)")
+      elsif username.include?("/")
+        return render_error(message: "Please don't include a slash in your username :)")
       elsif username.blank?
         return render_error(message: "Please enter a username")
       end
