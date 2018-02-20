@@ -83,6 +83,11 @@ export default class EditableSocialLink extends React.Component {
           hoverable
           active={!!url}
         />
+        {!!url && (
+          <div className="SocialLink-connected">
+            <Icon color="#fff" type="check" size="12px" />
+          </div>
+        )}
         {this.shouldRedirect() &&
           !!url && (
             <div className="Button" onClick={() => this.setURL(null)}>
@@ -104,6 +109,23 @@ export default class EditableSocialLink extends React.Component {
         <style jsx>{`
           .Container {
             position: relative;
+            cursor: pointer;
+          }
+
+          .SocialLink-connected {
+            position: absolute;
+            bottom: -4px;
+            right: -4px;
+            background-color: #0ec2d0;
+            border-radius: 50%;
+            box-shadow: 0 0 1px #ccc;
+            padding: 4px;
+            margin: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 1;
+            transition: opacity 0.1s linear;
           }
 
           .Button {
@@ -114,6 +136,10 @@ export default class EditableSocialLink extends React.Component {
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.1s linear;
+          }
+
+          .Container:hover .SocialLink-connected {
+            opacity: 0;
           }
 
           .Container:hover .Button {
