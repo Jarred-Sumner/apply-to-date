@@ -467,11 +467,13 @@ class EditProfile extends React.Component {
                   <Text className="Section-title" type="title">
                     {paragraph.title}
                   </Text>
-                  <Link href={`/lucy#${paragraph.key}`} target="_blank">
-                    <a className="example-link" target="_blank">
-                      See an example
-                    </a>
-                  </Link>
+                  <a
+                    className="example-link"
+                    href={`/lucy#${paragraph.key}`}
+                    target="_blank"
+                  >
+                    See an example
+                  </a>
                 </div>
                 <TextArea
                   name={paragraph.key}
