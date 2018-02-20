@@ -4,6 +4,7 @@ import RootStyles from "./Root";
 import ReactGA from "react-ga";
 import FullStory from "./FullStory";
 import Router from "next/router";
+import Raven from "raven-js";
 
 const defaultDescription =
   "Create a page where people apply to go on a date with you. You pick the winners.";
@@ -30,6 +31,12 @@ if (typeof window !== "undefined") {
   Router.onRouteChangeComplete = url => {
     ReactGA.pageview(url);
   };
+
+  Raven.config(
+    "https://91be53bb2edc4c73a00df349bfc52de2@sentry.io/291484"
+  ).install();
+
+  Raven.setEnvironment(process.env.NODE_ENV);
 }
 
 const Head = props => (

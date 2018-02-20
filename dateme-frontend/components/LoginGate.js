@@ -10,6 +10,7 @@ import { bindActionCreators } from "redux";
 import { Router } from "../routes";
 import _ from "lodash";
 import withLogin from "../lib/withLogin";
+import Raven from "raven-js";
 
 export const LOGIN_STATUSES = {
   pending: "pending",
@@ -52,6 +53,13 @@ export default _.memoize((Component, options = {}) => {
           setLoginStatus(null);
         }
       }
+
+      if (this.props.currentUser && typeof window !== "undefined") {
+        Raven.setUserContext({
+          email: this.props.currentUser.email,
+          id: this.props.currentUser.id
+        });
+      }
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -64,6 +72,17 @@ export default _.memoize((Component, options = {}) => {
         Router.pushRoute(
           `/login?from=${encodeURIComponent(this.props.url.asPath)}`
         );
+      }
+
+      if (
+        !prevProps.currentUser &&
+        this.props.currentUser &&
+        typeof window !== "undefined"
+      ) {
+        Raven.setUserContext({
+          email: this.props.currentUser.email,
+          id: this.props.currentUser.id
+        });
       }
     }
 
