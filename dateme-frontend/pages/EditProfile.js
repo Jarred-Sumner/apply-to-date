@@ -386,7 +386,7 @@ class EditProfile extends React.Component {
           )
         }}
       >
-        <Head />
+        <Head title="Edit Page | Apply to Date" />
 
         <section className="Section Section--center Section--title">
           <Text type="ProfilePageTitle">
