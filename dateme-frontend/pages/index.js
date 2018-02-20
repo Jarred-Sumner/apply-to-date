@@ -12,12 +12,15 @@ import { bindActionCreators } from "redux";
 import Router from "next/router";
 import PageFooter from "../components/PageFooter";
 import withLogin from "../lib/withLogin";
+import LazyLoad from "react-lazyload";
 
 const FeaturedProfile = ({ profile }) => {
   return (
     <Link href={{ pathname: `/${profile.id}` }}>
       <a className="Profile">
-        <img src={_.first(profile.photos)} />
+        <LazyLoad offset={100} height={250}>
+          <img src={_.first(profile.photos)} />
+        </LazyLoad>
         <div className="Text">
           <div className="Title">
             <Text
@@ -69,10 +72,12 @@ const FeaturedProfile = ({ profile }) => {
 
           img {
             object-fit: cover;
+            flex: 0 0 250px;
+            flex-shrink: 0;
+            display: flex;
             width: 250px;
             height: 250px;
-            display: flex;
-            flex: 0;
+
             filter: saturate(0);
           }
 
@@ -202,11 +207,12 @@ class Homepage extends React.Component {
               Featured pages
             </Text>
 
-            <div className="FeaturedProfiles">
-              <div />
-              {this.props.profiles.map(profile => (
-                <FeaturedProfile key={profile.id} profile={profile} />
-              ))}
+            <div className="FeaturedProfiles-wrapper">
+              <div className="FeaturedProfiles">
+                {this.props.profiles.map(profile => (
+                  <FeaturedProfile key={profile.id} profile={profile} />
+                ))}
+              </div>
             </div>
           </footer>
         )}
@@ -221,6 +227,7 @@ class Homepage extends React.Component {
             margin-right: auto;
             padding-left: 14px;
             padding-right: 14px;
+            overflow-x: hidden;
           }
 
           main {
@@ -235,6 +242,7 @@ class Homepage extends React.Component {
             display: flex;
             flex-direction: column;
             text-align: center;
+            overflow-x: hidden;
           }
 
           .divider {
@@ -265,29 +273,38 @@ class Homepage extends React.Component {
             font-weight: 200;
           }
 
-          .FeaturedProfiles {
+          .FeaturedProfiles-wrapper {
             padding-top: 4rem;
             padding-bottom: 6rem;
+            padding-left: 28px;
+            padding-right: 28px;
+
+            overflow-x: auto;
+            width: 100vw;
+          }
+
+          .FeaturedProfiles {
             display: grid;
             grid-column-gap: 2rem;
             grid-auto-flow: column dense;
             text-align: center;
             justify-content: center;
             grid-auto-columns: 250px;
-            width: 100%;
-            overflow-x: auto;
-
-            padding-left: 600px;
-            margin-right: -14px;
-            margin-left: -14px;
+            width: max-content;
           }
 
           @media (max-width: 500px) {
-            .FeaturedProfiles {
-              display: block;
+            .FeaturedProfiles-wrapper {
               padding-left: 14px;
               padding-right: 14px;
-              overflow-x: hidden;
+            }
+
+            .FeaturedProfiles {
+              grid-auto-flow: row dense;
+              grid-auto-rows: auto;
+              justify-content: center;
+              margin-left: auto;
+              margin-right: auto;
             }
           }
         `}</style>
