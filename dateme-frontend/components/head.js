@@ -37,6 +37,10 @@ if (typeof window !== "undefined") {
   ).install();
 
   Raven.setEnvironment(process.env.NODE_ENV);
+
+  window.onunhandledrejection = function(evt) {
+    Raven.captureException(evt.reason);
+  };
 }
 
 const Head = props => (
