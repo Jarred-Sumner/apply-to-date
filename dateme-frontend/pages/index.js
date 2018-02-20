@@ -32,32 +32,26 @@ const FeaturedProfile = ({ profile }) => {
           </div>
 
           <div className="Tagline">
-            <Text size="14px">{profile.tagline}</Text>
+            <Text size="14px">{(profile.tagline || "").substr(0, 100)}</Text>
           </div>
         </div>
         <style jsx>{`
           .Profile {
             background-color: #ffffff;
-            box-shadow: 0 22px 30px 0 rgba(0, 0, 0, 0.12);
             cursor: pointer;
             text-decoration: none;
             text-align: left;
             width: 100%;
             height: 100%;
             border-radius: 6px;
-            flex-shrink: 0;
-            transition: transform 0.1s linear;
-            transition-property: transform;
             display: flex;
+            flex-shrink: 0;
+            flex-grow: 0;
             flex-direction: column;
           }
 
           .Text {
             flex: 1;
-          }
-
-          .Profile:hover {
-            transform: scale(1.05);
           }
 
           .Profile:hover img {
@@ -73,19 +67,11 @@ const FeaturedProfile = ({ profile }) => {
             margin-bottom: 1.5rem;
           }
 
-          .Title,
-          .Tagline {
-            padding-left: 1rem;
-            padding-right: 1rem;
-          }
-
           img {
             object-fit: cover;
             width: 100%;
             display: flex;
             flex: 0;
-            border-top-left-radius: 6px;
-            border-top-right-radius: 6px;
             filter: saturate(0);
           }
 
@@ -216,6 +202,7 @@ class Homepage extends React.Component {
             </Text>
 
             <div className="FeaturedProfiles">
+              <div />
               {this.props.profiles.map(profile => (
                 <FeaturedProfile key={profile.id} profile={profile} />
               ))}
@@ -247,7 +234,6 @@ class Homepage extends React.Component {
             display: flex;
             flex-direction: column;
             text-align: center;
-            width: 100%;
           }
 
           .divider {
@@ -287,22 +273,20 @@ class Homepage extends React.Component {
             text-align: center;
             justify-content: center;
             grid-auto-columns: 250px;
+            width: 100%;
             overflow-x: auto;
-            height: 100%;
-            width: 100vw;
-          }
 
-          .FeaturedProfiles:last-child {
-            margin-right: 28px;
-          }
-
-          .FeaturedProfiles:first-child {
-            margin-left: 28px;
+            padding-left: 600px;
+            margin-right: -14px;
+            margin-left: -14px;
           }
 
           @media (max-width: 500px) {
             .FeaturedProfiles {
               display: block;
+              padding-left: 14px;
+              padding-right: 14px;
+              overflow-x: hidden;
             }
           }
         `}</style>
