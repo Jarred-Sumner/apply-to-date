@@ -76,6 +76,7 @@ export default ({
       .photo--circle .Placeholder,
       .photo--circle img {
         border-radius: 50%;
+        box-shadow: none;
       }
 
       @media (max-width: 500px) {
