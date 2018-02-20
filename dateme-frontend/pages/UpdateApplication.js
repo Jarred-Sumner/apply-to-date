@@ -221,7 +221,7 @@ class UpdateApplication extends React.Component {
 
     return (
       <Page>
-        <Head />
+        <Head disableGoogle />
 
         <HeaderNotice email={email} />
 

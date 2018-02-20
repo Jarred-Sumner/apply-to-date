@@ -294,6 +294,7 @@ class CreateApplication extends React.Component {
           }
           favicon={profile && _.sample(profile.photos)}
           ogImage={profile && _.first(profile.photos)}
+          disableGoogle
         />
         <form onSubmit={this.submitApplication}>
           <div className="Section-row">
