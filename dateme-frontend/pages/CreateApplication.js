@@ -217,7 +217,7 @@ class CreateApplication extends React.Component {
   submitApplication = event => {
     event.preventDefault();
 
-    if (!this.state.termsOfService) {
+    if (!this.state.termsOfService && !this.props.currentUser) {
       Alert.error("To continue, you must agree to the terms of service");
       return;
     }
@@ -259,7 +259,7 @@ class CreateApplication extends React.Component {
     this.setState({ externalAuthentications });
 
   render() {
-    const { profile } = this.props;
+    const { profile, currentUser } = this.props;
     const {
       name,
       photos,
@@ -374,14 +374,16 @@ class CreateApplication extends React.Component {
             <SexFormField value={sex} onChange={this.setSex} />
           </div>
 
-          <TOSFormField
-            checked={this.state.termsOfService || false}
-            onChange={() =>
-              this.setState({
-                termsOfService: !this.state.termsOfService
-              })
-            }
-          />
+          {!currentUser && (
+            <TOSFormField
+              checked={this.state.termsOfService || false}
+              onChange={() =>
+                this.setState({
+                  termsOfService: !this.state.termsOfService
+                })
+              }
+            />
+          )}
 
           <Button pending={isSavingProfile}>
             <Icon type="heart" size="14px" />&nbsp; Ask {profile.name} out
