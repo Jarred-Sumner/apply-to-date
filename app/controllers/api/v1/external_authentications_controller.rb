@@ -43,7 +43,6 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
       ActiveRecord::Base.transaction do
         auth = ExternalAuthentication.update_from_omniauth(auth_hash)
 
-        Rails.logger.info "AUTH PARAMS: #{auth_params.inspect}"
         if current_application.present?
           VerifiedNetwork.create!(
             external_authentication_id: auth.id,

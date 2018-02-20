@@ -19,7 +19,7 @@ import { Router } from "../routes";
 import Alert, { handleApiError } from "../components/Alert";
 import Page from "../components/Page";
 import withLogin from "../lib/withLogin";
-
+import { buildEditProfileURL } from "../lib/routeHelpers";
 class ResetPassword extends React.Component {
   constructor(props) {
     super(props);
@@ -55,7 +55,7 @@ class ResetPassword extends React.Component {
 
       const username = _.get(userResponse, "body.data.username");
       if (username) {
-        Router.push(`/${username}/edit`);
+        Router.push(buildEditProfileURL(username));
       } else {
         Router.push(`/account`);
       }

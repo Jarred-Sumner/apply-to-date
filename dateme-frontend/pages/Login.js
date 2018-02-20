@@ -19,6 +19,7 @@ import { Router } from "../routes";
 import Alert, { handleApiError } from "../components/Alert";
 import Page from "../components/Page";
 import withLogin from "../lib/withLogin";
+import { buildEditProfileURL } from "../lib/routeHelpers";
 
 class Login extends React.Component {
   constructor(props) {
@@ -66,7 +67,7 @@ class Login extends React.Component {
       } else {
         const username = _.get(userResponse, "body.data.username");
         if (username) {
-          Router.pushRoute(`/${username}/edit`);
+          Router.pushRoute(buildEditProfileURL(username));
         } else {
           Router.pushRoute(`/account`);
         }

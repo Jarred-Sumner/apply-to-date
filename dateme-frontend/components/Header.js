@@ -14,6 +14,7 @@ import ActiveLink from "./ActiveLink";
 import Text from "./Text";
 import classNames from "classnames";
 import _ from "lodash";
+import { buildEditProfileURL } from "../lib/routeHelpers";
 
 const NavLink = ActiveLink(({ children, href, isActive }) => {
   return (
@@ -47,11 +48,10 @@ const NavLink = ActiveLink(({ children, href, isActive }) => {
 
 const HeaderLinks = ({ isProbablyLoggedIn, currentUser }) => {
   if (isProbablyLoggedIn) {
-    const editPageHref = `/${_.get(
-      currentUser || {},
-      "username",
-      "page"
-    )}/edit`;
+    const editPageHref = buildEditProfileURL(
+      _.get(currentUser || {}, "username", "page")
+    );
+
     return (
       <div className="Buttons">
         <NavLink key={editPageHref} href={editPageHref}>

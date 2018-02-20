@@ -23,6 +23,7 @@ import PhotoGroup from "../components/PhotoGroup";
 import Typed from "react-typed";
 import withLogin from "../lib/withLogin";
 import { Router } from "../routes";
+import { buildProfileURL, buildEditProfileURL } from "../lib/routeHelpers";
 import { getMobileDetect } from "../lib/Mobile";
 import Subheader from "../components/Subheader";
 import { animateScroll } from "react-scroll";
@@ -145,7 +146,7 @@ class Profile extends React.Component {
             <MessageBar>
               <Text size="14px" color="white" lineHeight="19px">
                 Your profile is hidden from others until you{" "}
-                <Link href={`/${profile.id}/edit`}>
+                <Link href={buildEditProfileURL(profile.id)}>
                   <a>go live</a>
                 </Link>
               </Text>
@@ -178,7 +179,7 @@ class Profile extends React.Component {
       >
         <Head
           disableGoogle
-          url={process.env.DOMAIN + this.props.url.asPath}
+          url={buildProfileURL(profile.id)}
           title={`Apply to date ${profile.name || ""}`}
           description={profile.tagline}
           favicon={_.sample(profile.photos)}

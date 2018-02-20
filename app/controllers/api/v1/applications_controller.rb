@@ -14,7 +14,11 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
       @application = Application.where(profile_id: params[:profile_id], email: email).first_or_initialize
       @should_send_email = !@application.persisted?
       
-      @application.social_links = ExternalAuthentication.update_social_links(social_links)
+      @application.social_links = ExternalAuthentication.update_social_links(
+        (current_user.try(:profile).try(:social_links) || {}).merge(
+          social_links
+        )
+      )
       external_authentications.each do |auth| 
         @application.social_links = @application.social_links.merge(auth.build_social_link_entry)
       end

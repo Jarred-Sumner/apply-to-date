@@ -1,6 +1,7 @@
 import TextInput from "./TextInput";
 import Button from "./Button";
 import { isMobile } from "../lib/Mobile";
+import classNames from "classnames";
 
 export default class InlineTextForm extends React.Component {
   handleSubmit = evt => {
@@ -19,11 +20,18 @@ export default class InlineTextForm extends React.Component {
       buttonChildren,
       autoComplete,
       inputProps = {},
+      hideInputOnMobile = false,
       readOnly
     } = this.props;
 
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form
+        className={classNames("Form", {
+          "Form--hideInputOnMobile": hideInputOnMobile,
+          "Form--showInputOnMobile": !hideInputOnMobile
+        })}
+        onSubmit={this.handleSubmit}
+      >
         <TextInput
           {...inputProps}
           type={type || "text"}
@@ -31,6 +39,7 @@ export default class InlineTextForm extends React.Component {
           className="InlineApply-TextInput"
           required
           icon={icon}
+          fake={readOnly}
           autoComplete={autoComplete}
           onChangeText={onChangeText}
           placeholder={placeholder}
@@ -54,14 +63,26 @@ export default class InlineTextForm extends React.Component {
             border-radius: 100px;
           }
 
+          :global(.InlineApply-TextInput) {
+            padding-right: 12px;
+          }
+
           @media (max-width: 500px) {
-            form {
+            .Form {
               flex-direction: column;
               padding-left: 0;
               border-radius: 6px;
             }
 
-            form :global(.InlineApply-TextInput) {
+            .Form--hideInputOnMobile :global(.InlineApply-TextInput) {
+              display: none;
+            }
+
+            .Form--hideInputOnMobile {
+              border: none;
+            }
+
+            .Form--showInputOnMobile :global(.InlineApply-TextInput) {
               height: 100%;
               padding-top: 14px;
               padding-left: 14px;
@@ -73,11 +94,17 @@ export default class InlineTextForm extends React.Component {
               border-bottom-right-radius: 4px;
             }
 
-            form :global(.InlineApply-Button) {
+            .Form--showInputOnMobile :global(.InlineApply-Button) {
               border-top-left-radius: 0;
               border-top-right-radius: 0;
               border-bottom-left-radius: 4px;
               border-bottom-right-radius: 4px;
+              padding-top: 14px;
+              padding-bottom: 14px;
+            }
+
+            .Form--hideInputOnMobile :global(.InlineApply-Button) {
+              border-radius: 100px;
               padding-top: 14px;
               padding-bottom: 14px;
             }
