@@ -10,16 +10,28 @@ class Api::V1::UsersController < Api::V1::ApplicationController
         return render_error(message: "Please fill out the interested in section")
       end
 
-      if User.blacklisted_username?(create_params[:username])
+      username = String(create_params[:username]).downcase
+
+      if User.blacklisted_username?(username)
         return render_error(message: "Please choose a different username :)")
+      elsif username.include?(" ")
+        return render_error(message: "Please don't include a space in your username :)")
+      elsif username.include?("#")
+        return render_error(message: "Please don't include a # in your username :)")
+      elsif username.include?("!")
+        return render_error(message: "Please don't include a ! in your username :)")
+      elsif username.include?("?")
+        return render_error(message: "Please don't include a ? in your username :)")
+      elsif username.blank?
+        return render_error(message: "Please enter a username")
       end
 
-      @user = User.create!(create_params.merge(password_confirmation: create_params[:password]))
+      @user = User.create!(create_params.merge(password_confirmation: create_params[:password], username: username))
 
       @profile = Profile.create!(
         create_profile_params.merge(
           user: @user,
-          id: @user.username,
+          id: username,
           visible: false,
           name: @external_authentication.try(:name).try(:split, ' ').try(:first),
         )
