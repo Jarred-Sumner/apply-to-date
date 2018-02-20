@@ -373,7 +373,7 @@ const ProfileWithStore = withRedux(
   initStore,
   (state, props) => {
     return {
-      profile: state.profile[props.url.query.id]
+      profile: state.profile[decodeURI(props.url.query.id)]
     };
   },
   dispatch => bindActionCreators({ updateEntities }, dispatch),

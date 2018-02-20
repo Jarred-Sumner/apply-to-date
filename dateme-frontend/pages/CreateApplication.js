@@ -423,7 +423,7 @@ const CreateApplicationWithStore = withRedux(
     const { id, applicationId } = _.get(props, "url.query", {});
 
     return {
-      profile: state.profile[id],
+      profile: state.profile[decodeURI(id)],
       application: state.application[applicationId]
     };
   },
