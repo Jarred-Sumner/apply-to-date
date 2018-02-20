@@ -83,6 +83,9 @@ export default ({
           margin-right: 0;
           margin-top: 2em;
         }
+        .photo.photo--last.photo--hoverable.photo--circle {
+          margin-top: 0em;
+        }
       }
     `}</style>
   </div>
