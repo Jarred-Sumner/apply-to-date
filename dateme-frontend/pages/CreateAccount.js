@@ -28,14 +28,6 @@ import LoginGate from "../components/LoginGate";
 import withLogin from "../lib/withLogin";
 import { buildEditProfileURL } from "../lib/routeHelpers";
 
-const getDefaultUsername = externalAccount => {
-  if (externalAccount && externalAccount.username) {
-    return externalAccount.username;
-  } else {
-    return "";
-  }
-};
-
 class CreateAccount extends React.Component {
   static async getInitialProps({ store, query }) {
     if (query.id) {
@@ -50,7 +42,9 @@ class CreateAccount extends React.Component {
 
     this.state = {
       email: this.props.url.query.email || "",
-      username: getDefaultUsername(props.externalAccount),
+      username: _.get(props, "externalAccount.username", ""),
+      name: _.get(props, "externalAccount.name", ""),
+      email: _.get(props, "externalAccount.email", ""),
       password: "",
       passwordConfirmation: "",
       location: "",
@@ -79,6 +73,7 @@ class CreateAccount extends React.Component {
 
     const {
       email,
+      name,
       username,
       password,
       passwordConfirmation,
@@ -111,7 +106,8 @@ class CreateAccount extends React.Component {
       profile: {
         latitude: latLng ? latLng.lat : null,
         longitude: latLng ? latLng.lat : null,
-        location
+        location,
+        name
       },
       user: {
         email,
@@ -125,8 +121,6 @@ class CreateAccount extends React.Component {
       }
     })
       .then(response => {
-        console.log(response);
-        Alert.success("Welcome to Apply to Date!");
         Router.push(buildEditProfileURL(username));
       })
       .catch(error => {
@@ -142,6 +136,7 @@ class CreateAccount extends React.Component {
 
   setLocation = location => this.setState({ location });
   setEmail = email => this.setState({ email });
+  setName = name => this.setState({ name });
   setUsername = username => this.setState({ username });
   setPassword = password => this.setState({ password });
   setPasswordConfirmation = passwordConfirmation =>
@@ -160,6 +155,7 @@ class CreateAccount extends React.Component {
     const { provider, id } = this.props.url.query;
     const {
       email,
+      name,
       username,
       password,
       passwordConfirmation,
@@ -196,6 +192,17 @@ class CreateAccount extends React.Component {
             )}
 
             <form onSubmit={this.submit}>
+              <FormField
+                label="Name"
+                type="text"
+                icon={<Icon type="user" size="18px" color="#B9BED1" />}
+                name="name"
+                required
+                value={name}
+                onChange={this.setName}
+                placeholder="e.g. Luke Miles"
+              />
+
               <FormField
                 label="email"
                 type="email"
@@ -239,7 +246,7 @@ class CreateAccount extends React.Component {
                   type="url"
                   tabIndex={-1}
                   name="url"
-                  value="https://applytodate.me/"
+                  value={process.env.SHARE_DOMAIN + "/"}
                   readOnly
                 />
               </FormField>

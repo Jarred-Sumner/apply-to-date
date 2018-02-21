@@ -35,7 +35,6 @@ class Api::V1::UsersController < Api::V1::ApplicationController
           user: @user,
           id: username,
           visible: false,
-          name: @external_authentication.try(:name).try(:split, ' ').try(:first),
         )
       )
 
@@ -71,7 +70,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 
   private def create_profile_params
     params.require(:profile).permit([
-      :location, :latitude, :longitude
+      :location, :latitude, :longitude, :name
     ])
   end
 
