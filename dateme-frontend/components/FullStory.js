@@ -1,13 +1,34 @@
 import { FullStory } from "react-fullstory-component";
 import { connect } from "react-redux";
+import _ from "lodash";
 
 const settings = {
   debug: process.env.NODE_ENV !== "production",
   host: "fullstory.com",
-  orgKey: "AH7J1"
+  orgKey: "AMFBS"
 };
 
+function randId() {
+  return Math.random()
+    .toString(36)
+    .substr(2, 10);
+}
+
 class FullStoryWrapper extends React.Component {
+  componentDidMount() {
+    let id = localStorage["fullstoryid"];
+    if (!id) {
+      id = randId();
+      localStorage["fullstoryid"] = id;
+    }
+
+    this.id = id;
+  }
+
+  componentWillUnmount() {
+    this.id = null;
+  }
+
   render() {
     if (process.env.NODE_ENV !== "production") {
       return null;
@@ -16,9 +37,11 @@ class FullStoryWrapper extends React.Component {
     return (
       <FullStory
         settings={settings}
-        sessionId={
-          this.props.currentUser ? this.props.currentUser.id : undefined
-        }
+        sessionId={this.id}
+        custom={{
+          displyName: _.get(this.props, "currentUser.profile.name"),
+          email: _.get(this.props, "currentUser.email")
+        }}
       />
     );
   }
