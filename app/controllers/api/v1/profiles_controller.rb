@@ -17,7 +17,7 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
         include: [:external_authentications]
       }).serializable_hash
     else
-      profile = Profile.where(visible: true).where("lower(id) = lower(?)", String(params[:id]))
+      profile = Profile.where(visible: true).where("lower(id) = lower(?)", String(params[:id])).first
       render_profile(profile)
     end
   end
