@@ -4,7 +4,9 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
   def index
     profiles = Profile.where(featured: true)
 
-    render json: ProfileSerializer.new(profiles).serializable_hash
+    if stale? etag: profiles, last_modified: profiles.pluck(:updated_at).max.utc
+      render json: ProfileSerializer.new(profiles).serializable_hash
+    end
   end
 
   def show
@@ -15,7 +17,7 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
         include: [:external_authentications]
       }).serializable_hash
     else
-      profile = Profile.where(visible: true).where(id: String(params[:id]).downcase).first
+      profile = Profile.where(visible: true).where("lower(id) = lower(?)", String(params[:id]))
       render_profile(profile)
     end
   end
@@ -113,7 +115,9 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
     if current_user.present? && profile.try(:user_id) == current_user.id
       render json: PrivateProfileSerializer.new(profile).serializable_hash
     else
-      render json: ProfileSerializer.new(profile).serializable_hash
+      if stale? etag: profile, last_modified: profile.updated_at.utc
+        render json: ProfileSerializer.new(profile).serializable_hash
+      end
     end
   end
 
