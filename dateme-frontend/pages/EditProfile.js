@@ -488,7 +488,7 @@ class EditProfile extends React.Component {
           })}
         </section>
 
-        <Subheader bottom spaceBetween>
+        <Subheader padding="large" bottom spaceBetween>
           <Switch checked={profile.visible} onChange={this.toggleVisible}>
             {profile.visible ? "Page is live" : "Page is not live"}
           </Switch>
