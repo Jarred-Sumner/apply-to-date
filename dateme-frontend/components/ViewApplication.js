@@ -21,31 +21,43 @@ export default class ViewApplication extends React.Component {
   };
 
   render() {
-    const {
-      photos,
-      name,
-      tagline,
-      socialLinks,
-      sections
-    } = this.props.application;
+    const { isMobile, application } = this.props;
+    const { photos, name, tagline, socialLinks, sections } = application;
+
     return (
       <section
         className={classNames("ViewApplication", {
-          "ViewApplication--mobile": !!this.props.isMobile,
-          "ViewApplication--desktop": !this.props.isMobile
+          "ViewApplication--mobile": !!isMobile,
+          "ViewApplication--desktop": !isMobile
         })}
       >
         <div className="Title">
-          <Text size="14px" weight="bold">
+          <Text
+            size={isMobile ? "18px" : "14px"}
+            lineHeight={isMobile ? "24px" : "14px"}
+            weight="bold"
+          >
             {name}
           </Text>
+
+          {isMobile && (
+            <div className="SocialLinks">
+              <SocialLinkList centered={false} socialLinks={socialLinks} />
+            </div>
+          )}
         </div>
 
-        <PhotoGroup size="141px" photos={photos} />
+        <PhotoGroup
+          size={isMobile ? "calc(100vw - 30px)" : "141px"}
+          photos={photos}
+          max={isMobile && _.isEmpty(photos) ? 1 : 3}
+        />
 
-        <div className="SocialLinks">
-          <SocialLinkList centered={false} socialLinks={socialLinks} />
-        </div>
+        {!isMobile && (
+          <div className="SocialLinks">
+            <SocialLinkList centered={false} socialLinks={socialLinks} />
+          </div>
+        )}
 
         {!_.isEmpty(this.paragraphs()) && (
           <div className="Bio">
@@ -69,21 +81,38 @@ export default class ViewApplication extends React.Component {
           .ViewApplication {
             display: grid;
             grid-auto-flow: row;
-            grid-row-gap: 28px;
-            padding: 28px 50px;
-            border: 1px solid #e8edf3;
-            border-radius: 4px;
             width: 100%;
             background-color: white;
           }
 
-          .ViewApplication--mobile {
-            display: flex;
-            flex-direction: column;
+          .ViewApplication--desktop {
+            grid-row-gap: 28px;
+            padding: 28px 50px;
+            border: 1px solid #e8edf3;
+            border-radius: 4px;
           }
 
-          .SocialLinks {
+          .ViewApplication--mobile {
+            display: grid;
+            grid-row-gap: 14px;
+          }
+
+          .ViewApplication--mobile :global(.photo) {
+            margin-top: 0;
+          }
+
+          .ViewApplication--desktop .SocialLinks {
             text-align: left;
+          }
+
+          .ViewApplication--mobile .SocialLinks {
+            margin-left: auto;
+          }
+
+          .Title {
+            display: flex;
+            width: 100%;
+            align-items: center;
           }
 
           .Section-row {
