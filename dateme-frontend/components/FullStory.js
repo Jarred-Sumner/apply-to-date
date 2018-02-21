@@ -30,7 +30,10 @@ class FullStoryWrapper extends React.Component {
   }
 
   render() {
-    if (process.env.NODE_ENV !== "production") {
+    if (
+      typeof window === "undefined" ||
+      process.env.NODE_ENV !== "production"
+    ) {
       return null;
     }
 
