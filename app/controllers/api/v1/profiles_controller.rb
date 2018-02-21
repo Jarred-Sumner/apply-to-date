@@ -112,7 +112,9 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
   end
 
   def render_profile(profile)
-    if current_user.present? && profile.try(:user_id) == current_user.id
+    if profile.nil?
+      render json: ProfileSerializer.new(profile).serializable_hash
+    elsif current_user.present? && profile.try(:user_id) == current_user.id
       render json: PrivateProfileSerializer.new(profile).serializable_hash
     else
       if stale? etag: profile, last_modified: profile.updated_at.utc
