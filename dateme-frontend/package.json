@@ -138,6 +138,8 @@
   },
   "devDependencies": {
     "case-sensitive-paths-webpack-plugin": "^2.1.1",
-    "extract-text-webpack-plugin": "^3.0.2"
+    "extract-text-webpack-plugin": "^3.0.2",
+    "sitemap-generator": "^8.0.0",
+    "sitemap-generator-cli": "^7.0.1"
   }
 }
