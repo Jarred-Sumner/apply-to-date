@@ -207,6 +207,7 @@ GEM
       omniauth-oauth (~> 1.1)
       rack
     pg (0.21.0)
+    possessive (1.0.1)
     premailer (1.11.1)
       addressable
       css_parser (>= 1.6.0)
@@ -358,6 +359,7 @@ DEPENDENCIES
   omniauth-medium!
   omniauth-twitter
   pg (~> 0.18)
+  possessive
   premailer-rails
   pry-awesome_print
   pry-coolline

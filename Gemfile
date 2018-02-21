@@ -20,7 +20,7 @@ gem 'therubyracer', platforms: :ruby
 gem 'mailgun_rails'
 gem 'omniauth-linkedin-oauth2'
 gem 'omniauth-medium', github: 'hugodias/omniauth-medium'
-
+gem "possessive"
 
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'

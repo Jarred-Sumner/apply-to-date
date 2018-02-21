@@ -4,18 +4,6 @@ class Profile < ApplicationRecord
   has_many :verified_networks
   has_many :applications
   has_many :external_authentications, through: :verified_networks
-  validates :recommended_contact_method, presence: true, inclusion: { in: ['phone', 'twitter', 'instagram', 'facebook'] }, :unless => :draft?
-  validate :recommended_contact_method_exists, if: :visible?
-
-  def recommended_contact_method_exists
-    if contact_method_value.blank? && recommended_contact_method.present?
-      if contact_via_phone?
-        errors.add(:phone, "- please enter your phone number")
-      else
-        errors.add(:recommended_contact_method, "- please connect your #{recommended_contact_method.capitalize} account")
-      end
-    end
-  end
 
   def self.real
     Profile.where(visible: true).where(user_id: User.real_accounts.pluck(:id))
