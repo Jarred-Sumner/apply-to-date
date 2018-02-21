@@ -18,8 +18,14 @@ class User < ApplicationRecord
     BLACKLISTED_USERNAMES.include?(username)
   end
 
+  def can_auto_apply?
+    profile.name.present? && sex.present? && profile.all_social_networks.values.present?
+  end
+
   def self.real_accounts
     fake_emails = PROBABLY_FAKE_ACCOUNTS.map { |email| "%#{email}%"}
     User.where.not("lower(email) ~~ ANY('{#{fake_emails.join(",")}}')")
   end
+
+  alias_method :is_auto_apply_enabled, :can_auto_apply?
 end

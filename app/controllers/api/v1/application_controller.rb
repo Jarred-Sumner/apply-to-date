@@ -22,14 +22,18 @@ class Api::V1::ApplicationController < ActionController::Base
     render_error(message: e.record.errors.full_messages)
   end
 
-  def self.build_frontend_uri(path, params)
+  def self.build_frontend_uri(path, params, merge = true)
     uri = Addressable::URI.parse(Rails.application.secrets[:frontend_url] + path)
-    uri.query_values = (uri.query_values || {}).merge(params) if params.present?
+    if merge
+      uri.query_values = (uri.query_values || {}).merge(params) if params.present?
+    else
+      uri.query_values = params
+    end
 
     uri
   end
 
-  def redirect_to_frontend(path, params = {})
+  def redirect_to_frontend(path, params = {}, merge = true)
     uri = Api::V1::ApplicationController.build_frontend_uri(path, params)
     redirect_to uri.to_s
   end

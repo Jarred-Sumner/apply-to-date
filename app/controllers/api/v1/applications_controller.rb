@@ -1,42 +1,29 @@
 class Api::V1::ApplicationsController < Api::V1::ApplicationController
 
   def create
-    social_links = params[:application][:social_links].try(:to_unsafe_h) || {}
-    external_authentications = ExternalAuthentication.where(id: Array(params[:application][:external_authentications]))
-
-    if create_params[:email].blank? 
-      raise ArgumentError.new("Please include your email")
-    end
-
-    email = String(create_params[:email]).downcase
-
-    ActiveRecord::Base.transaction do
-      @application = Application.where(profile_id: params[:profile_id], email: email).first_or_initialize
-      @should_send_email = !@application.persisted?
-      
-      @application.social_links = ExternalAuthentication.update_social_links(
-        (current_user.try(:profile).try(:social_links) || {}).merge(
-          social_links
+    if current_user.present? && current_user.can_auto_apply?
+      profile = current_user.profile
+      existing_application = Application.where(profile_id: params[:profile_id]).where("applicant_id = ? OR lower(email) = lower(?)", current_user.id, current_user.email).first
+      if existing_application
+        @application = existing_application
+        @should_send_email = true
+      else
+        @application = Application.create!(
+          name: profile.name,
+          photos: profile.photos,
+          email: current_user.email,
+          sections: profile.sections,
+          social_links: profile.all_social_networks,
+          sex: current_user.sex,
+          phone: profile.phone,
+          applicant_id: current_user.id,
+          profile_id: params[:profile_id],
+          status: Application.submission_statuses[:submitted]
         )
-      )
-      external_authentications.each do |auth| 
-        @application.social_links = @application.social_links.merge(auth.build_social_link_entry)
+        @should_send_email = true
       end
-
-      sections = (params[:application][:sections] || {}).permit(Application::DEFAULT_SECTIONS)
-
-      @application.update!(create_params.merge(
-        email: email,
-        status: Application.submission_statuses[create_params[:status]],
-        sections: sections.present? ? sections : Application.build_default_sections,
-        photos: current_user.try(:profile).try(:photos) || [],
-        applicant_id: current_user.try(:id)
-      ))
-
-      @application.verified_networks.destroy_all
-      external_authentications.each do |auth|
-        VerifiedNetwork.create!(application_id: @application.id, external_authentication_id: auth.id)
-      end
+    else
+      create_application_from_guest
     end
 
     if @should_send_email
@@ -110,6 +97,46 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
       include: [:external_authentications, :profile]
     }).serializable_hash
   end
+
+  private def create_application_from_guest
+    social_links = params[:application][:social_links].try(:to_unsafe_h) || {}
+    external_authentications = ExternalAuthentication.where(id: Array(params[:application][:external_authentications]))
+    email = String(create_params[:email]).downcase
+
+    if create_params[:email].blank? 
+      raise ArgumentError.new("Please include your email")
+    end
+
+    ActiveRecord::Base.transaction do
+      @application = Application.where(profile_id: params[:profile_id], email: email).first_or_initialize
+      @should_send_email = !@application.persisted?
+      
+      @application.social_links = ExternalAuthentication.update_social_links(
+        (current_user.try(:profile).try(:social_links) || {}).merge(
+          social_links
+        )
+      )
+      external_authentications.each do |auth| 
+        @application.social_links = @application.social_links.merge(auth.build_social_link_entry)
+      end
+
+      sections = (params[:application][:sections] || {}).permit(Application::DEFAULT_SECTIONS)
+
+      @application.update!(create_params.merge(
+        email: email,
+        status: Application.submission_statuses[create_params[:status]],
+        sections: sections.present? ? sections : Application.build_default_sections,
+        photos: current_user.try(:profile).try(:photos) || [],
+        applicant_id: current_user.try(:id)
+      ))
+
+      @application.verified_networks.destroy_all
+      external_authentications.each do |auth|
+        VerifiedNetwork.create!(application_id: @application.id, external_authentication_id: auth.id)
+      end
+    end
+  end
+
 
   private def create_params
     params

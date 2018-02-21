@@ -2,6 +2,14 @@ export const buildProfileURL = profileId => {
   return encodeURI(process.env.DOMAIN + "/" + profileId);
 };
 
+export const buildApplyURL = profileId => {
+  return encodeURI(process.env.DOMAIN + "/" + profileId + "/apply");
+};
+
+export const buildApplicantApplicationURL = applicationId => {
+  return encodeURI(process.env.DOMAIN + "/a/" + applicationId);
+};
+
 export const buildProfileShareURL = profileId => {
   return encodeURI(process.env.SHARE_DOMAIN + "/" + profileId);
 };

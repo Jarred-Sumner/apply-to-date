@@ -76,7 +76,6 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
               recommended_contact_method: auth.provider,
             )
           end
-
         end
 
         if auth_params[:redirect_path].present?
@@ -84,9 +83,23 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
 
           if auth_params[:redirect_path].include?("/apply")
             opts[auth.provider] = auth.id
+
+            if current_user.blank?
+              if redirect_path_params[:email].blank? && auth.email.present?
+                opts[:email] = auth.email
+              end
+
+              if redirect_path_params[:name].blank? && auth.name.present?
+                opts[:name] = auth.name
+              end
+
+              if redirect_path_params[:username].blank? && auth.username.present?
+                opts[:username] = auth.username
+              end
+            end
           end
 
-          redirect_to_frontend auth_params[:redirect_path], opts
+          redirect_to_frontend auth_params[:redirect_path], opts, false
         elsif current_application.present?
           redirect_to_frontend("/#{current_application.profile_id}/apply",
             applicationId: current_application.id,
@@ -127,6 +140,13 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
 
   def auth_params
     request.env["omniauth.params"].with_indifferent_access
+  end
+
+  def redirect_path_params
+    return @redirect_path_params if @redirect_path_params
+    query = Addressable::URI.parse(auth_params[:redirect_path]).query_values
+
+    @redirect_path_params = (query || {}).with_indifferent_access
   end
 
   def claim_params

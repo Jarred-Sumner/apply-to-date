@@ -65,6 +65,16 @@ class Profile < ApplicationRecord
     external_authentications.pluck(:provider)
   end
 
+  def all_social_networks
+    links = social_links.dup
+
+    external_authentications.each do |auth|
+      links[auth.provider] = auth.url
+    end
+
+    links
+  end
+
   before_validation on: :create do
     self.sections = Profile.build_default_sections
     self.social_links ||= {}

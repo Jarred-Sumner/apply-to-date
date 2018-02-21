@@ -14,6 +14,7 @@ import _ from "lodash";
 import titleCase from "title-case";
 import Waypoint from "react-waypoint";
 import Button from "../components/Button";
+import AskProfileOutButton from "../components/AskProfileOutButton";
 import Thumbnail from "../components/Thumbnail";
 import PageFooter from "../components/PageFooter";
 import Page from "../components/Page";
@@ -159,21 +160,15 @@ class Profile extends React.Component {
             this.isMobile &&
             this.state.isHeaderSticky &&
             (() => {
-              const copy = `Ask ${profile.name} out`;
-
               return (
                 <Subheader bottom center padding="large" fade>
-                  <Button size="large" href={`/${profile.id}/apply`}>
-                    <Icon type="heart" size="14px" />&nbsp; {copy}
-                  </Button>
+                  <AskProfileOutButton profile={profile} />
                 </Subheader>
               );
             }),
           children: (
             <div className="HeaderApply">
-              <Button size="large" href={`/${profile.id}/apply`}>
-                <Icon type="heart" size="14px" />&nbsp; Ask {profile.name} out
-              </Button>
+              <AskProfileOutButton profile={profile} />
             </div>
           )
         }}
@@ -238,9 +233,7 @@ class Profile extends React.Component {
             onLeave={this.enableStickyHeader}
           >
             <div className="Section-row ApplicationForm">
-              <Button size="large" href={`/${profile.id}/apply`}>
-                <Icon type="heart" size="14px" />&nbsp; Ask {profile.name} out
-              </Button>
+              <AskProfileOutButton profile={profile} />
             </div>
           </Waypoint>
         </section>

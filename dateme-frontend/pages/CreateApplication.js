@@ -233,22 +233,30 @@ class CreateApplication extends React.Component {
 
   saveToQueryString = () => {
     const urlParams = {
-      ..._.get(this.props, "url.query"),
-      name: this.state.name,
-      phone: this.state.phone,
-      email: this.state.email,
-      sex: this.state.sex
+      ..._.pick(this.props.url.query, [
+        "twitter",
+        "facebook",
+        "instagram",
+        "linkedin"
+      ]),
+      name: this.state.name || undefined,
+      phone: this.state.phone || undefined,
+      email: this.state.email || undefined,
+      sex: this.state.sex || undefined
     };
 
-    return Router.replaceRoute(
-      `${this.props.url.asPath.split("?")[0]}?${qs.stringify(urlParams)}`,
-      `${this.props.url.asPath.split("?")[0]}?${qs.stringify(urlParams)}`,
-      {
-        shallow: true
-      }
-    );
+    const url = `${this.props.url.asPath.split("?")[0]}?${qs.stringify(
+      urlParams
+    )}`.split("#_=_")[0];
+
+    console.log("Replacing", url);
+
+    return Router.replaceRoute(url, url, {
+      shallow: true
+    });
   };
 
+  setSocialLinks = socialLinks => this.setState({ socialLinks });
   setRecommendedContactMethod = recommendedContactMethod =>
     this.setState({ recommendedContactMethod });
   setPhone = phone => this.setState({ phone });
@@ -299,8 +307,31 @@ class CreateApplication extends React.Component {
         <form onSubmit={this.submitApplication}>
           <div className="Section-row">
             <Text type="ProfilePageTitle">
-              👋 Hi {profile ? profile.name + "," : ""} I'm:
+              👋 Hi {profile ? profile.name + "," : ""}
             </Text>
+          </div>
+
+          <div className="Section-subrow">
+            <Text type="subtitle">My online profiles are:</Text>
+            <Text type="validation" align="center">
+              {!_.isEmpty(
+                _.values(this.state.socialLinks).filter(_.identity)
+              ) && (
+                <React.Fragment>
+                  <Icon inline type="check" color="#00E2AA" size="12px" />&nbsp;
+                </React.Fragment>
+              )}
+              At least one is required
+            </Text>
+          </div>
+          <div className="Section-row">
+            <EditSocialLinks
+              socialLinks={socialLinks}
+              setSocialLinks={this.setSocialLinks}
+              save={this.saveToQueryString}
+              whitelist={["twitter", "facebook", "instagram", "linkedin"]}
+              allowOAuth
+            />
           </div>
 
           <div className="Section-row">
@@ -346,27 +377,6 @@ class CreateApplication extends React.Component {
               value={phone}
               onChange={this.setPhone}
               placeholder="e.g. 925200055555"
-            />
-          </div>
-          <div className="Section-subrow">
-            <Text type="subtitle">My online profiles are:</Text>
-            <Text type="validation" align="center">
-              {!_.isEmpty(
-                _.values(this.state.socialLinks).filter(_.identity)
-              ) && (
-                <React.Fragment>
-                  <Icon inline type="check" color="#00E2AA" size="12px" />&nbsp;
-                </React.Fragment>
-              )}
-              At least one is required
-            </Text>
-          </div>
-          <div className="Section-row">
-            <EditSocialLinks
-              socialLinks={socialLinks}
-              save={this.saveToQueryString}
-              whitelist={["twitter", "facebook", "instagram", "linkedin"]}
-              allowOAuth
             />
           </div>
 
