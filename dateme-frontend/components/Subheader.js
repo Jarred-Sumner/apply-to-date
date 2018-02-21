@@ -6,6 +6,7 @@ export default ({
   bottom = false,
   center = false,
   fade = false,
+  padding,
   spaceBetween
 }) => {
   if (!bottom) {
@@ -55,6 +56,7 @@ export default ({
           className={classNames("Subheader", {
             "Subheader--spaceBetween": spaceBetween,
             "Subheader--center": center,
+            "Subheader--largePadding": padding === "large",
             "Subheader--fade": fade
           })}
         >
@@ -65,13 +67,16 @@ export default ({
               background-color: white;
               display: flex;
               align-items: center;
-              padding: 21px 40px;
               flex: 1;
               border-top: 1px solid #e8e8e8;
               position: fixed;
               bottom: 0;
               left: 0;
               right: 0;
+            }
+
+            .Subheader--largePadding {
+              padding: 21px 40px;
             }
 
             .Subheader--spaceBetween {

@@ -4,6 +4,7 @@ import _ from "lodash";
 import { SECTION_ORDERING, SECTION_LABELS } from "../pages/CreateApplication";
 import SocialLinkList from "./SocialLinkList";
 import PhotoGroup from "./PhotoGroup";
+import classNames from "classnames";
 
 export default class ViewApplication extends React.Component {
   paragraphs = () => {
@@ -28,7 +29,12 @@ export default class ViewApplication extends React.Component {
       sections
     } = this.props.application;
     return (
-      <section className="ViewApplication">
+      <section
+        className={classNames("ViewApplication", {
+          "ViewApplication--mobile": !!this.props.isMobile,
+          "ViewApplication--desktop": !this.props.isMobile
+        })}
+      >
         <div className="Title">
           <Text size="14px" weight="bold">
             {name}
@@ -69,6 +75,11 @@ export default class ViewApplication extends React.Component {
             border-radius: 4px;
             width: 100%;
             background-color: white;
+          }
+
+          .ViewApplication--mobile {
+            display: flex;
+            flex-direction: column;
           }
 
           .SocialLinks {

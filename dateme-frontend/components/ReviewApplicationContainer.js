@@ -6,6 +6,7 @@ import Text from "./Text";
 import ApplicationsBreadcrumbs from "./ApplicationsBreadcrumbs";
 import SharableSocialLink from "./SharableSocialLink";
 import CopyURLForm from "./CopyURLForm";
+import { isMobile } from "../lib/Mobile";
 
 const EmptyState = ({ profileId }) => {
   const url = `${process.env.DOMAIN}/${profileId}`;
@@ -69,8 +70,13 @@ export default ({ application, isLoading, onYes, onNo, currentUser }) => (
 
     {application && (
       <article>
-        <RateApplication onYes={onYes} onNo={onNo} name={application.name} />
-        <ViewApplication application={application} />
+        <RateApplication
+          onYes={onYes}
+          onNo={onNo}
+          name={application.name}
+          isMobile={isMobile()}
+        />
+        <ViewApplication application={application} isMobile={isMobile()} />
       </article>
     )}
 
@@ -95,6 +101,12 @@ export default ({ application, isLoading, onYes, onNo, currentUser }) => (
       div {
         width: 100%;
         text-align: center;
+      }
+
+      @media (max-width: 500px) {
+        article {
+          display: block;
+        }
       }
     `}</style>
   </Page>

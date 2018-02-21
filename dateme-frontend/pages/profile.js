@@ -159,11 +159,12 @@ class Profile extends React.Component {
             this.isMobile &&
             this.state.isHeaderSticky &&
             (() => {
+              const copy = `Ask ${profile.name} out`;
+
               return (
-                <Subheader bottom center fade>
+                <Subheader bottom center padding="large" fade>
                   <Button size="large" href={`/${profile.id}/apply`}>
-                    <Icon type="heart" size="14px" />&nbsp; Ask {profile.name}{" "}
-                    out
+                    <Icon type="heart" size="14px" />&nbsp; {copy}
                   </Button>
                 </Subheader>
               );
