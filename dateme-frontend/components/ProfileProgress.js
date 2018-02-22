@@ -1,14 +1,22 @@
 import Checkbox from "./Checkbox";
 import Text from "./Text";
+import Icon from "./Icon";
 import _ from "lodash";
 import Numeral from "numeral";
 import Sticky from "react-stickynode";
 import { Line } from "rc-progress";
 import { animateScroll } from "react-scroll";
+import classNames from "classnames";
 
-const Step = ({ checked, children, onClick }) => (
+const Step = ({ checked, children, size = "default", onClick }) => (
   <div className="Step" onClick={onClick}>
-    <Checkbox disabled align="left" label={children} checked={checked} />
+    <Checkbox
+      size={size}
+      disabled
+      align="left"
+      label={children}
+      checked={checked}
+    />
     <style jsx>{`
       .Step {
         text-align: left;
@@ -51,6 +59,17 @@ const STEP_PERCENTAGES = {
 };
 
 export default class ProfileProgress extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isCollapsed: props.isMobile
+    };
+  }
+
+  toggleCollapsed = () =>
+    this.setState({ isCollapsed: !this.state.isCollapsed });
+
   getPercentage() {
     return _.sum(
       _.values(STEPS)
@@ -100,21 +119,27 @@ export default class ProfileProgress extends React.Component {
 
   render() {
     const { profile, isMobile } = this.props;
+    const { isCollapsed } = this.state;
 
     if (isMobile) {
-      return null;
-    }
-
-    return (
-      <Sticky top=".name-intro">
-        <div className="ProfileProgress">
-          <div className="Header">
+      return (
+        <div
+          className={classNames("ProfileProgress", {
+            "ProfileProgress--collapsed": isCollapsed,
+            "ProfileProgress--expanded": !isCollapsed
+          })}
+        >
+          <div className="Header" onClick={this.toggleCollapsed}>
             <Text weight="bold" size="18px">
               Fill out your page
             </Text>
             <Text weight="medium" size="14px">
               {Numeral(this.getPercentage()).format("0%")} complete
             </Text>
+
+            <div className="Caret">
+              <Icon type="caret" size="18px" color="#666" />
+            </div>
 
             <div className="ProgressBar">
               <Line
@@ -129,36 +154,42 @@ export default class ProfileProgress extends React.Component {
           </div>
           <div className="Steps">
             <Step
+              size="large"
               onClick={() => this.handleScrollToEditPart(STEPS.name)}
               checked={this.isChecked(STEPS.name)}
             >
               Your name
             </Step>
             <Step
+              size="large"
               onClick={() => this.handleScrollToEditPart(STEPS.photos)}
               checked={this.isChecked(STEPS.photos)}
             >
               Upload photos
             </Step>
             <Step
+              size="large"
               onClick={() => this.handleScrollToEditPart(STEPS.socialLinks)}
               checked={this.isChecked(STEPS.socialLinks)}
             >
               Link 2+ social profiles
             </Step>
             <Step
+              size="large"
               onClick={() => this.handleScrollToEditPart(STEPS.tagline)}
               checked={this.isChecked(STEPS.tagline)}
             >
               One-liner
             </Step>
             <Step
+              size="large"
               onClick={() => this.handleScrollToEditPart(STEPS.introduction)}
               checked={this.isChecked(STEPS.introduction)}
             >
               Add introduction
             </Step>
             <Step
+              size="large"
               onClick={() => this.handleScrollToEditPart(STEPS.background)}
               checked={this.isChecked(STEPS.background)}
             >
@@ -167,35 +198,139 @@ export default class ProfileProgress extends React.Component {
           </div>
           <style jsx>{`
             .ProfileProgress {
-              position: absolute;
-              left: 24px;
-              top: 4rem;
               padding: 14px;
-              padding-bottom: 28px;
               background-color: #f7f7f7;
               border-radius: 4px;
+              position: relative;
+            }
+
+            .Caret {
+              position: absolute;
+              top: 14px;
+              right: 14px;
+              transition: transform 0.1s linear;
             }
 
             .Steps {
               display: grid;
               margin-top: 24px;
+              margin-bottom: 7px;
               grid-auto-flow: row;
-              grid-row-gap: 7px;
+              grid-row-gap: 14px;
             }
 
             .Header {
               display: grid;
-              grid-row-gap: 4px;
+              grid-row-gap: 7px;
             }
 
-            @media (max-width: 1193px) {
-              .ProfileProgress {
-                display: none;
-              }
+            .ProfileProgress--collapsed .Caret {
+              transform: rotate(0deg);
+            }
+
+            .ProfileProgress--expanded .Caret {
+              transform: rotate(180deg);
+            }
+
+            .ProfileProgress--collapsed .Steps {
+              display: none;
             }
           `}</style>
         </div>
-      </Sticky>
-    );
+      );
+    } else {
+      return (
+        <Sticky top=".name-intro">
+          <div className="ProfileProgress">
+            <div className="Header">
+              <Text weight="bold" size="18px">
+                Fill out your page
+              </Text>
+              <Text weight="medium" size="14px">
+                {Numeral(this.getPercentage()).format("0%")} complete
+              </Text>
+
+              <div className="ProgressBar">
+                <Line
+                  percent={this.getPercentage() * 100.0}
+                  trailWidth={7}
+                  strokeWidth={7}
+                  strokeLinecap="round"
+                  trailColor={"#E1E4EC"}
+                  strokeColor="#00e2aa"
+                />
+              </div>
+            </div>
+            <div className="Steps">
+              <Step
+                onClick={() => this.handleScrollToEditPart(STEPS.name)}
+                checked={this.isChecked(STEPS.name)}
+              >
+                Your name
+              </Step>
+              <Step
+                onClick={() => this.handleScrollToEditPart(STEPS.photos)}
+                checked={this.isChecked(STEPS.photos)}
+              >
+                Upload photos
+              </Step>
+              <Step
+                onClick={() => this.handleScrollToEditPart(STEPS.socialLinks)}
+                checked={this.isChecked(STEPS.socialLinks)}
+              >
+                Link 2+ social profiles
+              </Step>
+              <Step
+                onClick={() => this.handleScrollToEditPart(STEPS.tagline)}
+                checked={this.isChecked(STEPS.tagline)}
+              >
+                One-liner
+              </Step>
+              <Step
+                onClick={() => this.handleScrollToEditPart(STEPS.introduction)}
+                checked={this.isChecked(STEPS.introduction)}
+              >
+                Add introduction
+              </Step>
+              <Step
+                onClick={() => this.handleScrollToEditPart(STEPS.background)}
+                checked={this.isChecked(STEPS.background)}
+              >
+                Add background
+              </Step>
+            </div>
+            <style jsx>{`
+              .ProfileProgress {
+                position: absolute;
+                left: 24px;
+                top: 4rem;
+                padding: 14px;
+                padding-bottom: 28px;
+                background-color: #f7f7f7;
+                border-radius: 4px;
+              }
+
+              .Steps {
+                display: grid;
+                margin-top: 24px;
+                grid-auto-flow: row;
+                grid-row-gap: 7px;
+              }
+
+              .Header {
+                display: grid;
+                grid-row-gap: 4px;
+              }
+
+              @media (max-width: 1193px) {
+                .ProfileProgress {
+                  display: none;
+                }
+              }
+            `}</style>
+          </div>
+        </Sticky>
+      );
+    }
   }
 }

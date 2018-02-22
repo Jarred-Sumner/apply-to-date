@@ -3,6 +3,7 @@ import Icon from "./Icon";
 import classNames from "classnames";
 
 const SIZE_TO_PX = {
+  large: "14px",
   default: "13px",
   small: "11px"
 };
@@ -20,7 +21,9 @@ export default ({
   return (
     <React.Fragment>
       <div
-        onClick={() => onChange({ target: { name, checked: !checked } })}
+        onClick={() =>
+          onChange && onChange({ target: { name, checked: !checked } })
+        }
         className="Container"
       >
         <div className="CheckboxContainer">
