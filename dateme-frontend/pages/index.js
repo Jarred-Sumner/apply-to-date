@@ -168,7 +168,8 @@ class Homepage extends React.Component {
     super(props);
 
     this.state = {
-      isLoadingProfiles: true
+      isLoadingProfiles: true,
+      profiles: []
     };
   }
 
@@ -176,7 +177,10 @@ class Homepage extends React.Component {
     const profileResponse = await getFeaturedProfiles();
     this.props.updateEntities(profileResponse.body);
 
-    this.setState({ isLoadingProfiles: false });
+    this.setState({
+      isLoadingProfiles: false,
+      profiles: profileResponse.body.data
+    });
   }
 
   render() {
@@ -219,8 +223,8 @@ class Homepage extends React.Component {
           <div className="FeaturedProfiles-wrapper">
             {this.state.isLoadingProfiles && <div className="Spinner" />}
             <div className="FeaturedProfiles">
-              {!_.isEmpty(this.props.profiles) &&
-                this.props.profiles.map(profile => (
+              {!_.isEmpty(this.state.profiles) &&
+                this.state.profiles.map(profile => (
                   <FeaturedProfile key={profile.id} profile={profile} />
                 ))}
             </div>
@@ -362,11 +366,14 @@ const HomepageWithStore = withRedux(
   initStore,
   (state, props) => {
     return {
-      profiles: _.values(state.profile).filter(profile => profile.featured),
       currentUser: state.currentUserId ? state.user[state.currentUserId] : null
     };
   },
-  dispatch => bindActionCreators({ updateEntities, setCurrentUser }, dispatch)
+  dispatch => bindActionCreators({ updateEntities, setCurrentUser }, dispatch),
+  null,
+  {
+    pure: false
+  }
 )(withLogin(Homepage));
 
 export default HomepageWithStore;
