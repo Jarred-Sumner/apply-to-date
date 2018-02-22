@@ -13,12 +13,14 @@ Rails.application.routes.draw do
 
       get 'images/sign' => 'images#sign'
       resources :users
+      post '/profiles/discover' => 'profiles#discover'
       resources :profiles do
         post 'apply' => 'applications#create'
       end
       match 'profiles/(:id)' => 'profiles#show', :constraints => {:id => /[^\/]+/}, via: :get, :format => false
       match 'profiles/(:id)' => 'profiles#update', :constraints => {:id => /[^\/]+/}, via: :put, :format => false
       match 'profiles/(:profile_id)/apply' => 'applications#create', :constraints => {:profile_id => /[^\/]+/}, via: :post, :format => false
+
       resources :sessions
 
       resources :ratings
