@@ -40,7 +40,7 @@ export const AlertHost = ({}) => {
           color: #fff;
           border-radius: 4px;
           font-size: 14px;
-          height: 47px;
+          height: auto;
           max-width: 100%;
           transition: top 0.4s, bottom 0.4s;
         }

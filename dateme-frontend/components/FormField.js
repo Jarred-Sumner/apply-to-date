@@ -16,8 +16,13 @@ const PlacesAutocomplete = scriptLoader(
 
 export { geocodeByAddress, getLatLng } from "react-places-autocomplete";
 
+export { default as PasswordFormField } from "./FormField/PasswordFormField";
+export { default as UsernameFormField } from "./FormField/UsernameFormField";
 export { default as SexFormField } from "./FormField/SexFormField";
 export { default as TOSFormField } from "./FormField/TermsOfService";
+export {
+  default as InterestedInFormField
+} from "./FormField/InterestedInFormField";
 
 const Suggestion = ({ suggestion, isSelected }) => (
   <div className={classNames("Wrapper", { "Wrapper--selected": isSelected })}>

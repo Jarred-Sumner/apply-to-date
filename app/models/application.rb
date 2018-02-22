@@ -67,6 +67,11 @@ class Application < ApplicationRecord
     DEFAULT_SECTIONS.map { |s| [s, sections[s] || '']}.to_h
   end
 
+  def self.leaderboard
+    fake_emails = User::PROBABLY_FAKE_ACCOUNTS.map { |email| "%#{email}%"}
+    Application.where("status > 0").where.not("lower(email) ~~ ANY('{#{fake_emails.join(",")}}')").select('profile_id').group(:profile_id).having("count(profile_id) > 0").order("count(profile_id) DESC").count
+  end
+
   before_validation on: :create do
     self.user ||= profile.user
     self.sections = build_default_sections

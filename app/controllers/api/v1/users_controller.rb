@@ -6,10 +6,6 @@ class Api::V1::UsersController < Api::V1::ApplicationController
         return render_error(message: "Please choose your gender")
       end
 
-      if create_params[:interested_in_men].blank? && create_params[:interested_in_women].blank? && create_params[:interested_in_other].blank?
-        return render_error(message: "Please fill out the interested in section")
-      end
-
       username = String(create_params[:username]).downcase
 
       if User.blacklisted_username?(username)
@@ -26,6 +22,10 @@ class Api::V1::UsersController < Api::V1::ApplicationController
         return render_error(message: "Please don't include a slash in your username :)")
       elsif username.blank?
         return render_error(message: "Please enter a username")
+      end
+
+      if create_params[:interested_in_men].blank? && create_params[:interested_in_women].blank? && create_params[:interested_in_other].blank?
+        return render_error(message: "Please fill out the interested in section")
       end
 
       @user = User.create!(create_params.merge(password_confirmation: create_params[:password], username: username))
@@ -45,6 +45,17 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 
         VerifiedNetwork.create!(profile_id: @profile.id, external_authentication_id: @external_authentication.id)
         @profile.update(recommended_contact_method: @external_authentication.provider)
+      elsif Array(params[:external_authentication_ids]).present?
+        auths = ExternalAuthentication.where(user_id: nil, id: Array(params[:external_authentication_ids]))
+        if auths.blank?
+          raise ArgumentError.new("You already have an account. To continue, please login")
+        end
+
+        auths.each do |auth|
+          auth.update!(user_id: @user.id)
+          VerifiedNetwork.create!(profile_id: @profile.id, external_authentication_id: auth.id)
+        end
+        @profile.update!(recommended_contact_method: auths.first.provider)
       end      
 
       auto_login(@user, true)
@@ -54,6 +65,8 @@ class Api::V1::UsersController < Api::V1::ApplicationController
     render json: UserSerializer.new(@user, {include: [:profile]}).serializable_hash
   rescue ActiveRecord::RecordInvalid => e
     render_validation_error(e)
+  rescue ArgumentError => e
+    render_error(message: e.message)
   end
 
   def me

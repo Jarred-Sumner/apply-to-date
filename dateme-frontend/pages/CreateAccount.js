@@ -15,7 +15,10 @@ import FormField, {
   geocodeByAddress,
   getLatLng,
   SexFormField,
-  TOSFormField
+  TOSFormField,
+  UsernameFormField,
+  PasswordFormField,
+  InterestedInFormField
 } from "../components/FormField";
 import Icon from "../components/Icon";
 import ExternalAuthentication, {
@@ -64,7 +67,7 @@ class CreateAccount extends React.Component {
     }
 
     if (!this.state.termsOfService) {
-      return Alert.error("To continue, you msut agree to the terms of service");
+      return Alert.error("To continue, you must agree to the terms of service");
     }
 
     this.setState({
@@ -203,6 +206,8 @@ class CreateAccount extends React.Component {
                 placeholder="e.g. Luke Miles"
               />
 
+              <UsernameFormField value={username} onChange={this.setUsername} />
+
               <FormField
                 label="email"
                 type="email"
@@ -214,13 +219,9 @@ class CreateAccount extends React.Component {
                 placeholder="youremail@gmail.com"
               />
 
-              <FormField
-                label="Password"
+              <PasswordFormField
                 required
-                name="password"
                 value={password}
-                minLength={3}
-                type="password"
                 onChange={this.setPassword}
               />
 
@@ -234,49 +235,14 @@ class CreateAccount extends React.Component {
                 onChange={this.setPasswordConfirmation}
               />
 
-              <FormField
-                label="Page"
-                required
-                name="username"
-                value={username}
-                onChange={this.setUsername}
-                placeholder="username"
-              >
-                <input
-                  type="url"
-                  tabIndex={-1}
-                  name="url"
-                  value={process.env.SHARE_DOMAIN + "/"}
-                  readOnly
-                />
-              </FormField>
-
               <SexFormField value={sex} onChange={this.setSex} />
 
-              <FormField
-                label="Interested in"
-                type="checkbox"
+              <InterestedInFormField
+                interestedInMen={interestedInMen}
+                interestedInWomen={interestedInWomen}
+                interestedInOther={interestedInOther}
                 required
-                name="interestedIn"
                 onChange={this.setInterestedIn}
-                showBorder={false}
-                checkboxes={[
-                  {
-                    checked: interestedInMen,
-                    label: "Men",
-                    name: "interestedInMen"
-                  },
-                  {
-                    checked: interestedInWomen,
-                    label: "Women",
-                    name: "interestedInWomen"
-                  },
-                  {
-                    checked: interestedInOther,
-                    label: "Other",
-                    name: "interestedInOther"
-                  }
-                ]}
               />
 
               <FormField
@@ -306,29 +272,6 @@ class CreateAccount extends React.Component {
             grid-row-gap: 30px;
             justify-content: center;
             text-align: center;
-          }
-
-          input[type="url"] {
-            border: 0;
-            display: flex;
-            outline: 0;
-            appearance: none;
-            box-shadow: none;
-            border: 0;
-            font-size: 14px;
-            font-weight: 400;
-            font-family: Lucida Grande, Open Sans, sans-serif;
-            opacity: 0.75;
-            background-color: #f0f2f7;
-            margin-top: -12px;
-            margin-bottom: -12px;
-            margin-left: -22px;
-            padding-left: 22px;
-            cursor: default;
-            margin-right: 12px;
-            border-right: 1px solid #e3e8f0;
-            border-top-left-radius: 100px;
-            border-bottom-left-radius: 100px;
           }
 
           footer {

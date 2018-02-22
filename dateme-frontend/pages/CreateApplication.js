@@ -2,13 +2,19 @@ import Link from "next/link";
 import Head from "../components/head";
 import { Router } from "../routes";
 import withRedux from "next-redux-wrapper";
-import { updateEntities, setCurrentUser, initStore } from "../redux/store";
+import {
+  updateEntities,
+  setCurrentUser,
+  setLoginStatus,
+  initStore
+} from "../redux/store";
 import {
   getProfile,
   getCurrentUser,
   updateProfile,
   getSavedApplication,
-  updateApplication
+  updateApplication,
+  createAccount
 } from "../api";
 import { bindActionCreators } from "redux";
 import Header from "../components/Header";
@@ -25,7 +31,13 @@ import Alert, { handleApiError } from "../components/Alert";
 import LoginGate from "../components/LoginGate";
 import Photo from "../components/EditProfile/Photo";
 import Page from "../components/Page";
-import FormField, { SexFormField, TOSFormField } from "../components/FormField";
+import FormField, {
+  SexFormField,
+  TOSFormField,
+  UsernameFormField,
+  PasswordFormField,
+  InterestedInFormField
+} from "../components/FormField";
 import EditSocialLinks from "../components/EditSocialLinks";
 import VerifyNetworksSection from "../components/VerifyNetworksSection";
 import qs from "qs";
@@ -91,7 +103,8 @@ class CreateApplication extends React.Component {
         phone: _.get(state, "phone") || undefined,
         email: _.get(state, "email") || undefined,
         socialLinks: _.get(state, "socialLinks") || undefined,
-        sex: _.get(state, "sex") || undefined
+        sex: _.get(state, "sex") || undefined,
+        username: _.get(state, "username") || undefined
       },
       {
         name: _.get(props, "url.query.name", undefined),
@@ -103,7 +116,8 @@ class CreateApplication extends React.Component {
           "instagram",
           "linkedin"
         ]),
-        sex: _.get(props, "url.query.sex", undefined)
+        sex: _.get(props, "url.query.sex", undefined),
+        username: _.get(props, "url.query.username", undefined)
       },
       {
         name: _.get(props, "application.name", undefined),
@@ -124,7 +138,9 @@ class CreateApplication extends React.Component {
         email: "",
         phone: "",
         sections: {},
-        sex: ""
+        sex: "",
+        username: "",
+        password: ""
       }
     );
   };
@@ -138,7 +154,12 @@ class CreateApplication extends React.Component {
       currentPhotoIndex: null,
       isHeaderSticky: false,
       isSavingProfile: false,
+      didCreateAccount: false,
       ...this.getDefaultValues(props, {}),
+      shouldCreateAccount: !props.isProbablyLoggedIn,
+      interestedInMen: false,
+      interestedInWomen: false,
+      interestedInOther: false,
       externalAuthentications: buildExternalAuthentications({
         application: _.get(props, "application"),
         url: _.get(props, "url")
@@ -151,6 +172,11 @@ class CreateApplication extends React.Component {
       this.setState(this.getDefaultValues(this.props, this.state));
     }
   }
+
+  setInterestedIn = (name, isInterested) =>
+    this.setState({
+      [name]: !!isInterested
+    });
 
   saveApplication = async (status = "pending") => {
     const {
@@ -165,19 +191,6 @@ class CreateApplication extends React.Component {
       phone
     } = this.state;
     const { id: profileId } = this.props.profile;
-
-    if (_.isEmpty(externalAuthentications)) {
-      Alert.error("Please include an online profile");
-      return;
-    }
-
-    if (isSavingProfile) {
-      return;
-    }
-
-    this.setState({
-      isSavingProfile: true
-    });
 
     return updateApplication({
       profileId,
@@ -214,21 +227,95 @@ class CreateApplication extends React.Component {
       });
   };
 
+  createUserAccount = () => {
+    const {
+      email,
+      name,
+      username,
+      password,
+      sex,
+      externalAuthentications,
+      interestedInMen,
+      interestedInWomen,
+      interestedInOther
+    } = this.state;
+
+    return createAccount({
+      external_authentication_ids: externalAuthentications,
+      profile: {
+        name
+      },
+      user: {
+        email,
+        username,
+        password,
+        sex,
+        interested_in_men: interestedInMen,
+        interested_in_women: interestedInWomen,
+        interested_in_other: interestedInOther
+      }
+    }).then(response => {
+      this.setState({ didCreateAccount: true });
+      const user = _.get(response, "body.data", null);
+      const currentUserId = _.get(response, "body.data.id", null);
+
+      if (user && currentUserId) {
+        this.props.setCurrentUser(currentUserId);
+        this.props.updateEntities(response.body);
+        this.props.setLoginStatus(user);
+      }
+
+      return response;
+    });
+  };
+
   submitApplication = event => {
     event.preventDefault();
+
+    if (this.state.isSavingProfile) {
+      return;
+    }
 
     if (!this.state.termsOfService && !this.props.currentUser) {
       Alert.error("To continue, you must agree to the terms of service");
       return;
     }
 
-    this.saveApplication("submitted").then(response => {
-      if (response) {
-        return Router.push(`/a/${this.props.application.id}`);
-      } else {
-        return;
-      }
+    if (_.isEmpty(this.state.externalAuthentications)) {
+      Alert.error("Please include an online profile");
+      return;
+    }
+
+    this.setState({
+      isSavingProfile: true
     });
+
+    if (this.state.shouldCreateAccount && !this.state.didCreateAccount) {
+      this.createUserAccount()
+        .then(response => {
+          return this.saveApplication("submitted");
+        })
+        .then(response => {
+          if (response) {
+            return Router.push(`/a/${this.props.application.id}`);
+          } else {
+            return;
+          }
+        })
+        .catch(error => handleApiError(error))
+        .finally(() => this.setState({ isSavingProfile: false }));
+    } else {
+      this.saveApplication("submitted")
+        .then(response => {
+          if (response) {
+            return Router.push(`/a/${this.props.application.id}`);
+          } else {
+            return;
+          }
+        })
+        .catch(error => handleApiError(error))
+        .finally(() => this.setState({ isSavingProfile: false }));
+    }
   };
 
   saveToQueryString = () => {
@@ -257,6 +344,7 @@ class CreateApplication extends React.Component {
   };
 
   setSocialLinks = socialLinks => this.setState({ socialLinks });
+  setUsername = username => this.setState({ username });
   setRecommendedContactMethod = recommendedContactMethod =>
     this.setState({ recommendedContactMethod });
   setPhone = phone => this.setState({ phone });
@@ -265,9 +353,13 @@ class CreateApplication extends React.Component {
   setName = name => this.setState({ name });
   setExternalAuthentications = externalAuthentications =>
     this.setState({ externalAuthentications });
+  toggleCreateAccount = () =>
+    this.setState({ shouldCreateAccount: !this.state.shouldCreateAccount });
+
+  setPassword = password => this.setState({ password });
 
   render() {
-    const { profile, currentUser } = this.props;
+    const { profile, currentUser, isProbablyLoggedIn } = this.props;
     const {
       name,
       photos,
@@ -277,7 +369,13 @@ class CreateApplication extends React.Component {
       recommendedContactMethod,
       phone,
       sex,
-      isSavingProfile
+      isSavingProfile,
+      shouldCreateAccount,
+      username,
+      password,
+      interestedInMen,
+      interestedInWomen,
+      interestedInOther
     } = this.state;
 
     return (
@@ -384,15 +482,67 @@ class CreateApplication extends React.Component {
             <SexFormField value={sex} onChange={this.setSex} />
           </div>
 
-          {!currentUser && (
-            <TOSFormField
-              checked={this.state.termsOfService || false}
-              onChange={() =>
-                this.setState({
-                  termsOfService: !this.state.termsOfService
-                })
-              }
-            />
+          {!isProbablyLoggedIn && (
+            <div className="Section-row">
+              <FormField
+                type="checkbox"
+                name="create-a-page"
+                onChange={this.toggleCreateAccount}
+                showBorder={false}
+                checkboxes={[
+                  {
+                    checked: shouldCreateAccount,
+                    label:
+                      "Create an account to make applying faster next time",
+                    name: "create-a-page",
+                    size: "small"
+                  }
+                ]}
+              />
+
+              {shouldCreateAccount && (
+                <React.Fragment>
+                  <div className="Section-subrow">
+                    <UsernameFormField
+                      required={shouldCreateAccount}
+                      value={username}
+                      onChange={this.setUsername}
+                    />
+                  </div>
+
+                  <div className="Section-subrow">
+                    <PasswordFormField
+                      required={shouldCreateAccount}
+                      value={password}
+                      onChange={this.setPassword}
+                    />
+                  </div>
+
+                  <div className="Section-subrow">
+                    <InterestedInFormField
+                      interestedInMen={interestedInMen}
+                      interestedInWomen={interestedInWomen}
+                      interestedInOther={interestedInOther}
+                      required={shouldCreateAccount}
+                      onChange={this.setInterestedIn}
+                    />
+                  </div>
+                </React.Fragment>
+              )}
+            </div>
+          )}
+
+          {!isProbablyLoggedIn && (
+            <div className="Section-subrow">
+              <TOSFormField
+                checked={this.state.termsOfService || false}
+                onChange={() =>
+                  this.setState({
+                    termsOfService: !this.state.termsOfService
+                  })
+                }
+              />
+            </div>
           )}
 
           <Button pending={isSavingProfile}>
@@ -437,7 +587,15 @@ const CreateApplicationWithStore = withRedux(
       application: state.application[applicationId]
     };
   },
-  dispatch => bindActionCreators({ updateEntities }, dispatch)
+  dispatch =>
+    bindActionCreators(
+      {
+        updateEntities,
+        setCurrentUser,
+        setLoginStatus
+      },
+      dispatch
+    )
 )(LoginGate(CreateApplication));
 
 export default CreateApplicationWithStore;
