@@ -37,12 +37,29 @@ class ExternalAuthentication < ApplicationRecord
     ExternalAuthentication.new(props)
   end
 
+  def self.facebook_graph_api(token)
+    Koala::Facebook::API.new(token, Rails.application.secrets[:facebook_secret])
+  end
+
   def self.get_facebook_details(token)
-    graph = Koala::Facebook::API.new(token, Rails.application.secrets[:facebook_secret])
+    graph = facebook_graph_api(token)
 
     graph.batch do |batch_api|
       batch_api.get_object('me', {:fields => [:name, :email, :id, :location]})
     end
+  end
+
+  def build_facebook_photo_url
+    return nil if provider != 'facebook'
+
+    "https://graph.facebook.com/#{uid}/picture?width=2048&height=2048&access_token=#{access_token}"
+  end
+
+  def build_twitter_photo_url
+    return nil if provider != 'twitter'
+    return nil if info['image'].blank?
+
+    info['image'].gsub('_normal', '')
   end
 
   def get_facebook_details

@@ -56,7 +56,13 @@ class Api::V1::UsersController < Api::V1::ApplicationController
           VerifiedNetwork.create!(profile_id: @profile.id, external_authentication_id: auth.id)
         end
         @profile.update!(recommended_contact_method: auths.first.provider)
-      end      
+      end
+
+      if @profile.build_default_photo_url.present?
+        upload = Upload.upload_from_url(@profile.build_default_photo_url)
+        @profile.photos.push(Upload.get_public_url(upload.public_url))
+        @profile.save!
+      end
 
       auto_login(@user, true)
     end

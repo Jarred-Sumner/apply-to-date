@@ -51,7 +51,6 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
         profile.update!(tagline: update_params[:tagline])
       end
 
-
       if !update_params[:photos].nil?
         photos = Array(update_params[:photos])
         if photos.blank?
