@@ -45,7 +45,8 @@ export default ({
   isLoading = false,
   children,
   size = "default",
-  renderMessage
+  renderMessage,
+  renderOutside
 }) => {
   const classes = classNames("PageSize", {
     "PageSize--default": size === "default",
@@ -57,6 +58,7 @@ export default ({
     <React.Fragment>
       <Header {...headerProps} />
       {renderMessage && renderMessage()}
+      {renderOutside && renderOutside()}
       <main id="PageRoot" className={classes}>
         {isLoading && <PageSpinner />}
         {isLoading && <Head />}

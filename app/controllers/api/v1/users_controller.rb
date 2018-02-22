@@ -34,7 +34,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
         create_profile_params.merge(
           user: @user,
           id: username,
-          visible: false,
+          visible: true,
         )
       )
 

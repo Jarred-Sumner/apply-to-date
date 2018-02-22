@@ -11,10 +11,6 @@ class Profile < ApplicationRecord
     Profile.where(visible: true).where(user_id: User.real_accounts.pluck(:id))
   end
   
-  validates :name, presence: true, :if => :visible?
-  validates :tagline, presence: true, :if => :visible?
-  validates :photos, presence: true, :if => :visible?
-
   CONTACT_METHOD_LABEL = {
     phone: "text message",
     twitter: "DM on Twitter",

@@ -3,6 +3,7 @@ import Head from "../components/head";
 import Nav from "../components/nav";
 import { Router } from "../routes";
 import withRedux from "next-redux-wrapper";
+import classNames from "classnames";
 import { updateEntities, setCurrentUser, initStore } from "../redux/store";
 import {
   getProfile,
@@ -38,6 +39,9 @@ import {
   buildProfileURL,
   buildProfileShareURL
 } from "../lib/routeHelpers";
+import ProfileProgress, {
+  PROFILE_SELECTORS
+} from "../components/ProfileProgress";
 import Sticky from "react-stickynode";
 
 const SECTION_ORDERING = [
@@ -136,8 +140,6 @@ class VerifySocialNetworksContainer extends React.Component {
       externalAuthentications: [],
       isLoading: true
     };
-
-    this.isMobile = false;
   }
 
   async componentDidMount() {
@@ -147,8 +149,6 @@ class VerifySocialNetworksContainer extends React.Component {
       externalAuthentications: response.body.data,
       isLoading: false
     });
-
-    this.isMobile = getMobileDetect().mobile();
   }
 
   componentWillReceiveProps(props) {
@@ -200,6 +200,10 @@ class EditProfile extends React.Component {
     if (props.profile !== this.props.profile) {
       this.setState(getProfileFromProps(props));
     }
+  }
+
+  componentWillMount() {
+    this.isMobile = getMobileDetect().mobile();
   }
 
   handleSaveProfile = async (showAlert = true) => {
@@ -353,6 +357,20 @@ class EditProfile extends React.Component {
 
     return (
       <Page
+        renderOutside={() => (
+          <ProfileProgress
+            isMobile={this.isMobile}
+            profile={{
+              name,
+              tagline,
+              socialLinks,
+              photos,
+              sections: this.state.sections,
+              recommendedContactMethod,
+              phone
+            }}
+          />
+        )}
         headerProps={{
           isSticky: false,
           renderSubheader: () => (
@@ -410,8 +428,12 @@ class EditProfile extends React.Component {
         }}
       >
         <Head title="Edit Page | Apply to Date" />
-
-        <section className="Section Section--center Section--title">
+        <section
+          className={classNames(
+            "Section Section--center Section--title",
+            PROFILE_SELECTORS.name
+          )}
+        >
           <Text type="ProfilePageTitle">
             <div className="name-intro">👋 Hi, I'm: </div>
             <EditableText
@@ -424,7 +446,12 @@ class EditProfile extends React.Component {
           </Text>
         </section>
 
-        <section className="Section Section-row--Tagline">
+        <section
+          className={classNames(
+            "Section Section-row--Tagline",
+            PROFILE_SELECTORS.tagline
+          )}
+        >
           <TextArea
             placeholder="Enter a one-liner about yourself"
             type="Tagline"
@@ -442,7 +469,9 @@ class EditProfile extends React.Component {
             </Text>
           </div>
 
-          <div className="Verify">
+          <div
+            className={classNames("Verify", PROFILE_SELECTORS.contactMethod)}
+          >
             <VerifySocialNetworksContainer
               externalAuthentications={externalAuthentications}
               recommendedContactMethod={recommendedContactMethod}
@@ -455,7 +484,9 @@ class EditProfile extends React.Component {
           </div>
         </section>
 
-        <section className="Section">
+        <section
+          className={classNames("Section", PROFILE_SELECTORS.socialLinks)}
+        >
           <div className="TextGroup">
             <Text type="title">Public social media</Text>
             <Text wrap>
@@ -470,7 +501,12 @@ class EditProfile extends React.Component {
           />
         </section>
 
-        <section className="Section Section--photos">
+        <section
+          className={classNames(
+            "Section Section--photos",
+            PROFILE_SELECTORS.photos
+          )}
+        >
           <Text type="label">Share some pics</Text>
           <EditablePhotos
             photos={photos}
@@ -481,7 +517,13 @@ class EditProfile extends React.Component {
         <section className="Section Section--bio">
           {this.paragraphs().map(paragraph => {
             return (
-              <div key={paragraph.key} className="Section-row Section-row--bio">
+              <div
+                key={paragraph.key}
+                className={classNames(
+                  "Section-row Section-row--bio",
+                  PROFILE_SELECTORS[paragraph.key]
+                )}
+              >
                 <div>
                   <Text className="Section-title" type="title">
                     {paragraph.title}
