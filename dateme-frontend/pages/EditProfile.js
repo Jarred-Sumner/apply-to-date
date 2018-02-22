@@ -47,6 +47,25 @@ const SECTION_ORDERING = [
   "not-looking-for"
 ];
 
+const PRODUCTION_SECTION_EXAMPLES = {
+  introduction: "amanda",
+  background: "ry",
+  "looking-for": "jess",
+  "not-looking-for": "rodrigo"
+};
+
+const DEVELOPMENT_SECTION_EXAMPLES = {
+  introduction: "lucy",
+  background: "jarred",
+  "looking-for": "lucy",
+  "not-looking-for": "jarred"
+};
+
+const SECTION_EXAMPLES =
+  process.env.NODE_ENV === "production"
+    ? PRODUCTION_SECTION_EXAMPLES
+    : DEVELOPMENT_SECTION_EXAMPLES;
+
 const SECTION_LABELS = {
   introduction: "Introduction",
   background: "Background",
@@ -469,7 +488,9 @@ class EditProfile extends React.Component {
                   </Text>
                   <a
                     className="example-link"
-                    href={`/lucy#${paragraph.key}`}
+                    href={`${buildProfileURL(
+                      SECTION_EXAMPLES[paragraph.key]
+                    )}#${paragraph.key}`}
                     target="_blank"
                   >
                     See an example
