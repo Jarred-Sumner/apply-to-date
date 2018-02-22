@@ -119,9 +119,7 @@ class ProfileGate extends React.Component {
   }
 
   async componentDidMount() {
-    if (this.props.loginStatus !== LOGIN_STATUSES.checking) {
-      this.loadProfile(this.props);
-    }
+    this.loadProfile(this.props);
   }
 
   loadProfile = async props => {
@@ -137,11 +135,14 @@ class ProfileGate extends React.Component {
     });
 
     this.props.updateEntities(profileResponse.body);
+    const profileId = _.get(profileResponse, "body.data.id", null);
 
     this.setState({
-      profileId: _.get(profileResponse, "body.data.id", null),
+      profileId: profileId,
       isLoadingProfile: false
     });
+
+    Storage.addDiscoveredProfile(profileId);
   };
 
   handleLoadNextPage = async () => {
