@@ -38,7 +38,8 @@ export default _.memoize((Component, options = {}) => {
       if (
         typeof window !== "undefined" &&
         !options.skipRequest &&
-        loginStatus !== LOGIN_STATUSES.checking
+        loginStatus === LOGIN_STATUSES.pending &&
+        !currentUser
       ) {
         setCheckingLogin();
         const userResponse = await getCurrentUser();

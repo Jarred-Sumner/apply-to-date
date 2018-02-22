@@ -32,15 +32,17 @@ if (typeof window !== "undefined") {
     ReactGA.pageview(url);
   };
 
-  Raven.config(
-    "https://91be53bb2edc4c73a00df349bfc52de2@sentry.io/291484"
-  ).install();
+  if (process.env.NODE_ENV === "production") {
+    Raven.config(
+      "https://91be53bb2edc4c73a00df349bfc52de2@sentry.io/291484"
+    ).install();
 
-  Raven.setEnvironment(process.env.NODE_ENV);
+    Raven.setEnvironment(process.env.NODE_ENV);
 
-  window.onunhandledrejection = function(evt) {
-    Raven.captureException(evt.reason);
-  };
+    window.onunhandledrejection = function(evt) {
+      Raven.captureException(evt.reason);
+    };
+  }
 }
 
 const Head = props => (

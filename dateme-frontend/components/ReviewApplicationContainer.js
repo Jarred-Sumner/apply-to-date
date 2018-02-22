@@ -23,9 +23,14 @@ const EmptyState = ({ profileId }) => {
         </Text>
       </div>
 
-      <CopyURLForm url={url} />
+      <div className="URLForm">
+        <CopyURLForm url={url} />
+        <Text size="14px">
+          Tip: link to your page in your Instagram and Tinder bio
+        </Text>
+      </div>
 
-      <div>
+      <div className="ShareButtons">
         <SharableSocialLink
           provider="twitter"
           width="48px"
@@ -40,11 +45,14 @@ const EmptyState = ({ profileId }) => {
           url={url}
         />
       </div>
+
       <style jsx>{`
         .Container {
           display: grid;
-          grid-template-rows: 1fr 1fr 1fr 1fr;
+          grid-template-rows: auto auto auto auto;
           grid-row-gap: 28px;
+          padding-left: 14px;
+          padding-right: 14px;
           justify-content: center;
           text-align: center;
         }
@@ -56,6 +64,11 @@ const EmptyState = ({ profileId }) => {
           grid-column-gap: 28px;
           justify-content: space-around;
           margin-right: auto;
+        }
+
+        .URLForm {
+          grid-auto-flow: row;
+          grid-row-gap: 14px;
         }
       `}</style>
     </div>

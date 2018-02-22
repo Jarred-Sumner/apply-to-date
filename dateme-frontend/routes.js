@@ -7,6 +7,11 @@ routes
     page: "index"
   })
   .add({
+    name: "Discover",
+    pattern: "/discover",
+    page: "Discover"
+  })
+  .add({
     name: "create-account/no-verify",
     pattern: "/sign-up",
     page: "CreateAccount"

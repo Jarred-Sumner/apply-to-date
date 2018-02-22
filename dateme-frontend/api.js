@@ -29,6 +29,10 @@ export const getProfile = profile => {
   return get("/profiles/" + profile);
 };
 
+export const discoverProfile = (opts = {}) => {
+  return post("/profiles/discover").send(opts);
+};
+
 export const updateProfile = profileObject => {
   const { id, ...profile } = profileObject;
   return put("/profiles/" + id).send({

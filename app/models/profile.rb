@@ -4,6 +4,8 @@ class Profile < ApplicationRecord
   has_many :verified_networks
   has_many :applications
   has_many :external_authentications, through: :verified_networks
+  scope :interested_in, lambda {|sex| sex.present? ? where("users.#{User.interested_in_column_name(sex)} = ?", true) : where("users.interested_in_men = ? OR users.interested_in_women = ? OR users.interested_in_other = ?", true, true, true) }
+    
 
   def self.real
     Profile.where(visible: true).where(user_id: User.real_accounts.pluck(:id))

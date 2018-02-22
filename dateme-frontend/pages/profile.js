@@ -29,20 +29,7 @@ import { getMobileDetect } from "../lib/Mobile";
 import Subheader from "../components/Subheader";
 import { animateScroll } from "react-scroll";
 import Linkify from "react-linkify";
-
-const SECTION_ORDERING = [
-  "introduction",
-  "background",
-  "looking-for",
-  "not-looking-for"
-];
-
-const SECTION_LABELS = {
-  introduction: "Introduction",
-  background: "Background",
-  "looking-for": "Looking for",
-  "not-looking-for": "Not looking for"
-};
+import ProfileComponent from "../components/Profile";
 
 class Profile extends React.Component {
   static async getInitialProps({ query, store, req, isServer }) {
@@ -119,20 +106,6 @@ class Profile extends React.Component {
   enableStickyHeader = () => this.setState({ isHeaderSticky: true });
   disableStickyHeader = () => this.setState({ isHeaderSticky: false });
 
-  paragraphs = () => {
-    const { sections } = this.props.profile;
-
-    const filledSections = _.keys(sections).filter(key => !!sections[key]);
-
-    return _.sortBy(filledSections, key => SECTION_ORDERING.indexOf(key)).map(
-      section => ({
-        key: section,
-        title: SECTION_LABELS[section],
-        body: sections[section]
-      })
-    );
-  };
-
   render() {
     const { profile, currentUser } = this.props;
     if (!profile) {
@@ -184,145 +157,18 @@ class Profile extends React.Component {
           ogImage={_.first(profile.photos)}
         />
 
-        <section className="Section Section--center Section--title">
-          {profile.photos.length === 1 && (
-            <div className="Section-row Section-row--centered">
-              <PhotoGroup
-                size="192px"
-                showPlaceholder={false}
-                photos={profile.photos}
-                circle
-                max={1}
-              />
-            </div>
-          )}
+        <ProfileComponent
+          profile={profile}
+          onScrollEnterAskButton={this.disableStickyHeader}
+          onScrollLeaveAskButton={this.enableStickyHeader}
+        />
 
-          <div className="Section-row">
-            <Text highlightId="title" type="ProfilePageTitle">
-              👋 &nbsp;
-              <Typed
-                strings={[
-                  `Hi, I'm ${titleCase(profile.name)}.`,
-                  "We should meet.",
-                  "Leave me a note."
-                ]}
-                typeSpeed={60}
-                backSpeed={30}
-                backDelay={4000}
-                loop={true}
-              />
-            </Text>
-          </div>
-
-          <div className="Section-row">
-            <Text highlightId="tagline" type="Tagline">
-              <Linkify
-                properties={{
-                  target: "_blank",
-                  className: "LinkifyLink"
-                }}
-              >
-                {profile.tagline}
-              </Linkify>
-            </Text>
-          </div>
-
-          <SocialLinkList socialLinks={profile.socialLinks} />
-          <Waypoint
-            onEnter={this.disableStickyHeader}
-            onLeave={this.enableStickyHeader}
-          >
-            <div className="Section-row ApplicationForm">
-              <AskProfileOutButton profile={profile} />
-            </div>
-          </Waypoint>
-        </section>
-
-        {profile.photos.length > 1 && (
-          <section className="Section">
-            <PhotoGroup
-              size="206px"
-              showPlaceholder={false}
-              photos={profile.photos}
-            />
-          </section>
-        )}
-
-        <section className="Section Section--bio">
-          {this.paragraphs().map(paragraph => {
-            return (
-              <div key={paragraph.key} className="Section-row Section-row--bio">
-                <Text className="Section-title" type="title">
-                  {paragraph.title}
-                </Text>
-
-                <Text highlightId={paragraph.key} type="paragraph">
-                  <Linkify
-                    properties={{
-                      target: "_blank",
-                      className: "LinkifyLink"
-                    }}
-                  >
-                    {paragraph.body}
-                  </Linkify>
-                </Text>
-              </div>
-            );
-          })}
-        </section>
         <style jsx>{`
-          .Section {
-            margin-top: 4rem;
-
-            display: grid;
-            grid-row-gap: 2rem;
-            max-width: 100%;
-          }
-
-          .HeaderForm {
-            margin-left: auto;
-            margin-right: auto;
-            width: 50%;
-          }
-
-          .Section-row {
-            width: 100%;
-          }
-
-          .Section-title {
-            margin-bottom: 14px;
-          }
-
-          .Section-tagline {
-            font-size: 18px;
-          }
-
-          .Section-row--bio {
-            display: grid;
-            grid-row-gap: 1rem;
-          }
-
-          .Section--row--center {
-            justify-content: center;
-            margin-left: auto;
-            margin-right: auto;
-          }
-
-          .Section--center {
-            text-align: center;
-          }
-
           .HeaderApply {
             position: absolute;
             left: 0;
             right: 0;
             width: min-content;
-            margin-left: auto;
-            margin-right: auto;
-          }
-
-          .ApplicationForm {
-            max-width: max-content;
             margin-left: auto;
             margin-right: auto;
           }

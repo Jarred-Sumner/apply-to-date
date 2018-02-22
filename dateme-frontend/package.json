@@ -81,6 +81,7 @@
     "invariant": "^2.2.2",
     "is-social": "^1.1.1",
     "less": "^2.7.3",
+    "localforage": "^1.5.6",
     "lodash": "^4.17.5",
     "mobile-detect": "^1.4.1",
     "next": "^5.0.0",

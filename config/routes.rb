@@ -16,9 +16,9 @@ Rails.application.routes.draw do
       resources :profiles do
         post 'apply' => 'applications#create'
       end
-      match 'profiles/(:id)' => 'profiles#show', :constraints => {:id => /[^\/]+/}, via: :get
-      match 'profiles/(:id)' => 'profiles#update', :constraints => {:id => /[^\/]+/}, via: :put
-      
+      match 'profiles/(:id)' => 'profiles#show', :constraints => {:id => /[^\/]+/}, via: :get, :format => false
+      match 'profiles/(:id)' => 'profiles#update', :constraints => {:id => /[^\/]+/}, via: :put, :format => false
+      match 'profiles/(:profile_id)/apply' => 'applications#create', :constraints => {:profile_id => /[^\/]+/}, via: :post, :format => false
       resources :sessions
 
       resources :ratings

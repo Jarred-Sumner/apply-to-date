@@ -9,6 +9,43 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
     end
   end
 
+  def discover
+    interested_in_sexes = []
+    
+    if current_user.present?
+      interested_in_sexes = current_user.interested_in_sexes
+    else
+      interested_in_sexes = ['male', 'female', 'other']
+      if params[:interested_in_men] != 'true'
+        interested_in_sexes.delete('male')
+      end
+
+      if params[:interested_in_women] != 'true'
+        interested_in_sexes.delete('women')
+      end
+
+      if params[:interested_in_other] != 'true'
+        interested_in_sexes.delete('other')
+      end
+    end
+
+    sex = current_user.try(:sex) || params[:sex]
+
+    profiles_query = Profile
+      .joins(:user)
+      .where(visible: true)
+    
+    if sex.present?
+      profiles_query = profiles_query.where(users: { sex: interested_in_sexes }).interested_in(sex)
+    end
+      
+    profiles_query = profiles_query
+      .where.not(profiles: { id: Array(params[:exclude]) })
+      .order("updated_at DESC")
+
+    render_profile(profiles_query.first)
+  end
+
   def show
     if current_user.try(:username) == params[:id]
       profile = Profile.includes(:external_authentications).find_by(id: params[:id])

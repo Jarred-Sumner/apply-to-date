@@ -1,6 +1,7 @@
 import { FullStory } from "react-fullstory-component";
 import { connect } from "react-redux";
 import _ from "lodash";
+import Storage from "../lib/Storage";
 
 const settings = {
   debug: process.env.NODE_ENV !== "production",
@@ -8,21 +9,9 @@ const settings = {
   orgKey: "AMFBS"
 };
 
-function randId() {
-  return Math.random()
-    .toString(36)
-    .substr(2, 10);
-}
-
 class FullStoryWrapper extends React.Component {
-  componentDidMount() {
-    let id = localStorage["fullstoryid"];
-    if (!id) {
-      id = randId();
-      localStorage["fullstoryid"] = id;
-    }
-
-    this.id = id;
+  async componentDidMount() {
+    this.id = await Storage.fullstoryId();
   }
 
   componentWillUnmount() {

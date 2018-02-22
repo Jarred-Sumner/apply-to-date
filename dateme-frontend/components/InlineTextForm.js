@@ -84,9 +84,9 @@ export default class InlineTextForm extends React.Component {
 
             .Form--showInputOnMobile :global(.InlineApply-TextInput) {
               height: 100%;
-              padding-top: 14px;
-              padding-left: 14px;
-              padding-bottom: 14px;
+              padding-top: 7px;
+              padding-left: 0px;
+              padding-bottom: 7px;
 
               border-top-left-radius: 4px;
               border-top-right-radius: 4px;

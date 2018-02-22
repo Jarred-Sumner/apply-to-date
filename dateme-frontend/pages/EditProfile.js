@@ -482,7 +482,7 @@ class EditProfile extends React.Component {
           {this.paragraphs().map(paragraph => {
             return (
               <div key={paragraph.key} className="Section-row Section-row--bio">
-                <div class="section-row">
+                <div>
                   <Text className="Section-title" type="title">
                     {paragraph.title}
                   </Text>
