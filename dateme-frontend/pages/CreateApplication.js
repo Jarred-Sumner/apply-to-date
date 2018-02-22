@@ -533,7 +533,7 @@ class CreateApplication extends React.Component {
           )}
 
           {!isProbablyLoggedIn && (
-            <div className="Section-subrow">
+            <div className="Section-row">
               <TOSFormField
                 checked={this.state.termsOfService || false}
                 onChange={() =>
