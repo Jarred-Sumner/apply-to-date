@@ -26,7 +26,6 @@ const Step = ({ checked, children, onClick }) => (
 export const PROFILE_SELECTORS = {
   name: "EditProfile-title",
   tagline: "EditProfile-tagline",
-  contactMethod: "EditProfile-contactMethod",
   socialLinks: "EditProfile-socialLinks",
   photos: "EditProfile-photos",
   introduction: "EditProfile-introduction",
@@ -36,7 +35,6 @@ export const PROFILE_SELECTORS = {
 const STEPS = {
   name: "name",
   tagline: "tagline",
-  contactMethod: "contactMethod",
   socialLinks: "socialLinks",
   photos: "photos",
   introduction: "introduction",
@@ -44,11 +42,10 @@ const STEPS = {
 };
 
 const STEP_PERCENTAGES = {
-  name: 0.2,
-  tagline: 0.15,
-  contactMethod: 0.2,
+  name: 0.25,
+  tagline: 0.1,
   socialLinks: 0.2,
-  photos: 0.2,
+  photos: 0.25,
   introduction: 0.1,
   background: 0.1
 };
@@ -87,17 +84,9 @@ export default class ProfileProgress extends React.Component {
       return _.get(profile, "tagline", "").length > 10;
     } else if (step === STEPS.socialLinks) {
       return (
-        _.filter(_.values(_.get("profile", "socialLinks", {})), _.identity)
+        _.filter(_.values(_.get(profile, "socialLinks", {})), _.identity)
           .length > 1
       );
-    } else if (step === STEPS.contactMethod) {
-      if (profile.recommendedContactMethod === "phone") {
-        return profile.phone && profile.phone.length > 5;
-      } else {
-        return !!_.get(profile, "socialLinks", {})[
-          profile.recommendedContactMethod
-        ];
-      }
     } else if (step === STEPS.photos) {
       return _.get(profile, "photos", []).length > 0;
     } else if (step === STEPS.introduction) {
@@ -156,12 +145,6 @@ export default class ProfileProgress extends React.Component {
               checked={this.isChecked(STEPS.socialLinks)}
             >
               Link 2+ social profiles
-            </Step>
-            <Step
-              onClick={() => this.handleScrollToEditPart(STEPS.contactMethod)}
-              checked={this.isChecked(STEPS.contactMethod)}
-            >
-              Contact method for matches
             </Step>
             <Step
               onClick={() => this.handleScrollToEditPart(STEPS.tagline)}
