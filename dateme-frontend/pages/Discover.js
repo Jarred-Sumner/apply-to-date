@@ -39,7 +39,7 @@ import Storage from "../lib/Storage";
 const SeeAnotherPageButton = ({ onClick }) => {
   return (
     <Button onClick={onClick} size="large" color="green">
-      See another page
+      Next person
     </Button>
   );
 };
