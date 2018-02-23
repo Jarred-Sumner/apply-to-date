@@ -1,7 +1,13 @@
+import initReactFastclick from "react-fastclick";
+
 if (typeof window !== "undefined") {
   window.Promise = require("bluebird");
 } else if (typeof global !== "undefined") {
   global.Promise = require("bluebird");
+}
+
+if (typeof window !== "undefined") {
+  initReactFastclick();
 }
 
 export default ({}) => (
@@ -146,6 +152,11 @@ export default ({}) => (
 
     * {
       box-sizing: border-box;
+    }
+
+    html,
+    body {
+      -webkit-tap-highlight-color: transparent;
     }
 
     a {

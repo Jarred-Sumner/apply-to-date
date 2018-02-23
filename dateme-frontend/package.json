@@ -103,6 +103,7 @@
     "react-cropper": "^1.0.1",
     "react-dom": "^16.2.0",
     "react-dropzone": "^4.2.7",
+    "react-fastclick": "^3.0.2",
     "react-fullstory-component": "^2.1.0",
     "react-ga": "^2.4.1",
     "react-hamburger-menu": "^1.0.0",
