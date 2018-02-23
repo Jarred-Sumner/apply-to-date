@@ -35,7 +35,10 @@ class Profile extends React.Component {
   static async getInitialProps({ query, store, req, isServer }) {
     const profileResponse = await getProfile(query.id);
 
+    const profileId = _.get(profileResponse, "body.data.id");
     store.dispatch(updateEntities(profileResponse.body));
+
+    return { profileId };
   }
 
   constructor(props) {
@@ -213,7 +216,10 @@ const ProfileWithStore = withRedux(
   initStore,
   (state, props) => {
     return {
-      profile: state.profile[decodeURI(props.url.query.id.toLowerCase())]
+      profile:
+        state.profile[
+          props.profileId || decodeURI(props.url.query.id.toLowerCase())
+        ]
     };
   },
   dispatch => bindActionCreators({ updateEntities }, dispatch),
