@@ -23,7 +23,7 @@ class Profile < ApplicationRecord
                    :lng_column_name => :longitude
 
   def self.real
-    Profile.where(visible: true).where(user_id: User.real_accounts.pluck(:id)).where("array_length(photos, 1) > 0").where("social_links != '{}'")
+    Profile.where(visible: true).where(user_id: User.real_accounts.pluck(:id)).where("array_length(photos, 1) > 0")
   end
 
   def could_be_interested_in?(profile)
