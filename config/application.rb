@@ -20,6 +20,11 @@ module Dateme
         domain: 'mail.applytodate.com'
     }
 
+    config.session_store(
+      :cookie_store,
+      key: '_dateme_session',
+      expire_after: 2.years
+    )
 
     config.middleware.insert_before 0, Rack::Cors do
       allow do
