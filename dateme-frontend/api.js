@@ -25,8 +25,8 @@ export const getCurrentUser = (options = {}) => {
   return get("/users/me", options);
 };
 
-export const getProfile = profile => {
-  return get("/profiles/" + profile);
+export const getProfile = id => {
+  return post("/profiles/get").send({ id });
 };
 
 export const getNewMatchmake = ({ exclude }) => {
@@ -52,7 +52,8 @@ export const discoverProfile = (opts = {}) => {
 
 export const updateProfile = profileObject => {
   const { id, ...profile } = profileObject;
-  return put("/profiles/" + id).send({
+  return put("/profiles").send({
+    id,
     profile
   });
 };

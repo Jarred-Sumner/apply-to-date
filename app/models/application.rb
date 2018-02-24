@@ -49,7 +49,7 @@ class Application < ApplicationRecord
     end
 
     application = Application.where(
-      email: String(email).downcase,
+      email: String(email),
       profile_id: profile.id
     ).first_or_initialize
     application.save! unless application.persisted?
@@ -69,7 +69,7 @@ class Application < ApplicationRecord
 
   def self.leaderboard
     fake_emails = User::PROBABLY_FAKE_ACCOUNTS.map { |email| "%#{email}%"}
-    Application.where("status > 0").where.not("lower(email) ~~ ANY('{#{fake_emails.join(",")}}')").select('profile_id').group(:profile_id).having("count(profile_id) > 0").order("count(profile_id) DESC").count
+    Application.where("status > 0").where.not("email ~~ ANY('{#{fake_emails.join(",")}}')").select('profile_id').group(:profile_id).having("count(profile_id) > 0").order("count(profile_id) DESC").count
   end
 
   before_validation on: :create do
@@ -77,7 +77,4 @@ class Application < ApplicationRecord
     self.sections = build_default_sections
   end
 
-  before_create do
-    self.email.downcase!
-  end
 end

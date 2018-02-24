@@ -10,22 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180224041542) do
+ActiveRecord::Schema.define(version: 20180224214132) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pgcrypto"
   enable_extension "uuid-ossp"
+  enable_extension "citext"
 
   create_table "applications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "applicant_id"
-    t.string "profile_id", null: false
+    t.citext "profile_id", null: false
     t.uuid "user_id", null: false
     t.integer "status", default: 0, null: false
     t.jsonb "social_links", default: {}, null: false
     t.jsonb "sections", null: false
     t.string "name", default: "", null: false
-    t.string "email", null: false
+    t.citext "email", null: false
     t.string "photos", default: [], null: false, array: true
     t.string "location"
     t.decimal "latitude"
@@ -77,8 +78,8 @@ ActiveRecord::Schema.define(version: 20180224041542) do
   end
 
   create_table "matchmakes", force: :cascade do |t|
-    t.string "left_profile_id"
-    t.string "right_profile_id"
+    t.citext "left_profile_id"
+    t.citext "right_profile_id"
     t.integer "matchmake_users_count", default: 0, null: false
     t.decimal "rating", default: "0.0", null: false
     t.integer "status", default: 0, null: false
@@ -89,7 +90,7 @@ ActiveRecord::Schema.define(version: 20180224041542) do
     t.index ["status"], name: "index_matchmakes_on_status"
   end
 
-  create_table "profiles", id: :string, force: :cascade do |t|
+  create_table "profiles", id: :citext, force: :cascade do |t|
     t.uuid "user_id"
     t.jsonb "sections", null: false
     t.boolean "visible", default: true, null: false
@@ -126,8 +127,8 @@ ActiveRecord::Schema.define(version: 20180224041542) do
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "email", null: false
-    t.string "username", null: false
+    t.citext "email", null: false
+    t.citext "username", null: false
     t.string "crypted_password"
     t.string "salt"
     t.datetime "created_at", null: false
@@ -149,7 +150,7 @@ ActiveRecord::Schema.define(version: 20180224041542) do
 
   create_table "verified_networks", force: :cascade do |t|
     t.uuid "external_authentication_id"
-    t.string "profile_id"
+    t.citext "profile_id"
     t.uuid "application_id"
     t.string "email"
     t.datetime "created_at", null: false

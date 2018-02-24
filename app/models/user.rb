@@ -34,7 +34,7 @@ class User < ApplicationRecord
 
   def self.real_accounts
     fake_emails = PROBABLY_FAKE_ACCOUNTS.map { |email| "%#{email}%"}
-    User.where.not("lower(email) ~~ ANY('{#{fake_emails.join(",")}}')")
+    User.where.not("email ~~ ANY('{#{fake_emails.join(",")}}')")
   end
 
   def interested_in_sexes

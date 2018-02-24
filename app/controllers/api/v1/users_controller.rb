@@ -6,7 +6,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
         return render_error(message: "Please choose your gender")
       end
 
-      username = String(create_params[:username]).downcase
+      username = String(create_params[:username])
 
       if User.blacklisted_username?(username)
         return render_error(message: "Please choose a different username :)")
