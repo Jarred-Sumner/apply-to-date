@@ -20,11 +20,11 @@ class User < ApplicationRecord
     BLACKLISTED_USERNAMES.include?(username)
   end
 
-  def self.interested_in_column_name(sex)
+  def self.interested_in_column_name(sex, table_name = "users")
     {
-      male: 'interested_in_men',
-      female: 'interested_in_women',
-      other: 'interested_in_other'
+      male: "#{table_name}.interested_in_men",
+      female: "#{table_name}.interested_in_women",
+      other: "#{table_name}.interested_in_other"
     }.with_indifferent_access[sex]
   end
 

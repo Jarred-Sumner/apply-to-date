@@ -14,7 +14,7 @@ class Profile < ApplicationRecord
       columns = interested_in
     end
 
-    columns.map { |gender| "#{User.interested_in_column_name(gender)} = TRUE" }.join(" OR ")
+    columns.map { |gender| "#{User.interested_in_column_name(gender, "profiles")} = TRUE" }.join(" OR ")
   end
 
   acts_as_mappable :default_units => :miles,
