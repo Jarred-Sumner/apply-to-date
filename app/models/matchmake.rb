@@ -27,10 +27,12 @@ class Matchmake < ApplicationRecord
       right_matches = fetch_right(left_profile: left_profile)
     
       chosen_mate = right_matches.reject do |right_id|
-        exclude.find do |excluded| 
+        has_already_rated_pair = !!exclude.find do |excluded| 
           (excluded[0] == left_profile.id && excluded[1] == right_id) || 
           (excluded[1] == left_profile.id && excluded[0] == right_id)
         end
+
+        has_already_rated_pair || left_profile.id == right_id
       end.first
 
       if chosen_mate.present?
