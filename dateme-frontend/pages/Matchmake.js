@@ -132,10 +132,6 @@ class MatchmakeProfile extends React.Component {
     this.isMobile = getMobileDetect().mobile();
   }
 
-  handleSkip = () => {
-    this.props.loadNextPage();
-  };
-
   handleSetRating = async rating => {
     const { leftProfile, rightProfile } = this.props;
     const response = await createMatch({
@@ -145,6 +141,10 @@ class MatchmakeProfile extends React.Component {
     });
 
     this.props.loadNextPage();
+  };
+
+  handleSkip = () => {
+    this.handleSetRating(0);
   };
 
   setSelectedTab = selectedTabIndex => evt =>

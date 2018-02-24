@@ -20,7 +20,7 @@ class Matchmake < ApplicationRecord
 
 
   def self.build_left_right(exclude: [], sex: nil, interested_in_sexes: [])
-    left_matches = fetch_left(sex: sex, interested_in_sexes: interested_in_sexes)
+    left_matches = fetch_left(sex: sex, interested_in_sexes: interested_in_sexes).shuffle
 
     chosen_pair = nil
     left_matches.each do |left_profile|
@@ -49,7 +49,6 @@ class Matchmake < ApplicationRecord
       .real
       .where("latitude IS NOT NULL and longitude IS NOT NULL")
       .where(sex: sex).interested_in(interested_in_sexes)
-      .order("applications_count ASC, updated_at DESC")
   end
 
   def self.fetch_right(left_profile: nil)
@@ -58,7 +57,6 @@ class Matchmake < ApplicationRecord
       .where(sex: left_profile.user.interested_in_sexes)
       .interested_in(left_profile.sex)
       .real
-      .order("applications_count ASC, updated_at DESC")
       .pluck(:id)
   end
 end
