@@ -36,6 +36,10 @@ Rails.application.configure do
   config.action_controller.asset_host = 'https://api.applytodate.com'
   config.action_mailer.asset_host = 'https://api.applytodate.com'
 
+  Raven.configure do |config|
+    config.dsn = 'https://dd8ddf4b32804512929fcf088e0413b8:a4ddb0034719405eb5bf7f846cbbb1dc@sentry.io/287972'
+  end
+
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
