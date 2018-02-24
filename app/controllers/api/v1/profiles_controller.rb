@@ -33,6 +33,7 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
 
     profiles_query = Profile
       .joins(:user)
+      .real
       .where(visible: true)
     
     if sex.present?
