@@ -22,14 +22,13 @@ class Matchmake < ApplicationRecord
   def self.build_left_right(exclude: [], sex: nil, interested_in_sexes: [])
     left_matches = fetch_left(sex: sex, interested_in_sexes: interested_in_sexes).shuffle
 
-    chosen_pair = nil
+    chosen_pair = []
     left_matches.each do |left_profile|
       right_matches = fetch_right(left_profile: left_profile)
     
       chosen_mate = right_matches.reject do |right_id|
         has_already_rated_pair = !!exclude.find do |excluded| 
-          (excluded[0] == left_profile.id && excluded[1] == right_id) || 
-          (excluded[1] == left_profile.id && excluded[0] == right_id)
+          excluded.sort == [left_profile.id, right_id].sort
         end
 
         has_already_rated_pair || left_profile.id == right_id
