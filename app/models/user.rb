@@ -5,6 +5,8 @@ class User < ApplicationRecord
   authenticates_with_sorcery!
   has_one :profile
   has_many :external_authentications, through: :profile
+  has_many :sent_applications, class_name: Application, foreign_key: 'applicant_id'
+  has_many :received_applications, class_name: Application
 
   validates :password, length: { minimum: 3 }, if: -> { new_record? || changes[:crypted_password] }
   validates :password, confirmation: true, if: -> { new_record? || changes[:crypted_password] }

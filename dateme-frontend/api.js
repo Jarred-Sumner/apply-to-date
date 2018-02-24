@@ -29,6 +29,23 @@ export const getProfile = profile => {
   return get("/profiles/" + profile);
 };
 
+export const getNewMatchmake = ({ exclude }) => {
+  return post("/matchmakes/new").send({ exclude });
+};
+
+export const createMatch = ({
+  exclude,
+  left_profile_id,
+  right_profile_id,
+  rating
+}) => {
+  return post("/matchmakes").send({
+    left_profile_id,
+    right_profile_id,
+    rating
+  });
+};
+
 export const discoverProfile = (opts = {}) => {
   return post("/profiles/discover").send(opts);
 };

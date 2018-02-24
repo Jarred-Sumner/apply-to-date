@@ -34,7 +34,7 @@ class Application < ApplicationRecord
 
   belongs_to :applicant, optional: true
   belongs_to :user
-  belongs_to :profile
+  belongs_to :profile, counter_cache: true
 
   validates :sections, presence: true
   validates :email, presence: true, uniqueness: { scope: [:user_id] }

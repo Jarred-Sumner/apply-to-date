@@ -110,7 +110,7 @@ const Head = props => (
       />
     </NextHead>
     <FullStory />
-    <RootStyles />
+    <RootStyles noScroll={!!props.noScroll} />
   </React.Fragment>
 );
 

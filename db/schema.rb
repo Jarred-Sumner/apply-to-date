@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180212205019) do
+ActiveRecord::Schema.define(version: 20180223030903) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "uuid-ossp"
   enable_extension "pgcrypto"
+  enable_extension "uuid-ossp"
 
   create_table "applications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "applicant_id"
@@ -66,6 +66,29 @@ ActiveRecord::Schema.define(version: 20180212205019) do
     t.index ["user_id"], name: "index_external_authentications_on_user_id"
   end
 
+  create_table "matchmake_ratings", force: :cascade do |t|
+    t.uuid "user_id"
+    t.bigint "matchmake_id"
+    t.integer "score", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["matchmake_id"], name: "index_matchmake_ratings_on_matchmake_id"
+    t.index ["user_id"], name: "index_matchmake_ratings_on_user_id"
+  end
+
+  create_table "matchmakes", force: :cascade do |t|
+    t.string "left_profile_id"
+    t.string "right_profile_id"
+    t.integer "matchmake_users_count", default: 0, null: false
+    t.decimal "rating", default: "0.0", null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["left_profile_id"], name: "index_matchmakes_on_left_profile_id"
+    t.index ["right_profile_id"], name: "index_matchmakes_on_right_profile_id"
+    t.index ["status"], name: "index_matchmakes_on_status"
+  end
+
   create_table "profiles", id: :string, force: :cascade do |t|
     t.uuid "user_id"
     t.jsonb "sections", null: false
@@ -84,7 +107,17 @@ ActiveRecord::Schema.define(version: 20180212205019) do
     t.string "tags", default: [], null: false, array: true
     t.string "recommended_contact_method"
     t.string "phone"
+    t.integer "applications_count", default: 0, null: false
+    t.boolean "interested_in_men"
+    t.boolean "interested_in_women"
+    t.boolean "interested_in_other"
+    t.string "sex"
     t.index ["featured"], name: "index_profiles_on_featured"
+    t.index ["interested_in_men"], name: "index_profiles_on_interested_in_men"
+    t.index ["interested_in_other"], name: "index_profiles_on_interested_in_other"
+    t.index ["interested_in_women"], name: "index_profiles_on_interested_in_women"
+    t.index ["latitude", "longitude"], name: "index_profiles_on_latitude_and_longitude"
+    t.index ["sex"], name: "index_profiles_on_sex"
     t.index ["user_id"], name: "index_profiles_on_user_id"
   end
 
@@ -127,6 +160,10 @@ ActiveRecord::Schema.define(version: 20180212205019) do
   add_foreign_key "applications", "users", column: "applicant_id"
   add_foreign_key "external_authentications", "applications"
   add_foreign_key "external_authentications", "users"
+  add_foreign_key "matchmake_ratings", "matchmakes"
+  add_foreign_key "matchmake_ratings", "users"
+  add_foreign_key "matchmakes", "profiles", column: "left_profile_id"
+  add_foreign_key "matchmakes", "profiles", column: "right_profile_id"
   add_foreign_key "profiles", "users"
   add_foreign_key "verified_networks", "applications"
   add_foreign_key "verified_networks", "external_authentications"

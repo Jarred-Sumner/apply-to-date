@@ -16,6 +16,7 @@ gem 'sass-rails', '~> 5.0'
 gem 'pg', '~> 0.18'
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
+gem 'geokit-rails'
 gem 'therubyracer', platforms: :ruby
 gem 'mailgun_rails'
 gem 'omniauth-linkedin-oauth2'

@@ -10,7 +10,7 @@ if (typeof window !== "undefined") {
   initReactFastclick();
 }
 
-export default ({}) => (
+export default ({ noScroll = false }) => (
   <style jsx global>{`
     html,
     body,
@@ -148,10 +148,12 @@ export default ({}) => (
     #__next,
     div[data-reactroot] {
       height: 100%;
+      ${noScroll ? "overflow: hidden;" : ""};
     }
 
     * {
       box-sizing: border-box;
+      -webkit-overflow-scrolling: touch;
     }
 
     html,
