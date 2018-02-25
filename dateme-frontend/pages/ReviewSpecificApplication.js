@@ -15,6 +15,7 @@ import Alert, { handleApiError } from "../components/Alert";
 import LoginGate from "../components/LoginGate";
 import ReviewApplicationContainer from "../components/ReviewApplicationContainer";
 import withLogin from "../lib/withLogin";
+import { logEvent } from "../lib/analytics";
 
 class ReviewSpecificApplication extends React.PureComponent {
   constructor(props) {
@@ -41,6 +42,12 @@ class ReviewSpecificApplication extends React.PureComponent {
         this.setState({
           isLoadingApplication: true
         });
+
+        if (status === "approved") {
+          logEvent("Application Approved");
+        } else {
+          logEvent("Application Rejected");
+        }
       })
       .catch(error => handleApiError(error))
       .finally(() => this.setState({ isRating: false }));

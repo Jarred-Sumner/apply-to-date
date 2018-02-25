@@ -29,6 +29,7 @@ import qs from "qs";
 import Icon from "../components/Icon";
 import Divider from "../components/Divider";
 import withLogin from "../lib/withLogin";
+import { logEvent } from "../lib/analytics";
 
 const SECTION_ORDERING = ["introduction", "why"];
 
@@ -156,6 +157,7 @@ class UpdateApplication extends React.Component {
       sections
     })
       .then(async response => {
+        logEvent("Update Application");
         Alert.success("Updated.");
         return response.body;
       })

@@ -8,6 +8,8 @@ import {
 import { updateApplication } from "../api";
 import { Router } from "../routes";
 import Alert from "./Alert";
+import { logEvent } from "../lib/analytics";
+import _ from "lodash";
 
 class AskProfileOutButton extends React.Component {
   constructor(props) {
@@ -33,6 +35,13 @@ class AskProfileOutButton extends React.Component {
         } else {
           Router.pushRoute(buildApplyURL(this.props.profile.id));
         }
+
+        logEvent("Submit Application", {
+          profile: this.props.profile.id,
+          providers: _.keys(this.props.currentUser.profile.socialLinks),
+          createAccount: false,
+          auto: true
+        });
       })
       .catch(error => {
         console.error(error);

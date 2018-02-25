@@ -20,6 +20,7 @@ import Alert, { handleApiError } from "../components/Alert";
 import Page from "../components/Page";
 import withLogin from "../lib/withLogin";
 import { buildEditProfileURL } from "../lib/routeHelpers";
+import { logEvent } from "../lib/analytics";
 
 class Login extends React.Component {
   constructor(props) {
@@ -72,7 +73,10 @@ class Login extends React.Component {
           Router.pushRoute(`/account`);
         }
       }
+
+      logEvent("Login");
     } catch (exception) {
+      logEvent("Login Failed");
       handleApiError(exception);
     }
 

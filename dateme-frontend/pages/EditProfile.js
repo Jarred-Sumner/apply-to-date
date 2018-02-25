@@ -43,6 +43,7 @@ import ProfileProgress, {
   PROFILE_SELECTORS
 } from "../components/ProfileProgress";
 import Sticky from "react-stickynode";
+import { logEvent } from "../lib/analytics";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -268,6 +269,8 @@ class EditProfile extends React.Component {
           Alert.success("Saved.");
         }
 
+        logEvent("Edit Profile");
+
         return response.body;
       })
       .catch(error => {
@@ -298,6 +301,11 @@ class EditProfile extends React.Component {
   toggleVisible = () => {
     this.setState({ visible: !this.state.visible }, () => {
       this.handleSaveProfile();
+      if (this.state.visible) {
+        logEvent("Show Profile");
+      } else {
+        logEvent("Hide Profile");
+      }
     });
   };
 

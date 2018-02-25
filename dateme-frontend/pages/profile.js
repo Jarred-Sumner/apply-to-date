@@ -30,6 +30,7 @@ import Subheader from "../components/Subheader";
 import { animateScroll } from "react-scroll";
 import Linkify from "react-linkify";
 import ProfileComponent from "../components/Profile";
+import { logEvent } from "../lib/analytics";
 
 class Profile extends React.Component {
   static async getInitialProps({ query, store, req, isServer }) {
@@ -63,13 +64,18 @@ class Profile extends React.Component {
 
     this.isMobile = getMobileDetect().mobile();
 
-    const profileResponse = await getProfile(this.props.url.query.id);
+    const profileResponse = await getProfile(this.props.profileId);
 
     this.props.updateEntities(profileResponse.body);
 
     if (!_.get(profileResponse, "body.data.id")) {
       Router.replaceRoute("/page-not-found", "/page-not-found");
     }
+
+    logEvent("View Profile", {
+      profile: this.props.profileId,
+      featured: _.get(profileResponse, "body.data.featured", false)
+    });
 
     this.setSelectedElementId();
     window.addEventListener("hashchange", this.setSelectedElementId);
@@ -216,10 +222,7 @@ const ProfileWithStore = withRedux(
   initStore,
   (state, props) => {
     return {
-      profile:
-        state.profile[
-          props.profileId || decodeURI(props.url.query.id.toLowerCase())
-        ]
+      profile: state.profile[props.profileId || decodeURI(props.url.query.id)]
     };
   },
   dispatch => bindActionCreators({ updateEntities }, dispatch),

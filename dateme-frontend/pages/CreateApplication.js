@@ -44,6 +44,7 @@ import qs from "qs";
 import Icon from "../components/Icon";
 import MessageBar from "../components/MessageBar";
 import withLogin from "../lib/withLogin";
+import { logEvent } from "../lib/analytics";
 
 export const SECTION_ORDERING = ["introduction", "why"];
 
@@ -167,6 +168,14 @@ class CreateApplication extends React.Component {
     };
   }
 
+  componentDidMount() {
+    logEvent("View Application", {
+      profile: this.props.profile.id,
+      providers: _.keys(this.state.socialLinks),
+      featured: this.props.profile.featured
+    });
+  }
+
   componentDidUpdate(prevProps) {
     if (!prevProps.currentUser && this.props.currentUser) {
       this.setState(this.getDefaultValues(this.props, this.state));
@@ -265,6 +274,16 @@ class CreateApplication extends React.Component {
         this.props.setLoginStatus(user);
       }
 
+      logEvent("Create Account", {
+        providers: _.keys(this.state.socialLinks),
+        sex,
+        interested_in_men: interestedInMen,
+        interested_in_women: interestedInWomen,
+        interested_in_other: interestedInOther,
+        type: "dating",
+        from_application: true
+      });
+
       return response;
     });
   };
@@ -296,6 +315,12 @@ class CreateApplication extends React.Component {
           return this.saveApplication("submitted");
         })
         .then(response => {
+          logEvent("Submit Application", {
+            profile: this.props.profile.id,
+            providers: _.keys(this.state.socialLinks),
+            createAccount: true,
+            auto: false
+          });
           if (response) {
             return Router.push(`/a/${this.props.application.id}`);
           } else {
@@ -308,6 +333,13 @@ class CreateApplication extends React.Component {
       this.saveApplication("submitted")
         .then(response => {
           if (response) {
+            logEvent("Submit Application", {
+              profile: this.props.profile.id,
+              providers: _.keys(this.state.socialLinks),
+              createAccount: false,
+              auto: false
+            });
+
             return Router.push(`/a/${this.props.application.id}`);
           } else {
             return;
