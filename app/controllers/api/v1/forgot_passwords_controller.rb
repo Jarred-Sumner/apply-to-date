@@ -5,7 +5,7 @@ class Api::V1::ForgotPasswordsController < Api::V1::ApplicationController
       raise ArgumentError.new("Please provide an email or username")
     end
 
-    username = String(params[:username]).downcase.strip
+    username = String(params[:username]).strip
     user = User.where("username = ? OR email = ?", username, username).first
     
     if user.nil?

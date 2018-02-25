@@ -30,6 +30,7 @@ import Checkbox from "../components/Checkbox";
 import LoginGate from "../components/LoginGate";
 import withLogin from "../lib/withLogin";
 import { buildEditProfileURL } from "../lib/routeHelpers";
+import { logEvent } from "../lib/analytics";
 
 class CreateAccount extends React.Component {
   static async getInitialProps({ store, query }) {
@@ -125,10 +126,20 @@ class CreateAccount extends React.Component {
     })
       .then(response => {
         Router.push(buildEditProfileURL(username));
+        logEvent("Create Account", {
+          provider: _.get(this, "props.externalAccount.provider"),
+          sex,
+          interested_in_men: interestedInMen,
+          interested_in_women: interestedInWomen,
+          interested_in_other: interestedInOther,
+          type: "dating",
+          from_application: false
+        });
       })
       .catch(error => {
         console.error(error);
         handleApiError(error);
+        logEvent("Create Account Error");
       })
       .finally(() => {
         this.setState({

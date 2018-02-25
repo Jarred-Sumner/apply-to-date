@@ -25,8 +25,25 @@ export const getCurrentUser = (options = {}) => {
   return get("/users/me", options);
 };
 
-export const getProfile = profile => {
-  return get("/profiles/" + profile);
+export const getProfile = id => {
+  return post("/profiles/get").send({ id });
+};
+
+export const getNewMatchmake = ({ exclude }) => {
+  return post("/matchmakes/new").send({ exclude });
+};
+
+export const createMatch = ({
+  exclude,
+  left_profile_id,
+  right_profile_id,
+  rating
+}) => {
+  return post("/matchmakes").send({
+    left_profile_id,
+    right_profile_id,
+    rating
+  });
 };
 
 export const discoverProfile = (opts = {}) => {
@@ -35,7 +52,8 @@ export const discoverProfile = (opts = {}) => {
 
 export const updateProfile = profileObject => {
   const { id, ...profile } = profileObject;
-  return put("/profiles/" + id).send({
+  return put("/profiles").send({
+    id,
     profile
   });
 };

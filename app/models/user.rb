@@ -5,6 +5,8 @@ class User < ApplicationRecord
   authenticates_with_sorcery!
   has_one :profile
   has_many :external_authentications, through: :profile
+  has_many :sent_applications, class_name: Application, foreign_key: 'applicant_id'
+  has_many :received_applications, class_name: Application
 
   validates :password, length: { minimum: 3 }, if: -> { new_record? || changes[:crypted_password] }
   validates :password, confirmation: true, if: -> { new_record? || changes[:crypted_password] }
@@ -18,11 +20,11 @@ class User < ApplicationRecord
     BLACKLISTED_USERNAMES.include?(username)
   end
 
-  def self.interested_in_column_name(sex)
+  def self.interested_in_column_name(sex, table_name = "users")
     {
-      male: 'interested_in_men',
-      female: 'interested_in_women',
-      other: 'interested_in_other'
+      male: "#{table_name}.interested_in_men",
+      female: "#{table_name}.interested_in_women",
+      other: "#{table_name}.interested_in_other"
     }.with_indifferent_access[sex]
   end
 
@@ -32,7 +34,7 @@ class User < ApplicationRecord
 
   def self.real_accounts
     fake_emails = PROBABLY_FAKE_ACCOUNTS.map { |email| "%#{email}%"}
-    User.where.not("lower(email) ~~ ANY('{#{fake_emails.join(",")}}')")
+    User.where.not("email ~~ ANY('{#{fake_emails.join(",")}}')")
   end
 
   def interested_in_sexes

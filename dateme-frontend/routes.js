@@ -12,6 +12,11 @@ routes
     page: "Discover"
   })
   .add({
+    name: "Matchmake",
+    pattern: "/matchmake",
+    page: "Matchmake"
+  })
+  .add({
     name: "create-account/no-verify",
     pattern: "/sign-up",
     page: "CreateAccount"

@@ -1,6 +1,7 @@
 import Alert from "./Alert";
 import InlineTextForm from "./InlineTextForm";
 import copy from "copy-to-clipboard";
+import { logEvent } from "../lib/analytics";
 
 export default ({ url, ...otherProps }) => (
   <InlineTextForm
@@ -10,6 +11,9 @@ export default ({ url, ...otherProps }) => (
     readOnly
     onSubmit={() => {
       copy(url);
+      logEvent("Copy URL", {
+        url
+      });
       Alert.success("Copied.");
     }}
     buttonChildren={"Copy Link"}

@@ -2,6 +2,7 @@ import NextHead from "next/head";
 import { string } from "prop-types";
 import RootStyles from "./Root";
 import ReactGA from "react-ga";
+import Amplitude from "react-amplitude";
 import FullStory from "./FullStory";
 import Router from "next/router";
 import Raven from "raven-js";
@@ -12,6 +13,7 @@ const defaultOGURL = "";
 const defaultOGImage = `${process.env.DOMAIN}/static/default-cover.png`;
 
 if (typeof window !== "undefined") {
+  Amplitude.init(process.env.AMPLITUDE_API_KEY);
   ReactGA.initialize(process.env.GOOGLE_ANALYTICS, {
     debug: process.env.NODE_ENV !== "production",
     titleCase: false
@@ -110,7 +112,7 @@ const Head = props => (
       />
     </NextHead>
     <FullStory />
-    <RootStyles />
+    <RootStyles noScroll={!!props.noScroll} />
   </React.Fragment>
 );
 

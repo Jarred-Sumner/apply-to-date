@@ -164,9 +164,23 @@ class SignupForm extends React.Component {
 }
 
 class Homepage extends React.Component {
-  static async getInitialProps({ store }) {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isLoadingProfiles: true,
+      profiles: []
+    };
+  }
+
+  async componentDidMount() {
     const profileResponse = await getFeaturedProfiles();
-    store.dispatch(updateEntities(profileResponse.body));
+    this.props.updateEntities(profileResponse.body);
+
+    this.setState({
+      isLoadingProfiles: false,
+      profiles: profileResponse.body.data
+    });
   }
 
   render() {
@@ -199,23 +213,23 @@ class Homepage extends React.Component {
           </main>
         </article>
 
-        {!_.isEmpty(this.props.profiles) && (
-          <footer>
-            <div className="divider" />
+        <footer>
+          <div className="divider" />
 
-            <Text size="36px" font="sans-serif" color="#000">
-              Featured pages
-            </Text>
+          <Text size="36px" font="sans-serif" color="#000">
+            Featured pages
+          </Text>
 
-            <div className="FeaturedProfiles-wrapper">
-              <div className="FeaturedProfiles">
-                {this.props.profiles.map(profile => (
+          <div className="FeaturedProfiles-wrapper">
+            {this.state.isLoadingProfiles && <div className="Spinner" />}
+            <div className="FeaturedProfiles">
+              {!_.isEmpty(this.state.profiles) &&
+                this.state.profiles.map(profile => (
                   <FeaturedProfile key={profile.id} profile={profile} />
                 ))}
-              </div>
             </div>
-          </footer>
-        )}
+          </div>
+        </footer>
 
         <article>
           <PageFooter center />
@@ -258,6 +272,7 @@ class Homepage extends React.Component {
             margin-left: auto;
             margin-right: auto;
             width: 97px;
+            height: 152.02px;
             margin-bottom: 28px;
           }
 
@@ -283,6 +298,27 @@ class Homepage extends React.Component {
             width: 100vw;
           }
 
+          .Spinner {
+            display: flex;
+            content: "";
+            margin: 84px auto;
+            height: 28px;
+            width: 28px;
+            animation: rotate 0.8s infinite linear;
+            border: 4px solid #4be1ab;
+            border-right-color: transparent;
+            border-radius: 50%;
+          }
+
+          @keyframes rotate {
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+
           .FeaturedProfiles {
             display: grid;
             grid-column-gap: 2rem;
@@ -292,20 +328,17 @@ class Homepage extends React.Component {
             margin-left: auto;
             margin-right: auto;
             grid-template-columns: 250px 250px 250px 250px;
-            grid-template-rows: 1fr 1fr 1fr 1fr;
           }
 
           @media (max-width: 1100px) {
             .FeaturedProfiles {
               grid-template-columns: 250px 250px 250px;
-              grid-template-rows: 1fr 1fr 1fr;
             }
           }
 
           @media (max-width: 900px) {
             .FeaturedProfiles {
               grid-template-columns: 250px 250px;
-              grid-template-rows: 1fr 1fr;
             }
           }
 
@@ -333,11 +366,14 @@ const HomepageWithStore = withRedux(
   initStore,
   (state, props) => {
     return {
-      profiles: _.values(state.profile).filter(profile => profile.featured),
       currentUser: state.currentUserId ? state.user[state.currentUserId] : null
     };
   },
-  dispatch => bindActionCreators({ updateEntities, setCurrentUser }, dispatch)
+  dispatch => bindActionCreators({ updateEntities, setCurrentUser }, dispatch),
+  null,
+  {
+    pure: false
+  }
 )(withLogin(Homepage));
 
 export default HomepageWithStore;

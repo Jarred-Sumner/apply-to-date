@@ -1,7 +1,9 @@
 import Text from "./Text";
 import Icon from "./Icon";
+import classNames from "classnames";
 
 const SIZE_TO_PX = {
+  large: "14px",
   default: "13px",
   small: "11px"
 };
@@ -12,12 +14,16 @@ export default ({
   label,
   onChange,
   required,
-  size = "default"
+  size = "default",
+  align = "center",
+  disabled
 }) => {
   return (
     <React.Fragment>
       <div
-        onClick={() => onChange({ target: { name, checked: !checked } })}
+        onClick={() =>
+          onChange && onChange({ target: { name, checked: !checked } })
+        }
         className="Container"
       >
         <div className="CheckboxContainer">
@@ -25,6 +31,7 @@ export default ({
             type="checkbox"
             required={required}
             name={name}
+            disabled={disabled}
             checked={checked}
             onChange={onChange}
           />
@@ -35,7 +42,12 @@ export default ({
         </div>
         {label && (
           <label htmlFor={name}>
-            <Text color="#3A405B" size={SIZE_TO_PX[size]} lineHeight="18px">
+            <Text
+              align={align}
+              color="#3A405B"
+              size={SIZE_TO_PX[size]}
+              lineHeight="18px"
+            >
               {label}
             </Text>
           </label>
@@ -46,9 +58,10 @@ export default ({
           display: grid;
           grid-auto-flow: column dense;
           grid-column-gap: 8px;
-          align-items: center;
-          align-content: center;
+          align-items: ${align};
+          align-content: ${align};
           cursor: pointer;
+          width: max-content;
         }
 
         label {
@@ -67,12 +80,13 @@ export default ({
           bottom: 0;
           left: 0;
           right: 0;
+          width: 20px;
           display: flex;
-          margin: auto;
           align-items: center;
           justify-content: center;
           align-content: center;
           pointer-events: none;
+          flex: 0 0 auto;
         }
 
         input {
@@ -87,6 +101,7 @@ export default ({
           padding: 0;
           cursor: pointer;
           width: 20px;
+          flex: 0 0 auto;
         }
 
         input:checked {

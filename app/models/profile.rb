@@ -4,17 +4,32 @@ class Profile < ApplicationRecord
   has_many :verified_networks
   has_many :applications
   has_many :external_authentications, through: :verified_networks
-  scope :interested_in, lambda {|sex| sex.present? ? where("users.#{User.interested_in_column_name(sex)} = ?", true) : where("users.interested_in_men = ? OR users.interested_in_women = ? OR users.interested_in_other = ?", true, true, true) }
-    
+  scope :interested_in, lambda { |interested_in| where(Profile.build_interested_in_columns(interested_in)) }
+
+  def self.build_interested_in_columns(interested_in)
+    columns = []
+    if !interested_in.respond_to?(:each)
+      columns = [interested_in]
+    else
+      columns = interested_in
+    end
+
+    columns.map { |gender| "#{User.interested_in_column_name(gender, "profiles")} = TRUE" }.join(" OR ")
+  end
+
+  acts_as_mappable :default_units => :miles,
+                   :default_formula => :sphere,
+                   :lat_column_name => :latitude,
+                   :lng_column_name => :longitude
 
   def self.real
-    Profile.where(visible: true).where(user_id: User.real_accounts.pluck(:id))
+    Profile.where(visible: true).where(user_id: User.real_accounts.pluck(:id)).where("array_length(photos, 1) > 0")
+  end
+
+  def could_be_interested_in?(profile)
+    user.interested_in_sexes.include?(profile.sex)
   end
   
-  validates :name, presence: true, :if => :visible?
-  validates :tagline, presence: true, :if => :visible?
-  validates :photos, presence: true, :if => :visible?
-
   CONTACT_METHOD_LABEL = {
     phone: "text message",
     twitter: "DM on Twitter",
@@ -90,6 +105,10 @@ class Profile < ApplicationRecord
     self.social_links ||= {}
     self.photos ||= []
     self.tags ||= []
+    self.interested_in_men = user.interested_in_men? if interested_in_men.nil?
+    self.interested_in_women = user.interested_in_women? if interested_in_women.nil?
+    self.interested_in_other = user.interested_in_other? if interested_in_other.nil?
+    self.sex ||= user.sex
   end
 
 end

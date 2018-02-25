@@ -11,12 +11,31 @@ import { Router } from "../routes";
 import _ from "lodash";
 import withLogin from "../lib/withLogin";
 import Raven from "raven-js";
+import Amplitude from "react-amplitude";
+import { logEvent } from "../lib/analytics";
 
 export const LOGIN_STATUSES = {
   pending: "pending",
   checking: "checking",
   loggedIn: "loggedIn",
   guest: "guest"
+};
+
+const configureAnalytics = user => {
+  Amplitude.setUserId(user.id);
+  Amplitude.setUserProperties({
+    email: user.email,
+    created_at: user.createdAt,
+    username: user.username,
+    gender: user.sex,
+    interested_in_men: user.interested_in_men,
+    interested_in_women: user.interested_in_women,
+    interested_in_other: user.interested_in_other
+  });
+  Raven.setUserContext({
+    email: user.email,
+    id: user.id
+  });
 };
 
 export default _.memoize((Component, options = {}) => {
@@ -56,10 +75,7 @@ export default _.memoize((Component, options = {}) => {
       }
 
       if (this.props.currentUser && typeof window !== "undefined") {
-        Raven.setUserContext({
-          email: this.props.currentUser.email,
-          id: this.props.currentUser.id
-        });
+        configureAnalytics(this.props.currentUser);
       }
     }
 
@@ -70,6 +86,8 @@ export default _.memoize((Component, options = {}) => {
         this.props.loginStatus === LOGIN_STATUSES.guest &&
         options.loginRequired
       ) {
+        Amplitude.resetUserId();
+        logEvent("Unauthorized Page");
         Router.pushRoute(
           `/login?from=${encodeURIComponent(this.props.url.asPath)}`
         );
@@ -80,10 +98,7 @@ export default _.memoize((Component, options = {}) => {
         this.props.currentUser &&
         typeof window !== "undefined"
       ) {
-        Raven.setUserContext({
-          email: this.props.currentUser.email,
-          id: this.props.currentUser.id
-        });
+        configureAnalytics(this.props.currentUser);
       }
     }
 

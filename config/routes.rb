@@ -13,7 +13,11 @@ Rails.application.routes.draw do
 
       get 'images/sign' => 'images#sign'
       resources :users
+      post '/profiles/get' => 'profiles#show'
+      put '/profiles' => 'profiles#update'
       post '/profiles/discover' => 'profiles#discover'
+      resources :matchmakes
+      post '/matchmakes/new' => 'matchmakes#new'
       resources :profiles do
         post 'apply' => 'applications#create'
       end

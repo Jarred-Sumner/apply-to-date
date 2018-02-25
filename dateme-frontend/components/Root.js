@@ -1,10 +1,16 @@
+import initReactFastclick from "react-fastclick";
+
 if (typeof window !== "undefined") {
   window.Promise = require("bluebird");
 } else if (typeof global !== "undefined") {
   global.Promise = require("bluebird");
 }
 
-export default ({}) => (
+if (typeof window !== "undefined") {
+  initReactFastclick();
+}
+
+export default ({ noScroll = false }) => (
   <style jsx global>{`
     html,
     body,
@@ -142,10 +148,17 @@ export default ({}) => (
     #__next,
     div[data-reactroot] {
       height: 100%;
+      ${noScroll ? "overflow: hidden;" : ""};
     }
 
     * {
       box-sizing: border-box;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    html,
+    body {
+      -webkit-tap-highlight-color: transparent;
     }
 
     a {

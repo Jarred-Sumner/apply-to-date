@@ -3,7 +3,7 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
   def create
     if current_user.present? && current_user.can_auto_apply?
       profile = current_user.profile
-      existing_application = Application.where(profile_id: params[:profile_id]).where("applicant_id = ? OR lower(email) = lower(?)", current_user.id, current_user.email).first
+      existing_application = Application.where(profile_id: params[:profile_id]).where("applicant_id = ? OR email = ?", current_user.id, current_user.email).first
       if existing_application
         @application = existing_application
         @should_send_email = true
@@ -88,7 +88,7 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
           raise ArgumentError.new("Try a different email")
         end
 
-        @application.update!(email: String(update_params[:email]).downcase)
+        @application.update!(email: String(update_params[:email]))
       end
 
     end
@@ -101,7 +101,7 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
   private def create_application_from_guest
     social_links = params[:application][:social_links].try(:to_unsafe_h) || {}
     external_authentications = ExternalAuthentication.where(id: Array(params[:application][:external_authentications]))
-    email = String(create_params[:email]).downcase
+    email = String(create_params[:email])
 
     if create_params[:email].blank? 
       raise ArgumentError.new("Please include your email")

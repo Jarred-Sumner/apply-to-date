@@ -16,6 +16,7 @@ const Text = ({
   align = "inherit",
   wrap = null,
   underline = false,
+  hoverable = false,
   highlightId
 }) => {
   const classes = classNames("Text", className, {
@@ -31,6 +32,7 @@ const Text = ({
     "Text--title": type === "title",
     "Text--wrap": wrap === true,
     "Text--noWrap": wrap === false,
+    "Text--hoverable": hoverable === true,
     "Text--underline": !!underline,
     [`Highlight--${highlightId}`]: !!highlightId
   });
@@ -48,6 +50,10 @@ const Text = ({
           letter-spacing: ${letterSpacing};
           text-transform: ${casing};
           text-decoration: ${textDecoration};
+        }
+
+        .Text--hoverable {
+          cursor: pointer;
         }
 
         .Text--noWrap {

@@ -44,19 +44,23 @@ export default ({
   headerProps,
   isLoading = false,
   children,
+  gray = false,
   size = "default",
-  renderMessage
+  renderMessage,
+  renderOutside
 }) => {
   const classes = classNames("PageSize", {
     "PageSize--default": size === "default",
     "PageSize--small": size === "small",
-    "PageSize--large": size === "large"
+    "PageSize--large": size === "large",
+    "PageSize--full": size === "100%"
   });
 
   return (
     <React.Fragment>
       <Header {...headerProps} />
       {renderMessage && renderMessage()}
+      {renderOutside && renderOutside()}
       <main id="PageRoot" className={classes}>
         {isLoading && <PageSpinner />}
         {isLoading && <Head />}
@@ -76,6 +80,22 @@ export default ({
           padding-left: 14px;
           padding-right: 14px;
           max-width: 710px;
+          display: flex;
+          flex-direction: column;
+          background-color: ${gray ? "#F5F5F5" : "unset"};
+        }
+
+        .PageSize--full {
+          max-width: 100%;
+          min-height: 100%;
+        }
+
+        main.PageSize--full {
+          padding-bottom: 0;
+        }
+
+        footer.PageSize--full {
+          display: none;
         }
 
         .PageSize--large {

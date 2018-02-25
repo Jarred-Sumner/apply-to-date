@@ -5,10 +5,6 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-Raven.configure do |config|
-  config.dsn = 'https://dd8ddf4b32804512929fcf088e0413b8:a4ddb0034719405eb5bf7f846cbbb1dc@sentry.io/287972'
-end
-
 module Dateme
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
@@ -24,6 +20,11 @@ module Dateme
         domain: 'mail.applytodate.com'
     }
 
+    config.session_store(
+      :cookie_store,
+      key: '_dateme_session',
+      expire_after: 2.years
+    )
 
     config.middleware.insert_before 0, Rack::Cors do
       allow do

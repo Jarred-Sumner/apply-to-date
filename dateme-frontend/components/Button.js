@@ -111,7 +111,7 @@ const Button = ({
         }
 
         .Button--green--fill {
-          background-color: #0ec2d0;
+          background-color: #0aca9b;
           color: #fff;
         }
 
@@ -121,8 +121,8 @@ const Button = ({
         }
 
         .Button--green--unfill {
-          border-color: #0ec2d0;
-          color: #0ec2d0;
+          border-color: #0aca9b;
+          color: #0aca9b;
         }
 
         .Button--large {

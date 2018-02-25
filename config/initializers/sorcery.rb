@@ -202,7 +202,7 @@ Rails.application.config.sorcery.configure do |config|
     # downcase the username before trying to authenticate, default is false
     # Default: `false`
     #
-    user.downcase_username_before_authenticating = true
+    user.downcase_username_before_authenticating = false
 
     # change default email attribute.
     # Default: `:email`

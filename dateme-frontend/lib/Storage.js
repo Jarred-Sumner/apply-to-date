@@ -16,7 +16,8 @@ function randId() {
 
 const KEYS = {
   FULL_STORY: "fullstoryid",
-  DISCOVERED_PROFILES: "DISCOVERED_PROFILES_"
+  DISCOVERED_PROFILES: "DISCOVERED_PROFILES_",
+  MATCHMAKE_VIEWS: "MATCHMAKE_VIEWS"
 };
 
 export default class Storage {
@@ -41,6 +42,21 @@ export default class Storage {
     profiles.add(profileId);
 
     return localForage.setItem(KEYS.DISCOVERED_PROFILES, profiles);
+  }
+
+  static async matchmakerProfiles() {
+    const profiles = await localForage.getItem(KEYS.MATCHMAKE_VIEWS);
+
+    return profiles || new Set();
+  }
+
+  static async addMatchmakerProfile(profileId) {
+    const profiles = await Storage.matchmakerProfiles();
+    profiles.add(profileId);
+
+    console.log(profiles);
+
+    return localForage.setItem(KEYS.MATCHMAKE_VIEWS, profiles);
   }
 
   static getItem(key) {

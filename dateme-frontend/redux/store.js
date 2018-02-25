@@ -33,7 +33,7 @@ const toArray = object => {
   }
 };
 
-export const updateEntities = response => {
+export const normalizeApiResponse = response => {
   let entities = toArray(response.data);
 
   if (response.included) {
@@ -48,9 +48,13 @@ export const updateEntities = response => {
     );
   });
 
+  return entities;
+};
+
+export const updateEntities = response => {
   return {
     type: UPDATE_ENTITIES,
-    payload: entities
+    payload: normalizeApiResponse(response)
   };
 };
 

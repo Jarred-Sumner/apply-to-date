@@ -33,6 +33,7 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
 
     profiles_query = Profile
       .joins(:user)
+      .real
       .where(visible: true)
     
     if sex.present?
@@ -54,7 +55,7 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
         include: [:external_authentications]
       }).serializable_hash
     else
-      profile = Profile.where(visible: true).where("lower(id) = lower(?)", String(params[:id])).first
+      profile = Profile.where(visible: true).find_by(id: String(params[:id]))
       render_profile(profile)
     end
   end
@@ -73,26 +74,16 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
       end
 
       if !update_params[:name].nil?
-        if update_params[:name].blank?
-          raise ArgumentError.new("Please include your name")
-        end
-
         profile.update!(name: String(update_params[:name]))
       end
 
       if !update_params[:tagline].nil?
-        if update_params[:tagline].blank? && profile.visible?
-          raise ArgumentError.new("Please include a short self-summary")
-        end
 
         profile.update!(tagline: update_params[:tagline])
       end
 
       if !update_params[:photos].nil?
         photos = Array(update_params[:photos])
-        if photos.blank?
-          raise ArgumentError.new("Please add at least one photo")
-        end
 
         # Ensure Photo URLs are valid
         begin
@@ -132,10 +123,6 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
 
       if !update_params[:visible].nil?
         visible = String(update_params[:visible]) == 'true'
-        if profile.photos.blank? && visible
-          raise ArgumentError.new("Please include at least one photo")
-        end
-
         profile.update!(visible: visible)
       end
     end

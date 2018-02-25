@@ -8,6 +8,7 @@ import Alert from "../Alert";
 import CropModal from "../CropModal";
 import { BASE_HOSTNAME } from "../../api";
 import Icon from "../Icon";
+import { logEvent } from "../../lib/analytics";
 
 const EditableThumbnail = ({ url, onRemove, size = "206px" }) => {
   return (
@@ -149,6 +150,8 @@ export default class Photo extends React.Component {
       status: Status.uploading
     });
 
+    logEvent("Crop Photo");
+
     this.uploader = new S3Upload({
       files: [blob],
       signingUrl: "/images/sign",
@@ -164,6 +167,7 @@ export default class Photo extends React.Component {
   handleUploadError = error => {
     console.error(error);
     Alert.error("Something went wrong while uploading. Please try again");
+    logEvent("Upload Photo (Error)");
 
     this.setState({
       status: Status.cropping
@@ -173,6 +177,7 @@ export default class Photo extends React.Component {
   handleUploadComplete = upload => {
     const { publicUrl } = upload;
 
+    logEvent("Upload Photo");
     this.props.setURL(publicUrl);
     Alert.success("Upload complete!");
   };
@@ -180,6 +185,8 @@ export default class Photo extends React.Component {
   handleDeletePhoto = event => {
     event.stopPropagation();
     event.preventDefault();
+
+    logEvent("Delete Photo");
 
     this.props.setURL(null);
   };

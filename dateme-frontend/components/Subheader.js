@@ -6,6 +6,9 @@ export default ({
   bottom = false,
   center = false,
   fade = false,
+  shadow = false,
+  transparent = false,
+  noBorder = false,
   padding,
   spaceBetween
 }) => {
@@ -15,7 +18,8 @@ export default ({
         className={classNames("Subheader", {
           "Subheader--spaceBetween": spaceBetween,
           "Subheader--center": center,
-          "Subheader--fade": fade
+          "Subheader--fade": fade,
+          "Subheader--shadow": !!shadow
         })}
       >
         {children}
@@ -32,6 +36,10 @@ export default ({
 
           .Subheader--spaceBetween {
             justify-content: space-between;
+          }
+
+          .Subheader--shadow {
+            box-shadow: 0 -2px 15px 0 rgba(0, 0, 0, 0.05);
           }
 
           .Subheader--center {
@@ -57,14 +65,16 @@ export default ({
             "Subheader--spaceBetween": spaceBetween,
             "Subheader--center": center,
             "Subheader--largePadding": padding === "large",
-            "Subheader--fade": fade
+            "Subheader--fade": fade,
+            "Subheader--shadow": !!shadow,
+            "Subheader--noBorder": !!noBorder
           })}
         >
           {children}
 
           <style jsx>{`
             .Subheader {
-              background-color: white;
+              background-color: ${transparent ? "transparent" : "white"};
               display: flex;
               align-items: center;
               flex: 1;
@@ -83,8 +93,16 @@ export default ({
               justify-content: space-between;
             }
 
+            .Subheader--shadow {
+              box-shadow: 0 -2px 15px 0 rgba(0, 0, 0, 0.05);
+            }
+
             .Subheader--center {
               justify-content: center;
+            }
+
+            .Subheader--noBorder {
+              border-top: 0;
             }
 
             .Subheader--fade {
