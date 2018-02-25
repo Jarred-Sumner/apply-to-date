@@ -20,7 +20,8 @@ const LABEL_BY_PROVIDER = {
   linkedin: "Add your LinkedIn",
   dribbble: "Add your Dribbble",
   twitter: "Add your Twitter",
-  youtube: "Add your YouTube"
+  youtube: "Add your YouTube",
+  quora: "Add your Quora"
 };
 
 const PLACEHOLDER_BY_PROVIDER = {
@@ -33,13 +34,15 @@ const PLACEHOLDER_BY_PROVIDER = {
   dribbble: "your dribbble username e.g. username",
   medium: "your medium username e.g. @jarredsumner",
   twitter: "your twitter handle e.g. @jarredsumner",
-  youtube: "your youtube username .g. jarredsumner"
+  youtube: "your youtube username e.g. jarredsumner",
+  quora: "your quora username e.g. Lucy-Guo"
 };
 
 const DEFAULT_BY_PROVIDER = {
   facebook: "https://facebook.com/",
   twitter: "@",
-  medium: "@"
+  medium: "@",
+  quora: "https://quora.com/profile/"
 };
 
 const isProfileValid = (url, provider) => {
