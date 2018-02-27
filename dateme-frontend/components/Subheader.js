@@ -9,7 +9,9 @@ export default ({
   shadow = false,
   transparent = false,
   noBorder = false,
+  direction = "row",
   padding,
+  position = "fixed",
   spaceBetween
 }) => {
   if (!bottom) {
@@ -19,7 +21,9 @@ export default ({
           "Subheader--spaceBetween": spaceBetween,
           "Subheader--center": center,
           "Subheader--fade": fade,
-          "Subheader--shadow": !!shadow
+          "Subheader--shadow": !!shadow,
+          "Subheader--noPadding": padding === "none",
+          "Subheader--transparent": transparent
         })}
       >
         {children}
@@ -30,8 +34,17 @@ export default ({
             display: flex;
             align-items: center;
             padding: 10px 40px;
+            flex-direction: ${direction};
             flex: 1;
             border-bottom: 1px solid #e8e8e8;
+          }
+
+          .Subheader--noPadding {
+            padding: 0;
+          }
+
+          .Subheader--transparent {
+            background-color: transparent;
           }
 
           .Subheader--spaceBetween {
@@ -65,6 +78,7 @@ export default ({
             "Subheader--spaceBetween": spaceBetween,
             "Subheader--center": center,
             "Subheader--largePadding": padding === "large",
+            "Subheader--normalPadding": padding === "normal",
             "Subheader--fade": fade,
             "Subheader--shadow": !!shadow,
             "Subheader--noBorder": !!noBorder
@@ -79,10 +93,15 @@ export default ({
               align-items: center;
               flex: 1;
               border-top: 1px solid #e8e8e8;
-              position: fixed;
+              position: ${position};
+              flex-direction: ${direction};
               bottom: 0;
               left: 0;
               right: 0;
+            }
+
+            .Subheader--normalPadding {
+              padding: 10px 40px;
             }
 
             .Subheader--largePadding {

@@ -148,6 +148,8 @@ export default ({ noScroll = false }) => (
     #__next,
     div[data-reactroot] {
       height: 100%;
+      ${noScroll ? "display: flex" : "default"};
+      ${noScroll ? "flex-direction: column" : "unset"};
       ${noScroll ? "overflow: hidden;" : ""};
     }
 

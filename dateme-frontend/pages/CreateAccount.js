@@ -127,7 +127,7 @@ class CreateAccount extends React.Component {
       .then(response => {
         Router.push(buildEditProfileURL(username));
         logEvent("Create Account", {
-          provider: _.get(this, "props.externalAccount.provider"),
+          providers: [_.get(this, "props.externalAccount.provider")],
           sex,
           interested_in_men: interestedInMen,
           interested_in_women: interestedInWomen,

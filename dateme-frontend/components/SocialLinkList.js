@@ -18,7 +18,7 @@ const PhoneButton = ({ phone }) => {
   );
 };
 
-export default ({ socialLinks, phone, centered = true }) => {
+export default ({ socialLinks, phone, spacing = "32px", centered = true }) => {
   if (_.isEmpty(_.filter(_.values(socialLinks), _.identity)) && !phone) {
     return null;
   }
@@ -37,7 +37,7 @@ export default ({ socialLinks, phone, centered = true }) => {
         section {
           display: grid;
           grid-auto-flow: column;
-          grid-column-gap: 32px;
+          grid-column-gap: ${spacing};
           justify-content: flex-start;
         }
 

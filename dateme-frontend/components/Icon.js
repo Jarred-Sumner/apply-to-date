@@ -22,6 +22,9 @@ import SwitchOffIcon from "../static/Icon/icons/switch-off.svg";
 import PendingVerifyIcon from "../static/Icon/icons/pending-verify.svg";
 import Hamburger from "../static/Icon/icons/hamburger.svg";
 import Divider from "../static/Icon/icons/divider.svg";
+import Matchmake from "../static/Icon/icons/matchmake.svg";
+import Link from "../static/Icon/icons/link.svg";
+import Shuffle from "../static/Icon/icons/shuffle.svg";
 import User from "../static/Icon/icons/user.svg";
 
 const ICON_COMPONENT_BY_TYPE = {
@@ -40,7 +43,10 @@ const ICON_COMPONENT_BY_TYPE = {
   "switch-on": SwitchOnIcon,
   "switch-off": SwitchOffIcon,
   "pending-verify": PendingVerifyIcon,
-  user: User
+  shuffle: Shuffle,
+  matchmake: Matchmake,
+  user: User,
+  link: Link
 };
 
 export default ({

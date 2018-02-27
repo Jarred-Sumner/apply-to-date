@@ -52,9 +52,7 @@ class Matchmake < ApplicationRecord
 
   def self.fetch_right(left_profile: nil)
     Profile
-      .within(100, origin: [left_profile.latitude, left_profile.longitude])
-      .where(sex: left_profile.user.interested_in_sexes)
-      .interested_in(left_profile.sex)
+      .compatible_with(left_profile)
       .real
       .pluck(:id)
   end

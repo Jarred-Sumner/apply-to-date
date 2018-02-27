@@ -116,6 +116,7 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
           social_links
         )
       )
+
       external_authentications.each do |auth| 
         @application.social_links = @application.social_links.merge(auth.build_social_link_entry)
       end

@@ -1,4 +1,5 @@
 class Api::V1::MatchmakesController < Api::V1::ApplicationController
+  before_action :require_login
 
   def new
     sex = ['male', 'female'].sample

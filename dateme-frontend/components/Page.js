@@ -47,13 +47,15 @@ export default ({
   gray = false,
   size = "default",
   renderMessage,
-  renderOutside
+  renderOutside,
+  contentScrolls = false
 }) => {
   const classes = classNames("PageSize", {
     "PageSize--default": size === "default",
     "PageSize--small": size === "small",
     "PageSize--large": size === "large",
-    "PageSize--full": size === "100%"
+    "PageSize--full": size === "100%",
+    "PageSize--contentScrolls": !!contentScrolls
   });
 
   return (
@@ -92,6 +94,7 @@ export default ({
 
         main.PageSize--full {
           padding-bottom: 0;
+          width: 100%;
         }
 
         footer.PageSize--full {
@@ -113,6 +116,15 @@ export default ({
         footer {
           margin-left: auto;
           margin-right: auto;
+        }
+
+        main.PageSize--contentScrolls {
+          min-height: 0;
+          height: 100%;
+          padding-left: 0;
+          padding-right: 0;
+          margin-left: 0;
+          margin-right: 0;
         }
 
         @media (max-width: 500px) {

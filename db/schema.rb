@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180224214132) do
+ActiveRecord::Schema.define(version: 20180226055520) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -142,6 +142,10 @@ ActiveRecord::Schema.define(version: 20180224214132) do
     t.boolean "interested_in_men"
     t.boolean "interested_in_women"
     t.boolean "interested_in_other"
+    t.datetime "shuffle_disabled_until"
+    t.datetime "last_shuffled_at"
+    t.integer "shuffled_session_count", default: 0, null: false
+    t.integer "shuffle_status", default: 0, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["remember_me_token"], name: "index_users_on_remember_me_token"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token"

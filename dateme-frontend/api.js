@@ -5,7 +5,7 @@ superagentJsonapify(request);
 
 export const BASE_HOSTNAME = process.env.BASE_HOSTNAME;
 
-const buildUrl = path => `${BASE_HOSTNAME}${path}`;
+export const buildUrl = path => `${BASE_HOSTNAME}${path}`;
 const get = (path, options = {}) =>
   request.get(buildUrl(path), options).withCredentials();
 const post = (path, options = {}) =>
@@ -46,8 +46,8 @@ export const createMatch = ({
   });
 };
 
-export const discoverProfile = (opts = {}) => {
-  return post("/profiles/discover").send(opts);
+export const shuffleProfile = (opts = {}) => {
+  return post("/profiles/shuffle").send(opts);
 };
 
 export const updateProfile = profileObject => {

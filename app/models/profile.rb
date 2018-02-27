@@ -5,6 +5,7 @@ class Profile < ApplicationRecord
   has_many :applications
   has_many :external_authentications, through: :verified_networks
   scope :interested_in, lambda { |interested_in| where(Profile.build_interested_in_columns(interested_in)) }
+  scope :compatible_with, lambda { |profile| interested_in(profile.sex).within(100, origin: [profile.latitude, profile.longitude]).where(sex: profile.interested_in_sexes) }
 
   def self.build_interested_in_columns(interested_in)
     columns = []
@@ -17,6 +18,13 @@ class Profile < ApplicationRecord
     columns.map { |gender| "#{User.interested_in_column_name(gender, "profiles")} = TRUE" }.join(" OR ")
   end
 
+  def interested_in_sexes
+    User::VALID_SEXES
+      .reject { |sex| sex === 'male' && !interested_in_men? }
+      .reject { |sex| sex === 'female' && !interested_in_women? }
+      .reject { |sex| sex === 'other' && !interested_in_other? }
+  end
+
   acts_as_mappable :default_units => :miles,
                    :default_formula => :sphere,
                    :lat_column_name => :latitude,
@@ -27,7 +35,7 @@ class Profile < ApplicationRecord
   end
 
   def could_be_interested_in?(profile)
-    user.interested_in_sexes.include?(profile.sex)
+    interested_in_sexes.include?(profile.sex)
   end
   
   CONTACT_METHOD_LABEL = {

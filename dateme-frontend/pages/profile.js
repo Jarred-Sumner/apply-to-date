@@ -53,16 +53,12 @@ class Profile extends React.Component {
           ? window.location.hash.split("#")[1]
           : null
     };
-
-    this.isMobile = false;
   }
 
   async componentDidMount() {
     if (typeof window === "undefined") {
       return;
     }
-
-    this.isMobile = getMobileDetect().mobile();
 
     const profileResponse = await getProfile(this.props.profileId);
 
@@ -116,7 +112,7 @@ class Profile extends React.Component {
   disableStickyHeader = () => this.setState({ isHeaderSticky: false });
 
   render() {
-    const { profile, currentUser } = this.props;
+    const { profile, currentUser, isMobile } = this.props;
     if (!profile) {
       return <Page isLoading />;
     }
@@ -137,9 +133,8 @@ class Profile extends React.Component {
           )
         }
         headerProps={{
-          showChildren: this.state.isHeaderSticky && !this.isMobile,
           renderSubheader:
-            this.isMobile &&
+            isMobile &&
             this.state.isHeaderSticky &&
             (() => {
               return (
@@ -148,11 +143,12 @@ class Profile extends React.Component {
                 </Subheader>
               );
             }),
-          children: (
-            <div className="HeaderApply">
-              <AskProfileOutButton profile={profile} />
-            </div>
-          )
+          children:
+            this.state.isHeaderSticky && !isMobile ? (
+              <div className="HeaderApply">
+                <AskProfileOutButton profile={profile} />
+              </div>
+            ) : null
         }}
       >
         <Head
@@ -174,9 +170,6 @@ class Profile extends React.Component {
 
         <style jsx>{`
           .HeaderApply {
-            position: absolute;
-            left: 0;
-            right: 0;
             width: min-content;
             margin-left: auto;
             margin-right: auto;

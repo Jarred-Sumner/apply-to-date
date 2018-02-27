@@ -35,6 +35,8 @@ class FeedbackForm extends React.Component {
   render() {
     const { isExpanded, message } = this.state;
 
+    return null;
+
     return (
       <BetaGate>
         <div className="Container" onClick={() => this.setExpanded(true)}>

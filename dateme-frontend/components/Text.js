@@ -296,6 +296,32 @@ export default ({ type, children, ...otherProps }) => {
         {children}
       </Text>
     );
+  } else if (type === "switcher--active") {
+    return (
+      <Text
+        {...otherProps}
+        type={type}
+        size="12px"
+        lineHeight="17px"
+        color="white"
+        weight="bold"
+      >
+        {children}
+      </Text>
+    );
+  } else if (type === "switcher--inactive") {
+    return (
+      <Text
+        {...otherProps}
+        type={type}
+        size="12px"
+        lineHeight="17px"
+        color="#9396A5"
+        weight="bold"
+      >
+        {children}
+      </Text>
+    );
   } else if (type === "muted") {
     return (
       <Text {...otherProps} size="13px">
