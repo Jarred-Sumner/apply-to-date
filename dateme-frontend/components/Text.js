@@ -170,6 +170,19 @@ export default ({ type, children, ...otherProps }) => {
         {children}
       </Text>
     );
+  } else if (type == "MatchProfilePageTitle") {
+    return (
+      <Text
+        {...otherProps}
+        font="serif"
+        color="#000"
+        size="20px"
+        lineHeight="35px"
+        weight="bold"
+      >
+        {children}
+      </Text>
+    );
   } else if (type === "PageTitle") {
     return (
       <Text

@@ -40,6 +40,11 @@ const getParagraphs = profile => {
 const DesktopProfile = ({ profile }) => (
   <div className="Container">
     <section className="Section Section--center Section--title">
+      <Text highlightId="title" type="MatchProfilePageTitle">
+        👋, I'm {titleCase(profile.name)}
+      </Text>
+    </section>
+    <section className="Section Section--center Section--title">
       <SocialLinkList socialLinks={profile.socialLinks} />
     </section>
 
