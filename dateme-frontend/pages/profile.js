@@ -35,7 +35,6 @@ import { logEvent } from "../lib/analytics";
 class Profile extends React.Component {
   static async getInitialProps({ query, store, req, isServer }) {
     const profileResponse = await getProfile(query.id);
-
     const profileId = _.get(profileResponse, "body.data.id");
     store.dispatch(updateEntities(profileResponse.body));
 
@@ -60,17 +59,24 @@ class Profile extends React.Component {
       return;
     }
 
-    const profileResponse = await getProfile(this.props.profileId);
+    let profile = this.props.profile;
 
-    this.props.updateEntities(profileResponse.body);
+    if (!profile) {
+      const profileResponse = await getProfile(this.props.profileId);
 
-    if (!_.get(profileResponse, "body.data.id")) {
-      Router.replaceRoute("/page-not-found", "/page-not-found");
+      this.props.updateEntities(profileResponse.body);
+
+      profile = profileResponse.body.data;
+
+      if (!_.get(profileResponse, "body.data.id")) {
+        Router.replaceRoute("/page-not-found", "/page-not-found");
+        return;
+      }
     }
 
     logEvent("View Profile", {
-      profile: this.props.profileId,
-      featured: _.get(profileResponse, "body.data.featured", false)
+      profile: profile.id,
+      featured: _.get(profile, "featured", false)
     });
 
     this.setSelectedElementId();
@@ -218,11 +224,7 @@ const ProfileWithStore = withRedux(
       profile: state.profile[props.profileId || decodeURI(props.url.query.id)]
     };
   },
-  dispatch => bindActionCreators({ updateEntities }, dispatch),
-  null,
-  {
-    pure: false
-  }
+  dispatch => bindActionCreators({ updateEntities }, dispatch)
 )(LoginGate(Profile));
 
 export default ProfileWithStore;

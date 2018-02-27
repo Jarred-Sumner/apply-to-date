@@ -4,15 +4,19 @@ body * {
 
 .clip-circle {
   clip-path: circle(52px at center);
+  border-radius: 50%;
   width: 104px;
-  }
-  
-  .small-clip-circle {
-    clip-path: circle(20px at center);
+  height: 104px;
+}
+
+.small-clip-circle {
+  clip-path: circle(20px at center);
   width: 40px;
+  height: 40px;
   padding: 5px;
-  }
-  
+  border-radius: 50%;
+}
+
 div,
 p,
 a,

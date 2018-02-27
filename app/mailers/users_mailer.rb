@@ -31,6 +31,7 @@ class UsersMailer < ApplicationMailer
       utm_content: 'suggestion'
     })
 
-    mail to: @user.email, subject: "These #{pluralize(@matchmake.matchmake_ratings_count, 'people')} think you should ask out #{@profile.name}"
+    @raters = Profile.real.where(user_id: @matchmake.matchmake_ratings.quality_match.pluck(:user_id))
+    mail to: @user.email, subject: "#{pluralize(@raters.count, 'people')} think you should ask out #{@profile.name}"
   end
 end
