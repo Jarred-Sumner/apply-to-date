@@ -245,7 +245,7 @@ class ProfileGate extends React.Component {
         <EmptyPage
           title="That's it for now!"
           description="To unlock more recommendations, help matchmake other people or come back later."
-          graphic={<MatchmakePreviewGraphic />}
+          graphic={<MatchmakePreviewGraphic isMobile={this.props.isMobile} />}
           actions={
             <Link href="/matchmake">
               <Button

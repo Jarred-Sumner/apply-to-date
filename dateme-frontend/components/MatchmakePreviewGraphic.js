@@ -88,6 +88,7 @@ export default class MatchmakePreviewGraphic extends React.Component {
             key={this.state.currentPairIndex}
             value={currentPair.value}
             setValue={_.noop}
+            isMobile={this.props.isMobile}
             animationOnly
           />
         </div>
@@ -101,7 +102,8 @@ export default class MatchmakePreviewGraphic extends React.Component {
             margin-left: auto;
             margin-right: auto;
             justify-content: center;
-            grid-template-rows: 1fr 1fr;
+            grid-template-rows: auto auto;
+            align-content: center;
             grid-row-gap: 28px;
             width: min-content;
             padding-top: 28px;
@@ -121,7 +123,8 @@ export default class MatchmakePreviewGraphic extends React.Component {
           .Pics {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: space-around;
+            align-content: center;
           }
 
           .Pic {

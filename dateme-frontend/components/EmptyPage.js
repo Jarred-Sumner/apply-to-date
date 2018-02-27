@@ -28,13 +28,7 @@ class EmptyPage extends React.Component {
             </div>
           )}
           {graphic && <div className="Graphic">{graphic}</div>}
-          {actions && (
-            <div className="Actions">
-              {actions}
-
-              {footerText && <div className="FooterText">{footerText}</div>}
-            </div>
-          )}
+          {actions && <div className="Actions">{actions}</div>}
         </div>
         <style jsx>{`
           .Container {
@@ -52,6 +46,7 @@ class EmptyPage extends React.Component {
           }
 
           .Actions {
+            margin-top: 14px;
             margin-left: auto;
             margin-right: auto;
           }
