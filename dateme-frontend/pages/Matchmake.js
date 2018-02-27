@@ -338,6 +338,21 @@ class MatchmakeProfile extends React.Component {
         <Page gray size="100%">
           <Head noScroll disableGoogle title={`Matchmaker | Apply to Date`} />
           <div className="Container">
+            <div className="Rate">
+              <div className="Rate-text">
+                <Text inline weight="semiBold">
+                  How compatible are they?
+                </Text>
+                &nbsp;<span onClick={this.handleSkip}>
+                  <Text inline hoverable underline>
+                    Skip this pair
+                  </Text>
+                </span>
+              </div>
+              <div className="RateButton">
+                <RateButton setValue={this.handleSetRating} />
+              </div>
+            </div>
             <div className="ProfileContainer ProfileContainer--left">
               <div className="ProfileScrollBox">
                 <ViewMatchmakeProfile profile={leftProfile} />
@@ -345,9 +360,8 @@ class MatchmakeProfile extends React.Component {
               <div className="ProfileContainer-header">
                 <a href={leftUrl} target="_blank">
                   <Text size={"14px"} lineHeight={"14px"} weight="bold">
-                    {leftProfile.name}&nbsp;
                     <Text underline weight="regular" size="inherit">
-                      (@{leftProfile.id})
+                      @{leftProfile.id}
                     </Text>
                   </Text>
                 </a>
@@ -375,9 +389,8 @@ class MatchmakeProfile extends React.Component {
               <div className="ProfileContainer-header">
                 <a href={rightUrl} target="_blank">
                   <Text size={"14px"} lineHeight={"14px"} weight="bold">
-                    {rightProfile.name}&nbsp;
                     <Text underline weight="regular" size="inherit">
-                      (@{rightProfile.id})
+                      @{rightProfile.id}
                     </Text>
                   </Text>
                 </a>
@@ -398,27 +411,11 @@ class MatchmakeProfile extends React.Component {
                 </div>
               </div>
             </div>
-
-            <div className="Rate">
-              <div className="Rate-text">
-                <Text inline weight="semiBold">
-                  How compatible are they?
-                </Text>
-                &nbsp;<span onClick={this.handleSkip}>
-                  <Text inline hoverable underline>
-                    Skip this pair
-                  </Text>
-                </span>
-              </div>
-              <div className="RateButton">
-                <RateButton setValue={this.handleSetRating} />
-              </div>
-            </div>
           </div>
           <style jsx>{`
             .Container {
               display: grid;
-              grid-template-rows: minmax(400px, calc(100vh - 340px)) max-content;
+              grid-template-rows: max-content minmax(400px, calc(100vh - 340px));
               height: calc(100vh - 77px);
               overflow: auto;
               grid-column-gap: 28px;
@@ -427,8 +424,8 @@ class MatchmakeProfile extends React.Component {
               justify-content: center;
               grid-template-columns: minmax(200px, 400px) minmax(200px, 400px);
               grid-template-areas:
-                "left-profile right-profile"
-                "rate rate";
+                "rate rate"
+                "left-profile right-profile";
             }
 
             .ProfileContainer {
@@ -446,16 +443,22 @@ class MatchmakeProfile extends React.Component {
             }
 
             .ProfileContainer-header {
-              display: grid;
+              display: flex;
               background-color: #f8f8f8;
               border-top: 1px solid #e2e2e2;
-              grid-template-columns: max-content 1fr;
-              grid-auto-flow: column;
-              grid-column-gap: 28px;
+              justify-content: space-between;
               align-items: center;
               border-bottom-left-radius: 8px;
               border-bottom-right-radius: 8px;
               padding: 14px;
+            }
+
+            .ProfileContainer-header a {
+              flex: 1;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: auto;
+              width: min-content;
             }
 
             .ShareButtons {
