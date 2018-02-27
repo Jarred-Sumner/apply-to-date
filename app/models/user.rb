@@ -16,8 +16,8 @@ class User < ApplicationRecord
   validates :email, uniqueness: true, presence: true, format: /\A([^@\s]+)@((?:[-a-z0-9l]+\.)+[a-z]{2,})\Z/i
   validates :username, uniqueness: true, presence: true, format: { with: /[a-zA-Z0-9\-\_\.]*/ }
   validates :sex, presence: true, inclusion: { in: VALID_SEXES }
-  SHUFFLE_BATCH_SIZE_CEILING = 20.freeze
-  SHUFFLE_BATCH_SIZE_FLOOR = 15.freeze
+  SHUFFLE_BATCH_SIZE_CEILING = 10.freeze
+  SHUFFLE_BATCH_SIZE_FLOOR = 5.freeze
   SHUFFLE_COOLDOWN_CEILING = 24.hours.freeze
   SHUFFLE_COOLDOWN_FLOOR = 1.hours.freeze
 
@@ -42,13 +42,21 @@ class User < ApplicationRecord
     )
   end
 
+  def clear_shuffle_session!
+    self.update(
+      shuffle_disabled_until: nil,
+      last_shuffled_at: nil,
+      shuffled_session_count: 0,
+      shuffle_status: User.shuffle_statuses[:shuffle_allowed]
+    )
+  end
+
   def increment_shuffle_session!
     if should_reset_shuffle_session?
+      clear_shuffle_session!
       self.update(
         last_shuffled_at: DateTime.now,
         shuffled_session_count: 1,
-        shuffle_disabled_until: nil,
-        shuffle_status: User.shuffle_statuses[:shuffle_allowed]
       )
     elsif shuffle_cooldown?
       return

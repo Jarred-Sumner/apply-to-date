@@ -109,7 +109,7 @@ class CreateAccount extends React.Component {
       external_authentication_id: _.get(this.props, "externalAccount.id"),
       profile: {
         latitude: latLng ? latLng.lat : null,
-        longitude: latLng ? latLng.lat : null,
+        longitude: latLng ? latLng.lng : null,
         location,
         name
       },

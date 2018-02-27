@@ -4,8 +4,10 @@ class Profile < ApplicationRecord
   has_many :verified_networks
   has_many :applications
   has_many :external_authentications, through: :verified_networks
+
+  scope :nearby, lambda { |profile| within(100, origin: [profile.latitude, profile.longitude]) }
   scope :interested_in, lambda { |interested_in| where(Profile.build_interested_in_columns(interested_in)) }
-  scope :compatible_with, lambda { |profile| interested_in(profile.sex).within(100, origin: [profile.latitude, profile.longitude]).where(sex: profile.interested_in_sexes) }
+  scope :compatible_with, lambda { |profile| interested_in(profile.sex).where(sex: profile.interested_in_sexes).nearby(profile) }
 
   def self.build_interested_in_columns(interested_in)
     columns = []
@@ -16,6 +18,19 @@ class Profile < ApplicationRecord
     end
 
     columns.map { |gender| "#{User.interested_in_column_name(gender, "profiles")} = TRUE" }.join(" OR ")
+  end
+
+  def geocode
+    @geocode ||= Geokit::Geocoders::MultiGeocoder.geocode(location)
+  end
+
+  def update_from_geocode
+    return nil if location.blank?
+
+    update(
+      latitude: geocode.lat,
+      longitude: geocode.lng,
+    )
   end
 
   def interested_in_sexes

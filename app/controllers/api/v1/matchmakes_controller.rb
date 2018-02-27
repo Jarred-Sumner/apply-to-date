@@ -36,6 +36,14 @@ class Api::V1::MatchmakesController < Api::V1::ApplicationController
         matchmake_rating.save!
 
         matchmake.update(rating: matchmake.calculate_rating)
+
+        if current_user.shuffle_cooldown? && !current_user.should_reset_shuffle_session? 
+          matchmade_count_during_cooldown = MatchmakeRating.where(user_id: current_user.id).where("created_at BETWEEN ? AND ?", current_user.last_shuffled_at, DateTime.now).count
+
+          if matchmade_count_during_cooldown > User::SHUFFLE_BATCH_SIZE_FLOOR
+            current_user.clear_shuffle_session!
+          end
+        end
       end
     end
 
