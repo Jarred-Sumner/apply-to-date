@@ -58,23 +58,24 @@ class Profile extends React.Component {
   }
 
   async componentDidMount() {
-    if (typeof window === "undefined") {
-      return;
-    }
-
     this.isMobile = getMobileDetect().mobile();
 
-    const profileResponse = await getProfile(this.props.profileId);
+    let profile = this.props.profile;
+    if (!profile) {
+      const profileResponse = await getProfile(this.props.profileId);
+      this.props.updateEntities(profileResponse.body);
 
-    this.props.updateEntities(profileResponse.body);
+      if (!_.get(profileResponse, "body.data.id")) {
+        Router.replaceRoute("/page-not-found", "/page-not-found");
+        return;
+      }
 
-    if (!_.get(profileResponse, "body.data.id")) {
-      Router.replaceRoute("/page-not-found", "/page-not-found");
+      profile = profileResponse.body.data;
     }
 
     logEvent("View Profile", {
-      profile: this.props.profileId,
-      featured: _.get(profileResponse, "body.data.featured", false)
+      profile: profile.id,
+      featured: profile.featured || false
     });
 
     this.setSelectedElementId();
@@ -225,11 +226,7 @@ const ProfileWithStore = withRedux(
       profile: state.profile[props.profileId || decodeURI(props.url.query.id)]
     };
   },
-  dispatch => bindActionCreators({ updateEntities }, dispatch),
-  null,
-  {
-    pure: false
-  }
+  dispatch => bindActionCreators({ updateEntities }, dispatch)
 )(LoginGate(Profile));
 
 export default ProfileWithStore;
