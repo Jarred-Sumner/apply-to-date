@@ -56,6 +56,7 @@ import onClickOutside from "react-onclickoutside";
 import CopyURLForm from "../components/CopyURLForm";
 import SharableSocialLink from "../components/SharableSocialLink";
 import RateButton from "../components/RateButton";
+import EmptyPage from "../components/EmptyPage";
 
 const ACTIONS_MENU_HEIGHT = 51;
 
@@ -612,7 +613,12 @@ class ProfileGate extends React.Component {
         />
       );
     } else {
-      return <Page>TODO empty</Page>;
+      return (
+        <EmptyPage
+          title="Come back later :)"
+          description="You've done all the matchmaking we need for now, and it's time for us to process the data."
+        />
+      );
     }
   }
 }

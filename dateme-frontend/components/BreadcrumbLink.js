@@ -1,10 +1,12 @@
 import Text from "./Text";
 import ActiveLink from "./ActiveLink";
 import classNames from "classnames";
+import Link from "next/link";
 
-const BreadcrumbLink = ({ href, children, isActive }) => {
+const BreadcrumbLink = ({ href, children, isActive, onClick }) => {
   return (
     <a
+      onClick={onClick}
       href={href}
       className={classNames("BreadcrumbLink", {
         "BreadcrumbLink--active": isActive,

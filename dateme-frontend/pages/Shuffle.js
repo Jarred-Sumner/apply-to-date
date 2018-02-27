@@ -226,24 +226,6 @@ class ProfileGate extends React.Component {
   }
 
   render() {
-    return (
-      <EmptyPage
-        title="That's it for now!"
-        description="To unlock more recommendations, help matchmake other people or come back later."
-        graphic={<MatchmakePreviewGraphic />}
-        prefetch={getPrefetchURLs()}
-        actions={
-          <Button
-            href="/matchmake"
-            size="large"
-            icon={<Icon type="matchmake" size="18px" color="white" />}
-          >
-            Start matchmaking
-          </Button>
-        }
-        footerText={<Text type="link">Learn more about matchmaking</Text>}
-      />
-    );
     if (this.state.status === SHUFFLE_PAGE_STATUS.loading) {
       return <Page isLoading />;
     } else if (
@@ -258,14 +240,25 @@ class ProfileGate extends React.Component {
           loadNextPage={this.handleLoadNextPage}
         />
       );
-    } else if (this.state.status === SHUFFLE_PAGE_STATUS.cooldown) {
-      return (
-        <Page>
-          <Head disableGoogle title={`Shuffle | Apply to Date`} />
-        </Page>
-      );
     } else {
-      return <Page>TODO empty</Page>;
+      return (
+        <EmptyPage
+          title="That's it for now!"
+          description="To unlock more recommendations, help matchmake other people or come back later."
+          graphic={<MatchmakePreviewGraphic />}
+          actions={
+            <Link href="/matchmake">
+              <Button
+                size="large"
+                icon={<Icon type="matchmake" size="18px" color="white" />}
+              >
+                Start matchmaking
+              </Button>
+            </Link>
+          }
+          footerText={<Text type="link">Learn more about matchmaking</Text>}
+        />
+      );
     }
   }
 }
@@ -282,6 +275,6 @@ const ProfileWithStore = withRedux(
   {
     pure: false
   }
-)(LoginGate(ProfileGate));
+)(LoginGate(ProfileGate, { loginRequired: true }));
 
 export default ProfileWithStore;

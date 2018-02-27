@@ -204,7 +204,7 @@ const Switcher = withRouter(({ router, isMobile }) => (
   </div>
 ));
 
-const NavLink = ActiveLink(({ children, href, isActive }) => {
+const NavLink = ActiveLink(({ children, href, isActive, onClick }) => {
   return (
     <a
       href={href}
@@ -212,6 +212,7 @@ const NavLink = ActiveLink(({ children, href, isActive }) => {
         "Container--active": isActive,
         "Container--inactive": !isActive
       })}
+      onClick={onClick}
     >
       {children}
 
@@ -382,7 +383,11 @@ class Header extends React.Component {
               <Brand hideText="auto" />
 
               {showChildren && !children ? (
-                <Switcher isMobile={isMobile} />
+                this.props.isProbablyLoggedIn ? (
+                  <Switcher isMobile={isMobile} />
+                ) : (
+                  <div />
+                )
               ) : null}
               {showChildren && children}
               <div className="RightSide">

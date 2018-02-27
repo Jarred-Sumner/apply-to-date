@@ -40,7 +40,7 @@ export default class MatchmakePreviewGraphic extends React.Component {
   componentDidMount() {
     this.rotatePair = window.setInterval(() => {
       this.setState({ currentPairIndex: this.getNextPairIndex() });
-    }, 2500);
+    }, 4000);
   }
 
   componentWillUnmount() {
