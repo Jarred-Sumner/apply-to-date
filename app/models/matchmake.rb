@@ -19,6 +19,14 @@ class Matchmake < ApplicationRecord
     end
   end
 
+  def notify!
+    ActiveRecord::Base.transaction do
+      update!(status: Matchmake.statuses[:emailed])
+      UsersMailer.suggestion(id, left_profile.user_id).deliver_later
+      UsersMailer.suggestion(id, right_profile.user_id).deliver_later
+    end
+  end
+
   def calculate_rating
     matchmake_ratings.average(:score)
   end

@@ -130,15 +130,15 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
 
   def render_profile(profile, etags_allowed = true, meta = {})
     if profile.nil?
-      render json: ProfileSerializer.new([], meta).serializable_hash
+      render json: ProfileSerializer.new(nil, meta).serializable_hash
     elsif current_user.present? && profile.try(:user_id) == current_user.id
-      render json: PrivateProfileSerializer.new([profile], {meta: meta}).serializable_hash
+      render json: PrivateProfileSerializer.new(profile, {meta: meta}).serializable_hash
     elsif etags_allowed
       if stale? etag: profile, last_modified: profile.updated_at.utc
-        render json: ProfileSerializer.new([profile], {meta: meta}).serializable_hash
+        render json: ProfileSerializer.new(profile, {meta: meta}).serializable_hash
       end
     else
-      render json: ProfileSerializer.new([profile], {meta: meta}).serializable_hash
+      render json: ProfileSerializer.new(profile, {meta: meta}).serializable_hash
     end
   end
 
