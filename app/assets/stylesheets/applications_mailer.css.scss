@@ -6,7 +6,13 @@ body * {
   clip-path: circle(52px at center);
   width: 104px;
   }
-
+  
+  .small-clip-circle {
+    clip-path: circle(20px at center);
+  width: 40px;
+  padding: 5px;
+  }
+  
 div,
 p,
 a,
