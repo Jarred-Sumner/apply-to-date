@@ -1,4 +1,5 @@
 import { withRouter } from "next/router";
+import URL from "url-parse";
 
 const getPathname = href => {
   if (href.startsWith("http")) {

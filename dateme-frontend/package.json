@@ -140,7 +140,8 @@
     "style-loader": "^0.20.1",
     "superagent": "^3.8.2",
     "superagent-jsonapify": "^1.4.5",
-    "title-case": "^2.1.1"
+    "title-case": "^2.1.1",
+    "url-parse": "^1.2.0"
   },
   "devDependencies": {
     "case-sensitive-paths-webpack-plugin": "^2.1.1",

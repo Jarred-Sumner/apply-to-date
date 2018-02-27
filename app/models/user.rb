@@ -47,6 +47,7 @@ class User < ApplicationRecord
       self.update(
         last_shuffled_at: DateTime.now,
         shuffled_session_count: 1,
+        shuffle_disabled_until: nil,
         shuffle_status: User.shuffle_statuses[:shuffle_allowed]
       )
     elsif shuffle_cooldown?

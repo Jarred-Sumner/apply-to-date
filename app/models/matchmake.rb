@@ -1,9 +1,23 @@
 class Matchmake < ApplicationRecord
   belongs_to :left_profile, class_name: Profile
   belongs_to :right_profile, class_name: Profile
+  MINIMUM_AVERAGE_RATING = 4.0.freeze
+  MINIMUM_NUMBER_OF_VOTES = 5.freeze
+
+  scope :has_enough_ratings, lambda { where("matchmake_ratings_count >= ?", MINIMUM_NUMBER_OF_VOTES) }  
+  scope :quality_match, lambda { where("rating >= ?", MINIMUM_AVERAGE_RATING) }
+  scope :qualifying, lambda { pending.quality_match.has_enough_ratings }
 
   validates :rating, presence: true
   has_many :matchmake_ratings
+
+  def other_profile(profile)
+    if profile.id == left_profile_id
+      right_profile
+    elsif profile.id == right_profile_id
+      left_profile
+    end
+  end
 
   def calculate_rating
     matchmake_ratings.average(:score)
@@ -12,9 +26,23 @@ class Matchmake < ApplicationRecord
   enum status: [:pending, :rated]
   validate :not_matching_self
 
+  validates :left_profile_id, uniqueness: {scope: :right_profile_id}, presence: true
+  validates :right_profile_id, presence: true
+  validate :both_profiles_interested
+
   def not_matching_self
     if left_profile_id == right_profile_id
       self.errors.add(:left_profile, "must not be the same as the right profile")
+    end
+  end
+
+  def both_profiles_interested
+    return if left_profile.nil? || right_profile.nil?
+
+    if !left_profile.could_be_interested_in?(right_profile)
+      self.errors.add(:left_profile, "won't be interested in #{right_profile.name}")
+    elsif !right_profile.could_be_interested_in?(left_profile)
+      self.errors.add(:right_profile, "won't be interested in #{left_profile.name}")
     end
   end
 

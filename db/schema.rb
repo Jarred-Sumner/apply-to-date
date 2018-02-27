@@ -10,12 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180226055520) do
+ActiveRecord::Schema.define(version: 20180227012230) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "uuid-ossp"
   enable_extension "pgcrypto"
+  enable_extension "uuid-ossp"
   enable_extension "citext"
 
   create_table "applications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -85,7 +85,10 @@ ActiveRecord::Schema.define(version: 20180226055520) do
     t.integer "status", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "matchmake_ratings_count", default: 0, null: false
     t.index ["left_profile_id"], name: "index_matchmakes_on_left_profile_id"
+    t.index ["matchmake_ratings_count"], name: "index_matchmakes_on_matchmake_ratings_count"
+    t.index ["rating"], name: "index_matchmakes_on_rating"
     t.index ["right_profile_id"], name: "index_matchmakes_on_right_profile_id"
     t.index ["status"], name: "index_matchmakes_on_status"
   end
