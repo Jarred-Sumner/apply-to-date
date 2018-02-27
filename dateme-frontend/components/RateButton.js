@@ -42,31 +42,31 @@ export default class RateButton extends React.Component {
           onMouseOver={this.setPendingValue(1)}
           onClick={this.setValue(1)}
           filledIn={value >= 1}
-          size={isMobile ? 36 : 40}
+          size={isMobile ? 36 : 60}
         />
         <Star
           onMouseOver={this.setPendingValue(2)}
           onClick={this.setValue(2)}
           filledIn={value >= 2}
-          size={isMobile ? 36 : 40}
+          size={isMobile ? 36 : 60}
         />
         <Star
           onMouseOver={this.setPendingValue(3)}
           onClick={this.setValue(3)}
           filledIn={value >= 3}
-          size={isMobile ? 36 : 40}
+          size={isMobile ? 36 : 60}
         />
         <Star
           onMouseOver={this.setPendingValue(4)}
           onClick={this.setValue(4)}
           filledIn={value >= 4}
-          size={isMobile ? 36 : 40}
+          size={isMobile ? 36 : 60}
         />
         <Star
           onMouseOver={this.setPendingValue(5)}
           onClick={this.setValue(5)}
           filledIn={value >= 5}
-          size={isMobile ? 36 : 40}
+          size={isMobile ? 36 : 60}
         />
 
         <style jsx>{`
@@ -75,7 +75,7 @@ export default class RateButton extends React.Component {
             grid-auto-flow: column;
             grid-column-gap: 14px;
             justify-content: center;
-            grid-template-columns: repeat(5, ${isMobile ? "36px" : "40px"});
+            grid-template-columns: repeat(5, ${isMobile ? "36px" : "60px"});
             cursor: ${animationOnly ? "default" : "pointer"};
           }
         `}</style>
