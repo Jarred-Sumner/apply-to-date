@@ -84,7 +84,7 @@ export default class RateButton extends React.Component {
             opacity: 0;
             animation: star-animation 0.4s ease-out;
             animation-fill-mode: forwards;
-            animation-delay: 0.3s;
+            animation-delay: 0.6s;
 
             transform-origin: 50% 50%;
           }
@@ -93,7 +93,7 @@ export default class RateButton extends React.Component {
             opacity: 0;
             animation: star-animation 0.4s ease-out;
             animation-fill-mode: forwards;
-            animation-delay: 0.5s;
+            animation-delay: 0.85s;
             transform-origin: 50% 50%;
           }
 
@@ -101,7 +101,7 @@ export default class RateButton extends React.Component {
             opacity: 0;
             animation: star-animation 0.4s ease-out;
             animation-fill-mode: forwards;
-            animation-delay: 0.75s;
+            animation-delay: 1s;
             transform-origin: 50% 50%;
           }
 
@@ -109,7 +109,7 @@ export default class RateButton extends React.Component {
             opacity: 0;
             animation: star-animation 0.4s ease-out;
             animation-fill-mode: forwards;
-            animation-delay: 0.9s;
+            animation-delay: 1.2s;
             transform-origin: 50% 50%;
           }
 
@@ -117,7 +117,7 @@ export default class RateButton extends React.Component {
             opacity: 0;
             animation: star-animation 0.4s ease-out;
             animation-fill-mode: forwards;
-            animation-delay: 1.1s;
+            animation-delay: 1.4s;
             transform-origin: 50% 50%;
           }
 

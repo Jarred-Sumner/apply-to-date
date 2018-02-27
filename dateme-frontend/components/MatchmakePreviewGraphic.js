@@ -7,54 +7,14 @@ import { buildProfileShareURL } from "../lib/routeHelpers";
 
 export const PAIRS = [
   {
-    left: "ariellemac",
-    right: "ry",
+    left: "jarred",
+    right: "lucy",
     value: 4
   },
   {
-    left: "Michaellai",
-    right: "lzhong",
-    value: 5
-  },
-  {
-    left: "npekker",
-    right: "rodrigo",
-    value: 3
-  },
-  {
-    left: "amanda",
-    right: "alikoto",
-    value: 4
-  },
-  {
-    left: "deanna",
-    right: "cindy",
-    value: 4
-  },
-  {
-    left: "setareh",
-    right: "brackin",
-    value: 5
-  },
-  {
-    left: "nivi",
-    right: "dillon",
-    value: 5
-  },
-  {
-    left: "jakub",
-    right: "maeganclawges",
-    value: 4
-  },
-  {
-    left: "Jess",
-    right: "sameer",
+    left: "sake",
+    right: "luke",
     value: 2
-  },
-  {
-    left: "bb",
-    right: "ryan",
-    value: 4
   }
 ];
 
@@ -80,7 +40,7 @@ export default class MatchmakePreviewGraphic extends React.Component {
   componentDidMount() {
     this.rotatePair = window.setInterval(() => {
       this.setState({ currentPairIndex: this.getNextPairIndex() });
-    }, 5000);
+    }, 2500);
   }
 
   componentWillUnmount() {
@@ -144,6 +104,7 @@ export default class MatchmakePreviewGraphic extends React.Component {
             grid-template-rows: 1fr 1fr;
             grid-row-gap: 28px;
             width: min-content;
+            padding-top: 28px;
           }
 
           .Prefetch {
@@ -167,7 +128,7 @@ export default class MatchmakePreviewGraphic extends React.Component {
             transform: scale(0);
             animation-delay: 0.2s;
             opacity: 0;
-            animation: show-photo 0.5s ease-in-out;
+            animation: show-photo 0.8s ease-in-out;
             animation-fill-mode: forwards;
           }
 
@@ -177,9 +138,24 @@ export default class MatchmakePreviewGraphic extends React.Component {
               transform: scale(0);
             }
 
+            50% {
+              opacity: 0.9;
+              transform: scale(1.1);
+            }
+            80% {
+              opacity: 1;
+              transform: scale(0.89);
+            }
+
             100% {
               opacity: 1;
               transform: scale(1);
+            }
+          }
+
+          @media (max-width: 500px) {
+            .Container {
+              padding-top: 0px;
             }
           }
         `}</style>

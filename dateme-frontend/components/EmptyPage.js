@@ -40,7 +40,7 @@ class EmptyPage extends React.Component {
           .Container {
             display: grid;
             margin-top: 4rem;
-            grid-template-rows: 1fr 1fr auto auto;
+            grid-template-rows: auto 1fr auto auto;
             grid-row-gap: 28px;
             justify-content: center;
             height: 100%;
