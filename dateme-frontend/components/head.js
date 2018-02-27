@@ -32,6 +32,7 @@ if (typeof window !== "undefined") {
   ReactGA.pageview(window.location.pathname);
   var lastUrl = null;
   Router.onRouteChangeComplete = url => {
+    console.log(url);
     if (url !== lastUrl) {
       window.scrollTo(0, 0);
       ReactGA.pageview(url);

@@ -23,6 +23,19 @@ class UsersMailer < ApplicationMailer
     @user = User.find(user_id)
 
     @profile = @matchmake.other_profile(@user.profile)
+    if @matchmake.left_profile_id == @profile.id
+      if @matchmake.notified_left_profile_at.present?
+        Rails.logger.info "Halting Matchmake suggestion email (#{@matchmake.id}: #{@profile.id}) because already notified"
+      else
+        @matchmake.update(notified_left_profile_at: DateTime.now)
+      end
+    else
+      if @matchmake.notified_right_profile_at.present?
+        Rails.logger.info "Halting Matchmake suggestion email (#{@matchmake.id}: #{@profile.id}) because already notified"
+      else
+        @matchmake.update(notified_right_profile_at: DateTime.now)
+      end
+    end
 
 
     @profile_url = Api::V1::ApplicationController.build_frontend_uri("/#{@profile.id}", {

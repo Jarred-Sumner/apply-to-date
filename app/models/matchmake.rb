@@ -23,7 +23,7 @@ class Matchmake < ApplicationRecord
     matchmake_ratings.average(:score)
   end
 
-  enum status: [:pending, :rated]
+  enum status: [:pending, :rated, :emailed, :manually_rejected]
   validate :not_matching_self
 
   validates :left_profile_id, uniqueness: {scope: :right_profile_id}, presence: true
