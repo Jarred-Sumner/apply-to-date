@@ -5,6 +5,7 @@ export default class IconButton extends React.Component {
     const {
       onClick,
       backgroundImage,
+      backgroundColor,
       icon,
       size,
       disabled = false,
@@ -30,6 +31,7 @@ export default class IconButton extends React.Component {
             width: ${size};
             height: ${size};
             background-image: ${backgroundImage};
+            background-color: ${backgroundColor};
             box-shadow: ${shadow};
             cursor: pointer;
 
@@ -39,7 +41,8 @@ export default class IconButton extends React.Component {
           :global(.IconParent--disabled .IconButton),
           .IconButton--disabled {
             pointer-events: none;
-            filter: grayscale(1);
+            background-color: #e7e7e7;
+            background-image: unset !important;
           }
 
           .IconButton:hover {
