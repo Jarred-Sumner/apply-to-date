@@ -335,7 +335,7 @@ class MatchmakeProfile extends React.Component {
       const leftUrl = buildProfileShareURL(leftProfile.id);
       const rightUrl = buildProfileShareURL(rightProfile.id);
       return (
-        <Page gray size="100%">
+        <Page size="100%">
           <Head noScroll disableGoogle title={`Matchmaker | Apply to Date`} />
           <div className="Container">
             <div className="ProfileContainer ProfileContainer--left">

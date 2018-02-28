@@ -21,6 +21,9 @@ export const buildEditProfileURL = profileId => {
   return encodeURI(process.env.DOMAIN + "/" + profileId + "/edit");
 };
 
+export const buildShufflePath = () => "/shuffle";
+export const buildMatchmakePath = () => "/matchmake";
+
 export const updateQuery = (url, params) => {
   const urlParams = {
     ...url.query,
