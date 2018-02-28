@@ -223,7 +223,7 @@ class MatchmakeProfile extends React.Component {
                     </div>
                     <div className="Rate-text">
                       <Text size="14px" weight="semiBold">
-                        How compatible are they?
+                        Should these two go on a date?
                       </Text>
                     </div>
                     <div className="RateButton">
@@ -338,25 +338,7 @@ class MatchmakeProfile extends React.Component {
         <Page gray size="100%">
           <Head noScroll disableGoogle title={`Matchmaker | Apply to Date`} />
           <div className="Container">
-            <div className="Rate">
-              <div className="Rate-text">
-                <Text inline weight="semiBold">
-                  How compatible are they?
-                </Text>
-                &nbsp;<span onClick={this.handleSkip}>
-                  <Text inline hoverable underline>
-                    Skip this pair
-                  </Text>
-                </span>
-              </div>
-              <div className="RateButton">
-                <RateButton setValue={this.handleSetRating} />
-              </div>
-            </div>
             <div className="ProfileContainer ProfileContainer--left">
-              <div className="ProfileScrollBox">
-                <ViewMatchmakeProfile profile={leftProfile} />
-              </div>
               <div className="ProfileContainer-header">
                 <a href={leftUrl} target="_blank">
                   <Text size={"14px"} lineHeight={"14px"} weight="bold">
@@ -381,11 +363,12 @@ class MatchmakeProfile extends React.Component {
                   </CopyToClipboard>
                 </div>
               </div>
-            </div>
-            <div className="ProfileContainer ProfileContainer--right">
               <div className="ProfileScrollBox">
-                <ViewMatchmakeProfile profile={rightProfile} />
+                <ViewMatchmakeProfile profile={leftProfile} />
               </div>
+            </div>
+            <div className="Divider" />
+            <div className="ProfileContainer ProfileContainer--right">
               <div className="ProfileContainer-header">
                 <a href={rightUrl} target="_blank">
                   <Text size={"14px"} lineHeight={"14px"} weight="bold">
@@ -410,36 +393,56 @@ class MatchmakeProfile extends React.Component {
                   </CopyToClipboard>
                 </div>
               </div>
+              <div className="ProfileScrollBox">
+                <ViewMatchmakeProfile profile={rightProfile} />
+              </div>
             </div>
+
+            <Subheader bottom fade>
+              <div className="RateFooter">
+                <Text color="black" size="16px" weight="bold">
+                  Should these two go on a date?
+                </Text>
+                <RateButton isMobile setValue={this.handleSetRating} />
+              </div>
+            </Subheader>
           </div>
           <style jsx>{`
             .Container {
-              display: grid;
-              grid-template-rows: max-content minmax(400px, calc(100vh - 340px));
-              height: calc(100vh - 77px);
-              overflow: auto;
-              grid-column-gap: 28px;
-              grid-row-gap: 28px;
-              padding-top: 40px;
+              display: flex;
               justify-content: center;
-              grid-template-columns: minmax(200px, 400px) minmax(200px, 400px);
-              grid-template-areas:
-                "rate rate"
-                "left-profile right-profile";
+              width: 100vw;
+              height: 100%;
+            }
+
+            .RateFooter {
+              display: grid;
+              justify-content: center;
+              grid-row-gap: 20px;
+              width: 100%;
+              padding-bottom: 20px;
+              padding-top: 14px;
+            }
+
+            .Divider {
+              height: 100%;
+              width: 2px;
+              margin-top: 2px;
+              background-color: #e7e7e7;
+              flex: 0 0 2px;
             }
 
             .ProfileContainer {
               background-color: white;
-              box-shadow: 0 2px 10px 0 #e8e8e8;
-              border-radius: 8px;
               display: flex;
+              flex: 1;
               flex-direction: column;
             }
 
             .ProfileScrollBox {
               overflow-y: auto;
               flex: 1;
-              height: auto;
+              height: 100%;
             }
 
             .ProfileContainer-header {
@@ -448,9 +451,8 @@ class MatchmakeProfile extends React.Component {
               border-top: 1px solid #e2e2e2;
               justify-content: space-between;
               align-items: center;
-              border-bottom-left-radius: 8px;
-              border-bottom-right-radius: 8px;
-              padding: 14px;
+              flex: 0 0 auto;
+              padding: 14px 42px;
             }
 
             .ProfileContainer-header a {
@@ -468,22 +470,12 @@ class MatchmakeProfile extends React.Component {
               min-height: 36px;
             }
 
-            .ProfileContainer--left {
-              grid-area: left-profile;
-            }
-
-            .ProfileContainer--right {
-              grid-area: right-profile;
-            }
-
             .Rate {
               display: grid;
               grid-auto-flow: row;
               grid-row-gap: 28px;
               text-align: center;
               padding: 14px 0;
-
-              grid-area: rate;
             }
 
             .RateButton {

@@ -1,4 +1,6 @@
-import Star from "./Star";
+import IconButton from "./IconButton";
+import Icon from "./Icon";
+
 import classNames from "classnames";
 
 export default class RateButton extends React.Component {
@@ -31,6 +33,8 @@ export default class RateButton extends React.Component {
     const { value } = this.state;
     const { isMobile, animationOnly = false } = this.props;
 
+    const size = "52px";
+
     return (
       <div
         className={classNames("RateButton", {
@@ -38,49 +42,43 @@ export default class RateButton extends React.Component {
         })}
         onMouseLeave={this.setPendingValue(this.props.value)}
       >
-        <Star
-          onMouseOver={this.setPendingValue(1)}
+        <IconButton
+          size={size}
           onClick={this.setValue(1)}
-          filledIn={value >= 1}
-          size={isMobile ? 36 : 50}
+          icon={<Icon type="thumbs-down" size="28px" color="white" />}
+          backgroundImage="linear-gradient(-225deg, #FD2C2C 0%, #FF8F55 100%)"
         />
-        <Star
-          onMouseOver={this.setPendingValue(2)}
-          onClick={this.setValue(2)}
-          filledIn={value >= 2}
-          size={isMobile ? 36 : 50}
-        />
-        <Star
-          onMouseOver={this.setPendingValue(3)}
-          onClick={this.setValue(3)}
-          filledIn={value >= 3}
-          size={isMobile ? 36 : 50}
-        />
-        <Star
-          onMouseOver={this.setPendingValue(4)}
-          onClick={this.setValue(4)}
-          filledIn={value >= 4}
-          size={isMobile ? 36 : 50}
-        />
-        <Star
-          onMouseOver={this.setPendingValue(5)}
+
+        <IconButton
+          size={size}
           onClick={this.setValue(5)}
-          filledIn={value >= 5}
-          size={isMobile ? 36 : 50}
+          icon={<Icon type="thumbs-up" size="28px" color="white" />}
+          backgroundImage="linear-gradient(-131deg, #00C0C7 0%, #00CDC4 32%, #00D6BD 44%, #00DEB6 55%, #00E8B3 76%, #90F3DB 100%)"
+        />
+
+        <IconButton
+          size={size}
+          onClick={this.setValue(0)}
+          icon={<Icon type="idk" size="32px" color="white" />}
+          backgroundImage="linear-gradient(-127deg, #3B3838 0%, #2B2B2B 100%)"
         />
 
         <style jsx>{`
           div {
             display: grid;
             grid-auto-flow: column;
-            grid-column-gap: 14px;
+            grid-column-gap: ${size};
             justify-content: center;
-            grid-template-columns: repeat(5, ${isMobile ? "36px" : "50px"});
+            grid-template-columns: ${size} ${size} ${size};
             cursor: ${animationOnly ? "default" : "pointer"};
           }
         `}</style>
         <style jsx global>{`
-          .RateButton--animated .StarIcon:nth-of-type(1) {
+          .RateButton--animated .IconButton {
+            pointer-events: none;
+          }
+
+          .RateButton--animated .IconButton:nth-of-type(1) {
             opacity: 0;
             animation: star-animation 0.4s ease-out;
             animation-fill-mode: forwards;
@@ -89,7 +87,7 @@ export default class RateButton extends React.Component {
             transform-origin: 50% 50%;
           }
 
-          .RateButton--animated .StarIcon:nth-of-type(2) {
+          .RateButton--animated .IconButton:nth-of-type(2) {
             opacity: 0;
             animation: star-animation 0.4s ease-out;
             animation-fill-mode: forwards;
@@ -97,27 +95,11 @@ export default class RateButton extends React.Component {
             transform-origin: 50% 50%;
           }
 
-          .RateButton--animated .StarIcon:nth-of-type(3) {
+          .RateButton--animated .IconButton:nth-of-type(3) {
             opacity: 0;
             animation: star-animation 0.4s ease-out;
             animation-fill-mode: forwards;
             animation-delay: 1s;
-            transform-origin: 50% 50%;
-          }
-
-          .RateButton--animated .StarIcon:nth-of-type(4) {
-            opacity: 0;
-            animation: star-animation 0.4s ease-out;
-            animation-fill-mode: forwards;
-            animation-delay: 1.2s;
-            transform-origin: 50% 50%;
-          }
-
-          .RateButton--animated .StarIcon:nth-of-type(5) {
-            opacity: 0;
-            animation: star-animation 0.4s ease-out;
-            animation-fill-mode: forwards;
-            animation-delay: 1.4s;
             transform-origin: 50% 50%;
           }
 

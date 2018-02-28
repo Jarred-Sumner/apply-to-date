@@ -28,6 +28,10 @@ import Shuffle from "../static/Icon/icons/shuffle.svg";
 import User from "../static/Icon/icons/user.svg";
 import Retweet from "../static/Icon/icons/retweet.svg";
 
+import ThumbsUp from "../static/Icon/icons/thumbs-up.svg";
+import ThumbsDown from "../static/Icon/icons/thumbs-down.svg";
+import IDK from "../static/Icon/icons/idk.svg";
+
 const ICON_COMPONENT_BY_TYPE = {
   retweet: Retweet,
   email: EmailIcon,
@@ -48,7 +52,10 @@ const ICON_COMPONENT_BY_TYPE = {
   shuffle: Shuffle,
   matchmake: Matchmake,
   user: User,
-  link: Link
+  link: Link,
+  "thumbs-up": ThumbsUp,
+  "thumbs-down": ThumbsDown,
+  idk: IDK
 };
 
 export default ({

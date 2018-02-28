@@ -16,8 +16,8 @@ class User < ApplicationRecord
   validates :email, uniqueness: true, presence: true, format: /\A([^@\s]+)@((?:[-a-z0-9l]+\.)+[a-z]{2,})\Z/i
   validates :username, uniqueness: true, presence: true, format: { with: /[a-zA-Z0-9\-\_\.]*/ }
   validates :sex, presence: true, inclusion: { in: VALID_SEXES }
-  SHUFFLE_BATCH_SIZE_CEILING = 10.freeze
-  SHUFFLE_BATCH_SIZE_FLOOR = 5.freeze
+  SHUFFLE_BATCH_SIZE_CEILING = 6.freeze
+  SHUFFLE_BATCH_SIZE_FLOOR = 3.freeze
   SHUFFLE_COOLDOWN_CEILING = 24.hours.freeze
   SHUFFLE_COOLDOWN_FLOOR = 1.hours.freeze
 

@@ -94,6 +94,8 @@ export default ({
 
         main.PageSize--full {
           padding-bottom: 0;
+          padding-left: 0;
+          padding-right: 0;
           width: 100%;
         }
 

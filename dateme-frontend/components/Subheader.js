@@ -61,9 +61,11 @@ export default ({
 
           .Subheader--fade {
             border: 0;
-            background: linear-gradient(
+            background-color: transparent;
+            background-image: linear-gradient(
               -180deg,
               rgba(255, 255, 255, 0.16) 0%,
+              rgba(255, 255, 255, 0.54) 47%,
               #ffffff 100%
             );
           }
@@ -126,9 +128,11 @@ export default ({
 
             .Subheader--fade {
               border: 0;
-              background: linear-gradient(
+              background-color: transparent;
+              background-image: linear-gradient(
                 -180deg,
                 rgba(255, 255, 255, 0.16) 0%,
+                rgba(255, 255, 255, 0.92) 47%,
                 #ffffff 100%
               );
             }

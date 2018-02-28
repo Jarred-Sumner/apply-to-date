@@ -70,9 +70,11 @@ export default class MatchmakePreviewGraphic extends React.Component {
           >
             <Thumbnail size="105px" url={photoURL(currentPair.left)} circle />
           </a>
-          <Text size="30px" lineHeight="40px">
-            +
-          </Text>
+          <div className="Divider">
+            <Text size="30px" lineHeight="40px">
+              +
+            </Text>
+          </div>
           <a
             className="Pic"
             key={currentPair.right}
@@ -120,6 +122,10 @@ export default class MatchmakePreviewGraphic extends React.Component {
             pointer-events: none;
           }
 
+          .Divider {
+            width: 45px;
+          }
+
           .Pics {
             display: flex;
             align-items: center;
@@ -131,6 +137,7 @@ export default class MatchmakePreviewGraphic extends React.Component {
             transform: scale(0);
             animation-delay: 0.2s;
             opacity: 0;
+            flex: 1;
             animation: show-photo 0.8s ease-in-out;
             animation-fill-mode: forwards;
           }

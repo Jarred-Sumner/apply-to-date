@@ -198,6 +198,12 @@ class MobileProfile extends React.Component {
         >
           <div className="Container">
             <section className="Section Section--center Section--title">
+              <Text highlightId="title" type="ProfilePageTitle">
+                {titleCase(profile.name)}
+              </Text>
+            </section>
+
+            <section className="Section Section--center Section--title">
               <SocialLinkList socialLinks={profile.socialLinks} />
             </section>
 
@@ -228,31 +234,40 @@ class MobileProfile extends React.Component {
               </div>
             </section>
 
-            <section className="Section Section--bio">
-              {getParagraphs(profile).map(paragraph => {
-                return (
-                  <div
-                    key={paragraph.key}
-                    className="Section-row Section-row--bio"
-                  >
-                    <Text className="Section-title" type="title">
-                      {paragraph.title}
-                    </Text>
+            {!_.isEmpty(getParagraphs(profile)) && (
+              <section className="Section Section--bio">
+                {getParagraphs(profile).map(paragraph => {
+                  return (
+                    <div
+                      key={paragraph.key}
+                      className="Section-row Section-row--bio"
+                    >
+                      <Text className="Section-title" type="title">
+                        {paragraph.title}
+                      </Text>
 
-                    <Text highlightId={paragraph.key} type="paragraph">
-                      <Linkify
-                        properties={{
-                          target: "_blank",
-                          className: "LinkifyLink"
-                        }}
-                      >
-                        {paragraph.body}
-                      </Linkify>
-                    </Text>
-                  </div>
-                );
-              })}
-            </section>
+                      <Text highlightId={paragraph.key} type="paragraph">
+                        <Linkify
+                          properties={{
+                            target: "_blank",
+                            className: "LinkifyLink"
+                          }}
+                        >
+                          {paragraph.body}
+                        </Linkify>
+                      </Text>
+                    </div>
+                  );
+                })}
+              </section>
+            )}
+
+            {profile.socialLinks.instagram && (
+              <InstagramSection profileId={profile.id} />
+            )}
+            {profile.socialLinks.twitter && (
+              <TwitterViewer profileId={profile.id} />
+            )}
           </div>
         </Swipeable>
         <style jsx>{`
