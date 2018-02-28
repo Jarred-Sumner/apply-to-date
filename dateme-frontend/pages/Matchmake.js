@@ -437,13 +437,13 @@ class MatchmakeProfile extends React.Component {
               display: flex;
               flex: 1;
               flex-direction: column;
-              padding-bottom: 200px;
             }
 
             .ProfileScrollBox {
               overflow-y: auto;
               flex: 1;
               height: 100%;
+              padding-bottom: 233px;
             }
 
             .ProfileContainer-header {
