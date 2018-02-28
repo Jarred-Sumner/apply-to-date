@@ -5,6 +5,8 @@ import Icon from "./Icon";
 import Lightbox from "react-images";
 import Numeral from "numeral";
 
+const MAX_NUMBER_OF_PHOTOS = 12;
+
 const InstagramPhoto = ({ post, onClick }) => {
   return (
     <div onClick={onClick} className="Post">
@@ -82,7 +84,6 @@ export default class InstagramViewer extends React.Component {
     super(props);
 
     this.state = {
-      photos: [],
       currentPhotoIndex: null
     };
   }
@@ -99,6 +100,12 @@ export default class InstagramViewer extends React.Component {
     });
 
   closeLightbox = () => this.setState({ currentPhotoIndex: null });
+
+  defaultGridArea = max => {
+    return _.times(Math.min(this.props.photos.length, max))
+      .map(() => "photo")
+      .join(" ");
+  };
 
   render() {
     const { currentPhotoIndex } = this.state;
@@ -123,7 +130,7 @@ export default class InstagramViewer extends React.Component {
         )}
         <div className="Container">
           {photos
-            .slice(0, 11)
+            .slice(0, MAX_NUMBER_OF_PHOTOS - 1)
             .map((photo, index) => (
               <InstagramPhoto
                 onClick={() => this.setPhotoIndex(index)}
@@ -131,9 +138,10 @@ export default class InstagramViewer extends React.Component {
                 key={photo.id}
               />
             ))}
-          {instagramProfile && (
-            <InstagramViewMore username={instagramProfile.username} />
-          )}
+          {instagramProfile &&
+            photos.length >= MAX_NUMBER_OF_PHOTOS && (
+              <InstagramViewMore username={instagramProfile.username} />
+            )}
         </div>
 
         <Lightbox
@@ -158,7 +166,7 @@ export default class InstagramViewer extends React.Component {
             grid-row-gap: ${spacing}px;
             width: 100%;
 
-            grid-template-areas: "photo photo photo photo";
+            grid-template-areas: "${this.defaultGridArea(4)}";
           }
 
           .Followers {
@@ -176,13 +184,13 @@ export default class InstagramViewer extends React.Component {
 
           @media (max-width: 720px) {
             .Container {
-              grid-template-areas: "photo photo photo";
+              grid-template-areas: "${this.defaultGridArea(3)}";
             }
           }
 
           @media (max-width: 500px) {
             .Container {
-              grid-template-areas: "photo photo";
+              grid-template-areas: "${this.defaultGridArea(2)}";
             }
           }
 
