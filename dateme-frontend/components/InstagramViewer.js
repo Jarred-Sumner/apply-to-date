@@ -167,6 +167,12 @@ export default class InstagramViewer extends React.Component {
             width: 100%;
 
             grid-template-areas: "${this.defaultGridArea(4)}";
+            grid-template-rows: ${
+              this.props.photos.length === 1 ? "206px" : "unset"
+            };
+            grid-template-columns: ${
+              this.props.photos.length === 1 ? "206px" : "unset"
+            };
           }
 
           .Followers {
