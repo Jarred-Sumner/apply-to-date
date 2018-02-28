@@ -9,12 +9,57 @@ export const PAIRS = [
   {
     left: "jarred",
     right: "lucy",
+    value: 1
+  },
+  {
+    left: "michaellai",
+    right: "lzhong",
     value: 5
   },
   {
-    left: "sake",
-    right: "luke",
+    left: "deanna",
+    right: "cindy",
+    value: 0
+  },
+  {
+    left: "setareh",
+    right: "brackin",
+    value: 5
+  },
+  {
+    left: "nivi",
+    right: "dillon",
     value: 1
+  },
+  {
+    left: "jakub",
+    right: "maeganclawges",
+    value: 0
+  },
+  {
+    left: "jarred",
+    right: "lucy",
+    value: 0
+  },
+  {
+    left: "jess",
+    right: "sameer",
+    value: 1
+  },
+  {
+    left: "amanda",
+    right: "alikoto",
+    value: 5
+  },
+  {
+    left: "bb",
+    right: "ryan",
+    value: 0
+  },
+  {
+    left: "ariellemac",
+    right: "ry",
+    value: 5
   }
 ];
 
