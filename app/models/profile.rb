@@ -15,7 +15,7 @@ class Profile < ApplicationRecord
   scope :visible, lambda { where(visible: true) }
   scope :discoverable, lambda { visible.where(appear_in_discover: true) }
   scope :matchmakable, lambda { visible.where(appear_in_matchmake: true) }
-  scope :filled_out, lambda {where("array_length(photos, 1) >= 1")}
+  scope :filled_out, lambda {where("array_length(photos, 1) >= 1 AND (#{Profile.sections_sql_selectors_not_empty} OR #{Profile.has_social_links_query})") }
 
   scope :nearby, lambda { |profile| within(100, origin: [profile.latitude, profile.longitude]) }
   scope :interested_in, lambda { |interested_in| where(Profile.build_interested_in_columns(interested_in)) }
@@ -34,6 +34,19 @@ class Profile < ApplicationRecord
       .map { |selector| "#{selector} ilike #{ActiveRecord::Base.connection.quote("%" + string + "%")}" } 
       .join(" OR ")
   end
+
+  def self.social_links_sql_selectors
+    ExternalAuthentication::ALLOWED_SOCIAL_LINKS.map do |key|
+      "social_links ->> #{ActiveRecord::Base.connection.quote(key)}"
+    end
+  end
+
+  def self.has_social_links_query
+    social_links_sql_selectors.map do |selector|
+      " (#{selector} != '' AND #{selector} IS NOT NULL) "
+    end.join(" OR ")
+  end
+
 
   def self.sections_sql_selectors_not_empty
     DEFAULT_SECTIONS.map do |section_key|
