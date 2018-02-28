@@ -42,7 +42,7 @@ const getParagraphs = profile => {
 const DesktopProfile = ({ profile }) => (
   <div className="Container">
     <section className="Section Section--center Section--title">
-      <Text highlightId="title" type="MatchProfilePageTitle">
+      <Text highlightId="title" type="ProfilePageTitle">
         {titleCase(profile.name)}
       </Text>
     </section>
@@ -55,7 +55,6 @@ const DesktopProfile = ({ profile }) => (
     {profile.photos.length > 0 && (
       <section className="Section">
         <PhotoGroup
-          size="100px"
           showPlaceholder={false}
           photos={profile.photos}
           circle={profile.photos.length === 1}
@@ -116,7 +115,7 @@ const DesktopProfile = ({ profile }) => (
         display: grid;
         grid-auto-flow: row;
         grid-row-gap: 14px;
-        padding: 14px;
+        padding: 42px;
       }
 
       .Section {
