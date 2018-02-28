@@ -81,15 +81,16 @@ class Matchmake < ApplicationRecord
 
   def self.fetch_left(sex: nil, interested_in_sexes: [])
     Profile
-      .real
-      .where("latitude IS NOT NULL and longitude IS NOT NULL")
+      .matchmakable
+      .filled_out
       .where(sex: sex).interested_in(interested_in_sexes)
   end
 
   def self.fetch_right(left_profile: nil)
     Profile
+      .matchmakable
+      .filled_out
       .compatible_with(left_profile)
-      .real
       .pluck(:id)
   end
 end

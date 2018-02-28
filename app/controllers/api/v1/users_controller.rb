@@ -59,9 +59,15 @@ class Api::V1::UsersController < Api::V1::ApplicationController
       end
 
       if @profile.build_default_photo_url.present?
-        upload = Upload.upload_from_url(@profile.build_default_photo_url)
-        @profile.photos.push(Upload.get_public_url(upload.public_url))
-        @profile.save!
+        begin
+          upload = Upload.upload_from_url(@profile.build_default_photo_url)
+          @profile.photos.push(Upload.get_public_url(upload.public_url))
+          @profile.save!
+        rescue => e
+          Raven.capture_exception(e)
+          Rails.logger.info e
+          Rails.logger.info "UPLOADING DEFAULT PHOTO FAILED #{e.inspect} for user #{@user.id} - #{@profile.id}"
+        end
       end
 
       auto_login(@user, true)

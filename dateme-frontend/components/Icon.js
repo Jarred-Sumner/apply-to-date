@@ -26,8 +26,10 @@ import Matchmake from "../static/Icon/icons/matchmake.svg";
 import Link from "../static/Icon/icons/link.svg";
 import Shuffle from "../static/Icon/icons/shuffle.svg";
 import User from "../static/Icon/icons/user.svg";
+import Retweet from "../static/Icon/icons/retweet.svg";
 
 const ICON_COMPONENT_BY_TYPE = {
+  retweet: Retweet,
   email: EmailIcon,
   twitter: TwitterWhiteIcon,
   facebook: FacebookWhiteIcon,

@@ -33,6 +33,13 @@ export const getNewMatchmake = ({ exclude }) => {
   return post("/matchmakes/new").send({ exclude });
 };
 
+export const getFeed = (provider, profileId, applicationId) => {
+  return get(`/feeds/${provider}`).query({
+    profile_id: profileId,
+    application_id: applicationId
+  });
+};
+
 export const createMatch = ({
   exclude,
   left_profile_id,

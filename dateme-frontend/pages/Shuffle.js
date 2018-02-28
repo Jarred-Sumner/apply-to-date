@@ -201,6 +201,8 @@ class ProfileGate extends React.Component {
         ? SHUFFLE_PAGE_STATUS.cooldown
         : SHUFFLE_PAGE_STATUS.loaded
     });
+
+    window.scrollTo(0, 0);
   };
 
   handleLoadNextPage = async () => {

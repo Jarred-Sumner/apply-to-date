@@ -8,6 +8,8 @@ import titleCase from "title-case";
 import Linkify from "react-linkify";
 import Swipeable from "react-swipeable";
 import SocialLinkList from "./SocialLinkList";
+import TwitterViewer from "./TwitterViewer";
+import InstagramSection from "./InstagramSection";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -41,12 +43,14 @@ const DesktopProfile = ({ profile }) => (
   <div className="Container">
     <section className="Section Section--center Section--title">
       <Text highlightId="title" type="MatchProfilePageTitle">
-        👋, I'm {titleCase(profile.name)}
+        {titleCase(profile.name)}
       </Text>
     </section>
-    <section className="Section Section--center Section--title">
-      <SocialLinkList socialLinks={profile.socialLinks} />
-    </section>
+    {!_.isEmpty(profile.socialLinks) && (
+      <section className="Section Section--center Section--title">
+        <SocialLinkList socialLinks={profile.socialLinks} />
+      </section>
+    )}
 
     {profile.photos.length > 0 && (
       <section className="Section">
@@ -60,43 +64,53 @@ const DesktopProfile = ({ profile }) => (
       </section>
     )}
 
-    <section className="Section Section--bio Section--center">
-      <div className="Section-row">
-        <Text highlightId="tagline" type="Tagline">
-          <Linkify
-            properties={{
-              target: "_blank",
-              className: "LinkifyLink"
-            }}
-          >
-            {profile.tagline}
-          </Linkify>
-        </Text>
-      </div>
-    </section>
+    {!_.isEmpty(profile.tagline) && (
+      <section className="Section Section--bio Section--center">
+        <div className="Section-row">
+          <Text highlightId="tagline" type="Tagline">
+            <Linkify
+              properties={{
+                target: "_blank",
+                className: "LinkifyLink"
+              }}
+            >
+              {profile.tagline}
+            </Linkify>
+          </Text>
+        </div>
+      </section>
+    )}
 
-    <section className="Section Section--bio">
-      {getParagraphs(profile).map(paragraph => {
-        return (
-          <div key={paragraph.key} className="Section-row Section-row--bio">
-            <Text className="Section-title" type="title">
-              {paragraph.title}
-            </Text>
+    {!_.isEmpty(getParagraphs(profile)) && (
+      <section className="Section Section--bio">
+        {getParagraphs(profile).map(paragraph => {
+          return (
+            <div key={paragraph.key} className="Section-row Section-row--bio">
+              <Text className="Section-title" type="title">
+                {paragraph.title}
+              </Text>
 
-            <Text highlightId={paragraph.key} type="paragraph">
-              <Linkify
-                properties={{
-                  target: "_blank",
-                  className: "LinkifyLink"
-                }}
-              >
-                {paragraph.body}
-              </Linkify>
-            </Text>
-          </div>
-        );
-      })}
-    </section>
+              <Text highlightId={paragraph.key} type="paragraph">
+                <Linkify
+                  properties={{
+                    target: "_blank",
+                    className: "LinkifyLink"
+                  }}
+                >
+                  {paragraph.body}
+                </Linkify>
+              </Text>
+            </div>
+          );
+        })}
+      </section>
+    )}
+
+    {profile.socialLinks.instagram && (
+      <InstagramSection profileId={profile.id} />
+    )}
+    {profile.socialLinks.twitter && <TwitterViewer profileId={profile.id} />}
+
     <style jsx>{`
       .Container {
         display: grid;

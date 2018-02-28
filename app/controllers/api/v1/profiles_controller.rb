@@ -25,9 +25,10 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
       .concat([current_user.id])
 
     profile = Profile
-      .where(visible: true, appear_in_discover: true)
+      .discoverable
       .where.not(id: exclude_list)
       .compatible_with(current_user.profile)
+      .filled_out
       .order("updated_at DESC")
       .first
 

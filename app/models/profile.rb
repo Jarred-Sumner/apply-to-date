@@ -5,9 +5,47 @@ class Profile < ApplicationRecord
   has_many :applications
   has_many :external_authentications, through: :verified_networks
 
+  DEFAULT_SECTIONS = [
+    'introduction',
+    'background',
+    'looking-for',
+    'not-looking-for'
+  ]
+
+  scope :visible, lambda { where(visible: true) }
+  scope :discoverable, lambda { visible.where(appear_in_discover: true) }
+  scope :matchmakable, lambda { visible.where(appear_in_matchmake: true) }
+  scope :filled_out, lambda {where("array_length(photos, 1) >= 1")}
+
   scope :nearby, lambda { |profile| within(100, origin: [profile.latitude, profile.longitude]) }
   scope :interested_in, lambda { |interested_in| where(Profile.build_interested_in_columns(interested_in)) }
   scope :compatible_with, lambda { |profile| interested_in(profile.sex).where(sex: profile.interested_in_sexes).nearby(profile) }
+  scope :bio_contains, lambda { |string| where(Profile.sections_contain_query(string)) }
+  scope :empty_bio, lambda { where(Profile.sections_sql_selectors_empty) }
+
+  def self.sections_sql_selectors
+    DEFAULT_SECTIONS.map do |section_key|
+      "sections->>'#{section_key}'"
+    end
+  end
+
+  def self.sections_contain_query(string)
+    sections_sql_selectors
+      .map { |selector| "#{selector} ilike #{ActiveRecord::Base.connection.quote("%" + string + "%")}" } 
+      .join(" OR ")
+  end
+
+  def self.sections_sql_selectors_not_empty
+    DEFAULT_SECTIONS.map do |section_key|
+      " sections->>'#{section_key}' != '' "
+    end.join(" OR ")
+  end
+
+  def self.sections_sql_selectors_empty
+    DEFAULT_SECTIONS.map do |section_key|
+      " sections->>'#{section_key}' = '' "
+    end.join(" AND ")
+  end
 
   def self.build_interested_in_columns(interested_in)
     columns = []
@@ -27,10 +65,9 @@ class Profile < ApplicationRecord
   def update_from_geocode
     return nil if location.blank?
 
-    update(
-      latitude: geocode.lat,
-      longitude: geocode.lng,
-    )
+    self.latitude = geocode.lat
+    self.longitude = geocode.lng
+    self.save!(touch: false)
   end
 
   def interested_in_sexes
@@ -79,13 +116,6 @@ class Profile < ApplicationRecord
       recommended_external_authentication.try(:url)
     end
   end
-
-  DEFAULT_SECTIONS = [
-    'introduction',
-    'background',
-    'looking-for',
-    'not-looking-for'
-  ]
 
   def draft?
     !visible?
