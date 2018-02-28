@@ -1,3 +1,5 @@
+import classNames from "classnames";
+
 export default class IconButton extends React.Component {
   render() {
     const {
@@ -5,11 +7,17 @@ export default class IconButton extends React.Component {
       backgroundImage,
       icon,
       size,
+      disabled = false,
       shadow = "0 2px 10px 0 rgba(0,0,0,0.08)"
     } = this.props;
 
     return (
-      <div className="IconButton" onClick={onClick}>
+      <div
+        className={classNames("IconButton", {
+          "IconButton--disabled": disabled
+        })}
+        onClick={onClick}
+      >
         {icon}
 
         <style jsx>{`
@@ -26,6 +34,12 @@ export default class IconButton extends React.Component {
             cursor: pointer;
 
             transition: transform 0.1s linear;
+          }
+
+          :global(.IconParent--disabled .IconButton),
+          .IconButton--disabled {
+            pointer-events: none;
+            filter: grayscale(1);
           }
 
           .IconButton:hover {

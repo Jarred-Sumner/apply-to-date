@@ -9,12 +9,12 @@ export const PAIRS = [
   {
     left: "jarred",
     right: "lucy",
-    value: 4
+    value: 5
   },
   {
     left: "sake",
     right: "luke",
-    value: 2
+    value: 1
   }
 ];
 
@@ -40,7 +40,7 @@ export default class MatchmakePreviewGraphic extends React.Component {
   componentDidMount() {
     this.rotatePair = window.setInterval(() => {
       this.setState({ currentPairIndex: this.getNextPairIndex() });
-    }, 4000);
+    }, 5000);
   }
 
   componentWillUnmount() {
