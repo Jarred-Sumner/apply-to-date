@@ -440,10 +440,20 @@ class MatchmakeProfile extends React.Component {
             }
 
             .ProfileScrollBox {
-              overflow-y: auto;
+              overflow-y: scroll;
               flex: 1;
               height: 100%;
               padding-bottom: 233px;
+            }
+
+            .ProfileScrollBox ::-webkit-scrollbar {
+              appearance: none;
+              width: 7px;
+            }
+            .ProfileScrollBox ::-webkit-scrollbar-thumb {
+              border-radius: 4px;
+              background-color: rgba(0, 0, 0, 0.5);
+              box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
             }
 
             .ProfileContainer-header {
