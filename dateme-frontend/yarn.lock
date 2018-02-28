@@ -4661,12 +4661,6 @@ react-autosize-textarea@^3.0.2:
     line-height "^0.3.1"
     prop-types "^15.5.6"
 
-react-blur@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/react-blur/-/react-blur-0.6.0.tgz#01565e7bf03ef73eb644fb9a77656c15e3b37c70"
-  dependencies:
-    prop-types "^15.5.10"
-
 react-burger-menu@^2.2.3:
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/react-burger-menu/-/react-burger-menu-2.2.3.tgz#43edbb826f1bf069cadcbb0f11aa8febdad8c7ee"

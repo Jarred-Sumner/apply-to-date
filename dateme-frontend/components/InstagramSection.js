@@ -33,6 +33,7 @@ export default class InstagramSection extends React.Component {
 
   render() {
     const { photos, instagramProfile, status, spacing } = this.state;
+    const { marginTop = "4rem" } = this.props;
 
     if (status === STATUS.completed) {
       return (
@@ -45,7 +46,7 @@ export default class InstagramSection extends React.Component {
 
           <style jsx>{`
             section {
-              margin-top: 4rem;
+              margin-top: ${marginTop};
             }
           `}</style>
         </section>

@@ -106,7 +106,7 @@ const DesktopProfile = ({ profile }) => (
     )}
 
     {profile.socialLinks.instagram && (
-      <InstagramSection profileId={profile.id} />
+      <InstagramSection marginTop="1rem" profileId={profile.id} />
     )}
     {profile.socialLinks.twitter && <TwitterViewer profileId={profile.id} />}
 
@@ -114,8 +114,10 @@ const DesktopProfile = ({ profile }) => (
       .Container {
         display: grid;
         grid-auto-flow: row;
-        grid-row-gap: 14px;
-        padding: 42px;
+        grid-row-gap: 42px;
+        padding-top: 28px;
+        padding-left: 77px;
+        padding-right: 77px;
       }
 
       .Section {

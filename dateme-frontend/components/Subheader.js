@@ -131,8 +131,11 @@ export default ({
               background-color: transparent;
               background-image: linear-gradient(
                 -180deg,
-                rgba(255, 255, 255, 0.16) 0%,
-                rgba(255, 255, 255, 0.92) 47%,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.2) 8%,
+                rgba(255, 255, 255, 0.6) 17%,
+                rgba(255, 255, 255, 0.81) 28%,
+                rgba(255, 255, 255, 0.9) 50%,
                 #ffffff 100%
               );
             }
