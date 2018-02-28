@@ -421,7 +421,7 @@ class MatchmakeProfile extends React.Component {
               grid-row-gap: 20px;
               width: 100%;
               padding-bottom: 20px;
-              padding-top: 14px;
+              padding-top: 70px;
             }
 
             .Divider {
@@ -437,6 +437,7 @@ class MatchmakeProfile extends React.Component {
               display: flex;
               flex: 1;
               flex-direction: column;
+              padding-bottom: 200px;
             }
 
             .ProfileScrollBox {
