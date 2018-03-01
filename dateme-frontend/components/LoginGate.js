@@ -42,9 +42,17 @@ const configureAnalytics = user => {
 var windowWidth = null;
 const MOBILE_THRESHOLD = 600;
 
+const detectIfMobile = (userAgent) => {
+  if (typeof window !== 'undefined') {
+    return !!getMobileDetect(userAgent).mobile() || (_.isNumber(windowWidth) ? windowWidth < MOBILE_THRESHOLD : false);
+  } else {
+    return !!getMobileDetect(userAgent).mobile();
+  }
+}
+
 export default _.memoize((Component, options = {}) => {
   if (typeof window !== "undefined" && !windowWidth) {
-    windowWidth = window.outerWidth;
+    windowWidth = window.innerWidth;
   }
 
   class LoginGate extends React.Component {
@@ -144,9 +152,8 @@ export default _.memoize((Component, options = {}) => {
 
   const ConnectedLoginGate = connect(
     (state, props) => {
-      const isMobile =
-        !!getMobileDetect(state.userAgent).mobile() ||
-        (_.isNumber(windowWidth) && windowWidth < MOBILE_THRESHOLD);
+      const isMobile = detectIfMobile(state.userAgent);
+      setIsMobile(isMobile);
 
       return {
         isProbablyLoggedIn: !!state.currentUserId,
@@ -161,7 +168,9 @@ export default _.memoize((Component, options = {}) => {
       bindActionCreators(
         { updateEntities, setCurrentUser, setLoginStatus, setCheckingLogin },
         dispatch
-      )
+      ),
+    null,
+    { pure: false }
   )(LoginGate);
 
   ConnectedLoginGate.getInitialProps = Component.getInitialProps;
