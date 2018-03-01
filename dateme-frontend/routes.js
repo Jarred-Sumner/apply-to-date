@@ -7,14 +7,14 @@ routes
     page: "index"
   })
   .add({
-    name: "Shuffle",
+    name: "shuffle",
     pattern: "/shuffle",
-    page: "Shuffle"
+    page: "shuffle"
   })
   .add({
-    name: "Matchmake",
+    name: "matchmake",
     pattern: "/matchmake",
-    page: "Matchmake"
+    page: "matchmake"
   })
   .add({
     name: "create-account/no-verify",
