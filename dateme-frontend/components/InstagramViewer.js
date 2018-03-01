@@ -5,13 +5,31 @@ import Icon from "./Icon";
 import Lightbox from "react-images";
 import Numeral from "numeral";
 import LazyLoad from "react-lazyload";
+import Spinner from "./Spinner";
 
 const MAX_NUMBER_OF_PHOTOS = 12;
+
+const PhotoSpinner = () => (
+  <div>
+    <Spinner color="#bc2a8d" size={28} />
+    <style jsx>{`
+      div {
+        border-radius: 4px;
+        background: #d8d8d8;
+        height: 213px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    `}</style>
+  </div>
+);
 
 const InstagramPhoto = ({ post, onClick }) => {
   return (
     <div onClick={onClick} className="Post">
-      <LazyLoad offset={50}>
+      <LazyLoad placeholder={<PhotoSpinner />} offset={50}>
         <img src={post.images.standard_resolution.url} />
       </LazyLoad>
 
