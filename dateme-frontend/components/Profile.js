@@ -9,6 +9,7 @@ import Linkify from "react-linkify";
 import SocialLinkList from "./SocialLinkList";
 import TwitterViewer from "./TwitterViewer";
 import InstagramSection from "./InstagramSection";
+import Tag from "./Tag";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -85,6 +86,12 @@ export default ({
             {profile.tagline}
           </Linkify>
         </Text>
+
+        {profile.location && (
+          <div className="Tags">
+            <Tag color="blue">{profile.location}</Tag>
+          </div>
+        )}
       </div>
 
       <SocialLinkList socialLinks={profile.socialLinks} />
@@ -152,6 +159,12 @@ export default ({
 
       .Section-row {
         width: 100%;
+      }
+
+      .Tags {
+        margin-top: 1rem;
+        display: flex;
+        justify-content: center;
       }
 
       .Section-title {
