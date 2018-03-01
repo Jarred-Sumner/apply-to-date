@@ -57,6 +57,7 @@ import CopyURLForm from "../components/CopyURLForm";
 import SharableSocialLink from "../components/SharableSocialLink";
 import RateButton from "../components/RateButton";
 import EmptyPage from "../components/EmptyPage";
+import { logEvent } from "../lib/analytics";
 
 const ACTIONS_MENU_HEIGHT = 51;
 
@@ -115,6 +116,14 @@ class MatchmakeProfile extends React.Component {
       right_profile_id: rightProfile.id,
       rating
     });
+
+    if (rating === 0) {
+      logEvent("Matchmake Skip");
+    } else if (rating === 1 || rating === 5) {
+      logEvent("Matchmake Vote", {
+        rating
+      });
+    }
 
     this.props.loadNextPage();
   };

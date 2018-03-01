@@ -45,6 +45,7 @@ import CopyURLForm from "../components/CopyURLForm";
 import Storage from "../lib/Storage";
 import SharableSocialLink from "../components/SharableSocialLink";
 import EmptyPage from "../components/EmptyPage";
+import { logEvent } from "../lib/analytics";
 
 const SHUFFLE_PAGE_STATUS = {
   loading: "loading",
@@ -194,6 +195,12 @@ class ProfileGate extends React.Component {
       "body.meta.shuffle_disabled",
       false
     );
+
+    if (isShuffleCooldown) {
+      logEvent("Shuffle Cooldown");
+    } else {
+      logEvent("Shuffle");
+    }
 
     this.setState({
       profileId: isShuffleCooldown ? null : profileId,
