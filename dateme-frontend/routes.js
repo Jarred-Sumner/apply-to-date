@@ -3,14 +3,14 @@ const routes = require("next-routes")();
 routes
   .add("index", "/")
   .add({
-    name: "/shuffle",
+    name: "shuffle",
     pattern: "/shuffle",
-    page: "shuffle"
+    page: "Shuffle"
   })
   .add({
-    name: "/matchmake",
+    name: "matchmake",
     pattern: "/matchmake",
-    page: "matchmake"
+    page: "Matchmake"
   })
   .add("CreateAccount", "/sign-up")
   .add({
