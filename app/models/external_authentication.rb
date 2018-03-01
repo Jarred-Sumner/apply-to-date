@@ -174,6 +174,7 @@ class ExternalAuthentication < ApplicationRecord
 
     auth.name = auth_hash.info.name
     auth.access_token = auth_hash.credentials.token
+    auth.access_token_secret = auth_hash.credentials.secret
 
     auth.access_token_expiration = Time.at(auth_hash.credentials.expires_at).to_datetime if auth_hash.credentials.expires
 
