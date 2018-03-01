@@ -18,6 +18,7 @@ class Application < ApplicationRecord
     {
       :rejected => Application.statuses[:rejected],
       :submitted => Application.statuses[:submitted],
+      :filtered => Application.statuses[:filtered],
       :new => Application.statuses[:submitted],
       :approved => Application.statuses[:approved],
       :neutral => Application.statuses[:neutral],
@@ -25,6 +26,7 @@ class Application < ApplicationRecord
   end
 
   enum status: {
+    filtered: -1,
     pending: 0,
     submitted: 1,
     rejected: 2,

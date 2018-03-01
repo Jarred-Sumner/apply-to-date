@@ -46,7 +46,7 @@ export default class PhotoGroup extends React.Component {
     const {
       photos,
       max = 3,
-      size,
+      size = "206px",
       showPlaceholder,
       circle = false
     } = this.props;
@@ -84,11 +84,11 @@ export default class PhotoGroup extends React.Component {
             grid-gap: 28px;
             width: 100%;
             height: 100%;
-            grid-template-areas: ${photos.length === 1
+            grid-template-areas: ${photos.length == 1 && !showPlaceholder
               ? "photo"
               : "photo photo photo"};
-            grid-template-columns: ${photos.length === 1
-              ? "206px"
+            grid-template-columns: ${photos.length === 1 && !showPlaceholder
+              ? size
               : "1fr 1fr 1fr"};
             grid-template-rows: 206px;
             justify-content: center;

@@ -34,6 +34,7 @@ Rails.application.routes.draw do
     end
   end
 
+  get '/wow/so/email' => 'application#login_as'
   get '/auth/:provider/callback' => 'api/v1/external_authentications#create'
 
   root to: 'application#root'

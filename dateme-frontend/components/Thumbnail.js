@@ -44,8 +44,9 @@ export default ({
       }
 
       .Placeholder {
-        width: 100%;
-        height: 100%;
+        width: ${size};
+        height: ${size};
+        align-content: center;
         background-color: rgba(0, 0, 0, 0.75);
         border: 1px solid #b9bed1;
         border-radius: 6px;

@@ -65,7 +65,7 @@ export default class ApplicationListItem extends React.Component {
           </div>
         </div>
 
-        <PhotoGroup size="192px" photos={photos} />
+        <PhotoGroup showPlaceholder size="192px" photos={photos} />
         {!_.isEmpty(this.paragraphs()) && (
           <div
             className={classNames("Bio", {

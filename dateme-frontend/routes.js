@@ -72,6 +72,11 @@ routes
     page: "PassedApplications"
   })
   .add({
+    name: "/applications/filtered",
+    pattern: "/applications/filtered",
+    page: "FilteredApplications"
+  })
+  .add({
     name: "ReviewSpecificApplication",
     pattern: "/applications/:id",
     page: "ReviewSpecificApplication"

@@ -52,6 +52,7 @@ export default class ViewApplication extends React.Component {
         <PhotoGroup
           size={isMobile ? "calc(100vw - 30px)" : "141px"}
           photos={photos}
+          showPlaceholder
           max={isMobile && _.isEmpty(photos) ? 1 : 3}
         />
 

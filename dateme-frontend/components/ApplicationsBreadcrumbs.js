@@ -7,13 +7,14 @@ export default class ApplicationsBreadcrumbs extends React.Component {
         <BreadcrumbLink href="/applications">New</BreadcrumbLink>
         <BreadcrumbLink href="/applications/liked">Liked</BreadcrumbLink>
         <BreadcrumbLink href="/applications/passed">Passed</BreadcrumbLink>
+        <BreadcrumbLink href="/applications/filtered">Filtered</BreadcrumbLink>
 
         <style jsx>{`
           nav {
             display: grid;
             grid-auto-flow: column dense;
             grid-column-gap: 24px;
-            grid-auto-columns: min-content min-content min-content;
+            grid-auto-columns: min-content min-content min-content min-content;
             margin-top: 48px;
             margin-bottom: 48px;
             justify-content: center;

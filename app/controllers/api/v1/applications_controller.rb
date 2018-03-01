@@ -1,6 +1,9 @@
 class Api::V1::ApplicationsController < Api::V1::ApplicationController
+  attr_reader :applying_to_profile, :application
 
   def create
+    @applying_to_profile = Profile.find(params[:profile_id])
+
     if current_user.present? && current_user.can_auto_apply?
       profile = current_user.profile
       existing_application = Application.where(profile_id: params[:profile_id]).where("applicant_id = ? OR email = ?", current_user.id, current_user.email).first
@@ -26,11 +29,13 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
       create_application_from_guest
     end
 
-    if @should_send_email
+    if !applying_to_profile.could_be_interested_in?(@application)
+      application.update(status: Application.statuses[:filtered])
+    elsif @should_send_email
       ApplicationsMailer.confirmed(@application.id).deliver_later
       ApplicationsMailer.pending_app(@application.id).deliver_later
     end
-
+    
     render json: ApplicantApplicationSerializer.new(@application, {
       include: [:external_authentications]
     }).serializable_hash

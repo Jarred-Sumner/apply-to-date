@@ -2,10 +2,14 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
   before_action :require_login, only: [:update, :shuffle]
 
   def index
-    profiles = Profile.where(featured: true)
+    if current_user.present?
+      @profiles = Profile.visible.featured.sexually_compatible_with(current_user.profile)
+    else
+      @profiles = Profile.visible.featured
+    end
 
-    if stale? etag: profiles, last_modified: profiles.pluck(:updated_at).max.utc
-      render json: ProfileSerializer.new(profiles).serializable_hash
+    if stale? etag: @profiles, last_modified: @profiles.pluck(:updated_at).max.utc
+      render json: ProfileSerializer.new(@profiles).serializable_hash
     end
   end
 
