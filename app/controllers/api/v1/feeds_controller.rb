@@ -29,8 +29,16 @@ class Api::V1::FeedsController < Api::V1::ApplicationController
         profile: @external_authentication.instagram.profile[:data]
       }
     elsif params[:provider] == 'twitter'
+      timeline = @external_authentication.twitter.user_timeline(@external_authentication.username)
+      if tweet = timeline.try(:first)
+        if tweet.user.protected?
+          render_error(message: "No #{params[:provider]} associated with #{params[:profile_id] || 'application'} on Apply to Date")
+          return
+        end
+      end
+
       render json: {
-        data: @external_authentication.twitter.user_timeline(@external_authentication.username)
+        data: timeline
       }
     else
       render_error(message: "provider must be either instagram or twitter")

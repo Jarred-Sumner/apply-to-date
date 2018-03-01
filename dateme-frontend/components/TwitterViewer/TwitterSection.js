@@ -174,7 +174,9 @@ export default class TwitterSection extends React.Component {
             </div>
           )}
           <div className="Tweets">
-            {tweets.map(tweet => <Tweet tweet={tweet} key={tweet.id_str} />)}
+            {tweets
+              .slice(0, 5)
+              .map(tweet => <Tweet tweet={tweet} key={tweet.id_str} />)}
           </div>
 
           <style jsx>{`
