@@ -18,7 +18,7 @@ routes
   .add({
     name: "login",
     pattern: "/login",
-    page: "login"
+    page: "Login"
   })
   .add({
     name: "reset-password",
