@@ -1,26 +1,10 @@
 const routes = require("next-routes")();
 
 routes
-  .add({
-    name: "index",
-    pattern: "/",
-    page: "index"
-  })
-  .add({
-    name: "shuffle",
-    pattern: "/shuffle",
-    page: "shuffle"
-  })
-  .add({
-    name: "matchmake",
-    pattern: "/matchmake",
-    page: "matchmake"
-  })
-  .add({
-    name: "create-account/no-verify",
-    pattern: "/sign-up",
-    page: "CreateAccount"
-  })
+  .add("index", "/")
+  .add("shuffle")
+  .add("matchmake")
+  .add("CreateAccount", "/sign-up")
   .add({
     name: "create-account",
     pattern: "/sign-up/:provider/:id",
