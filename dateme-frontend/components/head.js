@@ -101,6 +101,9 @@ const Head = props => (
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
 
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="black /">
+
       <link
         key="Open Sans"
         href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,700,900"
