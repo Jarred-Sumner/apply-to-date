@@ -48,7 +48,7 @@ export const PAIRS = [
   },
   {
     left: "amanda",
-    right: "alikoto",
+    right: "rodrigo",
     value: 5
   },
   {
