@@ -2,8 +2,8 @@ const routes = require("next-routes")();
 
 routes
   .add("index", "/")
-  .add("shuffle", "/shuffle")
-  .add("matchmake", "/matchmake")
+  .add("shuffle", "/shuffle", "Shuffle")
+  .add("matchmake", "/matchmake", "Matchmake")
   .add("CreateAccount", "/sign-up")
   .add({
     name: "create-account",
