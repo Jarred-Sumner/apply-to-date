@@ -28,7 +28,7 @@ class Matchmake < ApplicationRecord
   end
 
   def calculate_rating
-    matchmake_ratings.average(:score)
+    matchmake_ratings.not_skipped.average(:score)
   end
 
   enum status: [:pending, :rated, :emailed, :manually_rejected]
