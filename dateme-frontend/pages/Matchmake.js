@@ -79,11 +79,6 @@ class _MatchmakeActionsMenu extends React.Component {
             url={buildProfileShareURL(profile.id)}
           />
         </div>
-        <div className="Action">
-          <Button fill={false} size="small">
-            Skip
-          </Button>
-        </div>
 
         <style jsx>{`
           .Actions {

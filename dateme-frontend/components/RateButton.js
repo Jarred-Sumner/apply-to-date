@@ -52,7 +52,6 @@ export default class RateButton extends React.Component {
             onClick={this.setValue(1)}
             icon={<Icon type="thumbs-down" size="28px" color="white" />}
             backgroundImage="linear-gradient(-225deg, #FD2C2C 0%, #FF8F55 100%)"
-            shadow="none"
           />
         </div>
 
@@ -67,7 +66,6 @@ export default class RateButton extends React.Component {
             onClick={this.setValue(5)}
             icon={<Icon type="thumbs-up" size="28px" color="white" />}
             backgroundImage="linear-gradient(-131deg, #00C0C7 0%, #00CDC4 32%, #00D6BD 44%, #00DEB6 55%, #00E8B3 76%, #90F3DB 100%)"
-            shadow="none"
           />
         </div>
 
@@ -82,7 +80,6 @@ export default class RateButton extends React.Component {
             onClick={this.setValue(0)}
             icon={<Icon type="idk" size="32px" color="white" />}
             backgroundImage="linear-gradient(-127deg, #3B3838 0%, #2B2B2B 100%)"
-            shadow="none"
           />
         </div>
 

@@ -23,6 +23,24 @@ class Profile < ApplicationRecord
   scope :bio_contains, lambda { |string| where(Profile.sections_contain_query(string)) }
   scope :empty_bio, lambda { where(Profile.sections_sql_selectors_empty) }
 
+  def self.count_all_possible_pairs
+    counted_pairs = []
+    Profile
+      .matchmakable
+      .filled_out
+      .to_a
+      .map do |profile|
+        possible_count = profile.count_possible_pairs(counted_pairs.map { |pair| [pair, profile.id]})
+        counted_pairs.push(profile.id)
+
+        possible_count
+      end.sum
+  end
+
+  def count_possible_pairs(exclude = [])
+    Matchmake.fetch_right(left_profile: self).to_a.select { |right_profile| Matchmake.can_pair?(self, right_profile, exclude) }.length
+  end
+
   def self.sections_sql_selectors
     DEFAULT_SECTIONS.map do |section_key|
       "sections->>'#{section_key}'"

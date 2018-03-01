@@ -54,6 +54,17 @@ class Matchmake < ApplicationRecord
     end
   end
 
+  def self.can_pair?(left_profile, right_id, exclude = [])
+    !cannot_pair?(left_profile, right_id, exclude)
+  end
+
+  def self.cannot_pair?(left_profile, right_id, exclude = [])
+    has_already_rated_pair = !!exclude.find do |excluded| 
+      excluded.sort == [left_profile.id, right_id].sort
+    end
+
+    has_already_rated_pair || left_profile.id == right_id
+  end
 
   def self.build_left_right(exclude: [], sex: nil, interested_in_sexes: [])
     left_matches = fetch_left(sex: sex, interested_in_sexes: interested_in_sexes).shuffle
@@ -62,13 +73,7 @@ class Matchmake < ApplicationRecord
     left_matches.each do |left_profile|
       right_matches = fetch_right(left_profile: left_profile)
     
-      chosen_mate = right_matches.reject do |right_id|
-        has_already_rated_pair = !!exclude.find do |excluded| 
-          excluded.sort == [left_profile.id, right_id].sort
-        end
-
-        has_already_rated_pair || left_profile.id == right_id
-      end.first
+      chosen_mate = right_matches.select { |right_id| Matchmake.can_pair?(left_profile, right_id, exclude) }.first
 
       if chosen_mate.present?
         chosen_pair = [left_profile, Profile.find(chosen_mate)]

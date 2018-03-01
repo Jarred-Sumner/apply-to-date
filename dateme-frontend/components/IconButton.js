@@ -5,11 +5,11 @@ export default class IconButton extends React.Component {
     const {
       onClick,
       backgroundImage,
-      backgroundColor,
+      backgroundColor = "transparent",
       icon,
       size,
       disabled = false,
-      shadow = "0 2px 10px 0 rgba(0,0,0,0.08)"
+      shadow = "none"
     } = this.props;
 
     return (
