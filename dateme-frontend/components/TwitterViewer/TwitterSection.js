@@ -6,6 +6,7 @@ import moment from "moment";
 import Linkify from "react-linkify";
 import Icon from "../Icon";
 import Numeral from "numeral";
+import LazyLoad from "react-lazyload";
 
 const STATUS = {
   loading: "loading",
@@ -22,7 +23,9 @@ const Tweet = ({ tweet }) => {
   return (
     <div className="Tweet">
       <div className="Topbar">
-        <img className="Avatar" src={tweet.user.profile_image_url_https} />
+        <LazyLoad offset={200}>
+          <img className="Avatar" src={tweet.user.profile_image_url_https} />
+        </LazyLoad>
         <a href={buildUserURL(tweet.user.screen_name)} target="_blank">
           <Text noWrap size="14px" weight="medium">
             {tweet.user.name}

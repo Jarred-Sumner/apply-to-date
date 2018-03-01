@@ -4,13 +4,16 @@ import Text from "./Text";
 import Icon from "./Icon";
 import Lightbox from "react-images";
 import Numeral from "numeral";
+import LazyLoad from "react-lazyload";
 
 const MAX_NUMBER_OF_PHOTOS = 12;
 
 const InstagramPhoto = ({ post, onClick }) => {
   return (
     <div onClick={onClick} className="Post">
-      <img src={post.images.standard_resolution.url} />
+      <LazyLoad offset={50}>
+        <img src={post.images.standard_resolution.url} />
+      </LazyLoad>
 
       <style jsx>{`
         .Post {
