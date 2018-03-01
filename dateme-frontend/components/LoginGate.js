@@ -44,7 +44,7 @@ const MOBILE_THRESHOLD = 600;
 
 export default _.memoize((Component, options = {}) => {
   if (typeof window !== "undefined" && !windowWidth) {
-    windowWidth = window.innerWidth;
+    windowWidth = window.outerWidth;
   }
 
   class LoginGate extends React.Component {
@@ -144,7 +144,9 @@ export default _.memoize((Component, options = {}) => {
 
   const ConnectedLoginGate = connect(
     (state, props) => {
-      const isMobile = !!getMobileDetect(state.userAgent).mobile();
+      const isMobile =
+        !!getMobileDetect(state.userAgent).mobile() ||
+        windowWidth < MOBILE_THRESHOLD;
 
       return {
         isProbablyLoggedIn: !!state.currentUserId,
