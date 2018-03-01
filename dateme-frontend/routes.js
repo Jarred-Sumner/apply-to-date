@@ -16,9 +16,9 @@ routes
     page: "VerifyAccount"
   })
   .add({
-    name: "sign-in",
+    name: "login",
     pattern: "/login",
-    page: "Login"
+    page: "login"
   })
   .add({
     name: "reset-password",
