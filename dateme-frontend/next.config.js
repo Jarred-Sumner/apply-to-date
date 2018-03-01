@@ -7,6 +7,7 @@ const Dotenv = require("dotenv-webpack");
 var CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
 
 module.exports = {
+  useFileSystemPublicRoutes: false,
   webpack(config, options) {
     const { dev, isServer } = options;
     const extractCSSPlugin = new ExtractTextPlugin({
