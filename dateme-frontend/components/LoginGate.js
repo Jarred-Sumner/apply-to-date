@@ -146,7 +146,7 @@ export default _.memoize((Component, options = {}) => {
     (state, props) => {
       const isMobile =
         !!getMobileDetect(state.userAgent).mobile() ||
-        windowWidth < MOBILE_THRESHOLD;
+        (_.isNumber(windowWidth) && windowWidth < MOBILE_THRESHOLD);
 
       return {
         isProbablyLoggedIn: !!state.currentUserId,
