@@ -13,6 +13,7 @@ import withLogin from "../lib/withLogin";
 import Raven from "raven-js";
 import Amplitude from "react-amplitude";
 import { logEvent } from "../lib/analytics";
+import { getMobileDetect, setIsMobile } from "../lib/Mobile";
 
 export const LOGIN_STATUSES = {
   pending: "pending",
@@ -38,7 +39,14 @@ const configureAnalytics = user => {
   });
 };
 
+var windowWidth = null;
+const MOBILE_THRESHOLD = 600;
+
 export default _.memoize((Component, options = {}) => {
+  if (typeof window !== "undefined" && !windowWidth) {
+    windowWidth = window.innerWidth;
+  }
+
   class LoginGate extends React.Component {
     constructor(props) {
       super(props);
@@ -55,7 +63,6 @@ export default _.memoize((Component, options = {}) => {
       } = this.props;
 
       if (
-        typeof window !== "undefined" &&
         !options.skipRequest &&
         loginStatus === LOGIN_STATUSES.pending &&
         !currentUser
@@ -137,18 +144,26 @@ export default _.memoize((Component, options = {}) => {
 
   const ConnectedLoginGate = connect(
     (state, props) => {
+      const isMobile = !!getMobileDetect(state.userAgent).mobile();
+
       return {
         isProbablyLoggedIn: !!state.currentUserId,
         currentUserId: state.currentUserId,
         currentUser: state.user[state.currentUserId],
-        loginStatus: state.loginStatus
+        loginStatus: state.loginStatus,
+        userAgent: state.userAgent,
+        isMobile
       };
     },
     dispatch =>
       bindActionCreators(
         { updateEntities, setCurrentUser, setLoginStatus, setCheckingLogin },
         dispatch
-      )
+      ),
+    null,
+    {
+      pure: false
+    }
   )(LoginGate);
 
   ConnectedLoginGate.getInitialProps = Component.getInitialProps;

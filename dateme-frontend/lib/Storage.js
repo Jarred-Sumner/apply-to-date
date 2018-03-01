@@ -31,14 +31,14 @@ export default class Storage {
     return id;
   }
 
-  static async discoveredProfiles() {
+  static async shuffledProfiles() {
     const profiles = await localForage.getItem(KEYS.DISCOVERED_PROFILES);
 
     return profiles || new Set();
   }
 
-  static async addDiscoveredProfile(profileId) {
-    const profiles = await Storage.discoveredProfiles();
+  static async addShuffledProfile(profileId) {
+    const profiles = await Storage.shuffledProfiles();
     profiles.add(profileId);
 
     return localForage.setItem(KEYS.DISCOVERED_PROFILES, profiles);

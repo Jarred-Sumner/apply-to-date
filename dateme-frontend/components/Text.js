@@ -170,6 +170,19 @@ export default ({ type, children, ...otherProps }) => {
         {children}
       </Text>
     );
+  } else if (type == "MatchProfilePageTitle") {
+    return (
+      <Text
+        {...otherProps}
+        font="serif"
+        color="#000"
+        size="20px"
+        lineHeight="35px"
+        weight="bold"
+      >
+        {children}
+      </Text>
+    );
   } else if (type === "PageTitle") {
     return (
       <Text
@@ -292,6 +305,32 @@ export default ({ type, children, ...otherProps }) => {
         size="14px"
         lineHeight="26px"
         textDecoration="underline"
+      >
+        {children}
+      </Text>
+    );
+  } else if (type === "switcher--active") {
+    return (
+      <Text
+        {...otherProps}
+        type={type}
+        size="12px"
+        lineHeight="17px"
+        color="white"
+        weight="bold"
+      >
+        {children}
+      </Text>
+    );
+  } else if (type === "switcher--inactive") {
+    return (
+      <Text
+        {...otherProps}
+        type={type}
+        size="12px"
+        lineHeight="17px"
+        color="#9396A5"
+        weight="bold"
       >
         {children}
       </Text>

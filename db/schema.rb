@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180224214132) do
+ActiveRecord::Schema.define(version: 20180228040956) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "citext"
   enable_extension "pgcrypto"
   enable_extension "uuid-ossp"
-  enable_extension "citext"
 
   create_table "applications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "applicant_id"
@@ -85,7 +85,12 @@ ActiveRecord::Schema.define(version: 20180224214132) do
     t.integer "status", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "matchmake_ratings_count", default: 0, null: false
+    t.datetime "notified_left_profile_at"
+    t.datetime "notified_right_profile_at"
     t.index ["left_profile_id"], name: "index_matchmakes_on_left_profile_id"
+    t.index ["matchmake_ratings_count"], name: "index_matchmakes_on_matchmake_ratings_count"
+    t.index ["rating"], name: "index_matchmakes_on_rating"
     t.index ["right_profile_id"], name: "index_matchmakes_on_right_profile_id"
     t.index ["status"], name: "index_matchmakes_on_status"
   end
@@ -142,6 +147,10 @@ ActiveRecord::Schema.define(version: 20180224214132) do
     t.boolean "interested_in_men"
     t.boolean "interested_in_women"
     t.boolean "interested_in_other"
+    t.datetime "shuffle_disabled_until"
+    t.datetime "last_shuffled_at"
+    t.integer "shuffled_session_count", default: 0, null: false
+    t.integer "shuffle_status", default: 0, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["remember_me_token"], name: "index_users_on_remember_me_token"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token"

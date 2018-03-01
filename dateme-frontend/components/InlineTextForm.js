@@ -20,6 +20,8 @@ export default class InlineTextForm extends React.Component {
       buttonChildren,
       autoComplete,
       inputProps = {},
+      buttonFill,
+      size = "normal",
       hideInputOnMobile = false,
       readOnly
     } = this.props;
@@ -28,7 +30,9 @@ export default class InlineTextForm extends React.Component {
       <form
         className={classNames("Form", {
           "Form--hideInputOnMobile": hideInputOnMobile,
-          "Form--showInputOnMobile": !hideInputOnMobile
+          "Form--showInputOnMobile": !hideInputOnMobile,
+          "Form--normalSize": size === "normal",
+          "Form--smallSize": size === "small"
         })}
         onSubmit={this.handleSubmit}
       >
@@ -50,6 +54,9 @@ export default class InlineTextForm extends React.Component {
         <Button
           className="InlineApply-Button"
           componentType="button"
+          size={size}
+          fill={buttonFill}
+          icon={hideInputOnMobile ? icon : undefined}
           inline={!isMobile()}
         >
           {buttonChildren}
@@ -103,12 +110,13 @@ export default class InlineTextForm extends React.Component {
               padding-bottom: 14px;
             }
 
-            .Form--hideInputOnMobile :global(.InlineApply-Button) {
+            .Form--normalSize.Form--hideInputOnMobile :global(.InlineApply-Button) {
               border-radius: 100px;
               padding-top: 14px;
               padding-bottom: 14px;
             }
-          }
+
+     
         `}</style>
       </form>
     );

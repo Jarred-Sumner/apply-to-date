@@ -9,7 +9,9 @@ export default ({
   shadow = false,
   transparent = false,
   noBorder = false,
+  direction = "row",
   padding,
+  position = "fixed",
   spaceBetween
 }) => {
   if (!bottom) {
@@ -19,7 +21,9 @@ export default ({
           "Subheader--spaceBetween": spaceBetween,
           "Subheader--center": center,
           "Subheader--fade": fade,
-          "Subheader--shadow": !!shadow
+          "Subheader--shadow": !!shadow,
+          "Subheader--noPadding": padding === "none",
+          "Subheader--transparent": transparent
         })}
       >
         {children}
@@ -30,8 +34,17 @@ export default ({
             display: flex;
             align-items: center;
             padding: 10px 40px;
+            flex-direction: ${direction};
             flex: 1;
             border-bottom: 1px solid #e8e8e8;
+          }
+
+          .Subheader--noPadding {
+            padding: 0;
+          }
+
+          .Subheader--transparent {
+            background-color: transparent;
           }
 
           .Subheader--spaceBetween {
@@ -48,9 +61,11 @@ export default ({
 
           .Subheader--fade {
             border: 0;
-            background: linear-gradient(
+            background-color: transparent;
+            background-image: linear-gradient(
               -180deg,
               rgba(255, 255, 255, 0.16) 0%,
+              rgba(255, 255, 255, 0.54) 47%,
               #ffffff 100%
             );
           }
@@ -65,6 +80,7 @@ export default ({
             "Subheader--spaceBetween": spaceBetween,
             "Subheader--center": center,
             "Subheader--largePadding": padding === "large",
+            "Subheader--normalPadding": padding === "normal",
             "Subheader--fade": fade,
             "Subheader--shadow": !!shadow,
             "Subheader--noBorder": !!noBorder
@@ -79,10 +95,15 @@ export default ({
               align-items: center;
               flex: 1;
               border-top: 1px solid #e8e8e8;
-              position: fixed;
+              position: ${position};
+              flex-direction: ${direction};
               bottom: 0;
               left: 0;
               right: 0;
+            }
+
+            .Subheader--normalPadding {
+              padding: 10px 40px;
             }
 
             .Subheader--largePadding {
@@ -107,9 +128,14 @@ export default ({
 
             .Subheader--fade {
               border: 0;
-              background: linear-gradient(
+              background-color: transparent;
+              background-image: linear-gradient(
                 -180deg,
-                rgba(255, 255, 255, 0.16) 0%,
+                rgba(255, 255, 255, 0) 0%,
+                rgba(255, 255, 255, 0.2) 8%,
+                rgba(255, 255, 255, 0.6) 17%,
+                rgba(255, 255, 255, 0.81) 28%,
+                rgba(255, 255, 255, 0.9) 50%,
                 #ffffff 100%
               );
             }

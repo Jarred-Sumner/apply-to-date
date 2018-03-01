@@ -5,7 +5,7 @@ superagentJsonapify(request);
 
 export const BASE_HOSTNAME = process.env.BASE_HOSTNAME;
 
-const buildUrl = path => `${BASE_HOSTNAME}${path}`;
+export const buildUrl = path => `${BASE_HOSTNAME}${path}`;
 const get = (path, options = {}) =>
   request.get(buildUrl(path), options).withCredentials();
 const post = (path, options = {}) =>
@@ -33,6 +33,13 @@ export const getNewMatchmake = ({ exclude }) => {
   return post("/matchmakes/new").send({ exclude });
 };
 
+export const getFeed = (provider, profileId, applicationId) => {
+  return get(`/feeds/${provider}`).query({
+    profile_id: profileId,
+    application_id: applicationId
+  });
+};
+
 export const createMatch = ({
   exclude,
   left_profile_id,
@@ -46,8 +53,8 @@ export const createMatch = ({
   });
 };
 
-export const discoverProfile = (opts = {}) => {
-  return post("/profiles/discover").send(opts);
+export const shuffleProfile = (opts = {}) => {
+  return post("/profiles/shuffle").send(opts);
 };
 
 export const updateProfile = profileObject => {

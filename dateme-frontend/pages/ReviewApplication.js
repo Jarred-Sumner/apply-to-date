@@ -89,6 +89,7 @@ class ReviewApplication extends React.PureComponent {
         isLoading={isLoadingApplication || !this.props.currentUser}
         onYes={this.handleYes}
         onNo={this.handleNo}
+        isMobile={this.props.isMobile}
       />
     );
   }

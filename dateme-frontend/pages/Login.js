@@ -19,7 +19,11 @@ import { Router } from "../routes";
 import Alert, { handleApiError } from "../components/Alert";
 import Page from "../components/Page";
 import withLogin from "../lib/withLogin";
-import { buildEditProfileURL } from "../lib/routeHelpers";
+import {
+  buildEditProfileURL,
+  buildShufflePath,
+  buildMatchmakePath
+} from "../lib/routeHelpers";
 import { logEvent } from "../lib/analytics";
 
 class Login extends React.Component {
@@ -66,11 +70,17 @@ class Login extends React.Component {
       if (this.props.url.query.from) {
         Router.pushRoute(this.props.url.query.from);
       } else {
-        const username = _.get(userResponse, "body.data.username");
-        if (username) {
-          Router.pushRoute(buildEditProfileURL(username));
+        const isShuffleEnabled =
+          _.get(
+            userResponse,
+            "body.data.attributes.shuffle_status",
+            "shuffle_allowed"
+          ) === "shuffle_allowed";
+
+        if (isShuffleEnabled) {
+          Router.pushRoute(buildShufflePath());
         } else {
-          Router.pushRoute(`/account`);
+          Router.pushRoute(buildMatchmakePath());
         }
       }
 

@@ -30,8 +30,15 @@ if (typeof window !== "undefined") {
   ReactGA.plugin.require("socialWidgetTracker");
 
   ReactGA.pageview(window.location.pathname);
+  var lastUrl = null;
   Router.onRouteChangeComplete = url => {
-    ReactGA.pageview(url);
+    console.log(url);
+    if (url !== lastUrl) {
+      window.scrollTo(0, 0);
+      ReactGA.pageview(url);
+    }
+
+    lastUrl = url;
   };
 
   if (process.env.NODE_ENV === "production") {

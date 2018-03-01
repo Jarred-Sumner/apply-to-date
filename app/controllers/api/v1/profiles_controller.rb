@@ -1,5 +1,5 @@
 class Api::V1::ProfilesController < Api::V1::ApplicationController
-  before_action :require_login, only: [:update]
+  before_action :require_login, only: [:update, :shuffle]
 
   def index
     profiles = Profile.where(featured: true)
@@ -9,42 +9,38 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
     end
   end
 
-  def discover
-    interested_in_sexes = []
-    
-    if current_user.present?
-      interested_in_sexes = current_user.interested_in_sexes
+  def photo
+    profile = Profile.find_by!(visible: true, id: params[:id])
+
+    if profile.photos.present?
+      redirect_to profile.photos.first
     else
-      interested_in_sexes = ['male', 'female', 'other']
-      if params[:interested_in_men] != 'true'
-        interested_in_sexes.delete('male')
-      end
-
-      if params[:interested_in_women] != 'true'
-        interested_in_sexes.delete('women')
-      end
-
-      if params[:interested_in_other] != 'true'
-        interested_in_sexes.delete('other')
-      end
+      render_error(message: "No photos", status: 404)
     end
+  end
 
-    sex = current_user.try(:sex) || params[:sex]
+  def shuffle
+    exclude_list = Array(params[:exclude])
+      .concat(Application.where(applicant_id: current_user.id).pluck(:profile_id))
+      .concat([current_user.id])
 
-    profiles_query = Profile
-      .joins(:user)
-      .real
-      .where(visible: true)
-    
-    if sex.present?
-      profiles_query = profiles_query.where(users: { sex: interested_in_sexes }).interested_in(sex)
-    end
-      
-    profiles_query = profiles_query
-      .where.not(profiles: { id: Array(params[:exclude]) })
+    profile = Profile
+      .discoverable
+      .where.not(id: exclude_list)
+      .compatible_with(current_user.profile)
+      .filled_out
       .order("updated_at DESC")
+      .first
 
-    render_profile(profiles_query.first)
+    if profile.present?
+      current_user.increment_shuffle_session!
+    end
+
+    if current_user.shuffle_allowed?
+      render_profile(profile, false, {shuffle_disabled: false})
+    else
+      render_profile(current_user.profile, false, {shuffle_disabled: true})
+    end
   end
 
   def show
@@ -103,7 +99,6 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
         authentications.each do |auth|
           VerifiedNetwork.create!(profile_id: profile.id, external_authentication: auth)
         end
-        
       end
 
       if !update_params[:phone].nil?
@@ -134,15 +129,17 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
     render_error(message: e.message)
   end
 
-  def render_profile(profile)
+  def render_profile(profile, etags_allowed = true, meta = {})
     if profile.nil?
-      render json: ProfileSerializer.new(profile).serializable_hash
+      render json: ProfileSerializer.new(nil, meta).serializable_hash
     elsif current_user.present? && profile.try(:user_id) == current_user.id
-      render json: PrivateProfileSerializer.new(profile).serializable_hash
-    else
+      render json: PrivateProfileSerializer.new(profile, {meta: meta}).serializable_hash
+    elsif etags_allowed
       if stale? etag: profile, last_modified: profile.updated_at.utc
-        render json: ProfileSerializer.new(profile).serializable_hash
+        render json: ProfileSerializer.new(profile, {meta: meta}).serializable_hash
       end
+    else
+      render json: ProfileSerializer.new(profile, {meta: meta}).serializable_hash
     end
   end
 

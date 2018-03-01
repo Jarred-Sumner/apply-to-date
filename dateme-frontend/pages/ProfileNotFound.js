@@ -7,11 +7,13 @@ import Router from "next/router";
 import withRedux from "next-redux-wrapper";
 import Alert from "../components/Alert";
 import withLogin from "../lib/withLogin";
+import Head from "../components/head";
 
 class ProfileNotFound extends React.Component {
   render() {
     return (
       <Page>
+        <Head title="Page not found" />
         <article>
           <Text size="48px" align="center" lineHeight="36px">
             🤔

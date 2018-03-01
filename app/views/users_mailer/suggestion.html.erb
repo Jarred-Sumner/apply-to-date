@@ -1,6 +1,12 @@
 <%= stylesheet_link_tag "applications_mailer" %>
-
 <body style='margin: 0; padding: 0;'>
+<div style="display:none;font-size:1px;color:#333333;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;">
+  <% if @profile.sections.values.first.present? %>
+		<%= truncate(@profile.sections.values.first, {length: 200}) %>
+	<% else %>
+		You should meet <%= @profile.name %>.
+	<% end %>
+</div>
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="full" bgcolor="#f3f7f8" style="background-color: #f3f7f8;">
 	<tbody><tr>
@@ -156,9 +162,9 @@
 												<table width="265" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
 													<tbody><tr>
 														<td width="265" class="circle-image">
-												<a href="https://applytodate.com/lucy" style="text-decoration: none;">
-													<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/Harry-Potter-1-.jpg" alt="" class="clip-circle">
 
+												<a href="<%= raw @profile_url %>" style="text-decration: none">
+													<%= image_tag @profile.photos.try(:first), class: "clip-circle", alt: @profile.name %>
 												</a>
 											</td>
 													</tr>
@@ -181,8 +187,10 @@
 												
 												<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
 													<tbody><tr>
-														<td valign="middle" width="350" style="text-align: center; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 30px; color: #ffffff; line-height: 30px; font-weight: 700;" class="fullCenter">
-															<span style="color:#000000;">Check out Lucy</span>
+														<td valign="middle" width="350" style="text-align: center; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 30px; color: #ffffff; line-height: 36px; font-weight: 700;" class="fullCenter">
+															<a href="<%= raw @profile_url %>" style="text-decration: none">
+																<span style="color:#000000;">You should meet <%= @profile.name %>.</span>
+															</a>
 														</td>
 													</tr>
 												</tbody></table>
@@ -205,7 +213,7 @@
 												<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
 													<tbody><tr>
 														<td valign="middle" width="350" style="text-align: center; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 14px; color: #ffffff; line-height: 24px;" class="fullCenter">
-															<p><span style="color:#000000;">Jarred and 9 other people thought you two would make a great pair!</span></p>
+															<p><span style="color:#000000;"><%= people_list(@raters, @profile) %></span></p>
 														</td>
 													</tr>
 												</tbody></table>
@@ -226,46 +234,15 @@
 								
 									<table width="140" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;">
 										<tbody><tr>
-											<td width="10%" style="vertical-align: middle;">
-												<a href="#" style="text-decoration: none;">
-													<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/Harry-Potter-1-.jpg" width="40" style="width: 40px;" alt="" class="small-clip-circle" border="0">
-												</a>
-											</td>
-											<td width="10%" style="vertical-align: middle;">
-												<a href="#" style="text-decoration: none;">
-													<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/Harry-Potter-1-.jpg" width="40" style="width: 40px;" alt="" class="small-clip-circle" border="0">
-												</a>
-											</td>
-											<td width="10%" style="vertical-align: middle;"> 
-												<a href="#" style="text-decoration: none;">
-													<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/Harry-Potter-1-.jpg" width="40" style="width: 40px;" alt="" class="small-clip-circle" border="0">
-												</a>
-											</td>
-											<td width="10%" style="vertical-align: middle;">
-												<a href="#" style="text-decoration: none;">
-													<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/Harry-Potter-1-.jpg" width="40" style="width: 40px;" alt="" class="small-clip-circle" border="0">
-												</a>
-											</td>
-											<td width="10%" style="vertical-align: middle;">
-												<a href="#" style="text-decoration: none;">
-													<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/Harry-Potter-1-.jpg" width="40" style="width: 40px;" alt="" class="small-clip-circle" border="0">
-												</a>
-											</td>
-											<td width="10%" style="vertical-align: middle;">
-												<a href="#" style="text-decoration: none;">
-													<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/Harry-Potter-1-.jpg" width="40" style="width: 40px;" alt="" class="small-clip-circle" border="0">
-												</a>
-											</td>
-											<td width="10%" style="vertical-align: middle;"> 
-												<a href="#" style="text-decoration: none;">
-													<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/Harry-Potter-1-.jpg" width="40" style="width: 40px;" alt="" class="small-clip-circle" border="0">
-												</a>
-											</td>
-											<td width="10%" style="vertical-align: middle;">
-												<a href="#" style="text-decoration: none;">
-													<img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/3/Harry-Potter-1-.jpg" width="40" style="width: 40px;" alt="" class="small-clip-circle" border="0">
-												</a>
-											</td>
+											<% @raters.first(6).each do |rater| %>
+												<% if rater.photos.present? %>
+												<td width="10%" style="vertical-align: middle;">
+													<a href="<%= profile_url(rater) %>" style="text-decoration: none; border-radius: 50%">
+														<%= image_tag rater.photos.first, alt: rater.name, width: "40", height: "40", style: "width: 40px; height: 40px; border-radius: 50%;", class: "small-clip-circle", border: "0"  %>
+													</a>
+												</td>
+												<% end %>
+											<% end %>
 										</tr>
 									</tbody></table>
 								
@@ -284,15 +261,16 @@
 									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile" bgcolor="#FFFFFF" style="background-color: #ffffff;">
 										<tbody><tr>
 											<td align="center" width="450" valign="middle">
-											
+
+												<a href="<%= profile_url(@profile) %>">
 												<span class="featuredHolder"><table border="0" cellpadding="0" cellspacing="0" align="center">
 													<tbody><tr>
 														<td align="center" height="38" bgcolor="#000000" style="border-radius: 5px; padding-left: 25px; padding-right: 25px; font-weight: 600; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; color: #ec7073; background-color: #000000; font-size: 14px;">
-															<span style="color: #ffffff; font-size: 14px; text-decoration: none; line-height: 34px; width: 100%;">View Lucy's Page
+																<span style="color: #ffffff; font-size: 14px; text-decoration: none; line-height: 34px; width: 100%;">View <%= short_profile_name(@profile).possessive %> Page
 														</td>
 													</tr>
 												</tbody></table></span></span>
-												
+												</a>
 											</td>
 										</tr>
 									</tbody></table>
@@ -304,7 +282,7 @@
 										</tr>
 									</tbody></table>
 									
-									
+									<% if @profile.sections.values.first.present? %>
 									
                         			<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile">
 										<tbody><tr>
@@ -320,7 +298,7 @@
 												<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
 													<tbody><tr>
 														<td valign="middle" width="350" style="text-align: left; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 26px; color: #0c0c0c; line-height: 34px; font-weight: 300;" class="fullCenter">
-															Lucy's Intro
+															<%= short_profile_name(@profile).possessive %> <%= @profile.sections.keys.first %>
 														</td>
 													</tr>
 												</tbody></table>
@@ -343,7 +321,7 @@
 												<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
 													<tbody><tr>
 														<td valign="middle" width="450" style="text-align: left; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 14px; color: #a9a9a9; line-height: 24px;" class="fullCenter">
-															<span style="font-size:14px;"><span style="font-family:open sans;"><span style="color: #000000; white-space: pre-wrap;">Founder, dog mom, and workout addict. If I'm not working out at Barry's Bootcamp (🏋🏻‍♀️ with me), you'll spot me at Dolores Park, Contraband (hands down the best coffee in SF - I don't care what anyone else says), or around town skating with my pup... </span><span style="white-space: pre-wrap;"><strong><a  href="https://applytodate.com/lucy" style="color: #000000; text-decoration: none;">Read more</a></strong></span></span></span><span style="color: #000000; font-family: 'Frank Ruhl Libre', serif; font-size: 21px; white-space: pre-wrap;"></span>
+															<span style="font-size:14px;"><span style="font-family:open sans;"><span style="color: #000000; white-space: pre-wrap;"><%= truncate(@profile.sections.values.first, { length: 250 }) %></span><br /> <br /><span style="white-space: pre-wrap;"><strong><a href="<%= profile_url(@profile) %>" style="color: #000000; text-decoration: none;">Read more</a></strong></span></span></span><span style="color: #000000; font-family: 'Frank Ruhl Libre', serif; font-size: 21px; white-space: pre-wrap;"></span>
 														</td>
 													</tr>
 												</tbody></table>
@@ -351,6 +329,8 @@
 											</td>
 										</tr>
 									</tbody></table>
+
+									<% end %>
 									
 									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile">
 										<tbody><tr>
@@ -363,26 +343,7 @@
 									
 									
 									
-									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile">
-										<tbody><tr>
-											<td align="center" width="450" valign="middle">
-											
-												<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
-													<tbody><tr>
-														<td valign="middle" width="450" style="text-align: center; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 14px; color: #a9a9a9; line-height: 24px;" class="fullCenter">
-															Copyright 2018 Apply to Date
-														</td>
-													</tr>
-													<tr>
-														<td valign="middle" width="450" style="text-align: center; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 14px; color: #a9a9a9; line-height: 24px;" class="fullCenter">
-															<a href="#" style="color: #ec7073; text-decoration: none;"><span style="color:#000000;">Unsubscribe</span></a>
-														</td>
-													</tr>
-												</tbody></table>
-											
-											</td>
-										</tr>
-									</tbody></table>
+	
 									
 									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile">
 										<tbody><tr>

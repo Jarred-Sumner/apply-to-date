@@ -4,6 +4,8 @@ import _ from "lodash";
 import { SECTION_ORDERING, SECTION_LABELS } from "../pages/CreateApplication";
 import SocialLinkList from "./SocialLinkList";
 import PhotoGroup from "./PhotoGroup";
+import InstagramSection from "./InstagramSection";
+import TwitterViewer from "./TwitterViewer";
 import classNames from "classnames";
 
 export default class ViewApplication extends React.Component {
@@ -75,6 +77,13 @@ export default class ViewApplication extends React.Component {
               );
             })}
           </div>
+        )}
+
+        {application.socialLinks.instagram && (
+          <InstagramSection applicationId={application.id} />
+        )}
+        {application.socialLinks.twitter && (
+          <TwitterViewer applicationId={application.id} />
         )}
 
         <style jsx>{`

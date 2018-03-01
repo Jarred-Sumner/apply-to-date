@@ -38,13 +38,14 @@ export default ({
 
     <style jsx>{`
       .photo {
-        flex: 1;
         align-self: flex-start;
+        height: 100%;
+        width: 100%;
       }
 
       .Placeholder {
-        width: ${size};
-        height: ${size};
+        width: 100%;
+        height: 100%;
         background-color: rgba(0, 0, 0, 0.75);
         border: 1px solid #b9bed1;
         border-radius: 6px;
@@ -55,10 +56,10 @@ export default ({
       }
 
       img {
-        width: ${size};
-        height: ${size};
+        width: 100%;
+        height: 100%;
+        display: block;
         object-fit: cover;
-        background: transparent;
         box-shadow: 0 0 20px rgba(160, 160, 160, 0.5);
         border-radius: 6px;
         cursor: pointer;
@@ -77,16 +78,6 @@ export default ({
       .photo--circle img {
         border-radius: 50%;
         box-shadow: none;
-      }
-
-      @media (max-width: 500px) {
-        .photo {
-          margin-right: 0;
-          margin-top: 2em;
-        }
-        .photo.photo--last.photo--hoverable.photo--circle {
-          margin-top: 0em;
-        }
       }
     `}</style>
   </div>

@@ -81,17 +81,24 @@ export default class PhotoGroup extends React.Component {
         <style jsx>{`
           .PhotosContainer {
             display: grid;
-            grid-auto-flow: column;
-            grid-column-gap: 28px;
+            grid-gap: 28px;
+            width: 100%;
+            height: 100%;
+            grid-template-areas: ${photos.length === 1
+              ? "photo"
+              : "photo photo photo"};
+            grid-template-columns: ${photos.length === 1
+              ? "206px"
+              : "1fr 1fr 1fr"};
+            grid-template-rows: 206px;
             justify-content: center;
           }
 
-          @media (max-width: 500px) {
+          @media (max-width: 700px) {
             .PhotosContainer {
-              grid-template-columns: unset;
-              grid-template-rows: unset;
-              grid-auto-flow: row;
-              grid-row-gap: 28px;
+              grid-template-areas: "photo";
+              grid-template-columns: 100%;
+              grid-template-rows: auto;
             }
           }
         `}</style>

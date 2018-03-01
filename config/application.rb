@@ -20,6 +20,8 @@ module Dateme
         domain: 'mail.applytodate.com'
     }
 
+    Geokit::Geocoders::GoogleGeocoder.api_key = Rails.application.secrets[:google_maps_key]
+
     config.session_store(
       :cookie_store,
       key: '_dateme_session',

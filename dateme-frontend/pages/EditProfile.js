@@ -203,10 +203,6 @@ class EditProfile extends React.Component {
     }
   }
 
-  componentWillMount() {
-    this.isMobile = getMobileDetect().mobile();
-  }
-
   handleSaveProfile = async (showAlert = true) => {
     const {
       isSavingProfile,
@@ -348,7 +344,7 @@ class EditProfile extends React.Component {
   };
 
   render() {
-    const { profile } = this.props;
+    const { profile, isMobile } = this.props;
     const {
       name,
       tagline,
@@ -367,7 +363,7 @@ class EditProfile extends React.Component {
       <Page
         renderOutside={() => (
           <ProfileProgress
-            isMobile={this.isMobile}
+            isMobile={isMobile}
             profile={{
               name,
               tagline,

@@ -9,6 +9,7 @@ import Cookies from "browser-cookies";
 
 export const UPDATE_ENTITIES = "UPDATE_ENTITIES";
 export const SET_CURRENT_USER_ID = "SET_CURRENT_USER_ID";
+export const SET_USER_AGENT = "SET_USER_AGENT";
 export const SET_LOGIN_STATUS = "SET_LOGIN_STATUS";
 
 function customizer(objValue, srcValue) {
@@ -79,6 +80,13 @@ export const setCheckingLogin = () => {
   };
 };
 
+export const setUserAgent = payload => {
+  return {
+    type: SET_USER_AGENT,
+    payload
+  };
+};
+
 export const currentUser = (state = null, action) => {
   if (action && action.type === SET_CURRENT_USER_ID) {
     if (typeof document !== "undefined") {
@@ -104,11 +112,20 @@ export const defaultState = {
   review_application: {},
   application: {},
   currentUserId: null,
-  loginStatus: "pending"
+  loginStatus: "pending",
+  userAgent: null
 };
 
 export const loginStatus = (state = defaultState.loginStatus, action) => {
   if (action && action.type === SET_LOGIN_STATUS) {
+    return action.payload;
+  } else {
+    return state;
+  }
+};
+
+export const userAgent = (state = defaultState.userAgent, action) => {
+  if (action && action.type === SET_USER_AGENT) {
     return action.payload;
   } else {
     return state;
@@ -134,6 +151,7 @@ const createReducers = persist => {
   return combineReducers({
     currentUserId: currentUser,
     loginStatus: loginStatus,
+    userAgent,
     profile: createEntitiyReducer("profile"),
     user: createEntitiyReducer("user"),
     external_authentication: createEntitiyReducer("external_authentication"),

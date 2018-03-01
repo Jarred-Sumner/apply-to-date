@@ -1,4 +1,20 @@
 import { withRouter } from "next/router";
+import URL from "url-parse";
+
+const getPathname = href => {
+  if (href.startsWith("http")) {
+    return new URL(href).pathname;
+  } else {
+    return href;
+  }
+};
+
+const isActive = router => href => {
+  const pathname = getPathname(href);
+  const currentPath = router.asPath.split("?")[0];
+
+  return pathname === currentPath;
+};
 
 const ActiveLink = Component =>
   withRouter(
@@ -14,9 +30,7 @@ const ActiveLink = Component =>
 
       return (
         <Component
-          isActive={[href, ...additionalMatches].includes(
-            typeof window !== "undefined" ? window.location.pathname : undefined
-          )}
+          isActive={!![href, ...additionalMatches].find(isActive(router))}
           href={href}
           onClick={handleClick}
           {...otherProps}

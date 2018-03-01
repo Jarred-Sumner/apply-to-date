@@ -7,9 +7,9 @@ routes
     page: "index"
   })
   .add({
-    name: "Discover",
-    pattern: "/discover",
-    page: "Discover"
+    name: "Shuffle",
+    pattern: "/shuffle",
+    page: "Shuffle"
   })
   .add({
     name: "Matchmake",

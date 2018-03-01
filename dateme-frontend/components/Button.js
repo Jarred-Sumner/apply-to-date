@@ -20,8 +20,9 @@ const Button = ({
   disabled = false
 }) => {
   const realComponentType = href ? "a" : componentType;
+  const iconOnly = !children && !!icon;
   const classes = classNames("Button", className, {
-    "Button--iconOnly": !children && !!icon,
+    "Button--iconOnly": iconOnly,
     "Button--icon": !!icon,
     "Button--circle": !!circle,
     "Button--black--fill": color === "black" && fill,
@@ -100,6 +101,7 @@ const Button = ({
         }
 
         .Button--black--unfill {
+          background-color: transparent;
           border-color: #333;
           color: #333;
         }
@@ -158,6 +160,8 @@ const Button = ({
           border-radius: 50%;
           width: 32px;
           height: 32px;
+          justify-content: center;
+          align-items: center;
           padding: 0;
         }
 
@@ -287,9 +291,9 @@ const Button = ({
       {realComponentType === "button" && (
         <button onClick={onClick} className={classes}>
           <div className="IconContainer IconContainer--left">
-            {!pending && icon}
+            {!pending && !iconOnly && icon}
           </div>
-          <div className="ButtonText">{children}</div>
+          <div className="ButtonText">{children || (iconOnly && icon)}</div>
           <div className="IconContainer IconContainer--right">
             {!pending && rightIcon}
           </div>
@@ -303,9 +307,9 @@ const Button = ({
           className={classes}
         >
           <div className="IconContainer IconContainer--left">
-            {!pending && icon}
+            {!pending && !iconOnly && icon}
           </div>
-          <div className="ButtonText">{children}</div>
+          <div className="ButtonText">{children || (iconOnly && icon)}</div>
           <div className="IconContainer IconContainer--right">
             {!pending && rightIcon}
           </div>
@@ -314,9 +318,9 @@ const Button = ({
       {realComponentType === "div" && (
         <div onClick={onClick} className={classes}>
           <div className="IconContainer IconContainer--left">
-            {!pending && icon}
+            {!pending && !iconOnly && icon}
           </div>
-          <div className="ButtonText">{children}</div>
+          <div className="ButtonText">{children || (iconOnly && icon)}</div>
           <div className="IconContainer IconContainer--right">
             {!pending && rightIcon}
           </div>

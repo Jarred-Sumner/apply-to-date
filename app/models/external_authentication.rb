@@ -49,6 +49,23 @@ class ExternalAuthentication < ApplicationRecord
     end
   end
 
+  def twitter
+    @twitter ||= Twitter::REST::Client.new do |config|
+      config.consumer_key        = Rails.application.secrets[:twitter_key]
+      config.consumer_secret     = Rails.application.secrets[:twitter_secret]
+      config.access_token        = Rails.application.secrets[:jarred_twitter_key]
+      config.access_token_secret = Rails.application.secrets[:jarred_twitter_secret]
+    end
+  end
+
+  def instagram
+    @instagram ||= begin
+      return nil if access_token.blank? || provider != 'instagram'
+      
+      Instagram.new(access_token)
+    end
+  end
+
   def build_facebook_photo_url
     return nil if provider != 'facebook'
 

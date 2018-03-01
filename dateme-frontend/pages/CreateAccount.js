@@ -109,7 +109,7 @@ class CreateAccount extends React.Component {
       external_authentication_id: _.get(this.props, "externalAccount.id"),
       profile: {
         latitude: latLng ? latLng.lat : null,
-        longitude: latLng ? latLng.lat : null,
+        longitude: latLng ? latLng.lng : null,
         location,
         name
       },
@@ -127,7 +127,7 @@ class CreateAccount extends React.Component {
       .then(response => {
         Router.push(buildEditProfileURL(username));
         logEvent("Create Account", {
-          provider: _.get(this, "props.externalAccount.provider"),
+          providers: [_.get(this, "props.externalAccount.provider")],
           sex,
           interested_in_men: interestedInMen,
           interested_in_women: interestedInWomen,

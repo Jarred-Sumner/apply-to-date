@@ -7,6 +7,8 @@ import Typed from "react-typed";
 import titleCase from "title-case";
 import Linkify from "react-linkify";
 import SocialLinkList from "./SocialLinkList";
+import TwitterViewer from "./TwitterViewer";
+import InstagramSection from "./InstagramSection";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -95,7 +97,6 @@ export default ({
         </div>
       </Waypoint>
     </section>
-
     {profile.photos.length > 1 && (
       <section className="Section">
         <PhotoGroup
@@ -105,29 +106,35 @@ export default ({
         />
       </section>
     )}
+    {!_.isEmpty(getParagraphs(profile)) && (
+      <section className="Section Section--bio">
+        {getParagraphs(profile).map(paragraph => {
+          return (
+            <div key={paragraph.key} className="Section-row Section-row--bio">
+              <Text className="Section-title" type="title">
+                {paragraph.title}
+              </Text>
 
-    <section className="Section Section--bio">
-      {getParagraphs(profile).map(paragraph => {
-        return (
-          <div key={paragraph.key} className="Section-row Section-row--bio">
-            <Text className="Section-title" type="title">
-              {paragraph.title}
-            </Text>
+              <Text highlightId={paragraph.key} type="paragraph">
+                <Linkify
+                  properties={{
+                    target: "_blank",
+                    className: "LinkifyLink"
+                  }}
+                >
+                  {paragraph.body}
+                </Linkify>
+              </Text>
+            </div>
+          );
+        })}
+      </section>
+    )}
 
-            <Text highlightId={paragraph.key} type="paragraph">
-              <Linkify
-                properties={{
-                  target: "_blank",
-                  className: "LinkifyLink"
-                }}
-              >
-                {paragraph.body}
-              </Linkify>
-            </Text>
-          </div>
-        );
-      })}
-    </section>
+    {profile.socialLinks.instagram && (
+      <InstagramSection profileId={profile.id} />
+    )}
+    {profile.socialLinks.twitter && <TwitterViewer profileId={profile.id} />}
     <style jsx>{`
       .Section {
         margin-top: 4rem;

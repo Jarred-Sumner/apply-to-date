@@ -22,9 +22,18 @@ import SwitchOffIcon from "../static/Icon/icons/switch-off.svg";
 import PendingVerifyIcon from "../static/Icon/icons/pending-verify.svg";
 import Hamburger from "../static/Icon/icons/hamburger.svg";
 import Divider from "../static/Icon/icons/divider.svg";
+import Matchmake from "../static/Icon/icons/matchmake.svg";
+import Link from "../static/Icon/icons/link.svg";
+import Shuffle from "../static/Icon/icons/shuffle.svg";
 import User from "../static/Icon/icons/user.svg";
+import Retweet from "../static/Icon/icons/retweet.svg";
+
+import ThumbsUp from "../static/Icon/icons/thumbs-up.svg";
+import ThumbsDown from "../static/Icon/icons/thumbs-down.svg";
+import IDK from "../static/Icon/icons/idk.svg";
 
 const ICON_COMPONENT_BY_TYPE = {
+  retweet: Retweet,
   email: EmailIcon,
   twitter: TwitterWhiteIcon,
   facebook: FacebookWhiteIcon,
@@ -40,7 +49,13 @@ const ICON_COMPONENT_BY_TYPE = {
   "switch-on": SwitchOnIcon,
   "switch-off": SwitchOffIcon,
   "pending-verify": PendingVerifyIcon,
-  user: User
+  shuffle: Shuffle,
+  matchmake: Matchmake,
+  user: User,
+  link: Link,
+  "thumbs-up": ThumbsUp,
+  "thumbs-down": ThumbsDown,
+  idk: IDK
 };
 
 export default ({

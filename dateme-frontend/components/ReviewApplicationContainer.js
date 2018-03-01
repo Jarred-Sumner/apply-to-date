@@ -6,7 +6,6 @@ import Text from "./Text";
 import ApplicationsBreadcrumbs from "./ApplicationsBreadcrumbs";
 import SharableSocialLink from "./SharableSocialLink";
 import CopyURLForm from "./CopyURLForm";
-import { isMobile } from "../lib/Mobile";
 
 const EmptyState = ({ profileId }) => {
   const url = `${process.env.DOMAIN}/${profileId}`;
@@ -75,7 +74,14 @@ const EmptyState = ({ profileId }) => {
   );
 };
 
-export default ({ application, isLoading, onYes, onNo, currentUser }) => (
+export default ({
+  application,
+  isLoading,
+  onYes,
+  onNo,
+  currentUser,
+  isMobile
+}) => (
   <Page size="large" isLoading={isLoading}>
     <Head title="Review Application | Apply to date" />
 
@@ -87,9 +93,9 @@ export default ({ application, isLoading, onYes, onNo, currentUser }) => (
           onYes={onYes}
           onNo={onNo}
           name={application.name}
-          isMobile={isMobile()}
+          isMobile={isMobile}
         />
-        <ViewApplication application={application} isMobile={isMobile()} />
+        <ViewApplication application={application} isMobile={isMobile} />
       </article>
     )}
 

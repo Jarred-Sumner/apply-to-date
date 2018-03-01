@@ -11,11 +11,14 @@ Rails.application.routes.draw do
       post 'forgot-password' => 'forgot_passwords#create'
       post 'reset-password/:id' => 'reset_passwords#create'
 
+      get '/feeds/:provider' => 'feeds#show'
+
       get 'images/sign' => 'images#sign'
       resources :users
       post '/profiles/get' => 'profiles#show'
       put '/profiles' => 'profiles#update'
-      post '/profiles/discover' => 'profiles#discover'
+      get '/profiles/photo' => 'profiles#photo'
+      post '/profiles/shuffle' => 'profiles#shuffle'
       resources :matchmakes
       post '/matchmakes/new' => 'matchmakes#new'
       resources :profiles do
