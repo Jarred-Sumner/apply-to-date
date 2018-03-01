@@ -89,8 +89,7 @@ export default ({
         application && (
           <MessageBar>
             <Text size="14px" color="white" lineHeight="19px">
-              Passing will <strong>not</strong> notify them that you're not
-              interested
+              Passing will <strong>not</strong> notify them
             </Text>
           </MessageBar>
         )

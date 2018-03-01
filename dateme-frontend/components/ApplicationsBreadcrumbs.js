@@ -4,10 +4,18 @@ export default class ApplicationsBreadcrumbs extends React.Component {
   render() {
     return (
       <nav>
-        <BreadcrumbLink href="/applications">New</BreadcrumbLink>
-        <BreadcrumbLink href="/applications/liked">Liked</BreadcrumbLink>
-        <BreadcrumbLink href="/applications/passed">Passed</BreadcrumbLink>
-        <BreadcrumbLink href="/applications/filtered">Filtered</BreadcrumbLink>
+        <BreadcrumbLink prefetch href="/applications">
+          New
+        </BreadcrumbLink>
+        <BreadcrumbLink prefetch href="/applications/liked">
+          Liked
+        </BreadcrumbLink>
+        <BreadcrumbLink prefetch href="/applications/passed">
+          Passed
+        </BreadcrumbLink>
+        <BreadcrumbLink prefetch href="/applications/filtered">
+          Filtered
+        </BreadcrumbLink>
 
         <style jsx>{`
           nav {

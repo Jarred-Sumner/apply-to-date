@@ -1,4 +1,5 @@
 import { withRouter } from "next/router";
+import { Router } from "../routes";
 import URL from "url-parse";
 
 const getPathname = href => {
@@ -18,7 +19,14 @@ const isActive = router => href => {
 
 const ActiveLink = Component =>
   withRouter(
-    ({ router, additionalMatches = [], href, onClick, ...otherProps }) => {
+    ({
+      router,
+      additionalMatches = [],
+      href,
+      prefetch,
+      onClick,
+      ...otherProps
+    }) => {
       const handleClick = e => {
         e.preventDefault();
 
@@ -27,6 +35,10 @@ const ActiveLink = Component =>
         }
         router.push(href);
       };
+
+      if (prefetch) {
+        Router.prefetch(href);
+      }
 
       return (
         <Component
