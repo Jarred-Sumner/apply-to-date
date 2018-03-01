@@ -8,6 +8,8 @@ class User < ApplicationRecord
   has_many :external_authentications, through: :profile
   has_many :sent_applications, class_name: 'Application', foreign_key: 'applicant_id'
   has_many :received_applications, class_name: 'Application', foreign_key: 'user_id'
+  scope :fake, lambda { where("email ~~ ANY('{#{PROBABLY_FAKE_ACCOUNTS.map { |email| "%#{email}%"}.join(",")}}')") }
+  scope :real, lambda { where.not("email ~~ ANY('{#{PROBABLY_FAKE_ACCOUNTS.map { |email| "%#{email}%"}.join(",")}}')") }
 
   validates :password, length: { minimum: 3 }, if: -> { new_record? || changes[:crypted_password] }
   validates :password, confirmation: true, if: -> { new_record? || changes[:crypted_password] }
@@ -99,9 +101,12 @@ class User < ApplicationRecord
     profile.name.present? && sex.present? && profile.all_social_networks.values.present?
   end
 
-  def self.real_accounts
-    fake_emails = PROBABLY_FAKE_ACCOUNTS.map { |email| "%#{email}%"}
-    User.where.not("email ~~ ANY('{#{fake_emails.join(",")}}')")
+  def fake?
+    !!PROBABLY_FAKE_ACCOUNTS.find { |fake_email| email.include?(fake_email) }
+  end
+
+  def real?
+    !fake?
   end
 
   def interested_in_sexes

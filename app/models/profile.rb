@@ -25,6 +25,8 @@ class Profile < ApplicationRecord
   scope :bio_contains, lambda { |string| where(Profile.sections_contain_query(string)) }
   scope :empty_bio, lambda { where(Profile.sections_sql_selectors_empty) }
 
+  scope :real, lambda { visible.filled_out.where.not(user_id: User.fake.pluck(:id)) }
+
   def self.count_all_possible_pairs
     counted_pairs = []
     Profile
@@ -114,10 +116,6 @@ class Profile < ApplicationRecord
                    :default_formula => :sphere,
                    :lat_column_name => :latitude,
                    :lng_column_name => :longitude
-
-  def self.real
-    Profile.where(visible: true).where(user_id: User.real_accounts.pluck(:id)).where("array_length(photos, 1) > 0")
-  end
 
   def could_be_interested_in?(profile)
     interested_in_sexes.include?(profile.sex)
