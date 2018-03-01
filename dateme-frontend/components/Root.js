@@ -155,7 +155,7 @@ export default ({ noScroll = false }) => (
 
     * {
       box-sizing: border-box;
-      -webkit-overflow-scrolling: touch;
+      -webkit-overflow-scrolling: ${noScroll ? "unset" : "touch"};
     }
 
     html,
