@@ -50,11 +50,20 @@ class ExternalAuthentication < ApplicationRecord
   end
 
   def twitter
-    @twitter ||= Twitter::REST::Client.new do |config|
-      config.consumer_key        = Rails.application.secrets[:twitter_key]
-      config.consumer_secret     = Rails.application.secrets[:twitter_secret]
-      config.access_token        = Rails.application.secrets[:jarred_twitter_key]
-      config.access_token_secret = Rails.application.secrets[:jarred_twitter_secret]
+    if access_token_secret.present?
+      @twitter ||= Twitter::REST::Client.new do |config|
+        config.consumer_key        = Rails.application.secrets[:twitter_key]
+        config.consumer_secret     = Rails.application.secrets[:twitter_secret]
+        config.access_token        = access_token
+        config.access_token_secret = access_token_secret
+      end
+    else
+      @twitter ||= Twitter::REST::Client.new do |config|
+        config.consumer_key        = Rails.application.secrets[:twitter_key]
+        config.consumer_secret     = Rails.application.secrets[:twitter_secret]
+        config.access_token        = Rails.application.secrets[:jarred_twitter_key]
+        config.access_token_secret = Rails.application.secrets[:jarred_twitter_secret]
+      end
     end
   end
 
