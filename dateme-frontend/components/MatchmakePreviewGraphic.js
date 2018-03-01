@@ -19,7 +19,7 @@ export const PAIRS = [
   {
     left: "deanna",
     right: "cindy",
-    value: 0
+    value: 5
   },
   {
     left: "setareh",
@@ -54,7 +54,7 @@ export const PAIRS = [
   {
     left: "bb",
     right: "ryan",
-    value: 0
+    value: 5
   },
   {
     left: "ariellemac",
@@ -183,6 +183,8 @@ export default class MatchmakePreviewGraphic extends React.Component {
             animation-delay: 0.2s;
             opacity: 0;
             flex: 1;
+            width: 107px;
+            height: 107px;
             animation: show-photo 0.8s ease-in-out;
             animation-fill-mode: forwards;
           }
