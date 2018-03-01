@@ -161,11 +161,7 @@ export default _.memoize((Component, options = {}) => {
       bindActionCreators(
         { updateEntities, setCurrentUser, setLoginStatus, setCheckingLogin },
         dispatch
-      ),
-    null,
-    {
-      pure: false
-    }
+      )
   )(LoginGate);
 
   ConnectedLoginGate.getInitialProps = Component.getInitialProps;

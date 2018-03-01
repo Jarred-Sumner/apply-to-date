@@ -161,7 +161,7 @@ class ShuffleProfile extends React.Component {
   }
 }
 
-class ProfileGate extends React.Component {
+class ShuffleGate extends React.Component {
   constructor(props) {
     super(props);
 
@@ -284,6 +284,6 @@ const ProfileWithStore = withRedux(
   {
     pure: false
   }
-)(LoginGate(ProfileGate, { loginRequired: true }));
+)(LoginGate(ShuffleGate, { loginRequired: true }));
 
 export default ProfileWithStore;

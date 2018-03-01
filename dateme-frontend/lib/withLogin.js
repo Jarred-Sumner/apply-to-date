@@ -17,6 +17,8 @@ export default Component => {
 
     if (originalGetInitialProps) {
       return originalGetInitialProps(ctx);
+    } else {
+      return { currentUserId };
     }
   };
 

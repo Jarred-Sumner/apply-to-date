@@ -505,40 +505,51 @@ class MatchmakeProfile extends React.Component {
   }
 }
 
+const getProfilesFromQuery = async params => {
+  const leftProfileResponse = await getProfile(params.l);
+  const rightProfileResponse = await getProfile(params.r);
+
+  const normalizedLeft = normalizeApiResponse(leftProfileResponse.body);
+  const normalizedRight = normalizeApiResponse(rightProfileResponse.body);
+
+  const leftProfile = _.first(_.values(normalizedLeft.profile));
+  const rightProfile = _.first(_.values(normalizedRight.profile));
+
+  return {
+    leftProfile,
+    rightProfile
+  };
+};
+
 class ProfileGate extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      isLoadingProfile: true,
-      leftProfile: null,
-      rightProfile: null
+      isLoadingProfile: !this.props.leftProfile && !this.props.rightProfile,
+      leftProfile: this.props.leftProfile,
+      rightProfile: this.props.rightProfile
     };
   }
 
+  static async getInitialProps({ store, query }) {
+    if (query.l && query.r) {
+      return getProfilesFromQuery(query);
+    }
+  }
+
   async componentDidMount() {
-    this.loadProfile(this.props, {
-      l: this.props.url.query.l,
-      r: this.props.url.query.r
-    });
+    if (!this.props.leftProfile && !this.props.rightProfile) {
+      this.loadProfile(this.props, {
+        l: this.props.url.query.l,
+        r: this.props.url.query.r
+      });
+    }
   }
 
   getProfiles = async params => {
     if (params.l && params.r) {
-      const exclude = await Storage.matchmakerProfiles();
-      const leftProfileResponse = await getProfile(params.l);
-      const rightProfileResponse = await getProfile(params.r);
-
-      const normalizedLeft = normalizeApiResponse(leftProfileResponse.body);
-      const normalizedRight = normalizeApiResponse(rightProfileResponse.body);
-
-      const leftProfile = _.first(_.values(normalizedLeft.profile));
-      const rightProfile = _.first(_.values(normalizedRight.profile));
-
-      return {
-        leftProfile,
-        rightProfile
-      };
+      return getProfilesFromQuery(params);
     } else {
       const exclude = await Storage.matchmakerProfiles();
       const response = await getNewMatchmake({
