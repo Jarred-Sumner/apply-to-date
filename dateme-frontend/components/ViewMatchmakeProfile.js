@@ -106,7 +106,7 @@ const DesktopProfile = ({ profile }) => (
     )}
 
     {profile.socialLinks.instagram && (
-      <InstagramSection marginTop="1rem" profileId={profile.id} />
+      <InstagramSection overflow marginTop="1rem" profileId={profile.id} />
     )}
     {profile.socialLinks.twitter && <TwitterViewer profileId={profile.id} />}
 

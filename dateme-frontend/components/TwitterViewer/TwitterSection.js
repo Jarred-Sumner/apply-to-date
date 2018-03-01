@@ -23,7 +23,7 @@ const Tweet = ({ tweet }) => {
   return (
     <div className="Tweet">
       <div className="Topbar">
-        <LazyLoad offset={200}>
+        <LazyLoad once offset={200}>
           <img className="Avatar" src={tweet.user.profile_image_url_https} />
         </LazyLoad>
         <a href={buildUserURL(tweet.user.screen_name)} target="_blank">

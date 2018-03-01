@@ -33,7 +33,7 @@ export default class InstagramSection extends React.Component {
 
   render() {
     const { photos, instagramProfile, status, spacing } = this.state;
-    const { marginTop = "4rem" } = this.props;
+    const { marginTop = "4rem", overflow } = this.props;
 
     if (status === STATUS.completed) {
       return (
@@ -41,6 +41,7 @@ export default class InstagramSection extends React.Component {
           <InstagramViewer
             photos={this.state.photos}
             spacing={spacing}
+            overflow={overflow}
             instagramProfile={this.state.instagramProfile}
           />
 

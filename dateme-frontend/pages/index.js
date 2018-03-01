@@ -18,7 +18,7 @@ const FeaturedProfile = ({ profile }) => {
   return (
     <Link href={{ pathname: `/${profile.id}` }}>
       <a className="Profile">
-        <LazyLoad offset={100} height={250}>
+        <LazyLoad once offset={100} height={250}>
           <img src={_.first(profile.photos)} />
         </LazyLoad>
         <div className="Text">

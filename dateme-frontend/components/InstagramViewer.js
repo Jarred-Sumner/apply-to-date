@@ -26,12 +26,10 @@ const PhotoSpinner = () => (
   </div>
 );
 
-const InstagramPhoto = ({ post, onClick }) => {
+const InstagramPhoto = ({ post, onClick, overflow }) => {
   return (
     <div onClick={onClick} className="Post">
-      <LazyLoad placeholder={<PhotoSpinner />} offset={50}>
-        <img src={post.images.standard_resolution.url} />
-      </LazyLoad>
+      <img src={post.images.standard_resolution.url} />
 
       <style jsx>{`
         .Post {
@@ -130,7 +128,7 @@ export default class InstagramViewer extends React.Component {
 
   render() {
     const { currentPhotoIndex } = this.state;
-    const { photos, instagramProfile, spacing = 28 } = this.props;
+    const { photos, instagramProfile, spacing = 28, overflow } = this.props;
 
     return (
       <div className="Wrapper">
@@ -156,6 +154,7 @@ export default class InstagramViewer extends React.Component {
               <InstagramPhoto
                 onClick={() => this.setPhotoIndex(index)}
                 post={photo}
+                overflow={overflow}
                 key={photo.id}
               />
             ))}
