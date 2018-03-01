@@ -6,6 +6,7 @@ import Text from "./Text";
 import ApplicationsBreadcrumbs from "./ApplicationsBreadcrumbs";
 import SharableSocialLink from "./SharableSocialLink";
 import CopyURLForm from "./CopyURLForm";
+import MessageBar from "./MessageBar";
 
 const EmptyState = ({ profileId }) => {
   const url = `${process.env.DOMAIN}/${profileId}`;
@@ -82,7 +83,22 @@ export default ({
   currentUser,
   isMobile
 }) => (
-  <Page size="large" isLoading={isLoading}>
+  <Page
+    renderMessage={() => {
+      return (
+        application && (
+          <MessageBar>
+            <Text size="14px" color="white" lineHeight="19px">
+              Passing will <strong>not</strong> notify them that you're not
+              interested
+            </Text>
+          </MessageBar>
+        )
+      );
+    }}
+    size="large"
+    isLoading={isLoading}
+  >
     <Head title="Review Application | Apply to date" />
 
     <ApplicationsBreadcrumbs />
