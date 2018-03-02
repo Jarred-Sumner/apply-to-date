@@ -20,6 +20,10 @@ class AskProfileOutButton extends React.Component {
     };
   }
 
+  componentDidMount() {
+    Router.prefetchRoute(buildApplyURL(this.props.profile.id));
+  }
+
   askOut = () => {
     if (this.state.isAskingOut) {
       return;

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "../routes";
 import Head from "../components/head";
 import Nav from "../components/nav";
 import withRedux from "next-redux-wrapper";
@@ -9,9 +9,10 @@ import _ from "lodash";
 import { updateEntities, setCurrentUser, initStore } from "../redux/store";
 import { getFeaturedProfiles, getCurrentUser } from "../api";
 import { bindActionCreators } from "redux";
-import Router from "next/router";
+import { Router } from "../routes";
 import PageFooter from "../components/PageFooter";
 import withLogin from "../lib/withLogin";
+import qs from "qs";
 import LazyLoad from "react-lazyload";
 
 const FeaturedProfile = ({ profile }) => {
@@ -103,15 +104,16 @@ class SignupForm extends React.Component {
 
   setEmail = evt => this.setState({ email: evt.target.value });
 
+  componentDidMount() {
+    Router.prefetchRoute(`/sign-up/verify`);
+  }
+
   handleSubmit = evt => {
     evt.preventDefault();
 
-    Router.push({
-      pathname: `/sign-up/verify`,
-      query: {
-        email: this.state.email
-      }
-    });
+    Router.pushRoute(
+      `/sign-up/verify?${qs.stringify({ email: this.state.email })}`
+    );
   };
 
   render() {
@@ -181,6 +183,8 @@ class Homepage extends React.Component {
       isLoadingProfiles: false,
       profiles: profileResponse.body.data
     });
+
+    Router.prefetchRoute(`/profiles/lucy`);
   }
 
   render() {

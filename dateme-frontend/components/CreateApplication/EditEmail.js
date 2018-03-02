@@ -1,5 +1,5 @@
 import Button from "../Button";
-import Router from "next/router";
+import { Router } from "../routes";
 
 export default class InlineApply extends React.Component {
   constructor(props) {

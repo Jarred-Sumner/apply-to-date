@@ -33,11 +33,11 @@ const ActiveLink = Component =>
         if (onClick) {
           onClick(e);
         }
-        router.push(href);
+        Router.pushRoute(href);
       };
 
       if (prefetch) {
-        Router.prefetch(href);
+        Router.prefetchRoute(href);
       }
 
       return (
