@@ -158,7 +158,7 @@ class Login extends React.Component {
             display: grid;
             margin-top: 32px;
             margin-bottom: 14px;
-            grid-auto-rows: min-content;
+            grid-template-rows: 70px 70px 40px;
             grid-row-gap: 14px;
             flex-grow: 0;
           }
