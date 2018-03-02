@@ -184,7 +184,7 @@ class Homepage extends React.Component {
       profiles: profileResponse.body.data
     });
 
-    Router.prefetchRoute(`/profiles/lucy`);
+    Router.prefetchRoute(`/lucy`);
   }
 
   render() {
