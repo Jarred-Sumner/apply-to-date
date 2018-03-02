@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import Text from "./Text";
 import { Portal } from "react-portal";
-import Link from "next/link";
+import { Link } from "../routes";
 
 export default class MobileDropdownHeader extends React.PureComponent {
   render() {
@@ -23,7 +23,7 @@ export default class MobileDropdownHeader extends React.PureComponent {
         >
           {isProbablyLoggedIn && (
             <li>
-              <Link href="/page/edit">
+              <Link route="/page/edit">
                 <a>
                   <Text type="footerlink">Edit page</Text>
                 </a>
@@ -32,7 +32,7 @@ export default class MobileDropdownHeader extends React.PureComponent {
           )}
           {isProbablyLoggedIn && (
             <li>
-              <Link href="/applications">
+              <Link route="/applications">
                 <a>
                   <Text type="footerlink">Review applications</Text>
                 </a>
@@ -41,7 +41,7 @@ export default class MobileDropdownHeader extends React.PureComponent {
           )}
           {!isProbablyLoggedIn && (
             <li>
-              <Link href="/login">
+              <Link route="/login">
                 <a>
                   <Text type="footerlink">Login</Text>
                 </a>
@@ -50,7 +50,7 @@ export default class MobileDropdownHeader extends React.PureComponent {
           )}
           {!isProbablyLoggedIn && (
             <li>
-              <Link href="/sign-up/verify">
+              <Link route="/sign-up/verify">
                 <a>
                   <Text type="footerlink">Sign up</Text>
                 </a>
