@@ -15,6 +15,7 @@ import ActiveLink from "./ActiveLink";
 import Text from "./Text";
 import classNames from "classnames";
 import _ from "lodash";
+import { Router } from "../routes";
 import { buildEditProfileURL } from "../lib/routeHelpers";
 
 const isSwitcherRouteActive = (router, href) => {
@@ -29,89 +30,98 @@ const textTypeForRouter = (router, href) => {
   }
 };
 
-const SwitcherItem = withRouter(
-  ({ router, href, iconType, children, isMobile }) => {
+class SwitcherItemComponent extends React.Component {
+  handleClick = evt => {
+    evt.preventDefault();
+
+    Router.pushRoute(this.props.href);
+  };
+
+  render() {
+    const { router, href, iconType, children, isMobile } = this.props;
     const isActive = isSwitcherRouteActive(router, href);
 
     return (
-      <Link href={href}>
-        <a
-          className={classNames("SwitcherItem Matchmake", {
-            "SwitcherItem--active": isActive,
-            "SwitcherItem--inactive": !isActive
-          })}
-        >
-          <Icon type={iconType} size="17px" />
-          {!isMobile && (
-            <div className="TextWrapper">
-              <Text type={textTypeForRouter(router, href)}>{children}</Text>
-            </div>
-          )}
+      <a
+        onClick={this.handleClick}
+        href={href}
+        className={classNames("SwitcherItem Matchmake", {
+          "SwitcherItem--active": isActive,
+          "SwitcherItem--inactive": !isActive
+        })}
+      >
+        <Icon type={iconType} size="17px" />
+        {!isMobile && (
+          <div className="TextWrapper">
+            <Text type={textTypeForRouter(router, href)}>{children}</Text>
+          </div>
+        )}
 
-          <style jsx>{`
-            .SwitcherItem {
-              padding: 7px 14px;
-              display: grid;
-              width: 100%;
-              z-index: 1;
-              height: 100%;
-              grid-template-columns: 17px auto;
-              grid-column-gap: 4px;
-              align-items: center;
-              border: 1px solid transparent;
-            }
+        <style jsx>{`
+          .SwitcherItem {
+            padding: 7px 14px;
+            display: grid;
+            width: 100%;
+            z-index: 1;
+            height: 100%;
+            grid-template-columns: 17px auto;
+            grid-column-gap: 4px;
+            align-items: center;
+            border: 1px solid transparent;
+          }
 
-            :global(.SwitcherItem--inactive:first-of-type) {
-              border-top-left-radius: 28px;
-              border-bottom-left-radius: 28px;
-            }
+          :global(.SwitcherItem--inactive:first-of-type) {
+            border-top-left-radius: 28px;
+            border-bottom-left-radius: 28px;
+          }
 
-            :global(.SwitcherItem--inactive:last-of-type) {
-              border-top-right-radius: 28px;
-              border-bottom-right-radius: 28px;
-            }
+          :global(.SwitcherItem--inactive:last-of-type) {
+            border-top-right-radius: 28px;
+            border-bottom-right-radius: 28px;
+          }
 
-            .SwitcherItem--inactive:hover {
-              background-color: #f9f9f9;
-              border: 1px solid #dcdfe8;
-            }
+          .SwitcherItem--inactive:hover {
+            background-color: #f9f9f9;
+            border: 1px solid #dcdfe8;
+          }
 
-            .SwitcherItem--active {
-              color: white;
-            }
+          .SwitcherItem--active {
+            color: white;
+          }
 
-            .TextWrapper {
-              margin-left: auto;
-              margin-right: auto;
-            }
+          .TextWrapper {
+            margin-left: auto;
+            margin-right: auto;
+          }
 
-            .SwitcherItem--active :global(.IconContainer .SVGFill) {
-              fill: white !important;
-            }
+          .SwitcherItem--active :global(.IconContainer .SVGFill) {
+            fill: white !important;
+          }
 
-            .SwitcherItem--active :global(.IconContainer .SVGStroke) {
-              stroke: white !important;
-            }
+          .SwitcherItem--active :global(.IconContainer .SVGStroke) {
+            stroke: white !important;
+          }
 
-            .SwitcherItem--inactive :global(.IconContainer .SVGFill) {
-              fill: #9396a5 !important;
-            }
+          .SwitcherItem--inactive :global(.IconContainer .SVGFill) {
+            fill: #9396a5 !important;
+          }
 
-            .SwitcherItem--inactive :global(.IconContainer .SVGStroke) {
-              stroke: #9396a5 !important;
-            }
+          .SwitcherItem--inactive :global(.IconContainer .SVGStroke) {
+            stroke: #9396a5 !important;
+          }
 
-            .SwitcherItem--inactive {
-              background-image: none;
-              background-color: transparent;
-              color: #9396a5;
-            }
-          `}</style>
-        </a>
-      </Link>
+          .SwitcherItem--inactive {
+            background-image: none;
+            background-color: transparent;
+            color: #9396a5;
+          }
+        `}</style>
+      </a>
     );
   }
-);
+}
+
+const SwitcherItem = withRouter(SwitcherItemComponent);
 
 const Switcher = withRouter(({ router, isMobile }) => (
   <div className="Wrapper">
