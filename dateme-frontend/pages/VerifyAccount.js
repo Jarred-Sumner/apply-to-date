@@ -63,7 +63,6 @@ class VerifyAccount extends React.Component {
             </div>
 
             <Link
-              prefetch
               href={`/sign-up?${
                 email ? "email=" + encodeURIComponent(email) : ""
               }`}

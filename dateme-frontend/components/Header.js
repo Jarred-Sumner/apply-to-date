@@ -9,7 +9,7 @@ import FeedbackForm from "./FeedbackForm";
 import BurgerIcon from "../components/BurgerIcon";
 import MobileDropdownHeader from "../components/MobileDropdownHeader";
 import BetaGate from "./BetaGate";
-import { Link } from "../routes";
+import Link from "next/link";
 import Icon from "./Icon";
 import ActiveLink from "./ActiveLink";
 import Text from "./Text";
