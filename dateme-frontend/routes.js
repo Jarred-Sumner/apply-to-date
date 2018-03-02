@@ -49,27 +49,27 @@ routes
     page: "TermsOfService"
   })
   .add({
-    name: "ReviewApplication",
+    name: "/applications",
     pattern: "/applications",
     page: "ReviewApplication"
   })
   .add({
-    name: "LikedApplications",
+    name: "/applications/liked",
     pattern: "/applications/liked",
     page: "LikedApplications"
   })
   .add({
-    name: "PassedApplications",
+    name: "/applications/passed",
     pattern: "/applications/passed",
     page: "PassedApplications"
   })
   .add({
-    name: "FilteredApplications",
+    name: "/applications/filtered",
     pattern: "/applications/filtered",
     page: "FilteredApplications"
   })
   .add({
-    name: "ReviewSpecificApplication",
+    name: "/applications/:id",
     pattern: "/applications/:id",
     page: "ReviewSpecificApplication"
   })
