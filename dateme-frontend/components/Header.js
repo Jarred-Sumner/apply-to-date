@@ -31,6 +31,10 @@ const textTypeForRouter = (router, href) => {
 };
 
 class SwitcherItemComponent extends React.Component {
+  componentDidMount() {
+    Router.prefetchRoute(this.props.href);
+  }
+
   handleClick = evt => {
     evt.preventDefault();
 
