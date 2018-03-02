@@ -475,7 +475,7 @@ class MatchmakeProfile extends React.Component {
               white-space: nowrap;
               overflow: hidden;
               text-overflow: auto;
-              width: min-content;
+              width: auto;
             }
 
             .ShareButtons {

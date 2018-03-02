@@ -172,7 +172,7 @@ class Profile extends React.Component {
 
         <style jsx>{`
           .HeaderApply {
-            width: min-content;
+            max-width: 190px;
             margin-left: auto;
             margin-right: auto;
           }

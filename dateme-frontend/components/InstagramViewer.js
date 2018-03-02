@@ -81,7 +81,7 @@ const InstagramViewMore = ({ username }) => {
           box-shadow: 0 0 16px 0 rgba(160, 160, 160, 0.5);
           border-radius: 4px;
           display: grid;
-          grid-template-rows: min-content min-content;
+          grid-template-rows: auto auto;
           align-content: center;
           grid-column: 1fr;
           grid-row: 1fr;

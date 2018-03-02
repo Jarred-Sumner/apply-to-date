@@ -669,7 +669,7 @@ class EditProfile extends React.Component {
             display: grid;
             grid-auto-flow: column dense;
             grid-column-gap: 14px;
-            grid-template-columns: min-content min-content;
+            grid-template-columns: 38px 38px;
           }
 
           .Subheader-urlWrapper {

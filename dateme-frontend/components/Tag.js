@@ -25,7 +25,7 @@ export default ({ children, color }) => {
           justify-content: center;
           align-items: center;
           background-color: ${COLORS[color]};
-          width: min-content;
+          width: auto;
           border-radius: 4px;
         }
       `}</style>

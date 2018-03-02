@@ -152,7 +152,7 @@ export default class MatchmakePreviewGraphic extends React.Component {
             grid-template-rows: auto auto;
             align-content: center;
             grid-row-gap: 28px;
-            width: min-content;
+            width: auto;
             padding-top: 28px;
           }
 

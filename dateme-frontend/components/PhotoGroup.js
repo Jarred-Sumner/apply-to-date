@@ -90,7 +90,7 @@ export default class PhotoGroup extends React.Component {
             grid-template-columns: ${photos.length === 1 && !showPlaceholder
               ? size
               : "1fr 1fr 1fr"};
-            grid-template-rows: 206px;
+            grid-template-rows: ${size};
             justify-content: center;
           }
 
