@@ -1,5 +1,10 @@
 class ApplicationMailer < ActionMailer::Base
   add_template_helper(ApplicationHelper)
-  default from: 'Apply to Date <notifs@applytodate.com>'
   layout 'mailer'
+
+  def self.default_from
+    'Apply to Date <notifs@applytodate.com>'
+  end
+
+  default from: ApplicationMailer.default_from
 end

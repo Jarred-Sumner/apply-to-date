@@ -1,5 +1,9 @@
 class ApplicationsMailer < ApplicationMailer
-
+  SUBJECT_LINES = [
+    "Want to go on a date?",
+    "Let's go on a date?",
+    "Want to go on a date sometime?",
+  ]
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
   #
@@ -28,7 +32,12 @@ class ApplicationsMailer < ApplicationMailer
       {}
     )
 
-    mail to: @profile.user.email, subject: "#{@application.name} asked you out!"
+    from = ApplicationMailer.default_from
+    if @application.name.present?
+      from = "#{@application.name} <notifs@applytodate.com>"
+    end
+
+    mail to: @profile.user.email, subject: SUBJECT_LINES.sample, from: from
   end
 
   def confirmed(application_id)
