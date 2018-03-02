@@ -34,7 +34,7 @@ const SwitcherItem = withRouter(
     const isActive = isSwitcherRouteActive(router, href);
 
     return (
-      <Link prefetch href={href}>
+      <Link href={href}>
         <a
           className={classNames("SwitcherItem Matchmake", {
             "SwitcherItem--active": isActive,
