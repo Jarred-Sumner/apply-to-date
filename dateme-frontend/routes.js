@@ -24,7 +24,7 @@ routes
     page: "VerifyAccount"
   })
   .add({
-    name: "login",
+    name: "Login",
     pattern: "/login",
     page: "Login"
   })

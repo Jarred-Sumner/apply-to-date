@@ -158,8 +158,9 @@ class Login extends React.Component {
             display: grid;
             margin-top: 32px;
             margin-bottom: 14px;
-            grid-auto-rows: auto;
+            grid-auto-rows: min-content;
             grid-row-gap: 14px;
+            flex-grow: 0;
           }
 
           .password-link {
@@ -170,6 +171,7 @@ class Login extends React.Component {
             display: flex;
             flex-direction: column;
             text-align: center;
+            flex-grow: 0;
           }
         `}</style>
       </Page>
