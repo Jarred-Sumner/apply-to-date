@@ -6,7 +6,7 @@ const Text = ({
   className,
   children,
   size = "18px",
-  color = "rgba(0,0,0,.75);",
+  color = "rgba(0,0,0,.75)",
   componentType = "div",
   weight = "regular",
   lineHeight = "19px",
@@ -342,6 +342,12 @@ export default ({ type, children, ...otherProps }) => {
   } else if (type === "muted") {
     return (
       <Text {...otherProps} size="13px">
+        {children}
+      </Text>
+    );
+  } else if (type === "notification") {
+    return (
+      <Text {...otherProps} size="14px" lineHeight="19px">
         {children}
       </Text>
     );

@@ -5,6 +5,9 @@ import _ from "lodash";
 import classNames from "classnames";
 import onClickOutside from "react-onclickoutside";
 import Icon from "./Icon";
+import { updateEntities, setUnreadNotificationCount } from "../redux/store";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 
 class _ProfileMenu extends React.Component {
   constructor(props) {
@@ -115,21 +118,31 @@ class ProfileMenuContainer extends React.Component {
   loadNotifications = async () => {
     const notificationsResponse = await getNotifications();
 
-    this.setState({
-      notifications: _.get(notificationsResponse, "data", []),
-      isLoading: false
-    });
+    this.props.updateEntities(notificationsResponse.body);
   };
 
   render() {
     return (
       <ProfileMenu
         profile={_.get(this.props, "currentUser.profile")}
-        notifications={this.state.notifications}
+        notifications={this.props.notifications}
+        unreadNotificationCount={this.props.unreadNotificationCount}
         isLoading={this.state.isLoading}
+        setUnreadNotificationCount={this.props.setUnreadNotificationCount}
       />
     );
   }
 }
 
-export default LoginGate(ProfileMenuContainer);
+const ConnectedProfileMenuContainer = connect(
+  state => {
+    return {
+      notifications: _.values(state.notifications),
+      unreadNotificationCount: state.unreadNotificationCount
+    };
+  },
+  dispatch =>
+    bindActionCreators({ updateEntities, setUnreadNotificationCount }, dispatch)
+)(ProfileMenuContainer);
+
+export default LoginGate(ConnectedProfileMenuContainer);
