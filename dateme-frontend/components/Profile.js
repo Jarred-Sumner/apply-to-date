@@ -139,9 +139,14 @@ export default ({
     )}
 
     {profile.socialLinks.instagram && (
-      <InstagramSection profileId={profile.id} />
+      <InstagramSection
+        key={`instagram-${profile.id}`}
+        profileId={profile.id}
+      />
     )}
-    {profile.socialLinks.twitter && <TwitterViewer profileId={profile.id} />}
+    {profile.socialLinks.twitter && (
+      <TwitterViewer key={`twitter-${profile.id}`} profileId={profile.id} />
+    )}
     <style jsx>{`
       .Section {
         margin-top: 4rem;

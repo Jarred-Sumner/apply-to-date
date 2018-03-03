@@ -106,9 +106,16 @@ const DesktopProfile = ({ profile }) => (
     )}
 
     {profile.socialLinks.instagram && (
-      <InstagramSection overflow marginTop="1rem" profileId={profile.id} />
+      <InstagramSection
+        key={`instagram-${profile.id}`}
+        overflow
+        marginTop="1rem"
+        profileId={profile.id}
+      />
     )}
-    {profile.socialLinks.twitter && <TwitterViewer profileId={profile.id} />}
+    {profile.socialLinks.twitter && (
+      <TwitterViewer key={`twitter-${profile.id}`} profileId={profile.id} />
+    )}
 
     <style jsx>{`
       .Container {
@@ -265,10 +272,16 @@ class MobileProfile extends React.Component {
             )}
 
             {profile.socialLinks.instagram && (
-              <InstagramSection profileId={profile.id} />
+              <InstagramSection
+                key={`instagram-${profile.id}`}
+                profileId={profile.id}
+              />
             )}
             {profile.socialLinks.twitter && (
-              <TwitterViewer profileId={profile.id} />
+              <TwitterViewer
+                key={`twitter-${profile.id}`}
+                profileId={profile.id}
+              />
             )}
           </div>
         </Swipeable>

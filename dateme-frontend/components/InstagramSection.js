@@ -19,7 +19,11 @@ export default class InstagramSection extends React.Component {
     };
   }
 
-  async componentDidMount() {
+  fetchInstagram = () => {
+    if (this.state.status !== STATUS.loading) {
+      this.setState({ status: STATUS.loading });
+    }
+
     getFeed("instagram", this.props.profileId, this.props.applicationId)
       .then(response => {
         this.setState({
@@ -29,6 +33,16 @@ export default class InstagramSection extends React.Component {
         });
       })
       .catch(error => this.setState({ status: STATUS.error }));
+  };
+
+  async componentDidMount() {
+    this.fetchInstagram();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.profileId !== this.props.profileId) {
+      this.fetchInstagram();
+    }
   }
 
   render() {

@@ -144,7 +144,11 @@ export default class TwitterSection extends React.Component {
     };
   }
 
-  async componentDidMount() {
+  fetchTwitter = () => {
+    if (this.state.status !== STATUS.loading) {
+      this.setState({ status: STATUS.loading });
+    }
+
     getFeed("twitter", this.props.profileId, this.props.applicationId)
       .then(response => {
         this.setState({
@@ -154,6 +158,16 @@ export default class TwitterSection extends React.Component {
         });
       })
       .catch(error => this.setState({ status: STATUS.error }));
+  };
+
+  async componentDidMount() {
+    this.fetchTwitter();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.profileId !== this.props.profileId) {
+      this.fetchTwitter();
+    }
   }
 
   render() {
