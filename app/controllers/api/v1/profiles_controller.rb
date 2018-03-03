@@ -33,8 +33,8 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
       .where.not(id: exclude_list)
       .compatible_with(current_user.profile)
       .filled_out
-      .order("updated_at DESC")
-      .first
+      .to_a
+      .sample
 
     if profile.present?
       current_user.increment_shuffle_session!
