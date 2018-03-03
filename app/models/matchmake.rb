@@ -67,11 +67,15 @@ class Matchmake < ApplicationRecord
   end
 
   def self.build_left_right(exclude_ids: [], exclude_pairs: [], sex: nil, interested_in_sexes: [])
+
+    seen_frequencies = exclude_pairs.flatten.inject(Hash.new(0)) { |h, v| h[v] += 1; h }
+
     left_matches = fetch_left(sex: sex, interested_in_sexes: interested_in_sexes, exclude_ids: exclude_ids).shuffle
+    left_matches = left_matches.sort_by { |m| seen_frequencies[m.id] } # In-place sort preserves the shuffle order
 
     chosen_pair = []
     left_matches.each do |left_profile|
-      right_matches = fetch_right(exclude_ids: exclude_ids, left_profile: left_profile)
+      right_matches = fetch_right(exclude_ids: exclude_ids, left_profile: left_profile).sort_by { |id| seen_frequencies[id] }
 
       chosen_mate = right_matches.select { |right_id| Matchmake.can_pair?(left_profile, right_id, exclude_pairs) }.first
 
