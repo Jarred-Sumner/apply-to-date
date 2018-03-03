@@ -4,7 +4,7 @@ class Matchmake < ApplicationRecord
   MINIMUM_AVERAGE_RATING = 4.0.freeze
   MINIMUM_NUMBER_OF_VOTES = 5.freeze
 
-  scope :has_enough_ratings, lambda { where("matchmake_ratings_count >= ?", MINIMUM_NUMBER_OF_VOTES) }  
+  scope :has_enough_ratings, lambda { where("matchmake_ratings_count >= ?", MINIMUM_NUMBER_OF_VOTES) }
   scope :quality_match, lambda { where("rating >= ?", MINIMUM_AVERAGE_RATING) }
   scope :qualifying, lambda { pending.quality_match.has_enough_ratings }
 
@@ -59,21 +59,25 @@ class Matchmake < ApplicationRecord
   end
 
   def self.cannot_pair?(left_profile, right_id, exclude = [])
-    has_already_rated_pair = !!exclude.find do |excluded| 
+    has_already_rated_pair = !!exclude.find do |excluded|
       excluded.sort == [left_profile.id, right_id].sort
     end
 
     has_already_rated_pair || left_profile.id == right_id
   end
 
-  def self.build_left_right(exclude: [], sex: nil, interested_in_sexes: [])
-    left_matches = fetch_left(sex: sex, interested_in_sexes: interested_in_sexes).shuffle
+  def self.build_left_right(exclude_ids: [], exclude_pairs: [], sex: nil, interested_in_sexes: [])
+
+    seen_frequencies = exclude_pairs.flatten.inject(Hash.new(0)) { |h, v| h[v] += 1; h }
+
+    left_matches = fetch_left(sex: sex, interested_in_sexes: interested_in_sexes, exclude_ids: exclude_ids).shuffle
+    left_matches = left_matches.sort_by { |m| seen_frequencies[m.id] } # In-place sort preserves the shuffle order
 
     chosen_pair = []
     left_matches.each do |left_profile|
-      right_matches = fetch_right(left_profile: left_profile)
-    
-      chosen_mate = right_matches.select { |right_id| Matchmake.can_pair?(left_profile, right_id, exclude) }.first
+      right_matches = fetch_right(exclude_ids: exclude_ids, left_profile: left_profile).sort_by { |id| seen_frequencies[id] }
+
+      chosen_mate = right_matches.select { |right_id| Matchmake.can_pair?(left_profile, right_id, exclude_pairs) }.first
 
       if chosen_mate.present?
         chosen_pair = [left_profile, Profile.find(chosen_mate)]
@@ -84,18 +88,20 @@ class Matchmake < ApplicationRecord
     chosen_pair
   end
 
-  def self.fetch_left(sex: nil, interested_in_sexes: [])
+  def self.fetch_left(sex: nil, interested_in_sexes: [], exclude_ids: [])
     Profile
       .matchmakable
       .filled_out
       .where(sex: sex).interested_in(interested_in_sexes)
+      .where.not(user_id: exclude_ids)
   end
 
-  def self.fetch_right(left_profile: nil)
+  def self.fetch_right(left_profile: nil, exclude_ids: [])
     Profile
       .matchmakable
       .filled_out
       .compatible_with(left_profile)
+      .where.not(user_id: exclude_ids)
       .pluck(:id)
   end
 end

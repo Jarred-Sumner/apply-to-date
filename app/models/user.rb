@@ -10,6 +10,7 @@ class User < ApplicationRecord
   has_many :received_applications, class_name: 'Application', foreign_key: 'user_id'
   scope :fake, lambda { where("email ~~ ANY('{#{PROBABLY_FAKE_ACCOUNTS.map { |email| "%#{email}%"}.join(",")}}')") }
   scope :real, lambda { where.not("email ~~ ANY('{#{PROBABLY_FAKE_ACCOUNTS.map { |email| "%#{email}%"}.join(",")}}')") }
+  has_many :notifications
 
   validates :password, length: { minimum: 3 }, if: -> { new_record? || changes[:crypted_password] }
   validates :password, confirmation: true, if: -> { new_record? || changes[:crypted_password] }

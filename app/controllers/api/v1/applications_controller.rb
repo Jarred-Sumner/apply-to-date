@@ -33,7 +33,13 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
       application.update(status: Application.statuses[:filtered])
     elsif @should_send_email
       ApplicationsMailer.confirmed(@application.id).deliver_later
-      ApplicationsMailer.pending_app(@application.id).deliver_later
+
+      notification = Notification.create!(
+        kind: Notification.kinds[:new_application],
+        notifiable: application,
+        user: @applying_to_profile.user_id
+      )
+      notification.enqueue_email!
     end
     
     render json: ApplicantApplicationSerializer.new(@application, {

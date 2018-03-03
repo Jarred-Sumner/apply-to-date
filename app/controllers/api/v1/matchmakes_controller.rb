@@ -8,7 +8,8 @@ class Api::V1::MatchmakesController < Api::V1::ApplicationController
     rated_pairs = Matchmake.joins(:matchmake_ratings).where(matchmake_ratings: { user_id: current_user.id }).pluck(:left_profile_id, :right_profile_id)
 
     left_profile, right_profile = Matchmake.build_left_right(
-      exclude: rated_pairs,
+      exclude_ids: [current_user.id],
+      exclude_pairs: rated_pairs,
       sex: sex,
       interested_in_sexes: interested_in_sexes
     )
@@ -37,7 +38,7 @@ class Api::V1::MatchmakesController < Api::V1::ApplicationController
 
         matchmake.update(rating: matchmake.calculate_rating)
 
-        if current_user.shuffle_cooldown? && !current_user.should_reset_shuffle_session? 
+        if current_user.shuffle_cooldown? && !current_user.should_reset_shuffle_session?
           matchmade_count_during_cooldown = MatchmakeRating
             .where(user_id: current_user.id)
             .where("score > 0")

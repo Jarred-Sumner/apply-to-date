@@ -31,6 +31,9 @@ Rails.application.routes.draw do
       resources :sessions
 
       resources :ratings
+      resources :notifications, only: [:index, :update]
+      post '/reports/:reportable_type/:reportable_id' => 'reports#create'
+      get '/reports/:reportable_type/:reportable_id' => 'reports#show'
     end
   end
 
