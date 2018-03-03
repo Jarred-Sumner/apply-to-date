@@ -4,6 +4,7 @@ class Profile < ApplicationRecord
   has_many :verified_networks
   has_many :applications
   has_many :external_authentications, through: :verified_networks
+  has_many :reports, as: :reportable
 
   DEFAULT_SECTIONS = [
     'introduction',
@@ -53,7 +54,7 @@ class Profile < ApplicationRecord
 
   def self.sections_contain_query(string)
     sections_sql_selectors
-      .map { |selector| "#{selector} ilike #{ActiveRecord::Base.connection.quote("%" + string + "%")}" } 
+      .map { |selector| "#{selector} ilike #{ActiveRecord::Base.connection.quote("%" + string + "%")}" }
       .join(" OR ")
   end
 
@@ -120,7 +121,7 @@ class Profile < ApplicationRecord
   def could_be_interested_in?(profile)
     interested_in_sexes.include?(profile.sex)
   end
-  
+
   CONTACT_METHOD_LABEL = {
     phone: "text message",
     twitter: "DM on Twitter",

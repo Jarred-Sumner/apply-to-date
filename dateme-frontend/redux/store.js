@@ -108,6 +108,7 @@ export const currentUser = (state = null, action) => {
 export const defaultState = {
   profile: {},
   user: {},
+  notification: {},
   external_authentication: {},
   review_application: {},
   application: {},

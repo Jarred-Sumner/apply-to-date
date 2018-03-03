@@ -78,6 +78,10 @@ const Text = ({
           line-height: 1.58;
         }
 
+        .Text--medium {
+          font-weight: 500;
+        }
+
         .Text--hugeTitle {
           font-size: 46px;
           line-height: 54px;
