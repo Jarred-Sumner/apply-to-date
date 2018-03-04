@@ -6,7 +6,7 @@ import { Portal } from "react-portal";
 import { Link } from "../routes";
 import ProfileMenu from "./ProfileMenu";
 
-export default class MobileDropdownHeader extends React.PureComponent {
+class MobileDropdownHeader extends React.Component {
   render() {
     const { isOpen, setOpen, isProbablyLoggedIn } = this.props;
 
@@ -15,7 +15,7 @@ export default class MobileDropdownHeader extends React.PureComponent {
     }
 
     return (
-      <div className="MenuContainer">
+      <div onClick={() => this.props.setOpen(false)} className="MenuContainer">
         <ul
           className={classNames("menu", {
             "menu--expanded": isOpen,
@@ -104,3 +104,5 @@ export default class MobileDropdownHeader extends React.PureComponent {
     );
   }
 }
+
+export default MobileDropdownHeader;
