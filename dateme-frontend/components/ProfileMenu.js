@@ -1,5 +1,5 @@
 import Text from "./Text";
-import { getNotifications } from "../api";
+import { getNotifications, markNotificationAsRead } from "../api";
 import LoginGate from "./LoginGate";
 import _ from "lodash";
 import classNames from "classnames";
@@ -8,6 +8,11 @@ import Icon from "./Icon";
 import { updateEntities, setUnreadNotificationCount } from "../redux/store";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { Link, Router } from "../routes";
+import Button from "./Button";
+import { logEvent } from "../lib/analytics";
+import NotificationRow from "./ProfileMenu/NotificationRow";
+import { withRouter } from "next/router";
 
 class _ProfileMenu extends React.Component {
   constructor(props) {
@@ -19,32 +24,98 @@ class _ProfileMenu extends React.Component {
   }
 
   handleClickOutside = () => this.setState({ isOpen: false });
-  handleToggleOpen = () => this.setState({ isOpen: !this.state.isOpen });
+  handleToggleOpen = () => {
+    if (!this.props.isMobile) {
+      this.setState({ isOpen: !this.state.isOpen });
+    }
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    const {
+      unreadNotificationCount,
+      updateEntities,
+      notifications,
+      setUnreadNotificationCount
+    } = this.props;
+
+    if (!prevState.isOpen && this.state.isOpen && unreadNotificationCount > 0) {
+      setUnreadNotificationCount(0);
+      Promise.map(
+        notifications.filter(notification => notification.status === "unread"),
+        ({ id }) => markNotificationAsRead(id),
+        {
+          concurrency: 2
+        }
+      ).then(notifications => {
+        notifications.forEach(({ body }) => updateEntities(body));
+      });
+
+      logEvent("Read Notifications");
+    }
+  }
 
   render() {
-    const { profile = {}, notifications } = this.props;
+    const {
+      profile = {},
+      notifications,
+      unreadNotificationCount,
+      isMobile = false
+    } = this.props;
 
     return (
       <div
         className={classNames("Profile", {
           "Profile--open": this.state.isOpen,
           "Profile--closed": !this.state.isOpen,
-          "Profile--hasUnread": true
+          "Profile--mobile": isMobile,
+          "Profile--hasUnread": unreadNotificationCount > 0
         })}
       >
         <div onClick={this.handleToggleOpen} className="PhotoContainer">
           <div className="PhotoGroup">
             <img className="Photo" src={_.first(profile.photos)} />
-            <div className="UnreadCount">
-              <Text color="white" size="14px" lineHeight="14px" weight="medium">
-                4
-              </Text>
+            {unreadNotificationCount > 0 && (
+              <div className="UnreadCount">
+                <Text
+                  color="white"
+                  size="14px"
+                  lineHeight="14px"
+                  weight="medium"
+                >
+                  {unreadNotificationCount}
+                </Text>
+              </div>
+            )}
+          </div>
+          {!isMobile && (
+            <div className="IconContainer">
+              <Icon type="caret" size="12px" color="#3A405B" />
+            </div>
+          )}
+        </div>
+
+        {this.state.isOpen && (
+          <div className="NotificationsList">
+            <div className="NotificationsListHeader">
+              <Text type="label">Notifications</Text>
+            </div>
+            <div className="NotificationsRows">
+              {notifications.map(notification => (
+                <NotificationRow
+                  notification={notification}
+                  key={notification.id}
+                />
+              ))}
+            </div>
+            <div className="NotificationSeeMore">
+              <Link route="/notifications">
+                <Button size="fit" color="black" href="/notifications">
+                  See all
+                </Button>
+              </Link>
             </div>
           </div>
-          <div className="IconContainer">
-            <Icon type="caret" size="12px" color="#3A405B" />
-          </div>
-        </div>
+        )}
 
         <style jsx>{`
           .Photo {
@@ -56,8 +127,29 @@ class _ProfileMenu extends React.Component {
             background-color: #f0f0f0;
           }
 
+          .NotificationsList {
+            position: absolute;
+            right: 0;
+            top: 54px;
+            width: 320px;
+            border-radius: 4px;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            filter: drop-shadow(0 10px 20px rgba(34, 35, 40, 0.4));
+          }
+
+          .NotificationSeeMore {
+            padding: 7px 14px;
+          }
+
+          .NotificationsListHeader {
+            padding: 7px 14px;
+          }
+
           .Profile {
             display: flex;
+            position: relative;
           }
 
           .PhotoContainer {
@@ -86,6 +178,10 @@ class _ProfileMenu extends React.Component {
             background-color: #c72f2f;
           }
 
+          .Profile--mobile .UnreadCount {
+            right: 0;
+          }
+
           .Profile--hasUnread .UnreadCount {
             opacity: 1;
           }
@@ -112,22 +208,33 @@ class ProfileMenuContainer extends React.Component {
   }
 
   async componentDidMount() {
-    this.loadNotifications();
+    if (this.props.router.asPath !== "/notifications") {
+      this.loadNotifications();
+    }
   }
 
   loadNotifications = async () => {
     const notificationsResponse = await getNotifications();
 
     this.props.updateEntities(notificationsResponse.body);
+
+    const unreadNotificationCount = _.get(
+      notificationsResponse,
+      "body.data",
+      []
+    ).filter(notification => notification.status === "unread").length;
+    this.props.setUnreadNotificationCount(unreadNotificationCount);
   };
 
   render() {
     return (
       <ProfileMenu
+        isMobile={this.props.isMobile}
         profile={_.get(this.props, "currentUser.profile")}
         notifications={this.props.notifications}
         unreadNotificationCount={this.props.unreadNotificationCount}
         isLoading={this.state.isLoading}
+        updateEntities={this.props.updateEntities}
         setUnreadNotificationCount={this.props.setUnreadNotificationCount}
       />
     );
@@ -137,12 +244,23 @@ class ProfileMenuContainer extends React.Component {
 const ConnectedProfileMenuContainer = connect(
   state => {
     return {
-      notifications: _.values(state.notifications),
+      notifications: _.orderBy(
+        _.values(state.notification),
+        ["occurredAt"],
+        ["desc"]
+      ).slice(0, 5),
       unreadNotificationCount: state.unreadNotificationCount
     };
   },
   dispatch =>
-    bindActionCreators({ updateEntities, setUnreadNotificationCount }, dispatch)
+    bindActionCreators(
+      { updateEntities, setUnreadNotificationCount },
+      dispatch
+    ),
+  null,
+  {
+    pure: false
+  }
 )(ProfileMenuContainer);
 
-export default LoginGate(ConnectedProfileMenuContainer);
+export default LoginGate(withRouter(ConnectedProfileMenuContainer));

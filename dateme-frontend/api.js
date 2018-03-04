@@ -33,8 +33,12 @@ export const reportProfile = profileId => {
   return post(`/reports/profile/${profileId}`);
 };
 
+export const markAllNotificationsAsRead = () => {
+  return post(`/notifications/read_all`);
+};
+
 export const markNotificationAsRead = notificationId => {
-  return put(`/notifications/${id}`).send({
+  return put(`/notifications/${notificationId}`).send({
     status: "read"
   });
 };

@@ -277,7 +277,7 @@ const HeaderLinks = ({ isProbablyLoggedIn, currentUser, isMobile }) => {
           </div>
         </NavLink>
 
-        <ProfileMenu />
+        {!isMobile && <ProfileMenu />}
 
         <style jsx>{`
           .Buttons {

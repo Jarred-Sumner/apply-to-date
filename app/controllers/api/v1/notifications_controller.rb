@@ -2,6 +2,12 @@ class Api::V1::NotificationsController < Api::V1::ApplicationsController
   before_action :require_login
 
   def index
+    current_user
+      .notifications
+      .unread
+      .where("expires_at > ?", DateTime.now)
+      .update_all(status: Notification.statuses[:expired])
+
     render json: NotificationSerializer.new(current_user.notifications.order("created_at DESC")).serializable_hash
   end
 
@@ -12,6 +18,13 @@ class Api::V1::NotificationsController < Api::V1::ApplicationsController
     end
 
     render json: NotificationSerializer.new(notification).serializable_hash
+  end
+
+  def read_all
+    current_user
+      .notifications
+      .where(status: Notification.statuses[:unread])
+      .update_all(status: Notification.statuses[:read])
   end
 
   private def update_params

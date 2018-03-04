@@ -3,9 +3,14 @@ import Text from "./Text";
 import Link from "next/link";
 import classNames from "classnames";
 
-export default ({ center = false }) => {
+export default ({ center = false, size }) => {
   return (
-    <div className={classNames("Container", { "Container--centered": center })}>
+    <div
+      className={classNames("Container", {
+        "Container--centered": center,
+        "Container--small": size === "small"
+      })}
+    >
       <div className="Wrapper">
         <Brand hideText />
 
@@ -76,6 +81,11 @@ export default ({ center = false }) => {
           a:nth-of-type(3) {
             display: none;
           }
+        }
+
+        .Container--small a:nth-of-type(2),
+        .Container--small a:nth-of-type(3) {
+          display: none;
         }
 
         .copyright {

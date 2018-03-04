@@ -126,9 +126,7 @@ export default ({
       article {
         margin-top: 24px;
         width: 100%;
-        display: grid;
-        grid-auto-flow: column;
-        grid-column-gap: 24px;
+        display: flex;
         justify-content: center;
       }
 

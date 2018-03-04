@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 import Text from "./Text";
 import { Portal } from "react-portal";
 import { Link } from "../routes";
+import ProfileMenu from "./ProfileMenu";
 
 export default class MobileDropdownHeader extends React.PureComponent {
   render() {
@@ -21,6 +22,16 @@ export default class MobileDropdownHeader extends React.PureComponent {
             "menu--closed": !isOpen
           })}
         >
+          {isProbablyLoggedIn && (
+            <li>
+              <Link route="/notifications">
+                <a>
+                  <ProfileMenu isMobile />
+                  <Text type="footerlink">Notifications</Text>
+                </a>
+              </Link>
+            </li>
+          )}
           {isProbablyLoggedIn && (
             <li>
               <Link route="/page/edit">
@@ -73,8 +84,10 @@ export default class MobileDropdownHeader extends React.PureComponent {
           }
 
           li a {
-            display: block;
-            padding: 20px 20px;
+            display: flex;
+            align-items: center;
+            height: 58px;
+            padding: 0 20px;
             border-right: 1px solid #f4f4f4;
             text-decoration: none;
           }

@@ -70,7 +70,7 @@ export default class RateApplication extends React.Component {
               width: 100%;
               min-width: auto;
               max-width: 200px;
-              margin-right: auto;
+              margin-right: 21px;
               grid-auto-flow: row;
               grid-row-gap: 28px;
 

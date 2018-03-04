@@ -70,7 +70,7 @@ export default ({
       </main>
 
       <footer className={classes}>
-        <PageFooter />
+        <PageFooter size={size} />
       </footer>
 
       <style jsx>{`

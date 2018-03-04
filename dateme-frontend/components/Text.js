@@ -341,7 +341,7 @@ export default ({ type, children, ...otherProps }) => {
     );
   } else if (type === "muted") {
     return (
-      <Text {...otherProps} size="13px">
+      <Text {...otherProps} color="#B0B0B0" size="13px">
         {children}
       </Text>
     );

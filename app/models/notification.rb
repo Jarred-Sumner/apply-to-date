@@ -1,6 +1,7 @@
 class Notification < ApplicationRecord
   belongs_to :user, counter_cache: true
   belongs_to :notifiable, polymorphic: true
+  validates :occurred_at, presence: true
 
   enum kind: {
     new_application: 0,
@@ -20,22 +21,25 @@ class Notification < ApplicationRecord
     expired: 2
   }
 
-  validates :status, presence: true, inclusion: { in: Notification.statuses.values }
-  validates :kind, presence: true, inclusion: { in: Notification.kinds.values }
+  validates :status, presence: true
+  validates :kind, presence: true
 
   def build_meta
     if new_application?
       {
         name: notifiable.name,
+        thumbnail: notifiable.photos.try(:first)
       }
     elsif approved_application?
       {
         name: notifiable.name,
+        thumbnail: notifiable.photos.try(:first)
       }
     elsif profile_viewed?
       {
         name: notifiable.name,
-      }
+        thumbnail: notifiable.photos.try(:first)
+    }
     else
       {}
     end
@@ -43,5 +47,6 @@ class Notification < ApplicationRecord
 
   before_validation on: :create do
     self.meta = build_meta
+    self.occurred_at ||= DateTime.now
   end
 end

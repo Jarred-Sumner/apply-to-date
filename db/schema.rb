@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180302025303) do
+ActiveRecord::Schema.define(version: 20180303233549) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,10 +106,11 @@ ActiveRecord::Schema.define(version: 20180302025303) do
     t.datetime "read_at"
     t.uuid "user_id"
     t.string "notifiable_type"
-    t.bigint "notifiable_id"
+    t.string "notifiable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "meta"
+    t.datetime "occurred_at"
     t.index ["kind"], name: "index_notifications_on_kind"
     t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable_type_and_notifiable_id"
     t.index ["user_id", "status"], name: "index_notifications_on_user_id_and_status"
@@ -182,8 +183,8 @@ ActiveRecord::Schema.define(version: 20180302025303) do
     t.datetime "last_shuffled_at"
     t.integer "shuffled_session_count", default: 0, null: false
     t.integer "shuffle_status", default: 0, null: false
-    t.integer "unread_notifications_count"
-    t.integer "notifications_count"
+    t.integer "unread_notifications_count", default: 0, null: false
+    t.integer "notifications_count", default: 0, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["remember_me_token"], name: "index_users_on_remember_me_token"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token"

@@ -9,7 +9,7 @@ class CreateNotifications < ActiveRecord::Migration[5.1]
       t.datetime :expires_at
       t.datetime :read_at
       t.references :user, foreign_key: true, index: true, type: :uuid
-      t.references :notifiable, index: true, polymorphic: true, foreign_key: false
+      t.references :notifiable, index: true, polymorphic: true, foreign_key: false, type: :string
 
       t.timestamps
     end
