@@ -25,8 +25,13 @@ import Page from "../components/Page";
 import { BASE_AUTHORIZE_URL } from "../components/SocialLogin";
 import LoginGate from "../components/LoginGate";
 import NotificationRow from "../components/ProfileMenu/NotificationRow";
+import { logEvent } from "../lib/analytics";
 
 class Notifications extends React.Component {
+  componentDidMount() {
+    logEvent("Read Notifications");
+  }
+
   render() {
     return (
       <div>
