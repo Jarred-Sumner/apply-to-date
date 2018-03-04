@@ -4,11 +4,11 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
   def index
     if current_user.present?
       @profiles = Profile.visible.featured.sexually_compatible_with(current_user.profile)
-    else
-      @profiles = Profile.visible.featured
     end
 
-    if stale? etag: @profiles, last_modified: @profiles.pluck(:updated_at).max.utc
+    @profiles = Profile.visible.featured if @profiles.blank?
+
+    if stale? etag: @profiles, last_modified: @profiles.pluck(:updated_at).max.try(:utc)
       render json: ProfileSerializer.new(@profiles).serializable_hash
     end
   end
