@@ -20,10 +20,13 @@ class ApplicationsMailer < ApplicationMailer
     mail to: @application.email, subject: "#{@profile.name} wants to go on a date with you."
   end
 
-  def pending_app(application_id)
+  def pending_app(application_id, notification_id)
+    @notification = Notification.find(notification_id)
     @application = Application.find(application_id)
     @profile = @application.profile
     @profile_name = @profile.name
+
+    return if @notification.email_sent_at.present?
 
     @gender_name = @application.sex == 'male' ? 'him' : 'her'
     @gender_name = "them" if @application.sex != 'male' && @application.sex != 'female'
@@ -35,6 +38,10 @@ class ApplicationsMailer < ApplicationMailer
     from = ApplicationMailer.default_from
     if @application.name.present?
       from = "#{@application.name} <notifs@applytodate.com>"
+    end
+    
+    if @notification
+      @notification.update!(email_sent_at: DateTime.now)
     end
 
     mail to: @profile.user.email, subject: SUBJECT_LINES.sample, from: from

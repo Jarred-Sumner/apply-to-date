@@ -10,7 +10,7 @@ class UsersMailer < ApplicationMailer
     @user = User.find(user_id)
     @edit_profile_url = Api::V1::ApplicationController.build_frontend_uri("/#{@user.username}/edit", {})
     @profile_url = Api::V1::ApplicationController.build_frontend_uri("/#{@user.username}", {})
-    
+
     @preferred_gender = 'guys' if @user.interested_in_men?
     @preferred_gender = 'women' if @user.interested_in_women?
     @preferred_gender = 'people' if @user.interested_in_other? || (@user.interested_in_men? && @user.interested_in_women?)
