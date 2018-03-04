@@ -407,7 +407,7 @@ class Header extends React.Component {
         >
           <div>
             <header>
-              <Brand hideText="auto" />
+              <Brand hideText={isMobile} />
 
               {showChildren && !children ? (
                 this.props.isProbablyLoggedIn ? (

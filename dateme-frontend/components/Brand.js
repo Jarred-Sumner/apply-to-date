@@ -1,4 +1,4 @@
-import {Link} from "../routes";
+import { Link } from "../routes";
 import classNames from "classnames";
 
 const WITH_TEXT = "/static/brand@2x.png";
@@ -11,7 +11,8 @@ export default ({ hideText = "auto" }) => {
         <a
           className={classNames("Brand", {
             "Brand--autohideText": hideText === "auto",
-            "Brand--hideText": hideText === true
+            "Brand--hideText": hideText === true,
+            "Brand--showText": hideText === false
           })}
         >
           <img className="WithoutText" src={WITHOUT_TEXT} />
@@ -37,6 +38,10 @@ export default ({ hideText = "auto" }) => {
         }
 
         .Brand--hideText img.WithText {
+          display: none;
+        }
+
+        .Brand--showText img.WithoutText {
           display: none;
         }
 
