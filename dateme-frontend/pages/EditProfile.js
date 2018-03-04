@@ -107,7 +107,6 @@ const getWidthForText = (text, isPlaceholder) => {
 const getProfileFromProps = props => {
   const profile = props.profile || {};
   const {
-    name = "",
     tagline,
     photos = [],
     socialLinks = {},
@@ -118,17 +117,17 @@ const getProfileFromProps = props => {
   } = profile;
 
   const sections = _.fromPairs(
-    SECTION_ORDERING.map(key => [key, profileSections[key] || ""])
+    SECTION_ORDERING.map(key => [key, (profileSections || {})[key] || ""])
   );
 
   return {
-    name,
+    name: profile.name || "",
     tagline: tagline || "",
     photos: photos || [],
-    phone,
+    phone: phone || "",
     sections,
-    visible,
-    socialLinks,
+    visible: !!visible,
+    socialLinks: socialLinks || {},
     recommendedContactMethod: recommendedContactMethod || "phone"
   };
 };
