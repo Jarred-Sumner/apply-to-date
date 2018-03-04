@@ -7,16 +7,16 @@
     "ssh": "ssh root@165.227.58.224",
     "htop": "ssh -t root@165.227.58.224 htop",
     "prod-status": "pm2 deploy production exec \"cd dateme-frontend; pm2 l\"",
-    "logs":
-      "ssh -t root@165.227.58.224 \"cd /root/applytodate/current/dateme-frontend; pm2 logs\"",
+    "logs": "ssh -t root@165.227.58.224 \"cd /root/applytodate/current/dateme-frontend; pm2 logs\"",
     "deploy": "pm2 deploy ecosystem.config.js production --force",
     "restart": "pm2 startOrRestart ecosystem.config.js --env production",
     "stop": "pm2 stop ecosystem.config.js --env production",
-    "postdeploy":
-      "yarn build && pm2 startOrReload ecosystem.config.js --env production"
+    "postdeploy": "yarn build && pm2 startOrReload ecosystem.config.js --env production"
   },
   "babel": {
-    "presets": ["next/babel"],
+    "presets": [
+      "next/babel"
+    ],
     "plugins": [
       [
         "inline-react-svg",
@@ -25,7 +25,11 @@
             "plugins": [
               {
                 "removeAttrs": {
-                  "attrs": ["(data-name)", "(width)", "(height)"]
+                  "attrs": [
+                    "(data-name)",
+                    "(width)",
+                    "(height)"
+                  ]
                 }
               },
               {
@@ -90,6 +94,7 @@
     "postcss-loader": "^2.1.0",
     "prop-types": "^15.6.0",
     "qs": "^6.5.1",
+    "raven": "^2.4.2",
     "raven-js": "^3.22.3",
     "rc-progress": "^2.2.5",
     "rc-switch": "^1.6.0",
