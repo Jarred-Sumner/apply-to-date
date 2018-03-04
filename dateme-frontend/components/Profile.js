@@ -155,6 +155,7 @@ export default ({
         margin-top: 4rem;
 
         display: grid;
+        align-content: flex-start;
         grid-row-gap: 2rem;
         max-width: 100%;
       }

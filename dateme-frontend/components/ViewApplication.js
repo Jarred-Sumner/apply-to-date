@@ -92,6 +92,7 @@ export default class ViewApplication extends React.Component {
           .ViewApplication {
             display: grid;
             grid-auto-flow: row;
+            align-content: flex-start;
             width: 100%;
             background-color: white;
           }
@@ -129,6 +130,7 @@ export default class ViewApplication extends React.Component {
           .Section-row {
             display: grid;
             grid-auto-flow: row;
+            align-content: flex-start;
             grid-row-gap: 14px;
             width: 100%;
           }
@@ -137,6 +139,7 @@ export default class ViewApplication extends React.Component {
             padding-top: 14px;
             display: grid;
             grid-auto-flow: row;
+            align-content: flex-start;
             grid-row-gap: 14px;
             text-align: left;
           }

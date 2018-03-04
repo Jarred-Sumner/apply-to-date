@@ -291,6 +291,7 @@ class MobileProfile extends React.Component {
             display: grid;
             grid-auto-flow: row;
             grid-row-gap: 14px;
+            align-content: flex-start;
             padding: 14px;
             padding-bottom: 28px;
             width: 100%;
