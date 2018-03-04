@@ -1,4 +1,4 @@
-import {Link} from "../routes";
+import { Link } from "../routes";
 import Head from "../components/head";
 import Nav from "../components/nav";
 import withRedux from "next-redux-wrapper";
@@ -45,7 +45,7 @@ class CreateAccount extends React.Component {
     super(props);
 
     this.state = {
-      email: this.props.url.query.email || "",
+      email: props.url.query.email || "",
       username: _.get(props, "externalAccount.username", ""),
       name: _.get(props, "externalAccount.name", ""),
       email: _.get(props, "externalAccount.email", ""),
