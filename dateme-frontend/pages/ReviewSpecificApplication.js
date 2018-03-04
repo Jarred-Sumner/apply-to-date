@@ -94,13 +94,20 @@ class ReviewSpecificApplication extends React.PureComponent {
         onNo={this.handleNo}
         isLoading={isLoadingApplication}
         isRating={isRating}
+        isMobile={this.props.isMobile}
       />
     );
   }
 }
 
-const ReviewApplicationWithStore = withRedux(initStore, null, dispatch =>
-  bindActionCreators({ setUnreadNotificationCount }, dispatch)
+const ReviewApplicationWithStore = withRedux(
+  initStore,
+  null,
+  dispatch => bindActionCreators({ setUnreadNotificationCount }, dispatch),
+  null,
+  {
+    pure: false
+  }
 )(LoginGate(ReviewSpecificApplication, { loginRequired: true }));
 
 export default ReviewApplicationWithStore;
