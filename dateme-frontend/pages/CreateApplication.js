@@ -242,6 +242,7 @@ class CreateApplication extends React.Component {
       name,
       username,
       password,
+      phone,
       sex,
       externalAuthentications,
       interestedInMen,
@@ -252,7 +253,8 @@ class CreateApplication extends React.Component {
     return createAccount({
       external_authentication_ids: externalAuthentications,
       profile: {
-        name
+        name,
+        phone
       },
       user: {
         email,

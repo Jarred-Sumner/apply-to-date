@@ -4,6 +4,8 @@ class ExternalAuthentication < ApplicationRecord
   has_many :verified_networks
   has_many :applications, through: :verified_networks
 
+  scope :facebook, lambda { where(provider: 'facebook') }
+
   FACEBOOK_NAME_REGEX = /^[a-z0-9\\.-]{5,50}$/
 
   def self.facebook_oauth
@@ -29,7 +31,7 @@ class ExternalAuthentication < ApplicationRecord
     }
 
     profile, photos = ExternalAuthentication.get_facebook_details(credentials['access_token'])
-  
+
     props = props.merge(
       ExternalAuthentication.build_from_facebook_profile(profile)
     )
@@ -39,6 +41,25 @@ class ExternalAuthentication < ApplicationRecord
 
   def self.facebook_graph_api(token)
     Koala::Facebook::API.new(token, Rails.application.secrets[:facebook_secret])
+  end
+
+  def facebook_graph_api
+    ExternalAuthentication.facebook_graph_api(access_token)
+  end
+
+  def get_facebook_photos(limit = 3)
+    begin
+      image_sets = facebook_graph_api.get_connections("me", "photos", type: 'tagged', fields: 'images', limit: limit)
+      image_sets.map do |data|
+        data['images'].first['source']
+      end
+    rescue => e
+      Raven.capture_exception(e)
+      Rails.logger.info e
+      Rails.logger.info "GETTING FACEBOOK PHOTOS FAILED FOR EXTERNAL AUTHENTICATION #{id}"
+      return []
+    end
+
   end
 
   def self.get_facebook_details(token)
@@ -70,7 +91,7 @@ class ExternalAuthentication < ApplicationRecord
   def instagram
     @instagram ||= begin
       return nil if access_token.blank? || provider != 'instagram'
-      
+
       Instagram.new(access_token)
     end
   end
@@ -104,9 +125,9 @@ class ExternalAuthentication < ApplicationRecord
   end
 
   def self.update_social_links(social_links = {})
-    ExternalAuthentication::ALLOWED_SOCIAL_LINKS.map do |key| 
+    ExternalAuthentication::ALLOWED_SOCIAL_LINKS.map do |key|
       [
-        key, 
+        key,
         ExternalAuthentication.normalize_social_link(
           social_links[key],
           key

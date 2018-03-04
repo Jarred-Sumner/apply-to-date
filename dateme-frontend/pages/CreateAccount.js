@@ -51,6 +51,7 @@ class CreateAccount extends React.Component {
         props.url.query.email ||
         _.get(props, "externalAccount.email", "") ||
         "",
+      phone: "",
       password: "",
       passwordConfirmation: "",
       location: "",
@@ -79,6 +80,7 @@ class CreateAccount extends React.Component {
 
     const {
       email,
+      phone,
       name,
       username,
       password,
@@ -113,7 +115,8 @@ class CreateAccount extends React.Component {
         latitude: latLng ? latLng.lat : null,
         longitude: latLng ? latLng.lng : null,
         location,
-        name
+        name,
+        phone
       },
       user: {
         email,
@@ -152,6 +155,7 @@ class CreateAccount extends React.Component {
 
   setLocation = location => this.setState({ location });
   setEmail = email => this.setState({ email });
+  setPhone = phone => this.setState({ phone });
   setName = name => this.setState({ name });
   setUsername = username => this.setState({ username });
   setPassword = password => this.setState({ password });
@@ -172,6 +176,7 @@ class CreateAccount extends React.Component {
     const {
       email,
       name,
+      phone,
       username,
       password,
       passwordConfirmation,
@@ -230,6 +235,17 @@ class CreateAccount extends React.Component {
                 value={email}
                 onChange={this.setEmail}
                 placeholder="youremail@gmail.com"
+              />
+
+              <FormField
+                label="phone (optional)"
+                type="tel"
+                required={false}
+                icon={<Icon type="phone" size="18px" color="#B9BED1" />}
+                name="phone"
+                value={phone}
+                onChange={this.setPhone}
+                placeholder="925 555 5555"
               />
 
               <PasswordFormField
