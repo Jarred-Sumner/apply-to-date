@@ -128,6 +128,7 @@
     "react-scroll": "^1.7.6",
     "react-scrollable-anchor": "^0.6.1",
     "react-share": "^2.0.0",
+    "react-sizes": "^1.0.3",
     "react-social-login": "^3.4.2",
     "react-spinkit": "^3.0.0",
     "react-stickynode": "^1.4.1",

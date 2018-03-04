@@ -8,7 +8,7 @@ import FeedbackForm from "./FeedbackForm";
 import BurgerIcon from "../components/BurgerIcon";
 import MobileDropdownHeader from "../components/MobileDropdownHeader";
 import BetaGate from "./BetaGate";
-import {Link} from "../routes";
+import { Link } from "../routes";
 import Icon from "./Icon";
 import ActiveLink from "./ActiveLink";
 import Text from "./Text";
@@ -17,6 +17,7 @@ import _ from "lodash";
 import { Router } from "../routes";
 import { buildEditProfileURL } from "../lib/routeHelpers";
 import ProfileMenu from "./ProfileMenu";
+import { setIsMobile } from "../lib/Mobile";
 
 const isSwitcherRouteActive = (router, href) => {
   return router.asPath.split("?")[0] === href;
@@ -364,6 +365,16 @@ class Header extends React.Component {
       isHamburgerOpen: false,
       stickyStatus: Sticky.STATUS_ORIGINAL
     };
+  }
+
+  componentDidMount() {
+    setIsMobile(this.props.isMobile);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.isMobile !== this.props.isMobile) {
+      setIsMobile(this.props.isMobile);
+    }
   }
 
   handleStateChange = ({ status }) => {
