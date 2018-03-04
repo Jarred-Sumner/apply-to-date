@@ -3,6 +3,7 @@ class Profile < ApplicationRecord
   validates :id, presence: true, uniqueness: true
   has_many :verified_networks
   has_many :applications
+  has_many :notifications, as: :notifiable
   has_many :external_authentications, through: :verified_networks
   has_many :reports, as: :reportable
 
@@ -27,6 +28,26 @@ class Profile < ApplicationRecord
   scope :empty_bio, lambda { where(Profile.sections_sql_selectors_empty) }
 
   scope :real, lambda { visible.filled_out.where.not(user_id: User.fake.pluck(:id)) }
+
+  def change_username(username)
+    ActiveRecord::Base.transaction do
+      new_profile = Profile.create!(self.attributes.merge(
+        id: username
+      ))
+
+      verified_networks.update_all(profile_id: username)
+      applications.update_all(profile_id: username)
+      notifications.update_all(notifiable_id: username)
+      reports.update_all(reportable_id: username)
+      Matchmake.where(left_profile_id: id).update_all(left_profile_id: username)
+      Matchmake.where(right_profile_id: id).update_all(right_profile_id: username)
+      user.update!(username: username)
+
+      self.destroy
+
+      new_profile
+    end
+  end
 
   def self.count_all_possible_pairs
     counted_pairs = []
