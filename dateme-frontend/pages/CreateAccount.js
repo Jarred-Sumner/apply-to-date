@@ -45,10 +45,12 @@ class CreateAccount extends React.Component {
     super(props);
 
     this.state = {
-      email: props.url.query.email || "",
       username: _.get(props, "externalAccount.username", ""),
       name: _.get(props, "externalAccount.name", ""),
-      email: _.get(props, "externalAccount.email", ""),
+      email:
+        props.url.query.email ||
+        _.get(props, "externalAccount.email", "") ||
+        "",
       password: "",
       passwordConfirmation: "",
       location: "",
