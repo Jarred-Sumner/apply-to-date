@@ -76,6 +76,12 @@ export default ({
         transform: scale(1.05, 1.05);
       }
 
+      @media (max-width: 500px) {
+        .photo--hoverable img:hover {
+          transform: scale(1);
+        }
+      }
+
       .photo--last {
         margin-right: 0;
       }
