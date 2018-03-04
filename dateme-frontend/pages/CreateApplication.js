@@ -627,7 +627,11 @@ const CreateApplicationWithStore = withRedux(
         setLoginStatus
       },
       dispatch
-    )
+    ),
+  null,
+  {
+    pure: false
+  }
 )(LoginGate(CreateApplication));
 
 export default CreateApplicationWithStore;
