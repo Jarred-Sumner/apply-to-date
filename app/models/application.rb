@@ -2,6 +2,8 @@ class Application < ApplicationRecord
   has_many :verified_networks
   has_many :external_authentications, through: :verified_networks
 
+  scope :pair, lambda { |first_profile, second_profile| Application.where("(applicant_id = ? AND profile_id = ?) OR (applicant_id = ? AND profile_id = ?)", first_profile.user_id, second_profile.id, second_profile.user_id, first_profile.id) }
+
   DEFAULT_SECTIONS = [
     'introduction',
     'why'
