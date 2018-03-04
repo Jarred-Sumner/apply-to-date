@@ -452,6 +452,7 @@ class Header extends React.Component {
             <MobileDropdownHeader
               isProbablyLoggedIn={this.props.isProbablyLoggedIn}
               isOpen={isHamburgerOpen}
+              setOpen={this.setHamburgerOpen}
             />
 
             {renderSubheader &&

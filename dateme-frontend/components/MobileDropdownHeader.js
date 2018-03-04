@@ -15,7 +15,7 @@ class MobileDropdownHeader extends React.Component {
     }
 
     return (
-      <div onClick={() => this.props.setOpen(false)} className="MenuContainer">
+      <div className="MenuContainer">
         <ul
           className={classNames("menu", {
             "menu--expanded": isOpen,
