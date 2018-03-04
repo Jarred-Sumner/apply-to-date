@@ -87,10 +87,10 @@ class NotificationsGate extends React.Component {
 
   async componentDidMount() {
     const notificationsResponse = await getNotifications();
+    await markAllNotificationsAsRead();
 
     this.props.updateEntities(notificationsResponse.body);
     this.props.setUnreadNotificationCount(0);
-    markAllNotificationsAsRead();
 
     this.setState({ isLoadingNotifications: false });
   }
