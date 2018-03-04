@@ -15,10 +15,11 @@ import withLogin from "../lib/withLogin";
 import qs from "qs";
 import LazyLoad from "react-lazyload";
 import { buildImgSrcSet } from "../lib/imgUri";
+import { buildProfileURL } from "../lib/routeHelpers";
 
 const FeaturedProfile = ({ profile }) => {
   return (
-    <Link href={{ pathname: `/${profile.id}` }}>
+    <Link route={buildProfileURL(profile.id)}>
       <a className="Profile">
         <img
           src={_.first(profile.photos)}

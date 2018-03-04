@@ -20,7 +20,7 @@ const Nav = () => (
         {links.map(
           ({ key, href, label }) => (
             <li key={key}>
-              <Link href={href}>
+              <Link route={href}>
                 <a>{label}</a>
               </Link>
             </li>

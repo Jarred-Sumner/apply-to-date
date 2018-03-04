@@ -1,4 +1,4 @@
-import Link from "next/link";
+import {Link} from "../routes";
 import classNames from "classnames";
 
 const Button = ({
@@ -338,7 +338,7 @@ const Button = ({
   );
 
   if (href) {
-    return <Link href={href}>{component}</Link>;
+    return <Link route={href}>{component}</Link>;
   } else {
     return component;
   }

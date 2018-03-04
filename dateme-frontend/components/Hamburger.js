@@ -5,7 +5,7 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import { Portal } from "react-portal";
 import Text from "./Text";
-import Link from "next/link";
+import {Link} from "../routes";
 
 class MenuWrap extends Component {
   constructor(props) {
@@ -63,19 +63,19 @@ export default class Hamburger extends React.Component {
       <div className="HamburgerContainer">
         <Portal>
           <Menu outerContainerId="PageRoot" right>
-            <Link href="/login">
+            <Link route="/login">
               <a className="hamburgerlink">
                 <Text type="hamburgerlink">Login</Text>
               </a>
             </Link>
 
-            <Link href="/sign-up">
+            <Link route="/sign-up">
               <a className="hamburgerlink">
                 <Text type="hamburgerlink">Sign Up</Text>
               </a>
             </Link>
 
-            <Link href="/contact-us">
+            <Link route="/contact-us">
               <a className="hamburgerlink">
                 <Text type="hamburgerlink">Contact</Text>
               </a>

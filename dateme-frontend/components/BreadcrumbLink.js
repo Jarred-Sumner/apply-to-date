@@ -1,7 +1,7 @@
 import Text from "./Text";
 import ActiveLink from "./ActiveLink";
 import classNames from "classnames";
-import Link from "next/link";
+import {Link} from "../routes";
 
 const BreadcrumbLink = ({ href, children, isActive, onClick }) => {
   return (

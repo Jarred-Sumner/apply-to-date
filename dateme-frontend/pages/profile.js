@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "../routes";
 import Head from "../components/head";
 import Nav from "../components/nav";
 import withRedux from "next-redux-wrapper";
@@ -127,7 +127,7 @@ class Profile extends React.Component {
             <MessageBar>
               <Text size="14px" color="white" lineHeight="19px">
                 Your profile is hidden from others until you{" "}
-                <Link href={buildEditProfileURL(profile.id)}>
+                <Link route={buildEditProfileURL(profile.id)}>
                   <a>go live</a>
                 </Link>
               </Text>

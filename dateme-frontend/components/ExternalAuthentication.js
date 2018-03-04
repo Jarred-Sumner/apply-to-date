@@ -2,7 +2,7 @@ import Text from "./Text";
 import Icon from "./Icon";
 import SocialIcon from "./SocialIcon";
 import classNames from "classnames";
-import Link from "next/link";
+import {Link} from "../routes";
 import Button from "./Button";
 import TextInput from "./TextInput";
 

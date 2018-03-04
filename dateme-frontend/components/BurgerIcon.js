@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import React, { Component } from "react";
 import Text from "./Text";
-import Link from "next/link";
+import {Link} from "../routes";
 
 export default class BurgerIcon extends React.Component {
   render() {

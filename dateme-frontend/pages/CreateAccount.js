@@ -1,4 +1,4 @@
-import Link from "next/link";
+import {Link} from "../routes";
 import Head from "../components/head";
 import Nav from "../components/nav";
 import withRedux from "next-redux-wrapper";

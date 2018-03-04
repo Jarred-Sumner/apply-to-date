@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "../routes";
 import Head from "../components/head";
 import Nav from "../components/nav";
 import { Router } from "../routes";
@@ -378,56 +378,44 @@ class EditProfile extends React.Component {
         headerProps={{
           isSticky: false,
           renderSubheader: () => (
-            <Sticky>
-              <div id="StickySubheader">
-                <Subheader bottom={false} center>
-                  <div className="Subheader">
-                    <div className="Subheader-text Subheader-text--desktop">
-                      <Text
-                        align="right"
-                        wrap={false}
-                        weight="bold"
-                        size="14px"
-                      >
-                        To get more applications, link to your page on
-                        Tinder/Instagram
-                      </Text>
-                    </div>
-                    <div className="Subheader-text Subheader-text--mobile">
-                      <Text
-                        align="right"
-                        wrap={false}
-                        weight="bold"
-                        size="14px"
-                      >
-                        Share
-                      </Text>
-                    </div>
-                    <div className="Subheader-urlWrapper">
-                      <CopyURLForm
-                        hideInputOnMobile
-                        url={buildProfileShareURL(profile.id)}
-                      />
-                    </div>
-                    <div className="Subheader-buttons">
-                      <SharableSocialLink
-                        provider="twitter"
-                        width="36px"
-                        height="36px"
-                        url={buildProfileShareURL(profile.id)}
-                      />
-
-                      <SharableSocialLink
-                        provider="facebook"
-                        width="36px"
-                        height="36px"
-                        url={buildProfileShareURL(profile.id)}
-                      />
-                    </div>
+            <div id="StickySubheader">
+              <Subheader bottom={false} center>
+                <div className="Subheader">
+                  <div className="Subheader-text Subheader-text--desktop">
+                    <Text align="right" wrap={false} weight="bold" size="14px">
+                      To get more applications, link to your page on
+                      Tinder/Instagram
+                    </Text>
                   </div>
-                </Subheader>
-              </div>
-            </Sticky>
+                  <div className="Subheader-text Subheader-text--mobile">
+                    <Text align="right" wrap={false} weight="bold" size="14px">
+                      Share
+                    </Text>
+                  </div>
+                  <div className="Subheader-urlWrapper">
+                    <CopyURLForm
+                      hideInputOnMobile
+                      url={buildProfileShareURL(profile.id)}
+                    />
+                  </div>
+                  <div className="Subheader-buttons">
+                    <SharableSocialLink
+                      provider="twitter"
+                      width="36px"
+                      height="36px"
+                      url={buildProfileShareURL(profile.id)}
+                    />
+
+                    <SharableSocialLink
+                      provider="facebook"
+                      width="36px"
+                      height="36px"
+                      url={buildProfileShareURL(profile.id)}
+                    />
+                  </div>
+                </div>
+              </Subheader>
+            </div>
           )
         }}
       >

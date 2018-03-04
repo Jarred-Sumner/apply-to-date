@@ -9,7 +9,7 @@ import PendingTwitterIcon from "../static/Icon/verify/pending/twitter.svg";
 import Text from "./Text";
 import Icon from "./Icon";
 import classNames from "classnames";
-import Link from "next/link";
+import {Link} from "../routes";
 import Button from "./Button";
 
 export const ICON_BY_PROVIDER = {
