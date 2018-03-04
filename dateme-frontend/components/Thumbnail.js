@@ -1,10 +1,12 @@
 import classNames from "classnames";
 import Text from "./Text";
+import { buildImgSrcSet } from "../lib/imgUri";
 
 export default ({
   onClick,
   size = "126px",
   url,
+  remoteSize,
   isLast = false,
   circle,
   showPlaceholder = true
@@ -15,11 +17,14 @@ export default ({
       "photo--hoverable": !!onClick,
       "photo--circle": !!circle
     })}
-    key={url || undefined}
     onClick={onClick}
   >
     {url ? (
-      <img src={url} />
+      <img
+        src={url}
+        key={`${url}-${size}-${remoteSize}`}
+        srcSet={buildImgSrcSet(url, remoteSize || size)}
+      />
     ) : (
       showPlaceholder && (
         <div className="Placeholder">

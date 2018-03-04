@@ -220,6 +220,7 @@ class MobileProfile extends React.Component {
               <section className="Section">
                 <PhotoGroup
                   size="300px"
+                  remoteSize="380px"
                   showPlaceholder={false}
                   photos={profile.photos}
                   circle={profile.photos.length === 1}

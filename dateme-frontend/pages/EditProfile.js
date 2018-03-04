@@ -515,6 +515,7 @@ class EditProfile extends React.Component {
           <EditablePhotos
             photos={photos}
             size="100%"
+            remoteSize={"380px"}
             setPhotoAtIndex={this.setPhotoAtIndex}
           />
         </section>

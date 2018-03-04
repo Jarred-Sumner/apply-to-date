@@ -58,6 +58,7 @@ import SharableSocialLink from "../components/SharableSocialLink";
 import RateButton from "../components/RateButton";
 import EmptyPage from "../components/EmptyPage";
 import { logEvent } from "../lib/analytics";
+import { buildImgSrcSet } from "../lib/imgUri";
 
 const ACTIONS_MENU_HEIGHT = 51;
 
@@ -200,6 +201,10 @@ class MatchmakeProfile extends React.Component {
                         {leftProfile.photos.length > 0 && (
                           <img
                             src={_.first(leftProfile.photos)}
+                            srcSet={buildImgSrcSet(
+                              _.first(leftProfile.photos),
+                              18
+                            )}
                             className="Tab-thumbnail"
                           />
                         )}
@@ -217,6 +222,10 @@ class MatchmakeProfile extends React.Component {
                         {rightProfile.photos.length > 0 && (
                           <img
                             src={_.first(rightProfile.photos)}
+                            srcSet={buildImgSrcSet(
+                              _.first(rightProfile.photos),
+                              18
+                            )}
                             className="Tab-thumbnail"
                           />
                         )}

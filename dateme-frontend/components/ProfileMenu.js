@@ -13,6 +13,7 @@ import Button from "./Button";
 import { logEvent } from "../lib/analytics";
 import NotificationRow from "./ProfileMenu/NotificationRow";
 import { withRouter } from "next/router";
+import { buildImgSrcSet } from "../lib/imgUri";
 
 class _ProfileMenu extends React.Component {
   constructor(props) {
@@ -73,7 +74,11 @@ class _ProfileMenu extends React.Component {
       >
         <div onClick={this.handleToggleOpen} className="PhotoContainer">
           <div className="PhotoGroup">
-            <img className="Photo" src={_.first(profile.photos)} />
+            <img
+              className="Photo"
+              src={_.first(profile.photos)}
+              srcSet={buildImgSrcSet(_.first(profile.photos), 34)}
+            />
             {unreadNotificationCount > 0 && (
               <div className="UnreadCount">
                 <Text

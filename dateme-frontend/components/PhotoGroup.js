@@ -48,7 +48,8 @@ export default class PhotoGroup extends React.Component {
       max = 3,
       size = "206px",
       showPlaceholder,
-      circle = false
+      circle = false,
+      remoteSize
     } = this.props;
     const { currentPhotoIndex } = this.state;
 
@@ -57,10 +58,11 @@ export default class PhotoGroup extends React.Component {
         {_.range(0, max).map(index => (
           <Thumbnail
             isLast={max - 1 === index}
-            key={photos[index] || index}
+            key={`${photos[index] || index}-${remoteSize || size}`}
             url={photos[index]}
             circle={circle}
             size={size}
+            remoteSize={remoteSize}
             showPlaceholder={showPlaceholder}
             onClick={
               photos[index]

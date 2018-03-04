@@ -135,6 +135,7 @@ class ShuffleProfile extends React.Component {
 
         <ProfileComponent
           profile={profile}
+          isMobile={isMobile}
           onScrollEnterAskButton={this.enableStickyHeader}
           onScrollLeaveAskButton={this.disableStickyHeader}
         />

@@ -166,6 +166,7 @@ class Profile extends React.Component {
 
         <ProfileComponent
           profile={profile}
+          isMobile={isMobile}
           onScrollEnterAskButton={this.disableStickyHeader}
           onScrollLeaveAskButton={this.enableStickyHeader}
         />

@@ -1,13 +1,14 @@
 import Photo from "./EditProfile/Photo";
 import _ from "lodash";
 
-export default ({ photos, max = 3, size, setPhotoAtIndex }) => (
+export default ({ photos, max = 3, size, remoteSize, setPhotoAtIndex }) => (
   <div className="PhotosContainer">
     {_.range(0, max).map(index => (
       <Photo
         key={photos[index] || index}
         url={photos[index]}
         size={size}
+        remoteSize={remoteSize}
         setURL={setPhotoAtIndex(index)}
       />
     ))}

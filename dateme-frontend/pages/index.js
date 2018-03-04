@@ -14,14 +14,16 @@ import PageFooter from "../components/PageFooter";
 import withLogin from "../lib/withLogin";
 import qs from "qs";
 import LazyLoad from "react-lazyload";
+import { buildImgSrcSet } from "../lib/imgUri";
 
 const FeaturedProfile = ({ profile }) => {
   return (
     <Link href={{ pathname: `/${profile.id}` }}>
       <a className="Profile">
-        <LazyLoad once offset={100} height={250}>
-          <img src={_.first(profile.photos)} />
-        </LazyLoad>
+        <img
+          src={_.first(profile.photos)}
+          srcSet={buildImgSrcSet(_.first(profile.photos), 250)}
+        />
         <div className="Text">
           <div className="Title">
             <Text

@@ -47,7 +47,7 @@ class NotificationRow extends React.PureComponent {
       >
         <div className="Side">
           <div className="Thumbnail">
-            <Thumbnail size="24px" circle url={notification.meta.thumbnail} />
+            <Thumbnail size="34px" circle url={notification.meta.thumbnail} />
           </div>
         </div>
 
