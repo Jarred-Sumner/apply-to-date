@@ -59,14 +59,13 @@ class ExternalAuthentication < ApplicationRecord
       Rails.logger.info "GETTING FACEBOOK PHOTOS FAILED FOR EXTERNAL AUTHENTICATION #{id}"
       return []
     end
-
   end
 
   def self.get_facebook_details(token)
     graph = facebook_graph_api(token)
 
     graph.batch do |batch_api|
-      batch_api.get_object('me', {:fields => [:name, :email, :id, :location, :birthday]})
+      batch_api.get_object('me', {:fields => [:name, :email, :id, :location, :gender, :birthday]})
     end
   end
 
@@ -210,7 +209,15 @@ class ExternalAuthentication < ApplicationRecord
 
     auth.email = auth_hash.info.email if auth_hash.info.email.present?
     auth.username = auth_hash.info.nickname if auth_hash.info.nickname.present?
+
     auth.location = auth_hash.info.location if auth_hash.info.location.present?
+    auth.sex = auth_hash.extra.raw_info.gender if ['male','female'].include?(auth_hash.extra.raw_info.gender)
+
+    begin
+      auth.birthday = Date.strptime(auth_hash.extra.raw_info.birthday, "%m/%d/%Y") if auth_hash.extra.raw_info.birthday.present?
+    rescue => e
+      Sentry.capture_exception(e)
+    end
 
     auth.info = auth_hash.info.as_json
     auth.raw_info = auth_hash.raw_info.as_json

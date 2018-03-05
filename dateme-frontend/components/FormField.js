@@ -6,6 +6,8 @@ import _ from "lodash";
 import Radio from "./Radio";
 import TextInput from "./TextInput";
 import scriptLoader from "react-async-script-loader";
+import DatePicker from "./DatePicker";
+import moment from "moment";
 
 const PlacesAutocomplete = scriptLoader(
   "https://maps.googleapis.com/maps/api/js?key=AIzaSyD_ad15stG5b8YA-oVUoneLHmIW7pWpa3w&libraries=places"
@@ -59,6 +61,9 @@ export default class FormField extends React.Component {
   };
   handleLocationChange = location => {
     this.props.onChange(location);
+  };
+  handleDateChange = date => {
+    this.props.onChange(date ? moment(date).toString() : null);
   };
   handleRadioChange = evt =>
     this.props.onChange(evt.target.value, evt.target.name);
@@ -188,6 +193,15 @@ export default class FormField extends React.Component {
             disabled,
             placeholder
           }}
+        />
+      );
+    } else if (type === "date") {
+      return (
+        <DatePicker
+          value={value}
+          onChange={this.handleDateChange}
+          focused={this.state.isFocused}
+          onFocusChange={({ focused }) => this.setFocused(focused)}
         />
       );
     } else {

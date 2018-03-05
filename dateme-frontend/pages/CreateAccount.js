@@ -31,6 +31,65 @@ import LoginGate from "../components/LoginGate";
 import withLogin from "../lib/withLogin";
 import { buildEditProfileURL } from "../lib/routeHelpers";
 import { logEvent } from "../lib/analytics";
+import moment from "moment";
+
+const FIELDS = {
+  name: "name",
+  email: "email",
+  birthday: "birthday",
+  phone: "phone",
+  password: "password",
+  passwordConfirmation: "passwordConfirmation",
+  location: "location",
+  sex: "sex"
+};
+
+const getCollapsedFields = externalAuthentication => {
+  if (!externalAuthentication) {
+    return [];
+  }
+
+  const collapsedFields = [];
+  if (externalAuthentication.name) {
+    collapsedFields.push(FIELDS.name);
+  }
+
+  if (externalAuthentication.birthday) {
+    collapsedFields.push(FIELDS.birthday);
+  }
+
+  if (externalAuthentication.sex) {
+    collapsedFields.push(FIELDS.sex);
+  }
+
+  if (externalAuthentication.location) {
+    collapsedFields.push(FIELDS.location);
+  }
+
+  return collapsedFields;
+};
+
+const getDefaultInterestedIn = sex => {
+  if (sex === "male") {
+    return {
+      interestedInMen: false,
+      interestedInWomen: true,
+      interestedInOther: false
+    };
+  } else if (sex === "female") {
+    return {
+      interestedInMen: true,
+      interestedInWomen: false,
+      interestedInOther: false
+    };
+  } else {
+    return {
+      interestedInMen: false,
+      interestedInWomen: false,
+      interestedInOther: false
+    };
+  }
+};
 
 class CreateAccount extends React.Component {
   static async getInitialProps({ store, query }) {
@@ -51,16 +110,16 @@ class CreateAccount extends React.Component {
         props.url.query.email ||
         _.get(props, "externalAccount.email", "") ||
         "",
+      birthday: _.get(props, "externalAccount.birthday") || "",
       phone: "",
       password: "",
       passwordConfirmation: "",
-      location: "",
-      interestedInMen: false,
-      interestedInWomen: false,
-      interestedInOther: false,
+      location: _.get(props, "externalAccount.location") || "",
+      ...getDefaultInterestedIn(_.get(props, "externalAccount.sex") || ""),
       isSubmitting: false,
-      sex: "",
-      termsOfService: false
+      sex: _.get(props, "externalAccount.sex") || "",
+      termsOfService: false,
+      collapsedFields: getCollapsedFields(props.externalAccount)
     };
   }
 
@@ -87,6 +146,7 @@ class CreateAccount extends React.Component {
       passwordConfirmation,
       isSubmitting,
       location,
+      birthday,
       sex,
       interestedInMen,
       interestedInWomen,
@@ -103,7 +163,8 @@ class CreateAccount extends React.Component {
         console.error(exception);
         Alert.error("Please re-enter your location and try again");
         this.setState({
-          isSubmitting: false
+          isSubmitting: false,
+          collapsedFields: []
         });
         return;
       }
@@ -115,6 +176,7 @@ class CreateAccount extends React.Component {
         latitude: latLng ? latLng.lat : null,
         longitude: latLng ? latLng.lng : null,
         location,
+        birthday,
         name,
         phone
       },
@@ -145,6 +207,7 @@ class CreateAccount extends React.Component {
         console.error(error);
         handleApiError(error);
         logEvent("Create Account Error");
+        this.setState({ collapsedFields: [] });
       })
       .finally(() => {
         this.setState({
@@ -153,6 +216,7 @@ class CreateAccount extends React.Component {
       });
   };
 
+  setBirthday = birthday => this.setState({ birthday });
   setLocation = location => this.setState({ location });
   setEmail = email => this.setState({ email });
   setPhone = phone => this.setState({ phone });
@@ -179,7 +243,9 @@ class CreateAccount extends React.Component {
       phone,
       username,
       password,
+      birthday,
       passwordConfirmation,
+      collapsedFields,
       isSubmitting,
       location,
       interestedInMen,
@@ -198,31 +264,19 @@ class CreateAccount extends React.Component {
           <main>
             <Text type="PageTitle">Create account</Text>
 
-            {this.props.externalAccount && (
-              <div className="Row">
-                <ExternalAuthentication
-                  account={this.props.externalAccount}
-                  provider={provider}
-                />
-
-                <Text size="16px">
-                  Thanks for verifying with {EXTERNAL_ACCOUNT_LABELS[provider]}!
-                  Let's get you setup.
-                </Text>
-              </div>
-            )}
-
             <form onSubmit={this.submit}>
-              <FormField
-                label="Name"
-                type="text"
-                icon={<Icon type="user" size="18px" color="#B9BED1" />}
-                name="name"
-                required
-                value={name}
-                onChange={this.setName}
-                placeholder="e.g. Luke Miles"
-              />
+              {!collapsedFields.includes(FIELDS.name) && (
+                <FormField
+                  label="Name"
+                  type="text"
+                  icon={<Icon type="user" size="18px" color="#B9BED1" />}
+                  name="name"
+                  required
+                  value={name}
+                  onChange={this.setName}
+                  placeholder="e.g. Luke Miles"
+                />
+              )}
 
               <UsernameFormField value={username} onChange={this.setUsername} />
 
@@ -264,7 +318,22 @@ class CreateAccount extends React.Component {
                 onChange={this.setPasswordConfirmation}
               />
 
-              <SexFormField value={sex} onChange={this.setSex} />
+              {!collapsedFields.includes(FIELDS.birthday) && (
+                <FormField
+                  label="birthday (age)"
+                  type="date"
+                  name="birthday"
+                  required
+                  value={birthday}
+                  showBorder={false}
+                  onChange={this.setBirthday}
+                  placeholder="youremail@gmail.com"
+                />
+              )}
+
+              {!collapsedFields.includes(FIELDS.sex) && (
+                <SexFormField value={sex} onChange={this.setSex} />
+              )}
 
               <InterestedInFormField
                 interestedInMen={interestedInMen}
