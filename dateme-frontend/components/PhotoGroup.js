@@ -99,8 +99,10 @@ export default class PhotoGroup extends React.Component {
           @media (max-width: 700px) {
             .PhotosContainer {
               grid-template-areas: "photo";
-              grid-template-columns: 100%;
-              grid-template-rows: auto;
+              grid-template-columns: calc(100vw - 34px);
+              grid-template-rows: calc(100vw - 34px);
+              min-width: 0;
+              min-height: 0;
             }
           }
         `}</style>

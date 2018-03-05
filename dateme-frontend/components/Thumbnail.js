@@ -44,8 +44,11 @@ export default ({
     <style jsx>{`
       .photo {
         align-self: flex-start;
+        display: flex;
         height: 100%;
         width: 100%;
+        min-height: 0; /* NEW */
+        min-width: 0; /* NEW; needed for Firefox */
       }
 
       .Placeholder {
