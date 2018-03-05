@@ -34,10 +34,9 @@ import { logEvent } from "../lib/analytics";
 
 class Profile extends React.Component {
   static async getInitialProps({ query, store, req, isServer }) {
-    const profileResponse = await getProfile(query.id);
+    const profileResponse = await getProfile(decodeURI(query.id));
     const profileId = _.get(profileResponse, "body.data.id");
     store.dispatch(updateEntities(profileResponse.body));
-
     return { profileId };
   }
 
