@@ -120,6 +120,7 @@ const Head = props => (
         key="autotrack"
         src="https://cdnjs.cloudflare.com/ajax/libs/autotrack/2.4.1/autotrack.js"
       />
+      <script src="https://cdn.polyfill.io/v2/polyfill.min.js" async defer />
     </NextHead>
     <FullStory />
     <RootStyles noScroll={!!props.noScroll} />

@@ -16,16 +16,7 @@
       "yarn build && pm2 startOrReload ecosystem.config.js --env production"
   },
   "babel": {
-    "presets": [
-      [
-        "next/babel",
-        {
-          "targets": {
-            "browsers": ["last 2 versions", "IE 11"]
-          }
-        }
-      ]
-    ],
+    "presets": "next/babel",
     "plugins": [
       [
         "inline-react-svg",
