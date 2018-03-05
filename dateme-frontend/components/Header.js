@@ -5,11 +5,10 @@ import LoginGate, { LOGIN_STATUSES } from "./LoginGate";
 import { withRouter } from "next/router";
 import { AlertHost } from "./Alert";
 import FeedbackForm from "./FeedbackForm";
-// import Hamburger from "../components/Hamburger";
 import BurgerIcon from "../components/BurgerIcon";
 import MobileDropdownHeader from "../components/MobileDropdownHeader";
 import BetaGate from "./BetaGate";
-import Link from "next/link";
+import { Link } from "../routes";
 import Icon from "./Icon";
 import ActiveLink from "./ActiveLink";
 import Text from "./Text";
@@ -17,6 +16,8 @@ import classNames from "classnames";
 import _ from "lodash";
 import { Router } from "../routes";
 import { buildEditProfileURL } from "../lib/routeHelpers";
+import ProfileMenu from "./ProfileMenu";
+import { setIsMobile } from "../lib/Mobile";
 
 const isSwitcherRouteActive = (router, href) => {
   return router.asPath.split("?")[0] === href;
@@ -277,12 +278,14 @@ const HeaderLinks = ({ isProbablyLoggedIn, currentUser, isMobile }) => {
           </div>
         </NavLink>
 
+        {!isMobile && <ProfileMenu />}
+
         <style jsx>{`
           .Buttons {
             margin-right: 28px;
             display: grid;
             justify-content: flex-end;
-            grid-template-columns: auto auto;
+            grid-template-columns: auto auto auto;
             grid-template-rows: 1fr;
             grid-column-gap: 28px;
             align-items: center;
@@ -364,6 +367,16 @@ class Header extends React.Component {
     };
   }
 
+  componentDidMount() {
+    setIsMobile(this.props.isMobile);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.isMobile !== this.props.isMobile) {
+      setIsMobile(this.props.isMobile);
+    }
+  }
+
   handleStateChange = ({ status }) => {
     this.setState({ stickyStatus: status });
     if (this.props.onStickyChange) {
@@ -394,7 +407,7 @@ class Header extends React.Component {
         >
           <div>
             <header>
-              <Brand hideText="auto" />
+              <Brand hideText={isMobile} />
 
               {showChildren && !children ? (
                 this.props.isProbablyLoggedIn ? (
@@ -450,6 +463,7 @@ class Header extends React.Component {
             <MobileDropdownHeader
               isProbablyLoggedIn={this.props.isProbablyLoggedIn}
               isOpen={isHamburgerOpen}
+              setOpen={this.setHamburgerOpen}
             />
 
             {renderSubheader &&

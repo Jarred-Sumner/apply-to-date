@@ -1,4 +1,4 @@
-import Link from "next/link";
+import {Link} from "../routes";
 import classNames from "classnames";
 
 const Button = ({
@@ -42,6 +42,7 @@ const Button = ({
     "Button--small": size === "small",
     "Button--xsmall": size === "xsmall",
     "Button--normal": size === "normal",
+    "Button--fit": size === "fit",
     "Button--pending": pending,
     "Button--disabled": disabled
   });
@@ -145,6 +146,13 @@ const Button = ({
           height: 30px;
           margin-top: auto;
           margin-bottom: auto;
+        }
+
+        .Button--fit {
+          width: 100%;
+          border-radius: 4px;
+          padding-top: 7px;
+          padding-bottom: 7px;
         }
 
         .Button--circle {
@@ -330,7 +338,7 @@ const Button = ({
   );
 
   if (href) {
-    return <Link href={href}>{component}</Link>;
+    return <Link route={href}>{component}</Link>;
   } else {
     return component;
   }

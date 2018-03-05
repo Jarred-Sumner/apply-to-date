@@ -123,6 +123,13 @@ export default class TextInput extends React.Component {
           .Container--rounded {
             border-radius: 100px;
           }
+
+          @media (max-width: 500px) {
+            .Container--withIcon.Container--block .IconContainer {
+              padding-left: 14px;
+              margin-right: 0;
+            }
+          }
         `}</style>
       </div>
     );

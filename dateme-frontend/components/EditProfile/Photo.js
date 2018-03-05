@@ -10,10 +10,10 @@ import { BASE_HOSTNAME } from "../../api";
 import Icon from "../Icon";
 import { logEvent } from "../../lib/analytics";
 
-const EditableThumbnail = ({ url, onRemove, size = "206px" }) => {
+const EditableThumbnail = ({ url, onRemove, size = "206px", remoteSize }) => {
   return (
     <div className="container">
-      <Thumbnail size={size} isLast url={url} />
+      <Thumbnail remoteSize={remoteSize} size={size} isLast url={url} />
 
       <div className="Button" onClick={onRemove}>
         <Button color="black" circle>

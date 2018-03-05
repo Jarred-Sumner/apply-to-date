@@ -1,28 +1,31 @@
 import Brand from "./Brand";
 import Text from "./Text";
-import Link from "next/link";
+import { Link } from "../routes";
 import classNames from "classnames";
 
-export default ({ center = false }) => {
+export default ({ center = false, size }) => {
   return (
-    <div className={classNames("Container", { "Container--centered": center })}>
+    <div
+      className={classNames("Container", {
+        "Container--centered": center,
+        "Container--small": size === "small"
+      })}
+    >
       <div className="Wrapper">
         <Brand hideText />
 
         <div className="links">
-          <Link href="mailto:lucy@shipfirstlabs.com?subject=Hi">
-            <a>
-              <Text type="footerlink">Contact us</Text>
-            </a>
-          </Link>
+          <a href="mailto:lucy@shipfirstlabs.com?subject=Hi">
+            <Text type="footerlink">Contact us</Text>
+          </a>
 
-          <Link href="/terms-of-service">
+          <Link route="/terms-of-service">
             <a>
               <Text type="footerlink">Terms of Service</Text>
             </a>
           </Link>
 
-          <Link href="/privacy-policy">
+          <Link route="/privacy-policy">
             <a>
               <Text type="footerlink">Privacy Policy</Text>
             </a>
@@ -76,6 +79,11 @@ export default ({ center = false }) => {
           a:nth-of-type(3) {
             display: none;
           }
+        }
+
+        .Container--small a:nth-of-type(2),
+        .Container--small a:nth-of-type(3) {
+          display: none;
         }
 
         .copyright {

@@ -9,6 +9,10 @@ export const buildApplyURL = profileId => {
   return encodeURI(process.env.DOMAIN + "/" + profileId + "/apply");
 };
 
+export const buildApplicationURL = applicationId => {
+  return encodeURI(process.env.DOMAIN + "/applications/" + applicationId);
+};
+
 export const buildApplicantApplicationURL = applicationId => {
   return encodeURI(process.env.DOMAIN + "/a/" + applicationId);
 };
@@ -34,9 +38,16 @@ export const updateQuery = (url, params) => {
     "#_=_"
   )[0];
 
-  console.log("Replacing", newUrl);
-
   return Router.replaceRoute(newUrl, newUrl, {
     shallow: true
   });
+};
+
+export const buildRouteForNotification = notification => {
+  const { notifiableType, notifiableId } = notification;
+  if (notifiableType === "Application") {
+    return buildApplicationURL(notifiableId);
+  } else if (notifiableType === "Profile") {
+    return buildProfileURL(notifiableId);
+  }
 };

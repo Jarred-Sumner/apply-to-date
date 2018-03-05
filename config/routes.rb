@@ -29,8 +29,12 @@ Rails.application.routes.draw do
       match 'profiles/(:profile_id)/apply' => 'applications#create', :constraints => {:profile_id => /[^\/]+/}, via: :post, :format => false
 
       resources :sessions
+      post '/notifications/read_all' => 'notifications#read_all'
 
       resources :ratings
+      resources :notifications, only: [:index, :update]
+      post '/reports/:reportable_type/:reportable_id' => 'reports#create'
+      get '/reports/:reportable_type/:reportable_id' => 'reports#show'
     end
   end
 

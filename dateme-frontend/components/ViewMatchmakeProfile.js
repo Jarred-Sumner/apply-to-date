@@ -220,6 +220,7 @@ class MobileProfile extends React.Component {
               <section className="Section">
                 <PhotoGroup
                   size="300px"
+                  remoteSize="380px"
                   showPlaceholder={false}
                   photos={profile.photos}
                   circle={profile.photos.length === 1}
@@ -290,6 +291,7 @@ class MobileProfile extends React.Component {
             display: grid;
             grid-auto-flow: row;
             grid-row-gap: 14px;
+            align-content: flex-start;
             padding: 14px;
             padding-bottom: 28px;
             width: 100%;

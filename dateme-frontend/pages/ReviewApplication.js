@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "../routes";
 import Head from "../components/head";
 import Nav from "../components/nav";
 import withRedux from "next-redux-wrapper";
@@ -7,7 +7,12 @@ import Button from "../components/Button";
 import FormField from "../components/FormField";
 import Text from "../components/Text";
 import _ from "lodash";
-import { updateEntities, setCurrentUser, initStore } from "../redux/store";
+import {
+  updateEntities,
+  setCurrentUser,
+  initStore,
+  setUnreadNotificationCount
+} from "../redux/store";
 import { getReviewApplications, rateApplication } from "../api";
 import { bindActionCreators } from "redux";
 import { Router } from "../routes";
@@ -60,6 +65,14 @@ class ReviewApplication extends React.PureComponent {
           isLoadingApplication: true
         });
 
+        const unreadNotificationCount = _.get(
+          response,
+          "body.meta.unread_notification_count"
+        );
+        if (_.isNumber(unreadNotificationCount)) {
+          this.props.setUnreadNotificationCount(unreadNotificationCount);
+        }
+
         if (status === "approved") {
           logEvent("Application Approved");
         } else {
@@ -95,8 +108,14 @@ class ReviewApplication extends React.PureComponent {
   }
 }
 
-const ReviewApplicationWithStore = withRedux(initStore, null, null, null, {
-  pure: false
-})(LoginGate(ReviewApplication, { loginRequired: true }));
+const ReviewApplicationWithStore = withRedux(
+  initStore,
+  null,
+  dispatch => bindActionCreators({ setUnreadNotificationCount }, dispatch),
+  null,
+  {
+    pure: false
+  }
+)(LoginGate(ReviewApplication, { loginRequired: true }));
 
 export default ReviewApplicationWithStore;

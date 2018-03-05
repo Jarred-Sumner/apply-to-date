@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "../routes";
 import Head from "../components/head";
 import Nav from "../components/nav";
 import withRedux from "next-redux-wrapper";
@@ -34,10 +34,9 @@ import { logEvent } from "../lib/analytics";
 
 class Profile extends React.Component {
   static async getInitialProps({ query, store, req, isServer }) {
-    const profileResponse = await getProfile(query.id);
+    const profileResponse = await getProfile(decodeURI(query.id));
     const profileId = _.get(profileResponse, "body.data.id");
     store.dispatch(updateEntities(profileResponse.body));
-
     return { profileId };
   }
 
@@ -127,7 +126,7 @@ class Profile extends React.Component {
             <MessageBar>
               <Text size="14px" color="white" lineHeight="19px">
                 Your profile is hidden from others until you{" "}
-                <Link href={buildEditProfileURL(profile.id)}>
+                <Link route={buildEditProfileURL(profile.id)}>
                   <a>go live</a>
                 </Link>
               </Text>
@@ -166,6 +165,7 @@ class Profile extends React.Component {
 
         <ProfileComponent
           profile={profile}
+          isMobile={isMobile}
           onScrollEnterAskButton={this.disableStickyHeader}
           onScrollLeaveAskButton={this.enableStickyHeader}
         />

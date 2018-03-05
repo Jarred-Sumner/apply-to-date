@@ -11,6 +11,15 @@ class Matchmake < ApplicationRecord
   validates :rating, presence: true
   has_many :matchmake_ratings
 
+  def self.asked_out_from_matchmake
+    Matchmake
+      .emailed
+      .pluck(:left_profile_id, :right_profile_id).map do |pair|
+        pair = Profile.where(id: pair)
+        Application.pair(pair.first, pair.second)
+      end.flatten
+  end
+
   def other_profile(profile)
     if profile.id == left_profile_id
       right_profile

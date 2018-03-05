@@ -20,7 +20,7 @@ export const isMobile = () => {
     _isMobile = mobileDetect && mobileDetect.mobile();
   }
 
-  return _isMobile;
+  return !!_isMobile;
 };
 
 export default getMobileDetect;

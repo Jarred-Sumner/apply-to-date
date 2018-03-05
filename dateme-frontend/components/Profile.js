@@ -41,6 +41,7 @@ const getParagraphs = profile => {
 
 export default ({
   profile,
+  isMobile,
   onScrollEnterAskButton,
   onScrollLeaveAskButton
 }) => (
@@ -52,6 +53,7 @@ export default ({
             size="192px"
             showPlaceholder={false}
             photos={profile.photos}
+            remoteSize={"380px"}
             circle
             max={1}
           />
@@ -108,6 +110,7 @@ export default ({
       <section className="Section">
         <PhotoGroup
           size="206px"
+          remoteSize="380px"
           showPlaceholder={false}
           photos={profile.photos}
         />
@@ -152,6 +155,7 @@ export default ({
         margin-top: 4rem;
 
         display: grid;
+        align-content: flex-start;
         grid-row-gap: 2rem;
         max-width: 100%;
       }

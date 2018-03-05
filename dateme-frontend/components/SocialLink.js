@@ -1,6 +1,5 @@
 import classNames from "classnames";
 import SocialIcon from "./SocialIcon";
-import Link from "next/link";
 
 const SocialLink = ({
   active = false,
@@ -131,18 +130,16 @@ export default ({
 }) => {
   if (url) {
     return (
-      <Link href={url}>
-        <a target="_blank">
-          <SocialLink
-            active={active}
-            provider={provider}
-            hoverable={hoverable}
-            onClick={onClick}
-            width={width}
-            height={height}
-          />
-        </a>
-      </Link>
+      <a href={url} target="_blank">
+        <SocialLink
+          active={active}
+          provider={provider}
+          hoverable={hoverable}
+          onClick={onClick}
+          width={width}
+          height={height}
+        />
+      </a>
     );
   } else {
     return (

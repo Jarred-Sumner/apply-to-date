@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link, Router } from "../routes";
 import Head from "../components/head";
 import Nav from "../components/nav";
 import withRedux from "next-redux-wrapper";
@@ -15,7 +15,6 @@ import {
 } from "../redux/store";
 import { getCurrentUser, resetPassword } from "../api";
 import { bindActionCreators } from "redux";
-import { Router } from "../routes";
 import Alert, { handleApiError } from "../components/Alert";
 import Page from "../components/Page";
 import withLogin from "../lib/withLogin";
@@ -55,9 +54,9 @@ class ResetPassword extends React.Component {
 
       const username = _.get(userResponse, "body.data.username");
       if (username) {
-        Router.push(buildEditProfileURL(username));
+        Router.pushRoute(buildEditProfileURL(username));
       } else {
-        Router.push(`/account`);
+        Router.pushRoute(`/account`);
       }
 
       Alert.success("Your password has been reset");

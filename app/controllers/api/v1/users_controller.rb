@@ -44,7 +44,6 @@ class Api::V1::UsersController < Api::V1::ApplicationController
         @external_authentication.save!
 
         VerifiedNetwork.create!(profile_id: @profile.id, external_authentication_id: @external_authentication.id)
-        @profile.update(recommended_contact_method: @external_authentication.provider)
       elsif Array(params[:external_authentication_ids]).present?
         auths = ExternalAuthentication.where(user_id: nil, id: Array(params[:external_authentication_ids]))
         if auths.blank?
@@ -55,10 +54,24 @@ class Api::V1::UsersController < Api::V1::ApplicationController
           auth.update!(user_id: @user.id)
           VerifiedNetwork.create!(profile_id: @profile.id, external_authentication_id: auth.id)
         end
-        @profile.update!(recommended_contact_method: auths.first.provider)
       end
 
-      if @profile.build_default_photo_url.present?
+      if @profile.external_authentications.facebook.exists?
+        begin
+          facebook = @profile.external_authentications.facebook.first
+          facebook.get_facebook_photos.each do |photo_url|
+            upload = Upload.upload_from_url(photo_url)
+            @profile.photos.push(Upload.get_public_url(upload.public_url))
+            @profile.save!
+          end
+        rescue => e
+          Raven.capture_exception(e)
+          Rails.logger.info e
+          Rails.logger.info "AUTO UPLOADING FROM FACEBOOK FAILED #{e.inspect} for user #{@user.id} - #{@profile.id}"
+        end
+      end
+
+      if @profile.photos.blank? && @profile.build_default_photo_url.present?
         begin
           upload = Upload.upload_from_url(@profile.build_default_photo_url)
           @profile.photos.push(Upload.get_public_url(upload.public_url))
@@ -69,6 +82,11 @@ class Api::V1::UsersController < Api::V1::ApplicationController
           Rails.logger.info "UPLOADING DEFAULT PHOTO FAILED #{e.inspect} for user #{@user.id} - #{@profile.id}"
         end
       end
+
+      @profile.external_authentications.each do |auth|
+        @profile.social_links = @profile.social_links.merge(auth.build_social_link_entry)
+      end
+      @profile.save!
 
       auto_login(@user, true)
     end
@@ -95,7 +113,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 
   private def create_profile_params
     params.require(:profile).permit([
-      :location, :latitude, :longitude, :name
+      :location, :latitude, :longitude, :name, :phone
     ])
   end
 

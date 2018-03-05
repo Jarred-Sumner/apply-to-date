@@ -9,7 +9,8 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
       existing_application = Application.where(profile_id: params[:profile_id]).where("applicant_id = ? OR email = ?", current_user.id, current_user.email).first
       if existing_application
         @application = existing_application
-        @should_send_email = true
+        @should_send_email = false
+        @application.update(applicant_id: current_user.id) if @application.applicant_id.blank?
       else
         @application = Application.create!(
           name: profile.name,
@@ -33,9 +34,17 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
       application.update(status: Application.statuses[:filtered])
     elsif @should_send_email
       ApplicationsMailer.confirmed(@application.id).deliver_later
-      ApplicationsMailer.pending_app(@application.id).deliver_later
+
+      notification = Notification.create!(
+        kind: :new_application,
+        status: :unread,
+        notifiable: application,
+        occurred_at: @application.created_at,
+        user_id: @applying_to_profile.user_id
+      )
+      notification.enqueue_email!
     end
-    
+
     render json: ApplicantApplicationSerializer.new(@application, {
       include: [:external_authentications]
     }).serializable_hash
@@ -108,21 +117,21 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
     external_authentications = ExternalAuthentication.where(id: Array(params[:application][:external_authentications]))
     email = String(create_params[:email])
 
-    if create_params[:email].blank? 
+    if create_params[:email].blank?
       raise ArgumentError.new("Please include your email")
     end
 
     ActiveRecord::Base.transaction do
       @application = Application.where(profile_id: params[:profile_id], email: email).first_or_initialize
       @should_send_email = !@application.persisted?
-      
+
       @application.social_links = ExternalAuthentication.update_social_links(
         (current_user.try(:profile).try(:social_links) || {}).merge(
           social_links
         )
       )
 
-      external_authentications.each do |auth| 
+      external_authentications.each do |auth|
         @application.social_links = @application.social_links.merge(auth.build_social_link_entry)
       end
 

@@ -10,6 +10,7 @@ class User < ApplicationRecord
   has_many :received_applications, class_name: 'Application', foreign_key: 'user_id'
   scope :fake, lambda { where("email ~~ ANY('{#{PROBABLY_FAKE_ACCOUNTS.map { |email| "%#{email}%"}.join(",")}}')") }
   scope :real, lambda { where.not("email ~~ ANY('{#{PROBABLY_FAKE_ACCOUNTS.map { |email| "%#{email}%"}.join(",")}}')") }
+  has_many :notifications
 
   validates :password, length: { minimum: 3 }, if: -> { new_record? || changes[:crypted_password] }
   validates :password, confirmation: true, if: -> { new_record? || changes[:crypted_password] }
@@ -18,7 +19,7 @@ class User < ApplicationRecord
   validates :email, uniqueness: true, presence: true, format: /\A([^@\s]+)@((?:[-a-z0-9l]+\.)+[a-z]{2,})\Z/i
   validates :username, uniqueness: true, presence: true, format: { with: /[a-zA-Z0-9\-\_\.]*/ }
   validates :sex, presence: true, inclusion: { in: VALID_SEXES }
-  SHUFFLE_MATCHMAKE_RESET_COUNT = 15.freeze
+  SHUFFLE_MATCHMAKE_RESET_COUNT = 12.freeze
   SHUFFLE_BATCH_SIZE_CEILING = 6.freeze
   SHUFFLE_BATCH_SIZE_FLOOR = 3.freeze
   SHUFFLE_COOLDOWN_CEILING = 24.hours.freeze

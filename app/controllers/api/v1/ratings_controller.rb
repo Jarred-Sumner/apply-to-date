@@ -19,7 +19,7 @@ class Api::V1::RatingsController < Api::V1::ApplicationController
       .where(status: status)
       .limit([Integer(params[:limit] || 25), 25].min)
       .offset([Integer(params[:offset] || 0), 0].max)
-    
+
       render json: ReviewApplicationSerializer.new(applications, {
         include: [
           :external_authentications
@@ -41,6 +41,8 @@ class Api::V1::RatingsController < Api::V1::ApplicationController
 
     application.update!(status: status)
 
+    application.notifications.new_application.unread.update_all(status: Notification.statuses[:read])
+
     if status == Application.statuses[:approved]
       ApplicationsMailer.approved(application.id).deliver_later
     end
@@ -49,6 +51,9 @@ class Api::V1::RatingsController < Api::V1::ApplicationController
       include: [
           :external_authentications
       ],
+      meta: {
+        unread_notification_count: current_user.notifications.unread.count
+      }
     }).serializable_hash
   end
 

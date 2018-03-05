@@ -1,6 +1,5 @@
-import Link from "next/link";
+import { Link, Router } from "../routes";
 import Head from "../components/head";
-import { Router } from "../routes";
 import withRedux from "next-redux-wrapper";
 import {
   updateEntities,
@@ -45,6 +44,7 @@ import Icon from "../components/Icon";
 import MessageBar from "../components/MessageBar";
 import withLogin from "../lib/withLogin";
 import { logEvent } from "../lib/analytics";
+import { buildProfileURL } from "../lib/routeHelpers";
 
 export const SECTION_ORDERING = ["introduction", "why"];
 
@@ -86,7 +86,7 @@ const buildExternalAuthentications = ({ application = {}, url }) => {
 
 class CreateApplication extends React.Component {
   static async getInitialProps({ query, store, req, isServer }) {
-    const profileResponse = await getProfile(query.id);
+    const profileResponse = await getProfile(decodeURI(query.id));
     store.dispatch(updateEntities(profileResponse.body));
 
     if (query.applicationId) {
@@ -95,6 +95,10 @@ class CreateApplication extends React.Component {
       );
       store.dispatch(updateEntities(applicationResponse.body));
     }
+
+    return {
+      profileId: _.get(profileResponse, "body.data.id")
+    };
   }
 
   getDefaultValues = (props, state) => {
@@ -242,6 +246,7 @@ class CreateApplication extends React.Component {
       name,
       username,
       password,
+      phone,
       sex,
       externalAuthentications,
       interestedInMen,
@@ -252,7 +257,8 @@ class CreateApplication extends React.Component {
     return createAccount({
       external_authentication_ids: externalAuthentications,
       profile: {
-        name
+        name,
+        phone
       },
       user: {
         email,
@@ -322,7 +328,7 @@ class CreateApplication extends React.Component {
             auto: false
           });
           if (response) {
-            return Router.push(`/a/${this.props.application.id}`);
+            return Router.pushRoute(`/a/${this.props.application.id}`);
           } else {
             return;
           }
@@ -340,7 +346,7 @@ class CreateApplication extends React.Component {
               auto: false
             });
 
-            return Router.push(`/a/${this.props.application.id}`);
+            return Router.pushRoute(`/a/${this.props.application.id}`);
           } else {
             return;
           }
@@ -417,7 +423,7 @@ class CreateApplication extends React.Component {
           <MessageBar>
             <Text size="14px" color="white" lineHeight="19px">
               Your application to{" "}
-              <Link href={`/${profile.id}`}>
+              <Link route={buildProfileURL(profile.id)}>
                 <a>{profile.name}</a>
               </Link>
             </Text>
@@ -615,7 +621,7 @@ const CreateApplicationWithStore = withRedux(
     const { id, applicationId } = _.get(props, "url.query", {});
 
     return {
-      profile: state.profile[decodeURI(id)],
+      profile: state.profile[props.profileId || id],
       application: state.application[applicationId]
     };
   },
@@ -627,7 +633,11 @@ const CreateApplicationWithStore = withRedux(
         setLoginStatus
       },
       dispatch
-    )
+    ),
+  null,
+  {
+    pure: false
+  }
 )(LoginGate(CreateApplication));
 
 export default CreateApplicationWithStore;

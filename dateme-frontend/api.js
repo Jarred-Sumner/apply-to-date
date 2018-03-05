@@ -21,6 +21,28 @@ export const withCookies = (req, request) => {
   }
 };
 
+export const getNotifications = (options = {}) => {
+  return get("/notifications");
+};
+
+export const hasReportedProfile = profileId => {
+  return get(`/reports/profile/${profileId}`);
+};
+
+export const reportProfile = profileId => {
+  return post(`/reports/profile/${profileId}`);
+};
+
+export const markAllNotificationsAsRead = () => {
+  return post(`/notifications/read_all`);
+};
+
+export const markNotificationAsRead = notificationId => {
+  return put(`/notifications/${notificationId}`).send({
+    status: "read"
+  });
+};
+
 export const getCurrentUser = (options = {}) => {
   return get("/users/me", options);
 };

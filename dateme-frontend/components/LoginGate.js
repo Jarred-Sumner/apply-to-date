@@ -14,6 +14,9 @@ import Raven from "raven-js";
 import Amplitude from "react-amplitude";
 import { logEvent } from "../lib/analytics";
 import { getMobileDetect, setIsMobile } from "../lib/Mobile";
+import withSizes from "react-sizes";
+import { SizesProvider } from "react-sizes";
+import MobileDetect from "mobile-detect";
 
 export const LOGIN_STATUSES = {
   pending: "pending",
@@ -39,21 +42,33 @@ const configureAnalytics = user => {
   });
 };
 
-var windowWidth = null;
-const MOBILE_THRESHOLD = 600;
+const getSizesFallback = userAgent => {
+  const md = new MobileDetect(userAgent);
 
-const detectIfMobile = (userAgent) => {
-  if (typeof window !== 'undefined') {
-    return !!getMobileDetect(userAgent).mobile() || (_.isNumber(windowWidth) ? windowWidth < MOBILE_THRESHOLD : false);
-  } else {
-    return !!getMobileDetect(userAgent).mobile();
+  if (!!md.mobile()) {
+    return {
+      fallbackWidth: 360,
+      fallbackHeight: 640
+    };
+  } else if (!!md.tablet()) {
+    return {
+      fallbackWidth: 768,
+      fallbackHeight: 1024
+    };
   }
-}
+
+  return {
+    fallbackWidth: 1280,
+    fallbackHeight: 700
+  };
+};
+
+const mapSizesToProps = ({ width }) => ({
+  isMobile: width < 650
+});
 
 export default _.memoize((Component, options = {}) => {
-  if (typeof window !== "undefined" && !windowWidth) {
-    windowWidth = window.innerWidth;
-  }
+  const ComponentWithSize = withSizes(mapSizesToProps)(Component);
 
   class LoginGate extends React.Component {
     constructor(props) {
@@ -125,6 +140,7 @@ export default _.memoize((Component, options = {}) => {
         loginStatus,
         currentUser,
         currentUserId,
+        userAgent,
         ...otherProps
       } = this.props;
 
@@ -134,15 +150,17 @@ export default _.memoize((Component, options = {}) => {
         !loginRequired
       ) {
         return (
-          <Component
-            isProbablyLoggedIn={isProbablyLoggedIn}
-            loginStatus={loginStatus}
-            currentUser={currentUser}
-            currentUserId={currentUserId}
-            {...otherProps}
-          >
-            {children}
-          </Component>
+          <SizesProvider config={getSizesFallback(userAgent)}>
+            <ComponentWithSize
+              isProbablyLoggedIn={isProbablyLoggedIn}
+              loginStatus={loginStatus}
+              currentUser={currentUser}
+              currentUserId={currentUserId}
+              {...otherProps}
+            >
+              {children}
+            </ComponentWithSize>
+          </SizesProvider>
         );
       } else {
         return null;
@@ -152,16 +170,12 @@ export default _.memoize((Component, options = {}) => {
 
   const ConnectedLoginGate = connect(
     (state, props) => {
-      const isMobile = detectIfMobile(state.userAgent);
-      setIsMobile(isMobile);
-
       return {
         isProbablyLoggedIn: !!state.currentUserId,
         currentUserId: state.currentUserId,
         currentUser: state.user[state.currentUserId],
         loginStatus: state.loginStatus,
-        userAgent: state.userAgent,
-        isMobile
+        userAgent: state.userAgent
       };
     },
     dispatch =>

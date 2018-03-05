@@ -12,6 +12,11 @@ routes
     pattern: "/matchmake",
     page: "Matchmake"
   })
+  .add({
+    name: "notifications",
+    pattern: "/notifications",
+    page: "Notifications"
+  })
   .add("CreateAccount", "/sign-up")
   .add({
     name: "create-account",

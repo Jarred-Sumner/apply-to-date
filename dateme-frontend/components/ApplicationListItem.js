@@ -115,6 +115,7 @@ export default class ApplicationListItem extends React.Component {
             display: grid;
             grid-auto-flow: row;
             grid-row-gap: 28px;
+            align-content: flex-start;
             padding: 14px 24px;
             padding-bottom: 28px;
             border: 1px solid #e8edf3;
@@ -138,6 +139,7 @@ export default class ApplicationListItem extends React.Component {
             display: grid;
             grid-auto-flow: row;
             grid-row-gap: 14px;
+            align-content: flex-start;
             width: 100%;
           }
 

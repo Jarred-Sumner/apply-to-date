@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "../routes";
 import Head from "../components/head";
 import Nav from "../components/nav";
 import withRedux from "next-redux-wrapper";
@@ -63,7 +63,7 @@ class VerifyAccount extends React.Component {
             </div>
 
             <Link
-              href={`/sign-up?${
+              route={`/sign-up?${
                 email ? "email=" + encodeURIComponent(email) : ""
               }`}
             >

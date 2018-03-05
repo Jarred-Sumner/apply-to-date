@@ -16,7 +16,7 @@
       "yarn build && pm2 startOrReload ecosystem.config.js --env production"
   },
   "babel": {
-    "presets": ["next/babel"],
+    "presets": "next/babel",
     "plugins": [
       [
         "inline-react-svg",
@@ -90,6 +90,7 @@
     "postcss-loader": "^2.1.0",
     "prop-types": "^15.6.0",
     "qs": "^6.5.1",
+    "raven": "^2.4.2",
     "raven-js": "^3.22.3",
     "rc-progress": "^2.2.5",
     "rc-switch": "^1.6.0",
@@ -123,6 +124,7 @@
     "react-scroll": "^1.7.6",
     "react-scrollable-anchor": "^0.6.1",
     "react-share": "^2.0.0",
+    "react-sizes": "^1.0.3",
     "react-social-login": "^3.4.2",
     "react-spinkit": "^3.0.0",
     "react-stickynode": "^1.4.1",

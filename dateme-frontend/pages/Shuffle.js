@@ -1,4 +1,4 @@
-import Link from "next/link";
+import {Link} from "../routes";
 import Head from "../components/head";
 import Nav from "../components/nav";
 import withRedux from "next-redux-wrapper";
@@ -135,6 +135,7 @@ class ShuffleProfile extends React.Component {
 
         <ProfileComponent
           profile={profile}
+          isMobile={isMobile}
           onScrollEnterAskButton={this.enableStickyHeader}
           onScrollLeaveAskButton={this.disableStickyHeader}
         />
@@ -256,7 +257,7 @@ class ShuffleGate extends React.Component {
           description="To unlock more recommendations, help matchmake other people or come back later."
           graphic={<MatchmakePreviewGraphic isMobile={this.props.isMobile} />}
           actions={
-            <Link href="/matchmake">
+            <Link route="/matchmake">
               <Button
                 size="large"
                 icon={<Icon type="matchmake" size="18px" color="white" />}

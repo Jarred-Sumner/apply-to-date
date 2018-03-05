@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180301063514) do
+ActiveRecord::Schema.define(version: 20180305014230) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -96,6 +96,27 @@ ActiveRecord::Schema.define(version: 20180301063514) do
     t.index ["status"], name: "index_matchmakes_on_status"
   end
 
+  create_table "notifications", force: :cascade do |t|
+    t.string "chrome_notification_uid"
+    t.integer "kind", default: 0, null: false
+    t.integer "status", default: 0, null: false
+    t.datetime "chrome_notification_sent_at"
+    t.datetime "email_sent_at"
+    t.datetime "expires_at"
+    t.datetime "read_at"
+    t.uuid "user_id"
+    t.string "notifiable_type"
+    t.string "notifiable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.jsonb "meta"
+    t.datetime "occurred_at"
+    t.index ["kind"], name: "index_notifications_on_kind"
+    t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable_type_and_notifiable_id"
+    t.index ["user_id", "status"], name: "index_notifications_on_user_id_and_status"
+    t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
+
   create_table "profiles", id: :citext, force: :cascade do |t|
     t.uuid "user_id"
     t.jsonb "sections", null: false
@@ -121,6 +142,7 @@ ActiveRecord::Schema.define(version: 20180301063514) do
     t.string "sex"
     t.boolean "appear_in_discover", default: true, null: false
     t.boolean "appear_in_matchmake", default: true, null: false
+    t.date "birthday"
     t.index ["appear_in_discover"], name: "index_profiles_on_appear_in_discover"
     t.index ["appear_in_matchmake"], name: "index_profiles_on_appear_in_matchmake"
     t.index ["featured"], name: "index_profiles_on_featured"
@@ -130,6 +152,16 @@ ActiveRecord::Schema.define(version: 20180301063514) do
     t.index ["latitude", "longitude"], name: "index_profiles_on_latitude_and_longitude"
     t.index ["sex"], name: "index_profiles_on_sex"
     t.index ["user_id"], name: "index_profiles_on_user_id"
+  end
+
+  create_table "reports", force: :cascade do |t|
+    t.uuid "user_id"
+    t.string "reportable_type"
+    t.string "reportable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reportable_type", "reportable_id"], name: "index_reports_on_reportable_type_and_reportable_id"
+    t.index ["user_id"], name: "index_reports_on_user_id"
   end
 
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -152,6 +184,8 @@ ActiveRecord::Schema.define(version: 20180301063514) do
     t.datetime "last_shuffled_at"
     t.integer "shuffled_session_count", default: 0, null: false
     t.integer "shuffle_status", default: 0, null: false
+    t.integer "unread_notifications_count", default: 0, null: false
+    t.integer "notifications_count", default: 0, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["remember_me_token"], name: "index_users_on_remember_me_token"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token"
@@ -179,7 +213,9 @@ ActiveRecord::Schema.define(version: 20180301063514) do
   add_foreign_key "matchmake_ratings", "users"
   add_foreign_key "matchmakes", "profiles", column: "left_profile_id"
   add_foreign_key "matchmakes", "profiles", column: "right_profile_id"
+  add_foreign_key "notifications", "users"
   add_foreign_key "profiles", "users"
+  add_foreign_key "reports", "users"
   add_foreign_key "verified_networks", "applications"
   add_foreign_key "verified_networks", "external_authentications"
   add_foreign_key "verified_networks", "profiles"

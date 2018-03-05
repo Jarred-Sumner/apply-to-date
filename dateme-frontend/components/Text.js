@@ -6,7 +6,7 @@ const Text = ({
   className,
   children,
   size = "18px",
-  color = "rgba(0,0,0,.75);",
+  color = "rgba(0,0,0,.75)",
   componentType = "div",
   weight = "regular",
   lineHeight = "19px",
@@ -76,6 +76,10 @@ const Text = ({
         .Text--regular {
           font-weight: 400;
           line-height: 1.58;
+        }
+
+        .Text--medium {
+          font-weight: 500;
         }
 
         .Text--hugeTitle {
@@ -337,7 +341,13 @@ export default ({ type, children, ...otherProps }) => {
     );
   } else if (type === "muted") {
     return (
-      <Text {...otherProps} size="13px">
+      <Text {...otherProps} color="#B0B0B0" size="13px">
+        {children}
+      </Text>
+    );
+  } else if (type === "notification") {
+    return (
+      <Text {...otherProps} size="14px" lineHeight="19px">
         {children}
       </Text>
     );

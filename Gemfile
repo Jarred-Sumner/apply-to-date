@@ -34,6 +34,7 @@ gem 'capistrano3-unicorn'#, require: 'capistrano3/unicorn'
 gem 'capistrano-rvm'
 gem 'aws-sdk', '~> 2'
 gem 'sorcery'
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
