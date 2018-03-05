@@ -122,6 +122,7 @@ const DesktopProfile = ({ profile }) => (
         display: grid;
         grid-auto-flow: row;
         grid-row-gap: 42px;
+        align-content: flex-start;
         padding-top: 28px;
         padding-left: 77px;
         padding-right: 77px;
@@ -307,6 +308,7 @@ class MobileProfile extends React.Component {
           .Section {
             display: grid;
             grid-row-gap: 7px;
+            align-content: flex-start;
             width: 100%;
           }
 
