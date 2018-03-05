@@ -299,7 +299,7 @@ class CreateAccount extends React.Component {
                 name="phone"
                 value={phone}
                 onChange={this.setPhone}
-                placeholder="925 555 5555"
+                placeholder="e.g. 925 555 5555"
               />
 
               <PasswordFormField
