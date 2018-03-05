@@ -30,6 +30,7 @@ const Text = ({
     "Text--serif": font === "serif",
     "Text--paragraph": type === "paragraph",
     "Text--title": type === "title",
+    "Text--link": type === "link",
     "Text--wrap": wrap === true,
     "Text--noWrap": wrap === false,
     "Text--hoverable": hoverable === true,
@@ -146,6 +147,10 @@ const Text = ({
 
         .Text :global(strong) {
           font-weight: 700;
+        }
+
+        .Text--link:hover {
+          color: #000;
         }
       `}</style>
 

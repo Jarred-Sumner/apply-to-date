@@ -230,8 +230,8 @@ class Login extends React.Component {
 
           form {
             display: grid;
-            margin-top: 32px;
-            margin-bottom: 14px;
+            margin-top: 34px;
+            margin-bottom: 34px;
             grid-template-rows: 70px 70px 40px;
             grid-row-gap: 14px;
             flex-grow: 0;
