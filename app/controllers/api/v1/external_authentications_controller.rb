@@ -64,6 +64,10 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
             profile_id: auth_params[:profile_id]
           )
 
+          auth.update!(
+            user_id: current_user.id
+          )
+
           if auth_params[:from_social_link] == 'true'
             current_user.profile.update(
               social_links: current_user.profile.social_links.merge(
@@ -104,8 +108,13 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
           redirect_to_frontend("/#{current_application.profile_id}/apply",
             applicationId: current_application.id,
             email: current_application.email
-          
+
         )
+        elsif auth_params[:signIn] == 'true' && auth.get_user.present?
+          auto_login(auth.get_user, true)
+          redirect_to_frontend "/shuffle"
+        elsif auth_params[:signIn] == 'true' && auth.get_user.blank?
+          redirect_to_frontend "/sign-up/#{auth_hash.provider}/#{auth.id}"
         elsif auth.user.present?
           redirect_to_frontend "/#{auth.user.username}"
         elsif auth_params[:signUp] == 'true'

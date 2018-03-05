@@ -1,4 +1,4 @@
-import {Link} from "../routes";
+import { Link } from "../routes";
 import Head from "../components/head";
 import Nav from "../components/nav";
 import withRedux from "next-redux-wrapper";
@@ -25,6 +25,8 @@ import {
   buildMatchmakePath
 } from "../lib/routeHelpers";
 import { logEvent } from "../lib/analytics";
+import { BASE_AUTHORIZE_URL } from "../components/SocialLogin";
+import SocialLink from "../components/SocialLink";
 
 class Login extends React.Component {
   constructor(props) {
@@ -134,16 +136,88 @@ class Login extends React.Component {
             <Link route={"/forgot-password"}>
               <a>
                 <Text size="14px" type="link">
-                  Forgot your password?
+                  Forgot password?
                 </Text>
               </a>
             </Link>
+
+            <Text type="muted">|</Text>
+
+            <Link route={"/sign-up/verify"}>
+              <a>
+                <Text size="14px" type="link">
+                  Create an account
+                </Text>
+              </a>
+            </Link>
+          </div>
+
+          <div className="Divider">
+            <div className="DividerText">
+              <Text casing="uppercase" type="muted">
+                or
+              </Text>
+            </div>
+          </div>
+
+          <div className="SocialLogins">
+            <a href={`${BASE_AUTHORIZE_URL}/twitter?signIn=true`}>
+              <SocialLink
+                hoverable
+                active
+                provider="twitter"
+                width="42px"
+                height="42px"
+              />
+            </a>
+
+            <a href={`${BASE_AUTHORIZE_URL}/facebook?signIn=true`}>
+              <SocialLink
+                hoverable
+                active
+                provider="facebook"
+                width="42px"
+                height="42px"
+              />
+            </a>
+
+            <a href={`${BASE_AUTHORIZE_URL}/instagram?signIn=true`}>
+              <SocialLink
+                hoverable
+                active
+                provider="instagram"
+                width="42px"
+                height="42px"
+              />
+            </a>
           </div>
         </article>
         <style jsx>{`
           article {
             margin-top: 6rem;
             margin-bottom: 3rem;
+          }
+
+          .Divider {
+            display: flex;
+            align-items: center;
+          }
+
+          .DividerText {
+            margin-top: 34px;
+            margin-bottom: 34px;
+            padding-left: 14px;
+            padding-right: 14px;
+          }
+
+          .Divider:after,
+          .Divider:before {
+            flex: 1;
+            display: flex;
+            content: "";
+            background-color: #f0f2f7;
+            height: 1px;
+            width: 100%;
           }
 
           main {
@@ -165,6 +239,11 @@ class Login extends React.Component {
 
           .password-link {
             text-align: center;
+            display: grid;
+            justify-content: center;
+            align-content: center;
+            grid-auto-flow: column;
+            grid-column-gap: 7px;
           }
 
           footer {
@@ -172,6 +251,14 @@ class Login extends React.Component {
             flex-direction: column;
             text-align: center;
             flex-grow: 0;
+          }
+
+          .SocialLogins {
+            display: grid;
+            justify-content: center;
+            align-content: center;
+            grid-template-columns: auto auto auto;
+            grid-column-gap: 42px;
           }
         `}</style>
       </Page>

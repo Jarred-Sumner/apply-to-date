@@ -195,6 +195,10 @@ class ExternalAuthentication < ApplicationRecord
     end
   end
 
+  def get_user
+    @get_user ||= user || verified_networks.where.not(profile_id: nil).first.try(:profile).try(:user)
+  end
+
   def self.update_from_omniauth(auth_hash)
     auth = ExternalAuthentication.where(
       uid: auth_hash.uid,
