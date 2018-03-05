@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180303233549) do
+ActiveRecord::Schema.define(version: 20180305014230) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -142,6 +142,7 @@ ActiveRecord::Schema.define(version: 20180303233549) do
     t.string "sex"
     t.boolean "appear_in_discover", default: true, null: false
     t.boolean "appear_in_matchmake", default: true, null: false
+    t.date "birthday"
     t.index ["appear_in_discover"], name: "index_profiles_on_appear_in_discover"
     t.index ["appear_in_matchmake"], name: "index_profiles_on_appear_in_matchmake"
     t.index ["featured"], name: "index_profiles_on_featured"

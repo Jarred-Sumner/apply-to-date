@@ -66,7 +66,7 @@ class ExternalAuthentication < ApplicationRecord
     graph = facebook_graph_api(token)
 
     graph.batch do |batch_api|
-      batch_api.get_object('me', {:fields => [:name, :email, :id, :location]})
+      batch_api.get_object('me', {:fields => [:name, :email, :id, :location, :birthday]})
     end
   end
 
