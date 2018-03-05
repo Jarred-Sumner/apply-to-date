@@ -86,7 +86,7 @@ const buildExternalAuthentications = ({ application = {}, url }) => {
 
 class CreateApplication extends React.Component {
   static async getInitialProps({ query, store, req, isServer }) {
-    const profileResponse = await getProfile(query.id);
+    const profileResponse = await getProfile(decodeURI(query.id));
     store.dispatch(updateEntities(profileResponse.body));
 
     if (query.applicationId) {
@@ -95,6 +95,10 @@ class CreateApplication extends React.Component {
       );
       store.dispatch(updateEntities(applicationResponse.body));
     }
+
+    return {
+      profileId: _.get(profileResponse, "body.data.id")
+    };
   }
 
   getDefaultValues = (props, state) => {
@@ -617,7 +621,7 @@ const CreateApplicationWithStore = withRedux(
     const { id, applicationId } = _.get(props, "url.query", {});
 
     return {
-      profile: state.profile[decodeURI(id)],
+      profile: state.profile[props.profileId || id],
       application: state.application[applicationId]
     };
   },
