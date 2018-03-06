@@ -14,6 +14,7 @@ import { logEvent } from "../lib/analytics";
 import NotificationRow from "./ProfileMenu/NotificationRow";
 import { withRouter } from "next/router";
 import { buildImgSrcSet } from "../lib/imgUri";
+import Thumbnail from "./Thumbnail";
 
 class _ProfileMenu extends React.Component {
   constructor(props) {
@@ -101,6 +102,40 @@ class _ProfileMenu extends React.Component {
 
         {this.state.isOpen && (
           <div className="NotificationsList">
+            <div className="Rows">
+              <Link route={`/${profile.id}`}>
+                <a>
+                  <div className="UserPhoto">
+                    <Thumbnail
+                      url={_.first(profile.photos)}
+                      size="42px"
+                      remoteSize={32}
+                      circle
+                    />
+                  </div>
+                  <div className="UserName">
+                    <Text
+                      font="sans-serif"
+                      lineHeight="19px"
+                      weight="semiBold"
+                      size="14px"
+                      color="#000"
+                    >
+                      {profile.name}
+                    </Text>
+                    <Text
+                      font="sans-serif"
+                      lineHeight="19px"
+                      size="14px"
+                      color="#000"
+                    >
+                      @{profile.id}
+                    </Text>
+                  </div>
+                </a>
+              </Link>
+            </div>
+
             <div className="NotificationsListHeader">
               <Text type="label">Notifications</Text>
             </div>
@@ -123,6 +158,30 @@ class _ProfileMenu extends React.Component {
         )}
 
         <style jsx>{`
+          .Rows a {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 7px 14px;
+          }
+
+          .Rows .UserPhoto {
+            width: 42px;
+            height: 42px;
+            margin-right: 14px;
+          }
+
+          .Rows a .UserName {
+            display: flex;
+            flex-direction: column;
+          }
+
+          .Rows a:hover {
+            background-color: #f9f9f9;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+          }
+
           .Photo {
             height: 34px;
             width: 34px;
