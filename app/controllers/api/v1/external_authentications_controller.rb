@@ -29,7 +29,15 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
       return render_error(message: "Something went wrong while trying to verify your account")
     end
 
+    if logged_in?
+      @external_authentication.user_id = current_user.id
+    end
+
     @external_authentication.save!
+
+    if logged_in? && !current_user.profile.verified_networks.where(external_authentication_id: @external_authentication.id).exists?
+      VerifiedNetwork.create!(profile_id: current_user.profile.id, external_authentication_id: @external_authentication.id)
+    end
 
     render_external_authentication(@external_authentication)
   rescue Koala::Facebook::OAuthTokenRequestError => e

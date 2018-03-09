@@ -119,7 +119,9 @@ class ExternalAuthentication < ApplicationRecord
       uid: profile["id"],
       name: profile["name"],
       email: profile["email"],
-      location: profile["location"].present? ? profile["location"]["name"] : nil
+      location: profile["location"].present? ? profile["location"]["name"] : nil,
+      sex: profile["gender"],
+      birthday: profile["birthday"]
     }
   end
 

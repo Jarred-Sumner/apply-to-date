@@ -1,8 +1,12 @@
 class Api::V1::RatingsController < Api::V1::ApplicationController
+  before_action :require_login
 
   def index
-    status = String(params[:status])
-    status = Application.approval_statuses[:submitted] unless Application.approval_statuses[status].present?
+    status = String(params[:status]).split(",")
+
+    unless status.all? { |current_status| Application.approval_statuses[current_status].present? }
+      status = Application.approval_statuses[:submitted]
+    end
 
     count = current_user
       .profile
