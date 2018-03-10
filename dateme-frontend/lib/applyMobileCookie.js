@@ -7,4 +7,12 @@ export const applyMobileCookie = () => {
   }
 };
 
+export const hasMobileAppInstalled = () => {
+  if (typeof document !== "undefined") {
+    return document.cookie.includes("has_app_installed");
+  } else {
+    return false;
+  }
+};
+
 export default applyMobileCookie;

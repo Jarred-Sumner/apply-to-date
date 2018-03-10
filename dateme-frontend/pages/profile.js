@@ -24,13 +24,18 @@ import PhotoGroup from "../components/PhotoGroup";
 import Typed from "react-typed";
 import withLogin from "../lib/withLogin";
 import { Router } from "../routes";
-import { buildProfileURL, buildEditProfileURL } from "../lib/routeHelpers";
+import {
+  buildProfileURL,
+  buildEditProfileURL,
+  buildMobileViewProfileURL
+} from "../lib/routeHelpers";
 import { getMobileDetect } from "../lib/Mobile";
 import Subheader from "../components/Subheader";
 import { animateScroll } from "react-scroll";
 import Linkify from "react-linkify";
 import ProfileComponent from "../components/Profile";
 import { logEvent } from "../lib/analytics";
+import { hasMobileAppInstalled } from "../lib/applyMobileCookie";
 
 class Profile extends React.Component {
   static async getInitialProps({ query, store, req, isServer }) {
@@ -67,6 +72,14 @@ class Profile extends React.Component {
       }
 
       profile = profileResponse.body.data;
+
+      if (hasMobileAppInstalled() && this.isMobile) {
+        window.location.href = buildMobileViewProfileURL(profile.id);
+      }
+    } else {
+      if (hasMobileAppInstalled() && this.isMobile) {
+        window.location.href = buildMobileViewProfileURL(this.props.profileId);
+      }
     }
 
     logEvent("View Profile", {

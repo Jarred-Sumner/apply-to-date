@@ -4,7 +4,7 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
   def create
     @applying_to_profile = Profile.find(params[:profile_id])
 
-    if current_user.present? && current_user.can_auto_apply?
+    if current_user.present?
       profile = current_user.profile
       existing_application = Application.where(profile_id: params[:profile_id]).where("applicant_id = ? OR email = ?", current_user.id, current_user.email).first
       if existing_application

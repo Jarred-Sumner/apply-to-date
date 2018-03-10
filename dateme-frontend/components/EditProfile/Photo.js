@@ -197,7 +197,7 @@ export default class Photo extends React.Component {
 
   render() {
     const { status, file, url } = this.state;
-    const { size } = this.props;
+    const { size, remoteSize } = this.props;
 
     return (
       <div className="container">
@@ -214,6 +214,7 @@ export default class Photo extends React.Component {
                 onRemove={this.handleDeletePhoto}
                 url={url}
                 isLast
+                remoteSize={remoteSize}
                 size={size}
               />
             ) : (

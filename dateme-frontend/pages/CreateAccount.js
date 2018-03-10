@@ -29,7 +29,11 @@ import Page from "../components/Page";
 import Checkbox from "../components/Checkbox";
 import LoginGate from "../components/LoginGate";
 import withLogin from "../lib/withLogin";
-import { buildEditProfileURL } from "../lib/routeHelpers";
+import {
+  buildEditProfileURL,
+  buildMobileLoginURL,
+  buildMobileEditPagePath
+} from "../lib/routeHelpers";
 import { logEvent } from "../lib/analytics";
 import moment from "moment";
 
@@ -192,7 +196,18 @@ class CreateAccount extends React.Component {
       }
     })
       .then(response => {
-        Router.push(buildEditProfileURL(username));
+        if (_.get(this, "props.url.query.mobileRedirect", null) === "true") {
+          window.location.href = buildMobileLoginURL({
+            username,
+            password,
+            autologin: "true",
+            skipCookie: "true",
+            redirectTo: buildMobileEditPagePath()
+          });
+        } else {
+          Router.push(buildEditProfileURL(username));
+        }
+
         logEvent("Create Account", {
           providers: [_.get(this, "props.externalAccount.provider")],
           sex,

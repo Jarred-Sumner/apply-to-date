@@ -49,7 +49,7 @@ class Api::V1::ApplicationController < ActionController::Base
 
   def apply_mobile_cookie
     set_mobile_cookie
-    redirect_to_frontend("/shuffle", {}, true, true)
+    redirect_to_frontend("shuffle", {}, true, true)
   end
 
 end
