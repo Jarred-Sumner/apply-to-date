@@ -36,6 +36,8 @@ Rails.application.routes.draw do
       resources :notifications, only: [:index, :update]
       post '/reports/:reportable_type/:reportable_id' => 'reports#create'
       get '/reports/:reportable_type/:reportable_id' => 'reports#show'
+
+      get '/apply-mobile-cookie' => 'application#apply_mobile_cookie'
     end
   end
 

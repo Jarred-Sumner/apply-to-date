@@ -113,10 +113,11 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
         profile.update!(recommended_contact_method: String(update_params[:recommended_contact_method]))
       end
 
-      if !update_params[:social_links].nil?
+      if !params[:profile][:social_links].nil?
         social_links = ExternalAuthentication.update_social_links(
-          update_params[:social_links]
+          params[:profile][:social_links].to_unsafe_h
         )
+
         profile.update!(social_links: social_links)
       end
 

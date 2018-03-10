@@ -21,7 +21,7 @@ class Api::V1::RatingsController < Api::V1::ApplicationController
       .includes(:external_authentications)
       .order("created_at DESC")
       .where(status: status)
-      .limit([Integer(params[:limit] || 25), 25].min)
+      .limit([Integer(params[:limit] || 100), 100].min)
       .offset([Integer(params[:offset] || 0), 0].max)
 
       render json: ReviewApplicationSerializer.new(applications, {

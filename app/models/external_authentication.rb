@@ -12,6 +12,14 @@ class ExternalAuthentication < ApplicationRecord
     @@facebook_oauth ||= Koala::Facebook::OAuth.new( Rails.application.secrets[:facebook_key], Rails.application.secrets[:facebook_secret])
   end
 
+  def self.initialize_from_twitter_credentials(access_token: nil, access_token_secret: nil)
+    external_authentication = ExternalAuthentication.new(access_token: access_token, access_token_secret: access_token_secret, provider: 'twitter')
+
+    external_authentication.update!(ExternalAuthentication.build_from_twitter_user(external_authentication.twitter.user))
+
+    external_authentication
+  end
+
   ALLOWED_SOCIAL_LINKS = [
     'twitter',
     'medium',
@@ -125,6 +133,28 @@ class ExternalAuthentication < ApplicationRecord
     }
   end
 
+  def self.build_from_twitter_user(user)
+    {
+      uid: user.id,
+      name: user.name,
+      email: user.email,
+      username: user.screen_name,
+      location: user.location,
+      raw_info: user.to_h,
+      info: {
+        :nickname => user.screen_name,
+        :name => user.name,
+        :email => user.email,
+        :location => user.location,
+        :description => user.description,
+        :urls => {
+          'Website' => user.url.to_s,
+          'Twitter' => "https://twitter.com/#{user.screen_name}",
+        }
+      }
+    }
+  end
+
   def self.update_social_links(social_links = {})
     ExternalAuthentication::ALLOWED_SOCIAL_LINKS.map do |key|
       [
@@ -146,7 +176,10 @@ class ExternalAuthentication < ApplicationRecord
 
     if provider == 'twitter'
       if url.include? "twitter.com/"
-        return ExternalAuthentication.normalize_social_link(url.split("twitter.com/").last, provider)
+        username = url.split("twitter.com/").last
+        username = "@#{username}" if !username.starts_with?("@") && username.present?
+
+        return ExternalAuthentication.normalize_social_link(username, provider)
       elsif url.starts_with? "@"
         return "https://twitter.com/#{url}"
       else
@@ -154,9 +187,14 @@ class ExternalAuthentication < ApplicationRecord
       end
     elsif provider == 'medium'
       if url.include? "medium.com/"
-        return ExternalAuthentication.normalize_social_link(url.split("medium.com/").last, provider)
+        username = url.split("medium.com/").last
+        username = "@#{username}" if !username.starts_with?("@") && username.present?
+
+        return ExternalAuthentication.normalize_social_link(username, provider)
       elsif url.starts_with? "@"
         return "https://medium.com/#{url}"
+      elsif url.present?
+        return "https://medium.com/@#{url}"
       else
         return nil
       end
@@ -170,7 +208,10 @@ class ExternalAuthentication < ApplicationRecord
       end
     elsif provider == 'instagram'
       if url.include? "instagram.com/"
-        return ExternalAuthentication.normalize_social_link(url.split("instagram.com/").last, provider)
+        username = url.split("instagram.com/").last
+        username = "@#{username}" if !username.starts_with?("@") && username.present?
+
+        return ExternalAuthentication.normalize_social_link(username, provider)
       else
         return "https://www.instagram.com/#{url}"
       end
@@ -241,7 +282,7 @@ class ExternalAuthentication < ApplicationRecord
     social_links = {}
 
     if provider == 'twitter'
-      social_links[provider] = info['urls']['Twitter']
+      social_links[provider] = "https://twitter.com/#{username}"
     elsif provider == 'facebook'
       social_links[provider] = "https://www.facebook.com/app_scoped_user_id/#{uid}"
     elsif provider == 'instagram'

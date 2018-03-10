@@ -1,12 +1,13 @@
 class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationController
   before_action :require_login, only: :index
+  after_action :set_mobile_cookie, only: :create, if: :is_mobile?
 
   def index
     render json: ExternalAuthenticationSerializer.new(current_user.external_authentications).serializable_hash
   end
 
   def show
-    auth = ExternalAuthentication.find_by!(user: nil, id: params[:id])
+    auth = ExternalAuthentication.where("user_id = ? OR user_id IS NULL", current_user.try(:id)).find(params[:id])
     render_external_authentication(auth)
   end
 
@@ -22,9 +23,7 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
 
       @external_authentication = ExternalAuthentication.initialize_from_facebook_credentials(credentials)
     elsif claim_params[:provider] == 'twitter'
-    elsif claim_params[:provider] == 'instagram'
-    elsif claim_params[:provider] == 'phone'
-      @external_authentication = ExternalAuthentication.create!(username: claim_params[:access_token], access_token: claim_params[:access_token], provider: 'phone')
+      @external_authentication = ExternalAuthentication.initialize_from_twitter_credentials(access_token: params[:access_token], access_token_secret: params[:access_token_secret])
     else
       return render_error(message: "Something went wrong while trying to verify your account")
     end
@@ -66,7 +65,7 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
           end
 
           current_application.save!
-        elsif auth_params[:profile_id].present? && current_user.profile.try(:id) == auth_params[:profile_id]
+        elsif auth_params[:profile_id].present? && current_user.profile.try(:id) == auth_params[:profile_id] && !is_mobile?
           VerifiedNetwork.create!(
             external_authentication_id: auth.id,
             profile_id: auth_params[:profile_id]
@@ -92,6 +91,10 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
 
         if auth_params[:redirect_path].present?
           opts = {}
+
+          if is_mobile?
+            opts[:e] = auth.id
+          end
 
           if auth_params[:redirect_path].include?("/apply")
             opts[auth.provider] = auth.id
@@ -126,7 +129,11 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
         elsif auth.user.present?
           redirect_to_frontend "/#{auth.user.username}"
         elsif auth_params[:signUp] == 'true'
-          redirect_to_frontend "/sign-up/#{auth_hash.provider}/#{auth.id}"
+          if auth_params[:mobileRedirect] == 'true'
+            redirect_to_frontend "/sign-up/#{auth_hash.provider}/#{auth.id}?mobileRedirect=true"
+          else
+            redirect_to_frontend "/sign-up/#{auth_hash.provider}/#{auth.id}"
+          end
         end
       end
     else
@@ -168,5 +175,13 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
 
   def claim_params
     params.permit(:access_token, :expiration, :provider, :application_email, :profile_id)
+  end
+
+  def redirect_to_frontend(path, params = {}, merge = true)
+    super(path, params, merge, is_mobile?)
+  end
+
+  def is_mobile?
+    auth_params[:is_mobile].present?
   end
 end

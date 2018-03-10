@@ -13,11 +13,35 @@ import Router from "next/router";
 import classNames from "classnames";
 import Icon from "../components/Icon";
 import Page from "../components/Page";
-
+import qs from "qs";
 import { BASE_AUTHORIZE_URL } from "../components/SocialLogin";
 import withLogin from "../lib/withLogin";
+import { applyMobileCookie } from "../lib/applyMobileCookie";
 
 class VerifyAccount extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      fromMobile: false
+    };
+  }
+
+  buildRoute = provider => {
+    if (this.state.fromMobile) {
+      return `${BASE_AUTHORIZE_URL}/${provider}?signUp=true&mobileRedirect=true`;
+    } else {
+      return `${BASE_AUTHORIZE_URL}/${provider}?signUp=true`;
+    }
+  };
+
+  componentDidMount() {
+    if (_.get(this.props, "url.query.mobile") === "true") {
+      applyMobileCookie();
+      this.setState({ fromMobile: true });
+    }
+  }
+
   render() {
     const email = _.get(this.props, "url.query.email");
 
@@ -39,7 +63,7 @@ class VerifyAccount extends React.Component {
               <Button
                 fill
                 icon={<Icon type="instagram" color="white" />}
-                href={`${BASE_AUTHORIZE_URL}/instagram?signUp=true`}
+                href={this.buildRoute("instagram")}
                 color="instagram"
               >
                 Instagram
@@ -47,7 +71,7 @@ class VerifyAccount extends React.Component {
               <Button
                 fill
                 icon={<Icon type="facebook" color="white" />}
-                href={`${BASE_AUTHORIZE_URL}/facebook?signUp=true`}
+                href={this.buildRoute("facebook")}
                 color="facebook"
               >
                 Facebook
@@ -55,7 +79,7 @@ class VerifyAccount extends React.Component {
               <Button
                 fill
                 icon={<Icon type="twitter" color="white" />}
-                href={`${BASE_AUTHORIZE_URL}/twitter?signUp=true`}
+                href={this.buildRoute("twitter")}
                 color="twitter"
               >
                 Twitter
@@ -63,9 +87,10 @@ class VerifyAccount extends React.Component {
             </div>
 
             <Link
-              route={`/sign-up?${
-                email ? "email=" + encodeURIComponent(email) : ""
-              }`}
+              route={`/sign-up?${qs.stringify({
+                email: this.props.url.query.email,
+                mobileRedirect: this.state.fromMobile || undefined
+              })}`}
             >
               <a>
                 <Text underline size="14px" align="center">
