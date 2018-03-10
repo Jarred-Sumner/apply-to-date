@@ -12,6 +12,9 @@ class User < ApplicationRecord
   scope :real, lambda { where.not("email ~~ ANY('{#{PROBABLY_FAKE_ACCOUNTS.map { |email| "%#{email}%"}.join(",")}}')") }
   has_many :notifications
 
+  has_many :block_users, class_name: 'BlockUser', foreign_key: 'blocked_by_id'
+  has_many :blocked_users, through: :block_users
+
   validates :password, length: { minimum: 3 }, if: -> { new_record? || changes[:crypted_password] }
   validates :password, confirmation: true, if: -> { new_record? || changes[:crypted_password] }
   validates :password_confirmation, presence: true, if: -> { new_record? || changes[:crypted_password] }
@@ -24,6 +27,11 @@ class User < ApplicationRecord
   SHUFFLE_BATCH_SIZE_FLOOR = 3.freeze
   SHUFFLE_COOLDOWN_CEILING = 24.hours.freeze
   SHUFFLE_COOLDOWN_FLOOR = 1.hours.freeze
+
+  def blocked?(user_id)
+    return false if user_id.blank?
+    block_users.where(blocked_user_id: user_id).exists?
+  end
 
   def self.matchmake_reset_offset
     floor = User::SHUFFLE_MATCHMAKE_RESET_COUNT

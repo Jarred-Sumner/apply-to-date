@@ -37,6 +37,9 @@ Rails.application.routes.draw do
       post '/reports/:reportable_type/:reportable_id' => 'reports#create'
       get '/reports/:reportable_type/:reportable_id' => 'reports#show'
 
+      post '/blocks' => 'blocks#create'
+      get '/blocks/:profile_id' => 'blocks#show'
+
       get '/apply-mobile-cookie' => 'application#apply_mobile_cookie'
     end
   end

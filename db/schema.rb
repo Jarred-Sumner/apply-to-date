@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180305035045) do
+ActiveRecord::Schema.define(version: 20180310220123) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,15 @@ ActiveRecord::Schema.define(version: 20180305035045) do
     t.index ["profile_id"], name: "index_applications_on_profile_id"
     t.index ["status"], name: "index_applications_on_status"
     t.index ["user_id"], name: "index_applications_on_user_id"
+  end
+
+  create_table "block_users", force: :cascade do |t|
+    t.uuid "blocked_user_id", null: false
+    t.uuid "blocked_by_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["blocked_by_id"], name: "index_block_users_on_blocked_by_id"
+    t.index ["blocked_user_id"], name: "index_block_users_on_blocked_user_id"
   end
 
   create_table "external_authentications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -209,6 +218,8 @@ ActiveRecord::Schema.define(version: 20180305035045) do
   add_foreign_key "applications", "profiles"
   add_foreign_key "applications", "users"
   add_foreign_key "applications", "users", column: "applicant_id"
+  add_foreign_key "block_users", "users", column: "blocked_by_id"
+  add_foreign_key "block_users", "users", column: "blocked_user_id"
   add_foreign_key "external_authentications", "applications"
   add_foreign_key "external_authentications", "users"
   add_foreign_key "matchmake_ratings", "matchmakes"

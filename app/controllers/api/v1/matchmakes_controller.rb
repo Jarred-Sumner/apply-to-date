@@ -7,8 +7,11 @@ class Api::V1::MatchmakesController < Api::V1::ApplicationController
 
     rated_pairs = Matchmake.joins(:matchmake_ratings).where(matchmake_ratings: { user_id: current_user.id }).pluck(:left_profile_id, :right_profile_id)
 
+    exclude_ids = BlockUser.where(blocked_by_id: current_user.id).pluck(:blocked_user_id)
+    exclude_ids.push(current_user.id)
+
     left_profile, right_profile = Matchmake.build_left_right(
-      exclude_ids: [current_user.id],
+      exclude_ids: exclude_ids,
       exclude_pairs: rated_pairs,
       sex: sex,
       interested_in_sexes: interested_in_sexes

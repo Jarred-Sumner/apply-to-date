@@ -30,7 +30,7 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
       create_application_from_guest
     end
 
-    if !applying_to_profile.could_be_interested_in?(@application)
+    if !applying_to_profile.could_be_interested_in?(@application) || applying_to_profile.user.blocked?(@application.applicant_id)
       application.update(status: Application.statuses[:filtered])
     elsif @should_send_email
       ApplicationsMailer.confirmed(@application.id).deliver_later

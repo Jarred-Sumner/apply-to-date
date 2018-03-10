@@ -24,13 +24,17 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
   end
 
   def shuffle
-    exclude_list = Array(params[:exclude])
+    exclude_profile_list = Array(params[:exclude])
       .concat(Application.where(applicant_id: current_user.id).pluck(:profile_id))
-      .concat([current_user.id])
+
+    exclude_user_list = [current_user.id]
+      .concat(BlockUser.where(blocked_by_id: current_user.id).pluck(:blocked_user_id))
+      .concat(BlockUser.where(blocked_user_id: current_user.id).pluck(:blocked_by_id))
 
     profile = Profile
       .discoverable
-      .where.not(id: exclude_list)
+      .where.not(id: exclude_profile_list)
+      .where.not(user_id: exclude_user_list)
       .compatible_with(current_user.profile)
       .filled_out
       .to_a

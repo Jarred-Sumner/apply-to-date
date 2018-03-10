@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  blocked_user: one
+  blocked_by: one
+
+two:
+  blocked_user: two
+  blocked_by: two

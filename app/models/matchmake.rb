@@ -29,18 +29,24 @@ class Matchmake < ApplicationRecord
   end
 
   def notify!
-    ActiveRecord::Base.transaction do
-      update!(status: Matchmake.statuses[:emailed])
-      UsersMailer.suggestion(id, left_profile.user_id).deliver_later
-      UsersMailer.suggestion(id, right_profile.user_id).deliver_later
+    if left_profile.user.blocked?(right_profile.user_id) || right_profile.user.blocked?(left_profile.user_id)
+      update!(status: Matchmake.statuses[:automatically_rejected])
+      Rails.logger.info "[MATCHMAKING] Automatically rejecting blocked matchmake: #{id}"
+    else
+      ActiveRecord::Base.transaction do
+        update!(status: Matchmake.statuses[:emailed])
+        UsersMailer.suggestion(id, left_profile.user_id).deliver_later
+        UsersMailer.suggestion(id, right_profile.user_id).deliver_later
+      end
     end
+
   end
 
   def calculate_rating
     matchmake_ratings.not_skipped.average(:score)
   end
 
-  enum status: [:pending, :rated, :emailed, :manually_rejected]
+  enum status: [:pending, :rated, :emailed, :manually_rejected, :automatically_rejected]
   validate :not_matching_self
 
   validates :left_profile_id, uniqueness: {scope: :right_profile_id}, presence: true
