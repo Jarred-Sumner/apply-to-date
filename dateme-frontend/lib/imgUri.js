@@ -1,4 +1,4 @@
-const IMAGE_HOST = "https://img.applytodate.com";
+const IMAGE_HOST = "https://i.applytodate.com";
 
 const DEFAULT_SIZES = [1.0, 1.5, 2, 3, 4.0];
 
