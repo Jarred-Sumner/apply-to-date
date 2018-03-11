@@ -125,11 +125,11 @@ class ExternalAuthentication < ApplicationRecord
   def self.build_from_facebook_profile(profile)
     {
       uid: profile["id"],
-      name: profile["name"],
+      name: profile["short_name"] || profile["name"],
       email: profile["email"],
       location: profile["location"].present? ? profile["location"]["name"] : nil,
       sex: profile["gender"],
-      birthday: profile["birthday"]
+      birthday: profile["birthday"].present? ? Date.strptime(profile["birthday"], "%m/%d/%Y") : nil,
     }
   end
 
