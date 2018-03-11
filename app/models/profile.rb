@@ -206,6 +206,15 @@ class Profile < ApplicationRecord
     links
   end
 
+  VALID_CONTACT_METHODS = [
+    'twitter',
+    'facebook',
+    'instagram',
+    'phone'
+  ]
+
+  validates :recommended_contact_method, inclusion: { in: VALID_CONTACT_METHODS }
+
   before_validation on: :create do
     self.sections = Profile.build_default_sections
     self.social_links ||= {}
@@ -215,6 +224,11 @@ class Profile < ApplicationRecord
     self.interested_in_women = user.interested_in_women? if interested_in_women.nil?
     self.interested_in_other = user.interested_in_other? if interested_in_other.nil?
     self.sex ||= user.sex
+
+    if !VALID_CONTACT_METHODS.include?(self.recommended_contact_method)
+      self.recommended_contact_method = 'phone'
+    end
+
   end
 
 end
