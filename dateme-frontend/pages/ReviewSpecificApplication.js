@@ -20,6 +20,7 @@ import LoginGate from "../components/LoginGate";
 import ReviewApplicationContainer from "../components/ReviewApplicationContainer";
 import withLogin from "../lib/withLogin";
 import { logEvent } from "../lib/analytics";
+import { buildMobileApplicationURL } from "../lib/routeHelpers";
 
 class ReviewSpecificApplication extends React.PureComponent {
   constructor(props) {
@@ -92,6 +93,7 @@ class ReviewSpecificApplication extends React.PureComponent {
         currentUser={this.props.currentUser}
         onYes={this.handleYes}
         onNo={this.handleNo}
+        mobileURL={buildMobileApplicationURL(application.id)}
         isLoading={isLoadingApplication}
         isRating={isRating}
         isMobile={this.props.isMobile}

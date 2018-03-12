@@ -41,6 +41,26 @@ export const buildMobileViewProfileURL = profileId => {
   return `${MOBILE_APP_BASE_URI}p/${profileId}`;
 };
 
+export const buildMobileMatchmakeURL = () => {
+  return `${MOBILE_APP_BASE_URI}matchmake`;
+};
+
+export const buildMobileEditPageURL = () => {
+  return `${MOBILE_APP_BASE_URI}${buildMobileEditPagePath()}`;
+};
+
+export const buildMobileShuffleURL = () => {
+  return `${MOBILE_APP_BASE_URI}shuffle`;
+};
+
+export const buildMobileApplicationsURL = () => {
+  return `${MOBILE_APP_BASE_URI}applications`;
+};
+
+export const buildMobileApplicationURL = applicationId => {
+  return `${MOBILE_APP_BASE_URI}application/${applicationId}`;
+};
+
 export const buildMobileEditPageURL = () => {
   return `${MOBILE_APP_BASE_URI}${buildMobileEditPagePath()}`;
 };

@@ -103,7 +103,16 @@ const Head = props => (
 
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-      <meta name="apple-itunes-app" content="app-id=1357419725" />
+      {props.mobileURL ? (
+        <meta
+          name="apple-itunes-app"
+          content={`app-id=1357419725, app-argument=${encodeURIComponent(
+            props.mobileURL
+          )}`}
+        />
+      ) : (
+        <meta name="apple-itunes-app" content="app-id=1357419725" />
+      )}
 
       <link
         key="Open Sans"

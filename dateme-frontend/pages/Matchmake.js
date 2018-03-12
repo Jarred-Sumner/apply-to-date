@@ -42,7 +42,8 @@ import {
   buildEditProfileURL,
   buildProfileURL,
   buildProfileShareURL,
-  updateQuery
+  updateQuery,
+  buildMobileMatchmakeURL
 } from "../lib/routeHelpers";
 import { getMobileDetect } from "../lib/Mobile";
 import Subheader from "../components/Subheader";
@@ -365,7 +366,12 @@ class MatchmakeProfile extends React.Component {
       const rightUrl = buildProfileShareURL(rightProfile.id);
       return (
         <Page size="100%">
-          <Head noScroll disableGoogle title={`Matchmaker | Apply to Date`} />
+          <Head
+            mobileURL={buildMobileMatchmakeURL()}
+            noScroll
+            disableGoogle
+            title={`Matchmaker | Apply to Date`}
+          />
           <div className="Container">
             <div className="ProfileContainer ProfileContainer--left">
               <div className="ProfileContainer-header">

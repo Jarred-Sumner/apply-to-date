@@ -1,4 +1,4 @@
-import {Link} from "../routes";
+import { Link } from "../routes";
 import Head from "../components/head";
 import Nav from "../components/nav";
 import withRedux from "next-redux-wrapper";
@@ -34,7 +34,8 @@ import { Router } from "../routes";
 import {
   buildProfileURL,
   buildEditProfileURL,
-  buildProfileShareURL
+  buildProfileShareURL,
+  buildMobileShuffleURL
 } from "../lib/routeHelpers";
 import { getMobileDetect } from "../lib/Mobile";
 import Subheader from "../components/Subheader";
@@ -125,6 +126,7 @@ class ShuffleProfile extends React.Component {
       >
         <Head
           disableGoogle
+          mobileURL={buildMobileShuffleURL()}
           title={`${profile.name} Apply to Date`}
           description={profile.tagline}
           favicon={_.sample(profile.photos)}

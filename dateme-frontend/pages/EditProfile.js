@@ -37,7 +37,8 @@ import CopyURLForm from "../components/CopyURLForm";
 import {
   buildEditProfileURL,
   buildProfileURL,
-  buildProfileShareURL
+  buildProfileShareURL,
+  buildMobileEditPageURL
 } from "../lib/routeHelpers";
 import ProfileProgress, {
   PROFILE_SELECTORS
@@ -418,7 +419,10 @@ class EditProfile extends React.Component {
           )
         }}
       >
-        <Head title="Edit Page | Apply to Date" />
+        <Head
+          mobileURL={buildMobileEditPageURL()}
+          title="Edit Page | Apply to Date"
+        />
         <section
           className={classNames(
             "Section Section--center Section--title",

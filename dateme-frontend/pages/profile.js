@@ -167,6 +167,7 @@ class Profile extends React.Component {
       >
         <Head
           disableGoogle
+          mobileURL={buildMobileViewProfileURL(profile.id)}
           url={buildProfileURL(profile.id)}
           title={`Apply to date ${profile.name || ""}`}
           description={profile.tagline}
