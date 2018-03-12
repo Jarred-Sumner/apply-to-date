@@ -212,7 +212,7 @@ class ShuffleGate extends React.Component {
     });
 
     if (profileId) {
-      incrementProfileViewCount(profileId).then();
+      incrementProfileViewCount(profileId).then(_.noop, _.noop);
     }
 
     window.scrollTo(0, 0);

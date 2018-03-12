@@ -79,7 +79,7 @@ class Profile extends React.Component {
       profile = profileResponse.body.data;
     }
 
-    incrementProfileViewCount(profile.id).then();
+    incrementProfileViewCount(profile.id).then(_.noop, _.noop);
 
     logEvent("View Profile", {
       profile: profile.id,
