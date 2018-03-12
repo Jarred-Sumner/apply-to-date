@@ -106,9 +106,7 @@ const Head = props => (
       {props.mobileURL ? (
         <meta
           name="apple-itunes-app"
-          content={`app-id=1357419725, app-argument=${encodeURIComponent(
-            props.mobileURL
-          )}`}
+          content={`app-id=1357419725, app-argument=${props.mobileURL}`}
         />
       ) : (
         <meta name="apple-itunes-app" content="app-id=1357419725" />
