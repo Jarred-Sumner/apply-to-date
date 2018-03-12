@@ -141,6 +141,7 @@ export default _.memoize((Component, options = {}) => {
         currentUser,
         currentUserId,
         userAgent,
+        head,
         ...otherProps
       } = this.props;
 
@@ -163,7 +164,22 @@ export default _.memoize((Component, options = {}) => {
           </SizesProvider>
         );
       } else {
-        return null;
+        if (options.head) {
+          return (
+            <React.Fragment>
+              <SizesProvider config={getSizesFallback(userAgent)}>
+                <div />
+              </SizesProvider>
+              {options.head}
+            </React.Fragment>
+          );
+        } else {
+          return (
+            <SizesProvider config={getSizesFallback(userAgent)}>
+              <div />
+            </SizesProvider>
+          );
+        }
       }
     }
   }

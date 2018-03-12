@@ -679,7 +679,15 @@ const ProfileWithStore = withRedux(initStore, null, null, null, {
   pure: false
 })(
   LoginGate(ProfileGate, {
-    loginRequired: true
+    loginRequired: true,
+    head: (
+      <Head
+        mobileURL={buildMobileMatchmakeURL()}
+        noScroll
+        disableGoogle
+        title={`Matchmaker | Apply to Date`}
+      />
+    )
   })
 );
 

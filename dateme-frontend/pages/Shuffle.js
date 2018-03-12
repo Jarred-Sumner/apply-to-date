@@ -287,6 +287,17 @@ const ProfileWithStore = withRedux(
   {
     pure: false
   }
-)(LoginGate(ShuffleGate, { loginRequired: true }));
+)(
+  LoginGate(ShuffleGate, {
+    loginRequired: true,
+    head: (
+      <Head
+        disableGoogle
+        mobileURL={buildMobileShuffleURL()}
+        title={`Shuffle | Apply to Date`}
+      />
+    )
+  })
+);
 
 export default ProfileWithStore;

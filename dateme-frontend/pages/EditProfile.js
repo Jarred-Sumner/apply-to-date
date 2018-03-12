@@ -740,7 +740,15 @@ class ProfileGate extends React.Component {
 
   render() {
     if (!this.props.profile || this.state.isLoadingProfile) {
-      return <Page isLoading />;
+      return (
+        <div>
+          <Head
+            mobileURL={buildMobileEditPageURL()}
+            title="Edit Page | Apply to Date"
+          />
+          <Page isLoading />
+        </div>
+      );
     } else {
       return <EditProfile {...this.props} />;
     }
@@ -770,7 +778,13 @@ const ProfileWithStore = withRedux(
 )(
   withLogin(
     LoginGate(ProfileGate, {
-      loginRequired: true
+      loginRequired: true,
+      head: (
+        <Head
+          mobileURL={buildMobileEditPageURL()}
+          title="Edit Page | Apply to Date"
+        />
+      )
     })
   )
 );

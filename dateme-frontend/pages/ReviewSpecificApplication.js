@@ -110,6 +110,16 @@ const ReviewApplicationWithStore = withRedux(
   {
     pure: false
   }
-)(LoginGate(ReviewSpecificApplication, { loginRequired: true }));
+)(
+  LoginGate(ReviewSpecificApplication, {
+    loginRequired: true,
+    head: (
+      <Head
+        mobileURL={buildMobileApplicationsURL()}
+        title="Applications | Apply to Date"
+      />
+    )
+  })
+);
 
 export default ReviewApplicationWithStore;
