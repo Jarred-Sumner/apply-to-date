@@ -45,10 +45,6 @@ export const buildMobileMatchmakeURL = () => {
   return `${MOBILE_APP_BASE_URI}matchmake`;
 };
 
-export const buildMobileEditPageURL = () => {
-  return `${MOBILE_APP_BASE_URI}${buildMobileEditPagePath()}`;
-};
-
 export const buildMobileShuffleURL = () => {
   return `${MOBILE_APP_BASE_URI}shuffle`;
 };
