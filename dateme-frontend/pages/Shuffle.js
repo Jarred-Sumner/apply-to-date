@@ -7,7 +7,8 @@ import {
   getProfile,
   getCurrentUser,
   withCookies,
-  shuffleProfile
+  shuffleProfile,
+  incrementProfileViewCount
 } from "../api";
 import { bindActionCreators } from "redux";
 import Header from "../components/Header";
@@ -182,13 +183,11 @@ class ShuffleGate extends React.Component {
   loadProfile = async props => {
     const { currentUser = {} } = props;
 
-    const excludedProfiles = await Storage.shuffledProfiles();
     const profileResponse = await shuffleProfile({
       interested_in_men: _.get(currentUser, "interestedInMen", true),
       interested_in_women: _.get(currentUser, "interestedInWomen", true),
       interested_in_other: _.get(currentUser, "interestedInOther", true),
-      sex: _.get(currentUser, "sex", undefined),
-      exclude: Array.from(excludedProfiles)
+      sex: _.get(currentUser, "sex", undefined)
     });
 
     this.props.updateEntities(profileResponse.body);
@@ -212,13 +211,14 @@ class ShuffleGate extends React.Component {
         : SHUFFLE_PAGE_STATUS.loaded
     });
 
+    if (profileId) {
+      incrementProfileViewCount(profileId).then();
+    }
+
     window.scrollTo(0, 0);
   };
 
   handleLoadNextPage = async () => {
-    const { profileId } = this.state;
-    await Storage.addShuffledProfile(profileId);
-
     this.setState({
       status: SHUFFLE_PAGE_STATUS.loading,
       profileId: null

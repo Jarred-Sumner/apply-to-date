@@ -8,6 +8,9 @@ class User < ApplicationRecord
   has_many :external_authentications, through: :profile
   has_many :sent_applications, class_name: 'Application', foreign_key: 'applicant_id'
   has_many :received_applications, class_name: 'Application', foreign_key: 'user_id'
+  has_many :users_who_viewed, class_name: 'ProfileView', foreign_key: 'user_id'
+  has_many :viewed_users, class_name: 'ProfileView', foreign_key: 'viewed_by_user_id'
+
   scope :fake, lambda { where("email ~~ ANY('{#{PROBABLY_FAKE_ACCOUNTS.map { |email| "%#{email}%"}.join(",")}}')") }
   scope :real, lambda { where.not("email ~~ ANY('{#{PROBABLY_FAKE_ACCOUNTS.map { |email| "%#{email}%"}.join(",")}}')") }
   has_many :notifications

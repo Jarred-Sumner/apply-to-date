@@ -30,6 +30,13 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
     exclude_user_list = [current_user.id]
       .concat(BlockUser.where(blocked_by_id: current_user.id).pluck(:blocked_user_id))
       .concat(BlockUser.where(blocked_user_id: current_user.id).pluck(:blocked_by_id))
+      .concat(Application.where(user_id: current_user.id).where("applicant_id IS NOT NULL").pluck(:applicant_id))
+
+    viewed_counts = current_user
+      .viewed_users
+      .pluck(:profile_id, :view_count, :last_viewed_at)
+      .map { |result| [result[0], [result[1], result[2]] ] }
+      .to_h
 
     profile = Profile
       .discoverable
@@ -38,7 +45,11 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
       .compatible_with(current_user.profile)
       .filled_out
       .to_a
-      .sample
+      .shuffle
+      .sort_by do |profile|
+        viewed_counts[profile.id] || [0, 0]
+      end
+      .first
 
     if profile.present?
       current_user.increment_shuffle_session!

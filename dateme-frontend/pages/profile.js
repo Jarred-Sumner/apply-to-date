@@ -3,7 +3,12 @@ import Head from "../components/head";
 import Nav from "../components/nav";
 import withRedux from "next-redux-wrapper";
 import { updateEntities, setCurrentUser, initStore } from "../redux/store";
-import { getProfile, getCurrentUser, withCookies } from "../api";
+import {
+  getProfile,
+  getCurrentUser,
+  withCookies,
+  incrementProfileViewCount
+} from "../api";
 import { bindActionCreators } from "redux";
 import Header from "../components/Header";
 import LoginGate from "../components/LoginGate";
@@ -72,15 +77,9 @@ class Profile extends React.Component {
       }
 
       profile = profileResponse.body.data;
-
-      if (hasMobileAppInstalled() && this.isMobile) {
-        window.location.href = buildMobileViewProfileURL(profile.id);
-      }
-    } else {
-      if (hasMobileAppInstalled() && this.isMobile) {
-        window.location.href = buildMobileViewProfileURL(this.props.profileId);
-      }
     }
+
+    incrementProfileViewCount(profile.id).then();
 
     logEvent("View Profile", {
       profile: profile.id,

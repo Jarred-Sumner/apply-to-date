@@ -201,6 +201,10 @@ export const getReviewApplication = id => {
   return get(`/ratings/${id}`);
 };
 
+export const incrementProfileViewCount = id => {
+  return post(`/zzz`, { profile_id: id });
+};
+
 export const rateApplication = (id, status) => {
   return put(`/ratings/${id}`, { status });
 };

@@ -6,6 +6,8 @@ class Profile < ApplicationRecord
   has_many :notifications, as: :notifiable
   has_many :external_authentications, through: :verified_networks
   has_many :reports, as: :reportable
+  has_many :views, class_name: 'ProfileView', foreign_key: 'profile_id'
+  has_many :viewed, class_name: 'ProfileView', foreign_key: 'viewed_by_profile_id'
 
   DEFAULT_SECTIONS = [
     'introduction',

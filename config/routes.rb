@@ -41,6 +41,7 @@ Rails.application.routes.draw do
       get '/blocks/:profile_id' => 'blocks#show'
 
       get '/apply-mobile-cookie' => 'application#apply_mobile_cookie'
+      post '/zzz' => 'profile_views#create'
     end
   end
 
