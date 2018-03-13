@@ -26,9 +26,9 @@ class User < ApplicationRecord
   validates :username, uniqueness: true, presence: true, format: { with: /[a-zA-Z0-9\-\_\.]*/ }
   validates :sex, presence: true, inclusion: { in: VALID_SEXES }
   SHUFFLE_MATCHMAKE_RESET_COUNT = 12.freeze
-  SHUFFLE_BATCH_SIZE_CEILING = 6.freeze
-  SHUFFLE_BATCH_SIZE_FLOOR = 3.freeze
-  SHUFFLE_COOLDOWN_CEILING = 24.hours.freeze
+  SHUFFLE_BATCH_SIZE_CEILING = 8.freeze
+  SHUFFLE_BATCH_SIZE_FLOOR = 5.freeze
+  SHUFFLE_COOLDOWN_CEILING = 12.hours.freeze
   SHUFFLE_COOLDOWN_FLOOR = 1.hours.freeze
 
   def blocked?(user_id)

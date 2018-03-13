@@ -11,6 +11,7 @@ import {
   incrementProfileViewCount
 } from "../api";
 import { bindActionCreators } from "redux";
+import moment from "moment";
 import Header from "../components/Header";
 import LoginGate, { LOGIN_STATUSES } from "../components/LoginGate";
 import Text from "../components/Text";
@@ -48,6 +49,7 @@ import Storage from "../lib/Storage";
 import SharableSocialLink from "../components/SharableSocialLink";
 import EmptyPage from "../components/EmptyPage";
 import { logEvent } from "../lib/analytics";
+import Countdown from "react-countdown-now";
 
 const SHUFFLE_PAGE_STATUS = {
   loading: "loading",
@@ -198,6 +200,12 @@ class ShuffleGate extends React.Component {
       false
     );
 
+    const shuffleDisabledUntil = _.get(
+      profileResponse,
+      "body.meta.shuffle_disabled_until",
+      null
+    );
+
     if (isShuffleCooldown) {
       logEvent("Shuffle Cooldown");
     } else {
@@ -206,6 +214,7 @@ class ShuffleGate extends React.Component {
 
     this.setState({
       profileId: isShuffleCooldown ? null : profileId,
+      shuffleDisabledUntil: shuffleDisabledUntil ? shuffleDisabledUntil : null,
       status: isShuffleCooldown
         ? SHUFFLE_PAGE_STATUS.cooldown
         : SHUFFLE_PAGE_STATUS.loaded
@@ -255,6 +264,22 @@ class ShuffleGate extends React.Component {
     } else {
       return (
         <EmptyPage
+          subtitle={
+            this.state.shuffleDisabledUntil ? (
+              <Countdown
+                renderer={({ days, hours, minutes, seconds }) => (
+                  <Text type="title">
+                    <span>{hours}</span>
+                    :
+                    <span>{minutes}</span>
+                    :
+                    <span>{seconds}</span>
+                  </Text>
+                )}
+                date={moment(this.state.shuffleDisabledUntil).toDate()}
+              />
+            ) : null
+          }
           title="That's it for now!"
           description="To unlock more recommendations, help matchmake other people or come back later."
           graphic={<MatchmakePreviewGraphic isMobile={this.props.isMobile} />}

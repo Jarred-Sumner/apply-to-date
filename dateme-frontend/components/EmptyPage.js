@@ -10,7 +10,8 @@ class EmptyPage extends React.Component {
       graphic,
       actions,
       footerText,
-      headTitle
+      headTitle,
+      subtitle
     } = this.props;
 
     return (
@@ -20,6 +21,7 @@ class EmptyPage extends React.Component {
           <div className="Title">
             <Text type="PageTitle">{title}</Text>
           </div>
+          {subtitle && <div className="Subtitle">{subtitle}</div>}
           {description && (
             <div className="Description">
               <Text size="18px" lineHeight="24px" align="center">

@@ -58,7 +58,7 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
     if current_user.shuffle_allowed?
       render_profile(profile, false, {shuffle_disabled: false})
     else
-      render_profile(current_user.profile, false, {shuffle_disabled: true})
+      render_profile(current_user.profile, false, {shuffle_disabled: true, shuffle_disabled_until: current_user.shuffle_disabled_until})
     end
   end
 
