@@ -3,6 +3,7 @@ import Nav from "../components/nav";
 import withRedux from "next-redux-wrapper";
 import Header from "../components/Header";
 import Button from "../components/Button";
+import Head from "../components/head";
 import FormField from "../components/FormField";
 import Text from "../components/Text";
 import _ from "lodash";
@@ -20,7 +21,10 @@ import LoginGate from "../components/LoginGate";
 import ReviewApplicationContainer from "../components/ReviewApplicationContainer";
 import withLogin from "../lib/withLogin";
 import { logEvent } from "../lib/analytics";
-import { buildMobileApplicationURL } from "../lib/routeHelpers";
+import {
+  buildMobileApplicationsURL,
+  buildMobileApplicationURL
+} from "../lib/routeHelpers";
 
 class ReviewSpecificApplication extends React.PureComponent {
   constructor(props) {
@@ -93,7 +97,7 @@ class ReviewSpecificApplication extends React.PureComponent {
         currentUser={this.props.currentUser}
         onYes={this.handleYes}
         onNo={this.handleNo}
-        mobileURL={buildMobileApplicationURL(application.id)}
+        mobileURL={buildMobileApplicationURL(_.get(application, "id"))}
         isLoading={isLoadingApplication}
         isRating={isRating}
         isMobile={this.props.isMobile}
@@ -102,14 +106,8 @@ class ReviewSpecificApplication extends React.PureComponent {
   }
 }
 
-const ReviewApplicationWithStore = withRedux(
-  initStore,
-  null,
-  dispatch => bindActionCreators({ setUnreadNotificationCount }, dispatch),
-  null,
-  {
-    pure: false
-  }
+const ReviewApplicationWithStore = withRedux(initStore, null, dispatch =>
+  bindActionCreators({ setUnreadNotificationCount }, dispatch)
 )(
   LoginGate(ReviewSpecificApplication, {
     loginRequired: true,
