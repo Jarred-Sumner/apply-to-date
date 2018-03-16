@@ -135,13 +135,40 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
         @application.social_links = @application.social_links.merge(auth.build_social_link_entry)
       end
 
+      photos = [@application.photos, current_user.try(:profile).try(:photos)].find(&:present?) || []
+
+      if photos.blank? && external_authentications.facebook.exists?
+        begin
+          facebook = external_authentications.facebook.first
+          facebook.get_facebook_photos.each do |photo_url|
+            upload = Upload.upload_from_url(photo_url)
+            photos.push(Upload.get_public_url(upload.public_url))
+          end
+        rescue => e
+          Raven.capture_exception(e)
+          Rails.logger.info e
+          Rails.logger.info "AUTO UPLOADING FROM FACEBOOK FAILED #{e.inspect} for application #{@application.inspect}"
+        end
+      end
+
+      if photos.blank? && external_authentications.with_photos.exists?
+        begin
+          upload = Upload.upload_from_url(ExternalAuthentication.build_default_photo_url(external_authentications))
+          photos.push(Upload.get_public_url(upload.public_url))
+        rescue => e
+          Raven.capture_exception(e)
+          Rails.logger.info e
+          Rails.logger.info "UPLOADING DEFAULT PHOTO FAILED #{e.inspect} for application #{@application.inspect}"
+        end
+      end
+
       sections = (params[:application][:sections] || {}).permit(Application::DEFAULT_SECTIONS)
 
       @application.update!(create_params.merge(
         email: email,
         status: Application.submission_statuses[create_params[:status]],
         sections: sections.present? ? sections : Application.build_default_sections,
-        photos: current_user.try(:profile).try(:photos) || [],
+        photos: photos,
         applicant_id: current_user.try(:id)
       ))
 

@@ -5,6 +5,7 @@ class ExternalAuthentication < ApplicationRecord
   has_many :applications, through: :verified_networks
 
   scope :facebook, lambda { where(provider: 'facebook') }
+  scope :with_photos, lambda { where(provider: PROVIDERS_WITH_PHOTOS) }
 
   FACEBOOK_NAME_REGEX = /^[a-z0-9\\.-]{5,50}$/
 
@@ -18,6 +19,19 @@ class ExternalAuthentication < ApplicationRecord
     external_authentication.update!(ExternalAuthentication.build_from_twitter_user(external_authentication.twitter.user))
 
     external_authentication
+  end
+
+  PROVIDERS_WITH_PHOTOS = [
+    'facebook',
+    'twitter',
+  ]
+
+  def self.build_default_photo_url(external_authentications)
+    if facebook = external_authentications.find_by(provider: 'facebook')
+      facebook.build_facebook_photo_url
+    elsif twitter = external_authentications.find_by(provider: 'twitter')
+      twitter.build_twitter_photo_url
+    end
   end
 
   ALLOWED_SOCIAL_LINKS = [

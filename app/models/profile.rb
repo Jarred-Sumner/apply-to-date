@@ -191,11 +191,7 @@ class Profile < ApplicationRecord
   end
 
   def build_default_photo_url
-    if facebook = external_authentications.find_by(provider: 'facebook')
-      facebook.build_facebook_photo_url
-    elsif twitter = external_authentications.find_by(provider: 'twitter')
-      twitter.build_twitter_photo_url
-    end
+    ExternalAuthentication.build_default_photo_url(external_authentications)
   end
 
   def all_social_networks
