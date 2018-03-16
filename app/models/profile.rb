@@ -6,8 +6,15 @@ class Profile < ApplicationRecord
   has_many :notifications, as: :notifiable
   has_many :external_authentications, through: :verified_networks
   has_many :reports, as: :reportable
+  has_many :date_event_applications
   has_many :views, class_name: 'ProfileView', foreign_key: 'profile_id'
   has_many :viewed, class_name: 'ProfileView', foreign_key: 'viewed_by_profile_id'
+
+  enum region: {
+    bay_area: 0,
+    boston: 1,
+    new_york: 2
+  }
 
   DEFAULT_SECTIONS = [
     'introduction',
@@ -162,6 +169,14 @@ class Profile < ApplicationRecord
 
   def recommended_external_authentication
     @recommended_external_authentication ||= external_authentications.where(provider: recommended_contact_method).order('created_at DESC').first
+  end
+
+  def contact_method_type
+    if contact_via_phone?
+      phone
+    else
+      recommended_external_authentication.try(:url)
+    end
   end
 
   def contact_method_value

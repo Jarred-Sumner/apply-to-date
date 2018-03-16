@@ -18,7 +18,7 @@ class Api::V1::RatingsController < Api::V1::ApplicationController
     applications = current_user
       .profile
       .applications
-      .includes(:external_authentications)
+      .includes(:external_authentications, :applicant_profile)
       .order("created_at DESC")
       .where(status: status)
       .limit([Integer(params[:limit] || 100), 100].min)
@@ -26,7 +26,8 @@ class Api::V1::RatingsController < Api::V1::ApplicationController
 
       render json: ReviewApplicationSerializer.new(applications, {
         include: [
-          :external_authentications
+          :external_authentications,
+          :applicant_profile
         ],
         meta: {
           total: count,
@@ -53,7 +54,8 @@ class Api::V1::RatingsController < Api::V1::ApplicationController
 
     render json: ReviewApplicationSerializer.new(application, {
       include: [
-          :external_authentications
+          :external_authentications,
+          :applicant_profile
       ],
       meta: {
         unread_notification_count: current_user.notifications.unread.count
@@ -65,12 +67,13 @@ class Api::V1::RatingsController < Api::V1::ApplicationController
     application = current_user
       .profile
       .applications
-      .includes(:external_authentications)
+      .includes(:external_authentications, :applicant_profile)
       .find(params[:id])
 
     render json: ReviewApplicationSerializer.new(application, {
       include: [
-          :external_authentications
+          :external_authentications,
+          :applicant_profile
       ],
     }).serializable_hash
   end

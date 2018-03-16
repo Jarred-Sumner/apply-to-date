@@ -6,6 +6,10 @@ class Api::V1::ApplicationController < ActionController::Base
     self.content_type = "application/vnd.api+json"
   end
 
+  def current_profile
+    @current_profile ||= current_user.try(:profile)
+  end
+
   def render_error(message: "Something went wrong. Please try again.", status: 400)
     render status: status, json: {
       object: 'error',

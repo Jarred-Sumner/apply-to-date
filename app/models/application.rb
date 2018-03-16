@@ -40,6 +40,7 @@ class Application < ApplicationRecord
   belongs_to :user
   belongs_to :profile, counter_cache: true
   belongs_to :applicant, class_name: 'User', foreign_key: 'applicant_id', optional: true
+  belongs_to :applicant_profile, class_name: 'Profile', foreign_key: 'applicant_profile_id', optional: true
 
   validates :sections, presence: true
   validates :email, presence: true, uniqueness: { scope: [:user_id] }
@@ -80,6 +81,10 @@ class Application < ApplicationRecord
   before_validation on: :create do
     self.user ||= profile.user
     self.sections = build_default_sections
+
+    if self.applicant.present?
+      self.applicant_profile = self.applicant.profile
+    end
   end
 
 end

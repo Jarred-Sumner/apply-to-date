@@ -17,6 +17,8 @@ class User < ApplicationRecord
 
   has_many :block_users, class_name: 'BlockUser', foreign_key: 'blocked_by_id'
   has_many :blocked_users, through: :block_users
+  has_many :blocked_by_users, through: :block_users, source: :blocked_by
+  has_many :date_event_applications, through: :profile
 
   validates :password, length: { minimum: 3 }, if: -> { new_record? || changes[:crypted_password] }
   validates :password, confirmation: true, if: -> { new_record? || changes[:crypted_password] }

@@ -34,6 +34,8 @@ Rails.application.routes.draw do
 
       resources :ratings
       resources :notifications, only: [:index, :update]
+      resources :date_events
+      resources :date_event_applications
       post '/reports/:reportable_type/:reportable_id' => 'reports#create'
       get '/reports/:reportable_type/:reportable_id' => 'reports#show'
 

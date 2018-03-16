@@ -36,7 +36,9 @@ ActiveRecord::Schema.define(version: 20180316025351) do
     t.string "sex"
     t.string "recommended_contact_method"
     t.string "phone"
+    t.citext "applicant_profile_id"
     t.index ["applicant_id"], name: "index_applications_on_applicant_id"
+    t.index ["applicant_profile_id"], name: "index_applications_on_applicant_profile_id"
     t.index ["email"], name: "index_applications_on_email"
     t.index ["profile_id"], name: "index_applications_on_profile_id"
     t.index ["status"], name: "index_applications_on_status"
@@ -278,6 +280,7 @@ ActiveRecord::Schema.define(version: 20180316025351) do
   end
 
   add_foreign_key "applications", "profiles"
+  add_foreign_key "applications", "profiles", column: "applicant_profile_id"
   add_foreign_key "applications", "users"
   add_foreign_key "applications", "users", column: "applicant_id"
   add_foreign_key "block_users", "users", column: "blocked_by_id"
