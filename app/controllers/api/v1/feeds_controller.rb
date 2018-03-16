@@ -66,7 +66,7 @@ class Api::V1::FeedsController < Api::V1::ApplicationController
         return render_error(message: "No #{params[:provider]} associated with #{profile_id} on Apply to Date")
       end
 
-      @external_authentication = profile.external_authentications.find_by!(provider: params[:provider])
+      @external_authentication = profile.external_authentications.find_by(provider: params[:provider])
     end
 
     @external_authentication
