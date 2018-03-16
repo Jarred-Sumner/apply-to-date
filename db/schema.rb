@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180312210215) do
+ActiveRecord::Schema.define(version: 20180316015754) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,51 @@ ActiveRecord::Schema.define(version: 20180312210215) do
     t.datetime "updated_at", null: false
     t.index ["blocked_by_id"], name: "index_block_users_on_blocked_by_id"
     t.index ["blocked_user_id"], name: "index_block_users_on_blocked_user_id"
+  end
+
+  create_table "date_event_applications", force: :cascade do |t|
+    t.citext "profile_id"
+    t.bigint "date_event_id"
+    t.integer "confirmation_status", default: 0, null: false
+    t.integer "approval_status", default: 0, null: false
+    t.jsonb "social_links", default: {}, null: false
+    t.jsonb "sections", default: {}, null: false
+    t.string "name", default: "", null: false
+    t.string "email", null: false
+    t.string "photos", default: [], null: false, array: true
+    t.string "phone"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "sex"
+    t.string "recommended_contact_method"
+    t.index ["approval_status"], name: "index_date_event_applications_on_approval_status"
+    t.index ["confirmation_status"], name: "index_date_event_applications_on_confirmation_status"
+    t.index ["date_event_id"], name: "index_date_event_applications_on_date_event_id"
+    t.index ["email"], name: "index_date_event_applications_on_email"
+    t.index ["profile_id"], name: "index_date_event_applications_on_profile_id"
+  end
+
+  create_table "date_events", force: :cascade do |t|
+    t.citext "profile_id"
+    t.uuid "user_id"
+    t.integer "status", default: 0, null: false
+    t.string "summary"
+    t.date "occurs_on_day"
+    t.time "starts_at"
+    t.string "starts_at_timezone"
+    t.time "ends_at"
+    t.string "ends_at_timezone"
+    t.string "location"
+    t.decimal "latitude"
+    t.decimal "longitude"
+    t.integer "region"
+    t.integer "category", default: 0, null: false
+    t.string "title"
+    t.jsonb "sections", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["profile_id"], name: "index_date_events_on_profile_id"
+    t.index ["user_id"], name: "index_date_events_on_user_id"
   end
 
   create_table "external_authentications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -170,6 +215,7 @@ ActiveRecord::Schema.define(version: 20180312210215) do
     t.boolean "appear_in_discover", default: true, null: false
     t.boolean "appear_in_matchmake", default: true, null: false
     t.date "birthday"
+    t.integer "region"
     t.index ["appear_in_discover"], name: "index_profiles_on_appear_in_discover"
     t.index ["appear_in_matchmake"], name: "index_profiles_on_appear_in_matchmake"
     t.index ["featured"], name: "index_profiles_on_featured"
@@ -236,6 +282,10 @@ ActiveRecord::Schema.define(version: 20180312210215) do
   add_foreign_key "applications", "users", column: "applicant_id"
   add_foreign_key "block_users", "users", column: "blocked_by_id"
   add_foreign_key "block_users", "users", column: "blocked_user_id"
+  add_foreign_key "date_event_applications", "date_events"
+  add_foreign_key "date_event_applications", "profiles"
+  add_foreign_key "date_events", "profiles"
+  add_foreign_key "date_events", "users"
   add_foreign_key "external_authentications", "applications"
   add_foreign_key "external_authentications", "users"
   add_foreign_key "matchmake_ratings", "matchmakes"
