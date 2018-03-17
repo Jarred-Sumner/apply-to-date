@@ -3,10 +3,16 @@ class Api::V1::FeedsController < Api::V1::ApplicationController
 
   def show
     if params[:provider] == 'instagram'
-      render json: {
+      body = {
         data: external_authentication.instagram.recent_posts[:data],
         profile: external_authentication.instagram.profile[:data]
       }
+
+      if body[:data].blank? || body[:profile].blank?
+        return not_found
+      end
+
+      render json: body
     elsif params[:provider] == 'twitter'
       timeline = external_authentication.twitter.user_timeline(@external_authentication.username)
       if tweet = timeline.try(:first)
@@ -24,7 +30,11 @@ class Api::V1::FeedsController < Api::V1::ApplicationController
     end
   rescue JSON::ParserError => e
     render_error(message: "Failed to get posts")
-  rescue ActiveRecord::RecordNotFound => e
+  rescue ActiveRecord::RecordNotFound, Twitter::Error::Unauthorized => e
+    not_found
+  end
+
+  private def not_found
     render_error(message: "No #{params[:provider]} associated with #{params[:profile_id] || 'application'} on Apply to Date")
   end
 
