@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  applicant: one
+  sections: 
+  confirmation_status: 1
+  approval_status: 1
+
+two:
+  applicant: two
+  sections: 
+  confirmation_status: 1
+  approval_status: 1

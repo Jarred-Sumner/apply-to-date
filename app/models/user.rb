@@ -49,6 +49,14 @@ class User < ApplicationRecord
     BLACKLISTED_USERNAMES.include?(username)
   end
 
+  def latitude
+    profile.latitude
+  end
+
+  def longitude
+    profile.longitude
+  end
+
   def should_reset_shuffle_session?
     if (self.shuffle_disabled_until.present? && self.shuffle_disabled_until.past?) || last_shuffled_at.nil?
       return true
