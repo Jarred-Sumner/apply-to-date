@@ -31,6 +31,12 @@ class Api::V1::DateEventApplicationsController < Api::V1::ApplicationController
     render json: DateEventApplicationSerializer.new(@date_event_application).serializable_hash
   end
 
+  def index_event
+    date_event = DateEvent.includes(:date_event_applications).find(params[:date_event_id])
+    render json: DateEventApplicationSerializer.new(date_event.date_event_applications.limit(100), {
+      }).serializable_hash
+  end
+
   def index
     if params[:date_event_ids].present?
       @date_event_applications = current_user.date_event_applications.where(date_event_id: Array(params[:date_event_ids]))
@@ -61,7 +67,7 @@ class Api::V1::DateEventApplicationsController < Api::V1::ApplicationController
     elsif params[:confirmation_status] == 'declined' && date_event_application.approved?
       ActiveRecord::Base.transaction do
         date_event_application.declined!
-        if date_event_applciation.date_event.can_still_choose_someone_else?
+        if date_event_applciation.date_event.can_still_choose_someone?
           date_event_application.date_event.scheduled!
         end
       end

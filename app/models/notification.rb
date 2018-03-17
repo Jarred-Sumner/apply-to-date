@@ -7,6 +7,7 @@ class Notification < ApplicationRecord
     new_application: 0,
     approved_application: 1,
     profile_viewed: 2,
+    new_date_event_application: 3,
   }
 
   def enqueue_email!
@@ -39,7 +40,12 @@ class Notification < ApplicationRecord
       {
         name: notifiable.name,
         thumbnail: notifiable.photos.try(:first)
-    }
+      }
+    elsif new_date_event_application?
+      {
+        name: notifiable.name,
+        thumbnail: notifiable.photos.try(:first)
+      }
     else
       {}
     end

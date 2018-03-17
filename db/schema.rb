@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(version: 20180316025351) do
     t.integer "status", default: 0, null: false
     t.string "summary"
     t.date "occurs_on_day"
+    t.string "occurs_on_day_timezone"
     t.time "starts_at"
     t.string "starts_at_timezone"
     t.time "ends_at"
@@ -89,7 +90,7 @@ ActiveRecord::Schema.define(version: 20180316025351) do
     t.string "location"
     t.decimal "latitude"
     t.decimal "longitude"
-    t.integer "region"
+    t.integer "region", default: 0, null: false
     t.integer "category", default: 0, null: false
     t.string "title"
     t.jsonb "sections", default: {}, null: false

@@ -45,7 +45,7 @@ class DateEvent < ApplicationRecord
     end
   end
 
-  def can_still_choose_someone_else?
+  def can_still_choose_someone?
     occurs_on_day >= time_zone.today && !hidden?
   end
 

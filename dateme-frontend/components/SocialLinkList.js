@@ -30,7 +30,12 @@ export default ({ socialLinks, phone, spacing = "32px", centered = true }) => {
         socialLinks,
         (url, provider) =>
           url && (
-            <SocialLink provider={provider} url={url} key={provider} active />
+            <SocialLink
+              provider={provider}
+              url={url.replace("@", "")}
+              key={provider}
+              active
+            />
           )
       )}
       <style jsx>{`

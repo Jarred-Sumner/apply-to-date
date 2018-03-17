@@ -223,7 +223,6 @@ class ExternalAuthentication < ApplicationRecord
     elsif provider == 'instagram'
       if url.include? "instagram.com/"
         username = url.split("instagram.com/").last
-        username = "@#{username}" if !username.starts_with?("@") && username.present?
 
         return ExternalAuthentication.normalize_social_link(username, provider)
       else
