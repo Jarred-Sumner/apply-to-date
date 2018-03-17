@@ -20,6 +20,8 @@ set :deploy_to, "/home/rails/rails_project"
 # Default value for :pty is false
 # set :pty, true
 
+set :sidekiq_config, "config/sidekiq.yml"
+
 # Default value for :linked_files is []
 append :linked_files, "config/secrets.yml.key"
 
