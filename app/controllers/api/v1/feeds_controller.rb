@@ -3,10 +3,12 @@ class Api::V1::FeedsController < Api::V1::ApplicationController
 
   def show
     if params[:provider] == 'instagram'
-      body = {
-        data: external_authentication.instagram.recent_posts[:data],
-        profile: external_authentication.instagram.profile[:data]
-      }
+      body = Rails.cache.fetch(cache_key, expires_in: 3.hours) do
+        {
+          data: external_authentication.instagram.recent_posts[:data],
+          profile: external_authentication.instagram.profile[:data]
+        }
+      end
 
       if body[:data].blank? || body[:profile].blank?
         return not_found
@@ -14,7 +16,10 @@ class Api::V1::FeedsController < Api::V1::ApplicationController
 
       render json: body
     elsif params[:provider] == 'twitter'
-      timeline = external_authentication.twitter.user_timeline(@external_authentication.username)
+      timeline = Rails.cache.fetch(cache_key, expires_in: 3.hours) do
+        external_authentication.twitter.user_timeline(@external_authentication.username)
+      end
+
       if tweet = timeline.try(:first)
         if tweet.user.protected?
           render_error(message: "No #{params[:provider]} associated with #{params[:profile_id] || 'application'} on Apply to Date")
@@ -30,7 +35,7 @@ class Api::V1::FeedsController < Api::V1::ApplicationController
     end
   rescue JSON::ParserError => e
     render_error(message: "Failed to get posts")
-  rescue ActiveRecord::RecordNotFound, Twitter::Error::Unauthorized => e
+  rescue Twitter::Error::Unauthorized => e
     not_found
   end
 
@@ -50,6 +55,8 @@ class Api::V1::FeedsController < Api::V1::ApplicationController
     if external_authentication.nil?
       render_error(message: "No #{params[:provider]} associated with #{params[:profile_id] || 'application'} on Apply to Date")
     end
+  rescue ActiveRecord::RecordNotFound
+    not_found
   end
 
   private def external_authentication
@@ -80,5 +87,9 @@ class Api::V1::FeedsController < Api::V1::ApplicationController
     end
 
     @external_authentication
+  end
+
+  private def cache_key
+    "feeds/#{params[:provider]}/#{external_authentication.id}-#{external_authentication.updated_at}"
   end
 end

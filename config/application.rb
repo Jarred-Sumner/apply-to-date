@@ -13,12 +13,15 @@ module Dateme
     config.autoload_paths << "#{Rails.root}/lib"
     config.autoload_paths << "#{Rails.root}/app/serializers"
     config.read_encrypted_secrets = true
-    
+
     config.action_mailer.delivery_method = :mailgun
     config.action_mailer.mailgun_settings = {
         api_key: Rails.application.secrets[:mailgun],
         domain: 'mail.applytodate.com'
     }
+
+    config.active_job.queue_adapter = :sidekiq
+    config.cache_store = :redis_store, "#{Rails.application.secrets[:redis_url]}/0/cache"
 
     Geokit::Geocoders::GoogleGeocoder.api_key = Rails.application.secrets[:google_maps_key]
 
