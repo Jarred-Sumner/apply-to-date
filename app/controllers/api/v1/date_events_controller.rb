@@ -65,16 +65,17 @@ class Api::V1::DateEventsController < Api::V1::ApplicationController
     }).serializable_hash
   end
 
-  def choose
+  def rate
     de_application = current_user
         .date_events
         .find(params[:id])
         .date_event_applications
         .find(params[:date_event_application_id])
 
-    if date_event.can_still_choose_someone?
-      if !de_application.approved?
+    if date_event.can_still_choose_someone? && DateEventApplication.approval_statuses[params[:approval_status]].present?
+      if params[:approval_status] == DateEventApplication.approval_statuses[:approved]
         de_application.approved!
+
         notification = Notification.create!(
           notifiable: de_application,
           user: de_application.applicant,
@@ -82,9 +83,11 @@ class Api::V1::DateEventsController < Api::V1::ApplicationController
         )
 
         notification.enqueue_email!
-
-        render json: DateEventApplicationSerializer.new(de_application).serializable_hash
+      elsif params[:approval_status] == DateEventApplication.approval_statuses[:rejected]
+        de_application.rejected!
       end
+
+      render json: DateEventApplicationSerializer.new(de_application).serializable_hash
     else
       return render_error(message: "This date is no longer available")
     end
@@ -103,7 +106,7 @@ class Api::V1::DateEventsController < Api::V1::ApplicationController
     end
 
     if params[:location].present?
-      date_event.location = date_event.location
+      date_event.location = params[:location]
     end
 
     if !params[:summary].nil?

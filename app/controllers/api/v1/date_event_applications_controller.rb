@@ -42,6 +42,10 @@ class Api::V1::DateEventApplicationsController < Api::V1::ApplicationController
       @date_event_applications = current_user.date_event_applications.where(date_event_id: Array(params[:date_event_ids]))
     elsif params[:approval_status] == 'approved'
       @date_event_applications = current_user.date_event_applications.approved.order("created_at DESC").limit(100)
+    else
+      @date_event_applications = DateEventApplication.joins(:date_event).where(
+        "(date_event_applications.profile_id = ?) OR date_events.profile_id = ?", current_profile.id, current_profile.id
+      ).order("date_event_applications.created_at DESC").limit(100)
     end
 
     render json: DateEventApplicationSerializer.new(@date_event_applications || [], {
@@ -81,7 +85,14 @@ class Api::V1::DateEventApplicationsController < Api::V1::ApplicationController
     return @date_event_application if @date_event_application
 
     if current_user.present?
-      @date_event_application = current_user.date_event_applications.find(params[:id])
+      @date_event_application = DateEventApplication
+        .joins(:date_event)
+        .where(
+          "date_event_applications.id = ? AND (date_event_applications.profile_id = ? OR date_events.profile_id = ?)",
+          params[:id],
+          current_profile.id,
+          current_profile.id
+        ).first!
     else
       @date_event_application = DateEventApplication.where(profile_id: nil).find(params[:id])
     end
