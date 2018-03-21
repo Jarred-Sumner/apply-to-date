@@ -56,4 +56,8 @@ class Api::V1::ApplicationController < ActionController::Base
     redirect_to_frontend("shuffle", {}, true, true)
   end
 
+  def current_device
+    @current_device ||= Device.find_by(uid: Device.normalize_from_headers(request.headers)[:uid])
+  end
+
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180316025351) do
+ActiveRecord::Schema.define(version: 20180321010507) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,8 +37,11 @@ ActiveRecord::Schema.define(version: 20180316025351) do
     t.string "recommended_contact_method"
     t.string "phone"
     t.citext "applicant_profile_id"
+    t.bigint "date_event_application_id"
+    t.integer "category"
     t.index ["applicant_id"], name: "index_applications_on_applicant_id"
     t.index ["applicant_profile_id"], name: "index_applications_on_applicant_profile_id"
+    t.index ["date_event_application_id"], name: "index_applications_on_date_event_application_id"
     t.index ["email"], name: "index_applications_on_email"
     t.index ["profile_id"], name: "index_applications_on_profile_id"
     t.index ["status"], name: "index_applications_on_status"
@@ -96,8 +99,28 @@ ActiveRecord::Schema.define(version: 20180316025351) do
     t.jsonb "sections", default: {}, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.citext "slug"
     t.index ["profile_id"], name: "index_date_events_on_profile_id"
+    t.index ["slug"], name: "index_date_events_on_slug"
     t.index ["user_id"], name: "index_date_events_on_user_id"
+  end
+
+  create_table "devices", force: :cascade do |t|
+    t.string "onesignal_uid"
+    t.string "uid", null: false
+    t.boolean "push_enabled", default: false, null: false
+    t.string "platform"
+    t.string "app_version"
+    t.string "timezone"
+    t.datetime "last_seen_at", null: false
+    t.string "platform_version"
+    t.uuid "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "push_token"
+    t.index ["onesignal_uid"], name: "index_devices_on_onesignal_uid", unique: true
+    t.index ["uid"], name: "index_devices_on_uid", unique: true
+    t.index ["user_id"], name: "index_devices_on_user_id"
   end
 
   create_table "external_authentications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -125,6 +148,18 @@ ActiveRecord::Schema.define(version: 20180316025351) do
     t.index ["provider"], name: "index_external_authentications_on_provider"
     t.index ["uid"], name: "index_external_authentications_on_uid"
     t.index ["user_id"], name: "index_external_authentications_on_user_id"
+  end
+
+  create_table "friendly_id_slugs", force: :cascade do |t|
+    t.string "slug", null: false
+    t.integer "sluggable_id", null: false
+    t.string "sluggable_type", limit: 50
+    t.string "scope"
+    t.datetime "created_at"
+    t.index ["slug", "sluggable_type", "scope"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope", unique: true
+    t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
+    t.index ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
+    t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
   end
 
   create_table "matchmake_ratings", force: :cascade do |t|
@@ -280,6 +315,7 @@ ActiveRecord::Schema.define(version: 20180316025351) do
     t.index ["profile_id"], name: "index_verified_networks_on_profile_id"
   end
 
+  add_foreign_key "applications", "date_event_applications"
   add_foreign_key "applications", "profiles"
   add_foreign_key "applications", "profiles", column: "applicant_profile_id"
   add_foreign_key "applications", "users"
@@ -290,6 +326,7 @@ ActiveRecord::Schema.define(version: 20180316025351) do
   add_foreign_key "date_event_applications", "profiles"
   add_foreign_key "date_events", "profiles"
   add_foreign_key "date_events", "users"
+  add_foreign_key "devices", "users"
   add_foreign_key "external_authentications", "applications"
   add_foreign_key "external_authentications", "users"
   add_foreign_key "matchmake_ratings", "matchmakes"

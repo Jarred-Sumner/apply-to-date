@@ -53,6 +53,7 @@ gem 'unicorn'
 
 gem 'pry-rails'
 gem 'pry-coolline'
+gem 'friendly_id', '~> 5.1.0' # Note: You MUST use 5.0.0 or greater for Rails 4.0+
 gem 'pry-awesome_print'
 gem 'omniauth'
 gem 'omniauth-twitter'

@@ -37,13 +37,32 @@ class Application < ApplicationRecord
     neutral: 4
   }
 
+  enum category: {
+    dine: 0,
+    lunch: 1,
+    formal: 2,
+    movie: 3,
+    comedy_show: 4,
+    concert: 5,
+    coffee: 6,
+    fitness: 7,
+    custom: -1,
+  }
+
   belongs_to :user
   belongs_to :profile, counter_cache: true
   belongs_to :applicant, class_name: 'User', foreign_key: 'applicant_id', optional: true
   belongs_to :applicant_profile, class_name: 'Profile', foreign_key: 'applicant_profile_id', optional: true
+  belongs_to :date_event_application, optional: true
 
+  def direct_application?
+    date_event_application_id.blank?
+  end
+
+  validates :date_event_application_id, uniqueness: { scope: :applicant_id, allow_nil: true }
   validates :sections, presence: true
-  validates :email, presence: true, uniqueness: { scope: [:user_id] }
+  validates :email, presence: true
+  validates :email, uniqueness: { scope: [:user_id] }, :if => :direct_application?
   validates :profile, presence: true
   validates :name, presence: true, :unless => :pending?
   validates :sex, presence: true, inclusion: { in: ['male', 'female', 'other'] }, unless: :pending?

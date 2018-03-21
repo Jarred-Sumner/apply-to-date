@@ -1,7 +1,41 @@
 class DateEvent < ApplicationRecord
+  extend FriendlyId
   belongs_to :profile
   belongs_to :user
   has_many :date_event_applications
+  friendly_id :build_slug, use: :scoped, :scope => :profile
+  has_many :notifications, as: :notifiable
+
+  LABELS_BY_CATEGORY = {
+    dine: "Dine",
+    lunch: "Lunch",
+    formal: "Formal",
+    movie: "Movie",
+    comedy_show: "Comedy show",
+    concert: "Concert",
+    coffee: "Coffee",
+    fitness: "Work out",
+    custom: ""
+  }.with_indifferent_access
+
+  def build_slug
+    [
+      :short_slug_label,
+      :medium_slug_label,
+    ]
+  end
+
+  def short_slug_label
+    "#{LABELS_BY_CATEGORY[category]} on #{occurs_on_day.strftime("%A")}"
+  end
+
+  def medium_slug_label
+    "#{LABELS_BY_CATEGORY[category]} on #{occurs_on_day.strftime("%A")} #{SecureRandom.urlsafe_base64(3)}"
+  end
+
+  def url
+    Api::V1::ApplicationController.build_frontend_uri("/#{profile_id}/#{slug}", {}).to_s
+  end
 
   REGION_CENTERS = {
     bay_area: [37.625281, -122.239741],

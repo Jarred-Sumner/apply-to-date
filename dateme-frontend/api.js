@@ -179,6 +179,13 @@ export const login = session => {
   });
 };
 
+export const updateDevice = ({ pushEnabled, onesignalUid }) => {
+  return post(`/devices`, {
+    push_enabled: pushEnabled,
+    onesignal_uid: onesignalUid
+  });
+};
+
 export const resetPassword = (token, password) => {
   return post(`/reset-password/${token}`, {
     password

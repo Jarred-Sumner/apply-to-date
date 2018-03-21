@@ -29,7 +29,7 @@ class Api::V1::DateEventsController < Api::V1::ApplicationController
         include: [:profile]
       }).serializable_hash
     elsif params[:id].present?
-      date_events = DateEvent.where(id: Array(params[:id]))
+      date_events = DateEvent.includes(:profile).where(id: Array(params[:id]))
 
       render json: DateEventSerializer.new(date_events, {
         include: [:profile]
@@ -66,28 +66,23 @@ class Api::V1::DateEventsController < Api::V1::ApplicationController
   end
 
   def rate
-    de_application = current_user
-        .date_events
-        .find(params[:id])
+    date_event = current_user
+    .date_events
+    .find(params[:date_event_id])
+    de_application = date_event
         .date_event_applications
         .find(params[:date_event_application_id])
 
     if date_event.can_still_choose_someone? && DateEventApplication.approval_statuses[params[:approval_status]].present?
-      if params[:approval_status] == DateEventApplication.approval_statuses[:approved]
+      if params[:approval_status] == 'approved'
         de_application.approved!
-
-        notification = Notification.create!(
-          notifiable: de_application,
-          user: de_application.applicant,
-          occured_at: DateTime.now,
-        )
-
-        notification.enqueue_email!
-      elsif params[:approval_status] == DateEventApplication.approval_statuses[:rejected]
+      elsif params[:approval_status] == 'rejected'
         de_application.rejected!
+      elsif params[:approval_status] == 'swap_date'
+        de_application.swap_date!(params[:category])
       end
 
-      render json: DateEventApplicationSerializer.new(de_application).serializable_hash
+      render json: DateEventApplicationSerializer.new(date_event.date_event_applications).serializable_hash
     else
       return render_error(message: "This date is no longer available")
     end
@@ -139,6 +134,14 @@ class Api::V1::DateEventsController < Api::V1::ApplicationController
         include: [:profile]
       }).serializable_hash
     end
+  end
+
+  def show_slug
+    date_event = DateEvent.where(profile_id: params[:profile_id]).friendly.find(params[:slug])
+
+    render json: DateEventSerializer.new(date_event, {
+      include: [:profile]
+    }).serializable_hash
   end
 
   private def create_params

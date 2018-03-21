@@ -10,6 +10,8 @@ class Profile < ApplicationRecord
   has_many :views, class_name: 'ProfileView', foreign_key: 'profile_id'
   has_many :viewed, class_name: 'ProfileView', foreign_key: 'viewed_by_profile_id'
 
+  MINIMUM_DISTANCE_TO_REGION = 100.0
+
   enum region: {
     bay_area: 0,
     boston: 1,
@@ -226,6 +228,27 @@ class Profile < ApplicationRecord
     'phone'
   ]
 
+  def distance_to_regions
+    DateEvent::REGION_CENTERS.map do |key, coords|
+      [key, distance_to(coords)]
+    end.to_h
+  end
+
+  def closest_region
+    distance_to_regions.min_by(&:last)
+  end
+
+  def default_region
+    return nil if latitude.blank? || longitude.blank?
+
+    region, distance = closest_region
+    if region.present? && distance < MINIMUM_DISTANCE_TO_REGION
+      self.region = region
+    else
+      nil
+    end
+  end
+
   validates :recommended_contact_method, inclusion: { in: VALID_CONTACT_METHODS }
 
   before_validation on: :create do
@@ -242,6 +265,7 @@ class Profile < ApplicationRecord
       self.recommended_contact_method = 'phone'
     end
 
+    self.region = default_region
   end
 
 end

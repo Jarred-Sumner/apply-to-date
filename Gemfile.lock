@@ -126,6 +126,8 @@ GEM
       multi_json (~> 1.12)
       oj (~> 3.3)
     ffi (1.9.18)
+    friendly_id (5.1.0)
+      activerecord (>= 4.0.0)
     geokit (1.11.0)
     geokit-rails (2.3.0)
       geokit (~> 1.5)
@@ -404,6 +406,7 @@ DEPENDENCIES
   capybara (~> 2.13)
   coffee-rails (~> 4.2)
   fast_jsonapi
+  friendly_id (~> 5.1.0)
   geokit-rails
   jbuilder (~> 2.5)
   koala

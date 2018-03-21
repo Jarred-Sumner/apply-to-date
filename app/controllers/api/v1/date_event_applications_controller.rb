@@ -21,6 +21,7 @@ class Api::V1::DateEventApplicationsController < Api::V1::ApplicationController
       @date_event_application.sex = current_profile.sex
       @date_event_application.recommended_contact_method = current_profile.recommended_contact_method
       @date_event_application.name = current_profile.name
+      @date_event_application.social_links = current_profile.social_links
       @date_event_application.sections = current_profile.sections
 
       @date_event_application.save!
@@ -71,7 +72,7 @@ class Api::V1::DateEventApplicationsController < Api::V1::ApplicationController
     elsif params[:confirmation_status] == 'declined' && date_event_application.approved?
       ActiveRecord::Base.transaction do
         date_event_application.declined!
-        if date_event_applciation.date_event.can_still_choose_someone?
+        if date_event_application.date_event.can_still_choose_someone?
           date_event_application.date_event.scheduled!
         end
       end

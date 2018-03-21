@@ -8,6 +8,8 @@ class Notification < ApplicationRecord
     approved_application: 1,
     profile_viewed: 2,
     new_date_event_application: 3,
+    please_rsvp_to_date_event: 4,
+    swapped_date_event: 5
   }
 
   def enqueue_email!
@@ -19,7 +21,8 @@ class Notification < ApplicationRecord
   enum status: {
     unread: 0,
     read: 1,
-    expired: 2
+    expired: 2,
+    dismissed: 3,
   }
 
   validates :status, presence: true

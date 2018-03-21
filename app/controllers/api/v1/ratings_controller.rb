@@ -46,7 +46,7 @@ class Api::V1::RatingsController < Api::V1::ApplicationController
 
     application.update!(status: status)
 
-    application.notifications.new_application.unread.update_all(status: Notification.statuses[:read])
+    application.notifications.new_application.unread.update_all(status: Notification.statuses[:dismissed])
 
     if status == Application.statuses[:approved]
       ApplicationsMailer.approved(application.id).deliver_later
