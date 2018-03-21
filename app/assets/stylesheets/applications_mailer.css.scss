@@ -2,6 +2,30 @@ body * {
   font-family: "Open Sans", Arial, sans-serif !important;
 }
 
+/* Star hover using lang hack in its own style wrapper, otherwise Gmail will strip it out */
+* [lang~="x-star-wrapper"]:hover *[lang~="x-star-number"]{
+  color: #119da2 !important;
+  border-color: #119da2 !important;
+}
+
+* [lang~="x-star-wrapper"]:hover *[lang~="x-full-star"],
+* [lang~="x-star-wrapper"]:hover ~ *[lang~="x-star-wrapper"] *[lang~="x-full-star"] {
+display : block !important;
+width : auto !important;
+overflow : visible !important;
+float : none !important;
+margin-top: -1px !important;
+}
+
+* [lang~="x-star-wrapper"]:hover *[lang~="x-empty-star"],
+* [lang~="x-star-wrapper"]:hover ~ *[lang~="x-star-wrapper"] *[lang~="x-empty-star"] {
+display : block !important;
+width : 0 !important;
+overflow : hidden !important;
+float : left !important;
+height: 0 !important;
+}
+
 .clip-circle {
   clip-path: circle(52px at center);
   border-radius: 50%;
