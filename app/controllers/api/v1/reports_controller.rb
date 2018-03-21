@@ -21,7 +21,7 @@ class Api::V1::ReportsController < Api::V1::ApplicationController
 
   def get_report
     Report.where(
-      reportable_type: params[:reportable_type],
+      reportable_type: String(params[:reportable_type]).titleize,
       reportable_id: params[:reportable_id],
       user_id: current_user.id,
     )

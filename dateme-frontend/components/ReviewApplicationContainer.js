@@ -81,7 +81,8 @@ export default ({
   onYes,
   onNo,
   currentUser,
-  isMobile
+  isMobile,
+  mobileURL
 }) => (
   <Page
     renderMessage={() => {
@@ -98,7 +99,7 @@ export default ({
     size="large"
     isLoading={isLoading}
   >
-    <Head title="Review Application | Apply to date" />
+    <Head mobileURL={mobileURL} title="Review Application | Apply to date" />
 
     <ApplicationsBreadcrumbs />
 

@@ -71,7 +71,7 @@ export default class TextInput extends React.Component {
             align-items: center;
             align-content: center;
             font-size: 14px;
-            color: rgba(0, 0, 0, 0.75);
+            color: #000;
             border: 0;
             height: 100%;
           }

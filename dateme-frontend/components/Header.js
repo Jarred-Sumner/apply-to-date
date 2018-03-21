@@ -1,5 +1,5 @@
 import Brand from "./Brand";
-import Sticky from "react-stickynode";
+import Sticky from "./StickyNode";
 import Button from "./Button";
 import LoginGate, { LOGIN_STATUSES } from "./LoginGate";
 import { withRouter } from "next/router";
@@ -401,6 +401,7 @@ class Header extends React.Component {
     return (
       <React.Fragment>
         <Sticky
+          autoHide={isMobile}
           onStateChange={this.handleStateChange}
           enabled={isSticky}
           innerZ={1000}

@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  profile: one
+  user: one
+  last_viewed_at: 2018-03-12 14:02:15
+  view_count: 1
+  viewed_by_profile: one
+  viewed_by_user: one
+
+two:
+  profile: two
+  user: two
+  last_viewed_at: 2018-03-12 14:02:15
+  view_count: 1
+  viewed_by_profile: two
+  viewed_by_user: two

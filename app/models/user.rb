@@ -8,9 +8,15 @@ class User < ApplicationRecord
   has_many :external_authentications, through: :profile
   has_many :sent_applications, class_name: 'Application', foreign_key: 'applicant_id'
   has_many :received_applications, class_name: 'Application', foreign_key: 'user_id'
+  has_many :users_who_viewed, class_name: 'ProfileView', foreign_key: 'user_id'
+  has_many :viewed_users, class_name: 'ProfileView', foreign_key: 'viewed_by_user_id'
+
   scope :fake, lambda { where("email ~~ ANY('{#{PROBABLY_FAKE_ACCOUNTS.map { |email| "%#{email}%"}.join(",")}}')") }
   scope :real, lambda { where.not("email ~~ ANY('{#{PROBABLY_FAKE_ACCOUNTS.map { |email| "%#{email}%"}.join(",")}}')") }
   has_many :notifications
+
+  has_many :block_users, class_name: 'BlockUser', foreign_key: 'blocked_by_id'
+  has_many :blocked_users, through: :block_users
 
   validates :password, length: { minimum: 3 }, if: -> { new_record? || changes[:crypted_password] }
   validates :password, confirmation: true, if: -> { new_record? || changes[:crypted_password] }
@@ -20,10 +26,15 @@ class User < ApplicationRecord
   validates :username, uniqueness: true, presence: true, format: { with: /[a-zA-Z0-9\-\_\.]*/ }
   validates :sex, presence: true, inclusion: { in: VALID_SEXES }
   SHUFFLE_MATCHMAKE_RESET_COUNT = 12.freeze
-  SHUFFLE_BATCH_SIZE_CEILING = 6.freeze
-  SHUFFLE_BATCH_SIZE_FLOOR = 3.freeze
-  SHUFFLE_COOLDOWN_CEILING = 24.hours.freeze
+  SHUFFLE_BATCH_SIZE_CEILING = 8.freeze
+  SHUFFLE_BATCH_SIZE_FLOOR = 5.freeze
+  SHUFFLE_COOLDOWN_CEILING = 12.hours.freeze
   SHUFFLE_COOLDOWN_FLOOR = 1.hours.freeze
+
+  def blocked?(user_id)
+    return false if user_id.blank?
+    block_users.where(blocked_user_id: user_id).exists?
+  end
 
   def self.matchmake_reset_offset
     floor = User::SHUFFLE_MATCHMAKE_RESET_COUNT

@@ -29,12 +29,19 @@ Rails.application.routes.draw do
       match 'profiles/(:profile_id)/apply' => 'applications#create', :constraints => {:profile_id => /[^\/]+/}, via: :post, :format => false
 
       resources :sessions
+      delete 'sessions' => 'sessions#destroy'
       post '/notifications/read_all' => 'notifications#read_all'
 
       resources :ratings
       resources :notifications, only: [:index, :update]
       post '/reports/:reportable_type/:reportable_id' => 'reports#create'
       get '/reports/:reportable_type/:reportable_id' => 'reports#show'
+
+      post '/blocks' => 'blocks#create'
+      get '/blocks/:profile_id' => 'blocks#show'
+
+      get '/apply-mobile-cookie' => 'application#apply_mobile_cookie'
+      post '/zzz' => 'profile_views#create'
     end
   end
 

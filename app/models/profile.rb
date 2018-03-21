@@ -6,6 +6,8 @@ class Profile < ApplicationRecord
   has_many :notifications, as: :notifiable
   has_many :external_authentications, through: :verified_networks
   has_many :reports, as: :reportable
+  has_many :views, class_name: 'ProfileView', foreign_key: 'profile_id'
+  has_many :viewed, class_name: 'ProfileView', foreign_key: 'viewed_by_profile_id'
 
   DEFAULT_SECTIONS = [
     'introduction',
@@ -189,11 +191,7 @@ class Profile < ApplicationRecord
   end
 
   def build_default_photo_url
-    if facebook = external_authentications.find_by(provider: 'facebook')
-      facebook.build_facebook_photo_url
-    elsif twitter = external_authentications.find_by(provider: 'twitter')
-      twitter.build_twitter_photo_url
-    end
+    ExternalAuthentication.build_default_photo_url(external_authentications)
   end
 
   def all_social_networks
@@ -206,6 +204,15 @@ class Profile < ApplicationRecord
     links
   end
 
+  VALID_CONTACT_METHODS = [
+    'twitter',
+    'facebook',
+    'instagram',
+    'phone'
+  ]
+
+  validates :recommended_contact_method, inclusion: { in: VALID_CONTACT_METHODS }
+
   before_validation on: :create do
     self.sections = Profile.build_default_sections
     self.social_links ||= {}
@@ -215,6 +222,11 @@ class Profile < ApplicationRecord
     self.interested_in_women = user.interested_in_women? if interested_in_women.nil?
     self.interested_in_other = user.interested_in_other? if interested_in_other.nil?
     self.sex ||= user.sex
+
+    if !VALID_CONTACT_METHODS.include?(self.recommended_contact_method)
+      self.recommended_contact_method = 'phone'
+    end
+
   end
 
 end

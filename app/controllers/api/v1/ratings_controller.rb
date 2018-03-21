@@ -1,8 +1,12 @@
 class Api::V1::RatingsController < Api::V1::ApplicationController
+  before_action :require_login
 
   def index
-    status = String(params[:status])
-    status = Application.approval_statuses[:submitted] unless Application.approval_statuses[status].present?
+    status = String(params[:status]).split(",")
+
+    unless status.all? { |current_status| Application.approval_statuses[current_status].present? }
+      status = Application.approval_statuses[:submitted]
+    end
 
     count = current_user
       .profile
@@ -17,7 +21,7 @@ class Api::V1::RatingsController < Api::V1::ApplicationController
       .includes(:external_authentications)
       .order("created_at DESC")
       .where(status: status)
-      .limit([Integer(params[:limit] || 25), 25].min)
+      .limit([Integer(params[:limit] || 100), 100].min)
       .offset([Integer(params[:offset] || 0), 0].max)
 
       render json: ReviewApplicationSerializer.new(applications, {

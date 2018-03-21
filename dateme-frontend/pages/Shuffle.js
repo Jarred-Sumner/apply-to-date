@@ -1,4 +1,4 @@
-import {Link} from "../routes";
+import { Link } from "../routes";
 import Head from "../components/head";
 import Nav from "../components/nav";
 import withRedux from "next-redux-wrapper";
@@ -7,9 +7,11 @@ import {
   getProfile,
   getCurrentUser,
   withCookies,
-  shuffleProfile
+  shuffleProfile,
+  incrementProfileViewCount
 } from "../api";
 import { bindActionCreators } from "redux";
+import moment from "moment";
 import Header from "../components/Header";
 import LoginGate, { LOGIN_STATUSES } from "../components/LoginGate";
 import Text from "../components/Text";
@@ -34,7 +36,8 @@ import { Router } from "../routes";
 import {
   buildProfileURL,
   buildEditProfileURL,
-  buildProfileShareURL
+  buildProfileShareURL,
+  buildMobileShuffleURL
 } from "../lib/routeHelpers";
 import { getMobileDetect } from "../lib/Mobile";
 import Subheader from "../components/Subheader";
@@ -46,6 +49,7 @@ import Storage from "../lib/Storage";
 import SharableSocialLink from "../components/SharableSocialLink";
 import EmptyPage from "../components/EmptyPage";
 import { logEvent } from "../lib/analytics";
+import Countdown from "react-countdown-now";
 
 const SHUFFLE_PAGE_STATUS = {
   loading: "loading",
@@ -125,6 +129,7 @@ class ShuffleProfile extends React.Component {
       >
         <Head
           disableGoogle
+          mobileURL={buildMobileShuffleURL()}
           title={`${profile.name} Apply to Date`}
           description={profile.tagline}
           favicon={_.sample(profile.photos)}
@@ -180,13 +185,11 @@ class ShuffleGate extends React.Component {
   loadProfile = async props => {
     const { currentUser = {} } = props;
 
-    const excludedProfiles = await Storage.shuffledProfiles();
     const profileResponse = await shuffleProfile({
       interested_in_men: _.get(currentUser, "interestedInMen", true),
       interested_in_women: _.get(currentUser, "interestedInWomen", true),
       interested_in_other: _.get(currentUser, "interestedInOther", true),
-      sex: _.get(currentUser, "sex", undefined),
-      exclude: Array.from(excludedProfiles)
+      sex: _.get(currentUser, "sex", undefined)
     });
 
     this.props.updateEntities(profileResponse.body);
@@ -197,6 +200,12 @@ class ShuffleGate extends React.Component {
       false
     );
 
+    const shuffleDisabledUntil = _.get(
+      profileResponse,
+      "body.meta.shuffle_disabled_until",
+      null
+    );
+
     if (isShuffleCooldown) {
       logEvent("Shuffle Cooldown");
     } else {
@@ -205,18 +214,20 @@ class ShuffleGate extends React.Component {
 
     this.setState({
       profileId: isShuffleCooldown ? null : profileId,
+      shuffleDisabledUntil: shuffleDisabledUntil ? shuffleDisabledUntil : null,
       status: isShuffleCooldown
         ? SHUFFLE_PAGE_STATUS.cooldown
         : SHUFFLE_PAGE_STATUS.loaded
     });
 
+    if (profileId) {
+      incrementProfileViewCount(profileId).then(_.noop, _.noop);
+    }
+
     window.scrollTo(0, 0);
   };
 
   handleLoadNextPage = async () => {
-    const { profileId } = this.state;
-    await Storage.addShuffledProfile(profileId);
-
     this.setState({
       status: SHUFFLE_PAGE_STATUS.loading,
       profileId: null
@@ -253,6 +264,22 @@ class ShuffleGate extends React.Component {
     } else {
       return (
         <EmptyPage
+          subtitle={
+            this.state.shuffleDisabledUntil ? (
+              <Countdown
+                renderer={({ days, hours, minutes, seconds }) => (
+                  <Text type="title">
+                    <span>{hours}</span>
+                    :
+                    <span>{minutes}</span>
+                    :
+                    <span>{seconds}</span>
+                  </Text>
+                )}
+                date={moment(this.state.shuffleDisabledUntil).toDate()}
+              />
+            ) : null
+          }
           title="That's it for now!"
           description="To unlock more recommendations, help matchmake other people or come back later."
           graphic={<MatchmakePreviewGraphic isMobile={this.props.isMobile} />}
@@ -285,6 +312,17 @@ const ProfileWithStore = withRedux(
   {
     pure: false
   }
-)(LoginGate(ShuffleGate, { loginRequired: true }));
+)(
+  LoginGate(ShuffleGate, {
+    loginRequired: true,
+    head: (
+      <Head
+        disableGoogle
+        mobileURL={buildMobileShuffleURL()}
+        title={`Shuffle | Apply to Date`}
+      />
+    )
+  })
+);
 
 export default ProfileWithStore;

@@ -24,17 +24,32 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
   end
 
   def shuffle
-    exclude_list = Array(params[:exclude])
+    exclude_profile_list = Array(params[:exclude])
       .concat(Application.where(applicant_id: current_user.id).pluck(:profile_id))
-      .concat([current_user.id])
+
+    exclude_user_list = [current_user.id]
+      .concat(BlockUser.where(blocked_by_id: current_user.id).pluck(:blocked_user_id))
+      .concat(BlockUser.where(blocked_user_id: current_user.id).pluck(:blocked_by_id))
+      .concat(Application.where(user_id: current_user.id).where("applicant_id IS NOT NULL").pluck(:applicant_id))
+
+    viewed_counts = current_user
+      .viewed_users
+      .pluck(:profile_id, :view_count, :last_viewed_at)
+      .map { |result| [result[0], [result[1], result[2]] ] }
+      .to_h
 
     profile = Profile
       .discoverable
-      .where.not(id: exclude_list)
+      .where.not(id: exclude_profile_list)
+      .where.not(user_id: exclude_user_list)
       .compatible_with(current_user.profile)
       .filled_out
       .to_a
-      .sample
+      .shuffle
+      .sort_by do |profile|
+        viewed_counts[profile.id] || [0, 0]
+      end
+      .first
 
     if profile.present?
       current_user.increment_shuffle_session!
@@ -43,7 +58,7 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
     if current_user.shuffle_allowed?
       render_profile(profile, false, {shuffle_disabled: false})
     else
-      render_profile(current_user.profile, false, {shuffle_disabled: true})
+      render_profile(current_user.profile, false, {shuffle_disabled: true, shuffle_disabled_until: current_user.shuffle_disabled_until})
     end
   end
 
@@ -113,10 +128,11 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
         profile.update!(recommended_contact_method: String(update_params[:recommended_contact_method]))
       end
 
-      if !update_params[:social_links].nil?
+      if !params[:profile][:social_links].nil?
         social_links = ExternalAuthentication.update_social_links(
-          update_params[:social_links]
+          params[:profile][:social_links].to_unsafe_h
         )
+
         profile.update!(social_links: social_links)
       end
 

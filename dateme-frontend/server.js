@@ -11,8 +11,30 @@ Raven.config(
 const express = require("express");
 
 app.prepare().then(() => {
-  express()
-    .use(Raven.errorHandler())
-    .use(handler)
-    .listen(parseInt(process.env.PORT || 3000, 10));
+  const expressApp = express().use(Raven.errorHandler());
+
+  expressApp.get("/apple-app-site-association", (req, res, next) => {
+    res.send({
+      applinks: {
+        apps: [],
+        details: {
+          "shipfirstlabsinc.applytodate": {
+            paths: [
+              "NOT /terms-of-service",
+              "NOT /privacy-policy",
+              "NOT /",
+              "NOT /forgot-password",
+              "NOT /reset-password/*",
+              "*",
+              "*/edit",
+              "*/apply",
+              "/a/*"
+            ]
+          }
+        }
+      }
+    });
+  });
+
+  expressApp.use(handler).listen(parseInt(process.env.PORT || 3000, 10));
 });

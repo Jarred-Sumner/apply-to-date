@@ -31,6 +31,8 @@ import Retweet from "../static/Icon/icons/retweet.svg";
 import ThumbsUp from "../static/Icon/icons/thumbs-up.svg";
 import ThumbsDown from "../static/Icon/icons/thumbs-down.svg";
 import IDK from "../static/Icon/icons/idk.svg";
+import SocialIcon from "./SocialIcon";
+import { defaultProps } from "recompose";
 
 const ICON_COMPONENT_BY_TYPE = {
   retweet: Retweet,
@@ -53,6 +55,7 @@ const ICON_COMPONENT_BY_TYPE = {
   matchmake: Matchmake,
   user: User,
   link: Link,
+  linkedin: defaultProps({ provider: "linkedin" })(SocialIcon),
   "thumbs-up": ThumbsUp,
   "thumbs-down": ThumbsDown,
   idk: IDK

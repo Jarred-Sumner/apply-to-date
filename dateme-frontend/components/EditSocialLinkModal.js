@@ -108,18 +108,6 @@ export default class EditSocialLinkModal extends React.Component {
     if (_.isEmpty(url)) {
       setURL(null);
     } else {
-      if (!isProfileValid(url, provider)) {
-        if (URL_ONLY_PROVIDERS.includes(provider)) {
-          Alert.error("Please paste the full URL");
-        } else if (["twitter", "medium"].includes(provider)) {
-          Alert.error("Double check your @username and try again");
-        } else {
-          Alert.error("Double check your username and try again");
-        }
-
-        return;
-      }
-
       setURL(url);
     }
   };

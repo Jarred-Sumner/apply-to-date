@@ -44,8 +44,10 @@ const InstagramPhoto = ({ post, onClick, overflow }) => {
           transition: transform 0.1s linear;
         }
 
-        .Post:hover {
-          transform: scale(1.05, 1.05);
+        @media (min-width: 600px) {
+          .Post:hover {
+            transform: scale(1.05, 1.05);
+          }
         }
 
         img {

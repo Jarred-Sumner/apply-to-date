@@ -7,6 +7,11 @@ class Api::V1::SessionsController < Api::V1::ApplicationController
     end
   end
 
+  def destroy
+    logout
+    render json: {success: true}
+  end
+
   private def create_params
     params.require(:session).permit([:username, :password])
   end

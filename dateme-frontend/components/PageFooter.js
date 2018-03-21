@@ -15,7 +15,7 @@ export default ({ center = false, size }) => {
         <Brand hideText />
 
         <div className="links">
-          <a href="mailto:lucy@shipfirstlabs.com?subject=Hi">
+          <a href="mailto:founders@applytodate.com?subject=Hi">
             <Text type="footerlink">Contact us</Text>
           </a>
 

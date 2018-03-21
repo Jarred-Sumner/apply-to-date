@@ -4,7 +4,7 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
   def create
     @applying_to_profile = Profile.find(params[:profile_id])
 
-    if current_user.present? && current_user.can_auto_apply?
+    if current_user.present?
       profile = current_user.profile
       existing_application = Application.where(profile_id: params[:profile_id]).where("applicant_id = ? OR email = ?", current_user.id, current_user.email).first
       if existing_application
@@ -30,7 +30,7 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
       create_application_from_guest
     end
 
-    if !applying_to_profile.could_be_interested_in?(@application)
+    if !applying_to_profile.could_be_interested_in?(@application) || applying_to_profile.user.blocked?(@application.applicant_id)
       application.update(status: Application.statuses[:filtered])
     elsif @should_send_email
       ApplicationsMailer.confirmed(@application.id).deliver_later
@@ -135,13 +135,40 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
         @application.social_links = @application.social_links.merge(auth.build_social_link_entry)
       end
 
+      photos = [@application.photos, current_user.try(:profile).try(:photos)].find(&:present?) || []
+
+      if photos.blank? && external_authentications.facebook.exists?
+        begin
+          facebook = external_authentications.facebook.first
+          facebook.get_facebook_photos.each do |photo_url|
+            upload = Upload.upload_from_url(photo_url)
+            photos.push(Upload.get_public_url(upload.public_url))
+          end
+        rescue => e
+          Raven.capture_exception(e)
+          Rails.logger.info e
+          Rails.logger.info "AUTO UPLOADING FROM FACEBOOK FAILED #{e.inspect} for application #{@application.inspect}"
+        end
+      end
+
+      if photos.blank? && external_authentications.with_photos.exists?
+        begin
+          upload = Upload.upload_from_url(ExternalAuthentication.build_default_photo_url(external_authentications))
+          photos.push(Upload.get_public_url(upload.public_url))
+        rescue => e
+          Raven.capture_exception(e)
+          Rails.logger.info e
+          Rails.logger.info "UPLOADING DEFAULT PHOTO FAILED #{e.inspect} for application #{@application.inspect}"
+        end
+      end
+
       sections = (params[:application][:sections] || {}).permit(Application::DEFAULT_SECTIONS)
 
       @application.update!(create_params.merge(
         email: email,
         status: Application.submission_statuses[create_params[:status]],
         sections: sections.present? ? sections : Application.build_default_sections,
-        photos: current_user.try(:profile).try(:photos) || [],
+        photos: photos,
         applicant_id: current_user.try(:id)
       ))
 

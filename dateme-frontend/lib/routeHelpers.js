@@ -1,4 +1,5 @@
 import { Router } from "../routes";
+const MOBILE_APP_BASE_URI = `applytodate://`;
 import qs from "qs";
 
 export const buildProfileURL = profileId => {
@@ -27,6 +28,38 @@ export const buildEditProfileURL = profileId => {
 
 export const buildShufflePath = () => "/shuffle";
 export const buildMatchmakePath = () => "/matchmake";
+
+export const buildMobileLoginURL = params => {
+  return `${MOBILE_APP_BASE_URI}login?${qs.stringify(params)}`;
+};
+
+export const buildMobileEditPagePath = () => {
+  return `page/edit`;
+};
+
+export const buildMobileViewProfileURL = profileId => {
+  return `${MOBILE_APP_BASE_URI}p/${profileId}`;
+};
+
+export const buildMobileMatchmakeURL = () => {
+  return `${MOBILE_APP_BASE_URI}matchmake`;
+};
+
+export const buildMobileShuffleURL = () => {
+  return `${MOBILE_APP_BASE_URI}shuffle`;
+};
+
+export const buildMobileApplicationsURL = () => {
+  return `${MOBILE_APP_BASE_URI}applications`;
+};
+
+export const buildMobileApplicationURL = applicationId => {
+  return `${MOBILE_APP_BASE_URI}application/${applicationId}`;
+};
+
+export const buildMobileEditPageURL = () => {
+  return `${MOBILE_APP_BASE_URI}${buildMobileEditPagePath()}`;
+};
 
 export const updateQuery = (url, params) => {
   const urlParams = {

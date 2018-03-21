@@ -3,7 +3,12 @@ import Head from "../components/head";
 import Nav from "../components/nav";
 import withRedux from "next-redux-wrapper";
 import { updateEntities, setCurrentUser, initStore } from "../redux/store";
-import { getProfile, getCurrentUser, withCookies } from "../api";
+import {
+  getProfile,
+  getCurrentUser,
+  withCookies,
+  incrementProfileViewCount
+} from "../api";
 import { bindActionCreators } from "redux";
 import Header from "../components/Header";
 import LoginGate from "../components/LoginGate";
@@ -24,13 +29,18 @@ import PhotoGroup from "../components/PhotoGroup";
 import Typed from "react-typed";
 import withLogin from "../lib/withLogin";
 import { Router } from "../routes";
-import { buildProfileURL, buildEditProfileURL } from "../lib/routeHelpers";
+import {
+  buildProfileURL,
+  buildEditProfileURL,
+  buildMobileViewProfileURL
+} from "../lib/routeHelpers";
 import { getMobileDetect } from "../lib/Mobile";
 import Subheader from "../components/Subheader";
 import { animateScroll } from "react-scroll";
 import Linkify from "react-linkify";
 import ProfileComponent from "../components/Profile";
 import { logEvent } from "../lib/analytics";
+import { hasMobileAppInstalled } from "../lib/applyMobileCookie";
 
 class Profile extends React.Component {
   static async getInitialProps({ query, store, req, isServer }) {
@@ -68,6 +78,8 @@ class Profile extends React.Component {
 
       profile = profileResponse.body.data;
     }
+
+    incrementProfileViewCount(profile.id).then(_.noop, _.noop);
 
     logEvent("View Profile", {
       profile: profile.id,
@@ -154,6 +166,7 @@ class Profile extends React.Component {
       >
         <Head
           disableGoogle
+          mobileURL={buildMobileViewProfileURL(profile.id)}
           url={buildProfileURL(profile.id)}
           title={`Apply to date ${profile.name || ""}`}
           description={profile.tagline}

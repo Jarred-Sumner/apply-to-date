@@ -1,4 +1,4 @@
-import {Link} from "../routes";
+import { Link } from "../routes";
 import Head from "../components/head";
 import Nav from "../components/nav";
 import withRedux from "next-redux-wrapper";
@@ -42,7 +42,8 @@ import {
   buildEditProfileURL,
   buildProfileURL,
   buildProfileShareURL,
-  updateQuery
+  updateQuery,
+  buildMobileMatchmakeURL
 } from "../lib/routeHelpers";
 import { getMobileDetect } from "../lib/Mobile";
 import Subheader from "../components/Subheader";
@@ -175,92 +176,101 @@ class MatchmakeProfile extends React.Component {
           headerProps={{
             isSticky: true
           }}
-          contentScrolls
           size="100%"
         >
-          <Head noScroll disableGoogle title={`Matchmaker | Apply to Date`} />
+          <Head disableGoogle title={`Matchmaker | Apply to Date`} />
           <ViewMatchmakeProfile
             profileRef={profileRef => (this.profileRef = profileRef)}
             isMobile={isMobile}
             profile={profile}
             onSwipe={this.handleChangeTabFromSwipe}
           />
+          <div
+            style={{
+              height: 175,
+              display: "block",
+              content: "",
+              width: 1
+            }}
+          />
 
           <Portal>
             <Swipeable onSwiping={this.handleSwipe}>
-              <Subheader padding="none" transparent noBorder>
-                <div className="Container">
-                  <div className="Rate">
-                    <div className="Tabs">
-                      <div
-                        onClick={this.setSelectedTab(0)}
-                        className={classNames("Tab", {
-                          "Tab--selected": selectedTabIndex === 0
-                        })}
-                      >
-                        {leftProfile.photos.length > 0 && (
-                          <img
-                            src={_.first(leftProfile.photos)}
-                            srcSet={buildImgSrcSet(
-                              _.first(leftProfile.photos),
-                              18
-                            )}
-                            className="Tab-thumbnail"
-                          />
-                        )}
-                        <Text weight="semiBold" size="14px">
-                          {leftProfile.name}
-                        </Text>
-                      </div>
-
-                      <div
-                        onClick={this.setSelectedTab(1)}
-                        className={classNames("Tab", {
-                          "Tab--selected": selectedTabIndex === 1
-                        })}
-                      >
-                        {rightProfile.photos.length > 0 && (
-                          <img
-                            src={_.first(rightProfile.photos)}
-                            srcSet={buildImgSrcSet(
-                              _.first(rightProfile.photos),
-                              18
-                            )}
-                            className="Tab-thumbnail"
-                          />
-                        )}
-                        <Text weight="semiBold" size="14px">
-                          {rightProfile.name}
-                        </Text>
-                      </div>
-                    </div>
-                    <div className="Rate-text">
-                      <Text size="14px" weight="semiBold">
-                        Should these two go on a date?
-                      </Text>
-                    </div>
-                    <div className="RateButton">
-                      <RateButton isMobile setValue={this.handleSetRating} />
-
-                      <div className="ActionsMenuIndicator">
-                        <div className="ActionsMenuIndicator-icon">
-                          <Icon type="caret" color="#BABABA" size="14px" />
+              <div className="FloatingFooter">
+                <Subheader padding="none" transparent noBorder>
+                  <div className="Container">
+                    <div className="Rate">
+                      <div className="Tabs">
+                        <div
+                          onClick={this.setSelectedTab(0)}
+                          className={classNames("Tab", {
+                            "Tab--selected": selectedTabIndex === 0
+                          })}
+                        >
+                          {leftProfile.photos.length > 0 && (
+                            <img
+                              src={_.first(leftProfile.photos)}
+                              srcSet={buildImgSrcSet(
+                                _.first(leftProfile.photos),
+                                18
+                              )}
+                              className="Tab-thumbnail"
+                            />
+                          )}
+                          <Text weight="semiBold" size="14px">
+                            {leftProfile.name}
+                          </Text>
                         </div>
-                        <div className="ActionsMenuIndicator-icon">
-                          <Icon type="caret" color="#BABABA" size="14px" />
+
+                        <div
+                          onClick={this.setSelectedTab(1)}
+                          className={classNames("Tab", {
+                            "Tab--selected": selectedTabIndex === 1
+                          })}
+                        >
+                          {rightProfile.photos.length > 0 && (
+                            <img
+                              src={_.first(rightProfile.photos)}
+                              srcSet={buildImgSrcSet(
+                                _.first(rightProfile.photos),
+                                18
+                              )}
+                              className="Tab-thumbnail"
+                            />
+                          )}
+                          <Text weight="semiBold" size="14px">
+                            {rightProfile.name}
+                          </Text>
                         </div>
                       </div>
+                      <div className="Rate-text">
+                        <Text size="14px" weight="semiBold">
+                          Should these two go on a date?
+                        </Text>
+                      </div>
+                      <div className="RateButton">
+                        <RateButton isMobile setValue={this.handleSetRating} />
+
+                        <div className="ActionsMenuIndicator">
+                          <div className="ActionsMenuIndicator-icon">
+                            <Icon type="caret" color="#BABABA" size="14px" />
+                          </div>
+                          <div className="ActionsMenuIndicator-icon">
+                            <Icon type="caret" color="#BABABA" size="14px" />
+                          </div>
+                        </div>
+                      </div>
                     </div>
+
+                    <MatchmakeActionsMenu
+                      profile={profile}
+                      animated={this.state.isSwipingAnimated}
+                      hide={() => this.setState({ actionsYOffset: 0 })}
+                      yOffset={this.state.actionsYOffset}
+                    />
                   </div>
-
-                  <MatchmakeActionsMenu
-                    profile={profile}
-                    animated={this.state.isSwipingAnimated}
-                    hide={() => this.setState({ actionsYOffset: 0 })}
-                    yOffset={this.state.actionsYOffset}
-                  />
-                </div>
-              </Subheader>
+                </Subheader>
+              </div>
             </Swipeable>
           </Portal>
 
@@ -341,6 +351,13 @@ class MatchmakeProfile extends React.Component {
             .ActionsMenuIndicator-icon:last-of-type {
               margin-top: -7px;
             }
+
+            :global(.FloatingFooter) {
+              position: fixed;
+              bottom: 0;
+              left: 0;
+              right: 0;
+            }
           `}</style>
         </Page>
       );
@@ -349,7 +366,12 @@ class MatchmakeProfile extends React.Component {
       const rightUrl = buildProfileShareURL(rightProfile.id);
       return (
         <Page size="100%">
-          <Head noScroll disableGoogle title={`Matchmaker | Apply to Date`} />
+          <Head
+            mobileURL={buildMobileMatchmakeURL()}
+            noScroll
+            disableGoogle
+            title={`Matchmaker | Apply to Date`}
+          />
           <div className="Container">
             <div className="ProfileContainer ProfileContainer--left">
               <div className="ProfileContainer-header">
@@ -657,7 +679,15 @@ const ProfileWithStore = withRedux(initStore, null, null, null, {
   pure: false
 })(
   LoginGate(ProfileGate, {
-    loginRequired: true
+    loginRequired: true,
+    head: (
+      <Head
+        mobileURL={buildMobileMatchmakeURL()}
+        noScroll
+        disableGoogle
+        title={`Matchmaker | Apply to Date`}
+      />
+    )
   })
 );
 

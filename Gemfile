@@ -23,6 +23,7 @@ gem 'omniauth-linkedin-oauth2'
 gem 'omniauth-medium', github: 'hugodias/omniauth-medium'
 gem "possessive"
 gem 'newrelic_rpm'
+gem 'sidekiq'
 
 gem 'twitter', require: 'twitter'
 # Use CoffeeScript for .coffee assets and views
@@ -63,6 +64,8 @@ gem "capistrano", "~> 3.10"
   gem 'capistrano-rails-console', require: false
 
 gem 'koala'
+gem 'redis-rails'
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -70,6 +73,8 @@ group :development, :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 2.13'
   gem 'selenium-webdriver'
+  gem 'capistrano-sidekiq', github: 'seuros/capistrano-sidekiq'
+
 end
 
 group :development do

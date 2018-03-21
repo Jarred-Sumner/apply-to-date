@@ -113,7 +113,7 @@ class Api::V1::UsersController < Api::V1::ApplicationController
 
   private def create_profile_params
     params.require(:profile).permit([
-      :location, :latitude, :longitude, :name, :phone
+      :location, :latitude, :longitude, :name, :phone, :birthday
     ])
   end
 

@@ -113,7 +113,12 @@ export default class MatchmakePreviewGraphic extends React.Component {
             target="_blank"
             href={buildProfileShareURL(currentPair.left)}
           >
-            <Thumbnail size="105px" url={photoURL(currentPair.left)} circle />
+            <Thumbnail
+              autoSize={false}
+              size="105px"
+              url={photoURL(currentPair.left)}
+              circle
+            />
           </a>
           <div className="Divider">
             <Text size="30px" lineHeight="40px">
@@ -126,7 +131,12 @@ export default class MatchmakePreviewGraphic extends React.Component {
             target="_blank"
             href={buildProfileShareURL(currentPair.right)}
           >
-            <Thumbnail size="105px" url={photoURL(currentPair.right)} circle />
+            <Thumbnail
+              autoSize={false}
+              size="105px"
+              url={photoURL(currentPair.right)}
+              circle
+            />
           </a>
         </div>
 

@@ -7,6 +7,7 @@ export default ({
   size = "126px",
   url,
   remoteSize,
+  autoSize = true,
   isLast = false,
   circle,
   showPlaceholder = true
@@ -23,7 +24,7 @@ export default ({
       <img
         src={url}
         key={`${url}-${size}-${remoteSize}`}
-        srcSet={buildImgSrcSet(url, remoteSize || size)}
+        srcSet={autoSize ? buildImgSrcSet(url, remoteSize || size) : undefined}
       />
     ) : (
       showPlaceholder && (
@@ -44,8 +45,11 @@ export default ({
     <style jsx>{`
       .photo {
         align-self: flex-start;
+        display: flex;
         height: 100%;
         width: 100%;
+        min-height: 0; /* NEW */
+        min-width: 0; /* NEW; needed for Firefox */
       }
 
       .Placeholder {
