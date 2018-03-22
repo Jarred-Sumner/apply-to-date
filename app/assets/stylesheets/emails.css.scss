@@ -11,6 +11,7 @@ $background_color_3: rgb(0, 158, 255);
 $background_color_4: #ff9f00;
 $background_color_5: #860f06;
 $background_color_6: #0aca9b;
+$background_color_7: #404040;
 
 $normal_font_size: 14px;
 $large_font_size: 18px;
@@ -182,7 +183,7 @@ a {
   text-decoration: none;
   color: $color_4;
   background-color: $background_color_3;
-  border: solid $background_color_3;
+  border: 12px 24px solid $background_color_3;
   border-width: 12px 24px;
   line-height: 2em;
   font-weight: bold;
@@ -192,6 +193,22 @@ a {
   border-radius: 6px;
   text-transform: uppercase;
 }
+
+.btn-secondary {
+  text-decoration: none;
+  color: $color_4;
+  background-color: $background_color_7;
+  border: 12px 24px solid $background_color_7;
+  border-width: 12px 24px;
+  line-height: 2em;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  display: inline-block;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+
 .last {
   margin-bottom: 0;
 }
@@ -315,11 +332,12 @@ a {
   border-radius: 50%;
   border: 0;
   display: inline-block;
+  object-fit: cover;
 }
 
 .circle-image--title {
-  max-width: $page_width / 2;
-  max-height: $page_width / 2;
+  width: $page_width / 3;
+  height: $page_width / 3;
 }
 
 .circle-image--mini {
