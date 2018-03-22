@@ -1,5 +1,6 @@
 class UsersMailer < ApplicationMailer
   include ActionView::Helpers::TextHelper
+  layout 'emails'
 
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
