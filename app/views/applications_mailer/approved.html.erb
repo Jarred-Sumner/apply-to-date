@@ -30,11 +30,8 @@
 				<tr>
 					<td class="content-block aligncenter">
 						<% if @profile.contact_via_phone? %>
-							<a class="btn-primary" href="tel://<%= raw @profile.contact_method_value.gsub(" ", " ") %>">
-								<%= @button_label %>
-									<%= @profile.contact_method_value %>
-							</a>
-							<% else %>
+							<h2><%= @profile.contact_method_value %></h2>
+						<% else %>
 								<a class="btn-primary" href="<%= raw @profile.contact_method_value %>">
 									<%= @button_label %>
 										on

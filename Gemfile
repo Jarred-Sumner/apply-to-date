@@ -49,6 +49,8 @@ gem "sentry-raven"
 gem 'capistrano-rails-logs-tail'
 gem 'capistrano-passenger'
 
+gem 'phonelib'
+
 gem 'unicorn'
 
 gem 'pry-rails'
