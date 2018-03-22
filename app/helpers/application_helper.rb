@@ -6,7 +6,7 @@ module ApplicationHelper
 
   def pretext(string)
     content_for :pretext do
-      (string + " " * 100)[0, 100]
+      string[0..199]
     end
   end
 

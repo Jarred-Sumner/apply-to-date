@@ -1,76 +1,82 @@
-<tr>
-	<td class="content-wrap">
-		<table width="100%" cellpadding="0" cellspacing="0">
-			<tr>
-				<td class="content-block aligncenter">
+<% if @profile.sections.values.first.present? %>
+	<%= pretext(@profile.sections.values.first.try(:strip)) %>
+		<% else %>
+			<%= pretext("Here's what happens next. #{@profile_name} will read what you wrote, and if its a yes you'll receive #{@gender_name} contact info.") %>
+				<% end %>
+					<tr>
+						<td class="content-wrap">
+							<table width="100%" cellpadding="0" cellspacing="0">
+								<tr>
+									<td class="content-block aligncenter">
 
-					<a class="link-container" href="<%= raw @profile_url %>">
-						<%= image_tag @profile.photos.first || "email/confirmed/brand.png", class: "circle-image circle-image--title", border: "0" %>
-					</a>
+										<a class="link-container" href="<%= raw @profile_url %>">
+											<%= image_tag @profile.photos.first || "email/confirmed/brand.png", class: "circle-image circle-image--title", border: "0" %>
+										</a>
 
-					<a class="link-container" href="<%= raw @profile_url %>">
-						<h1 class="aligncenter">You asked out
-							<%= @profile_name %>
-						</h1>
-					</a>
-					<p class="aligncenter">We know it takes a lot of courage to ask someone out.
-					</p>
-				</td>
-			</tr>
+										<a class="link-container" href="<%= raw @profile_url %>">
+											<h1 class="aligncenter">You asked out
+												<%= @profile_name %>
+											</h1>
+										</a>
+										<p class="aligncenter">We know it takes a lot of courage to ask someone out.
+										</p>
+									</td>
+								</tr>
 
-			<tr>
-				<td class="content-block aligncenter">
-					<h2>What happens next?</h2>
-				</td>
-			</tr>
+								<tr>
+									<td class="content-block aligncenter">
+										<h2>What happens next?</h2>
+									</td>
+								</tr>
 
-			<tr>
-				<td class="content-block aligncenter">
-					<%= image_tag "email/confirmed/application_icon.png"%>
-						<h3>1.
-							<%= @profile_name %> reads what you sent</h3>
+								<tr>
+									<td class="content-block aligncenter">
+										<%= image_tag "email/confirmed/application_icon.png"%>
+											<h3>1.
+												<%= @profile_name %> reads what you sent</h3>
 
-						<p>
-							<%=@profile_name %> will take a look at what you sent soon.</p>
-				</td>
-			</tr>
+											<p>
+												<%=@profile_name %> will take a look at what you sent soon.</p>
+									</td>
+								</tr>
 
-			<tr>
-				<td class="content-block aligncenter">
-					<%= image_tag "email/confirmed/contact_information.png"%>
-						<h3>2. Contact information exchanged</h3>
+								<tr>
+									<td class="content-block aligncenter">
+										<%= image_tag "email/confirmed/contact_information.png"%>
+											<h3>2. Contact information exchanged</h3>
 
-						<p>If
-							<%= @profile_name %> wants to go on a date with you, you'll get an email with
-								<%= @gender_name %> contact info.</p>
-				</td>
-			</tr>
+											<p>If
+												<%= @profile_name %> wants to go on a date with you, you'll get an email with
+													<%= @gender_name %> contact info.</p>
+									</td>
+								</tr>
 
-			<tr>
-				<td class="content-block aligncenter">
-					<%= image_tag "email/confirmed/date.png"%>
-						<h3>3. Go on a date</h3>
+								<tr>
+									<td class="content-block aligncenter">
+										<%= image_tag "email/confirmed/date.png"%>
+											<h3>3. Go on a date</h3>
 
-						<p>Reach out to
-							<%= @profile_name %> to coordinate</p>
-				</td>
-			</tr>
+											<p>Reach out to
+												<%= @profile_name %> to coordinate</p>
+									</td>
+								</tr>
 
-		</table>
-	</td>
-</tr>
+							</table>
+						</td>
+					</tr>
 
-<% content_for :footer do %>
-	<table width="100%">
-		<tr>
-			<td class="aligncenter content-block">
-				<tr>
-					<h4>What if I don't hear back?</h4>
-					<p>Don't worry.
-						<%= @profile_name %> might just be busy, and if it turns out they're not interested, at least you asked. You miss every shot you don't take.
-					</p>
-				</tr>
-			</td>
-		</tr>
-	</table>
-	<% end %>
+					<% content_for :footer do %>
+						<table width="100%">
+							<tr>
+								<td class="aligncenter content-block">
+									<tr>
+										<h4>What if I don't hear back?</h4>
+										<p>Don't worry.
+											<%= @profile_name %> might just be busy, and if it turns out they're not interested, at least you asked. You miss every shot you don't
+												take.
+										</p>
+									</tr>
+								</td>
+							</tr>
+						</table>
+						<% end %>

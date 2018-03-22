@@ -2,7 +2,7 @@
 	<% if @application.sections.values.first.present? %>
 		<% pretext(truncate(@application.sections.values.first, {length: 200})) %>
 			<% else %>
-				<% pretext("Respond to #{@gender_name} on https://applytodate.com/applications") %>
+				<% pretext("Respond to #{@gender_name}. Don't worry, saying no won't send #{@gender_name} any notifications.") %>
 					<% end %>
 
 
@@ -24,8 +24,8 @@
 
 									<tr>
 
-										<td class="content-block aligncenter">
-											<a class="btn-primary" href="<%= raw @application_url %>">Respond to
+										<td class="content-block aligncenter" itemprop="handler" itemscope itemtype="http://schema.org/HttpActionHandler">>
+											<a class="btn-primary" itemprop="url" href="<%= raw @application_url %>">Respond to
 												<%= truncate(short_profile_name(@application), { length: 175 }) %>
 											</a>
 										</td>
