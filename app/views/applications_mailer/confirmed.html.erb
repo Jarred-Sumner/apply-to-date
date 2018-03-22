@@ -1,384 +1,82 @@
-<%= stylesheet_link_tag "applications_mailer" %>
+<% if @profile.sections.values.first.present? %>
+	<%= pretext(@profile.sections.values.first.try(:strip)) %>
+		<% else %>
+			<%= pretext("Here's what happens next. #{@profile_name} will read what you wrote, and if its a yes you'll receive #{@gender_name} contact info.") %>
+				<% end %>
+					<tr>
+						<td class="content-wrap">
+							<table width="100%" cellpadding="0" cellspacing="0">
+								<tr>
+									<td class="content-block aligncenter">
 
-<body style='margin: 0; padding: 0;'>
+										<a class="link-container" href="<%= raw @profile_url %>">
+											<%= image_tag @profile.photos.first || "email/confirmed/brand.png", class: "circle-image circle-image--title", border: "0" %>
+										</a>
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="full" bgcolor="#f3f7f8" style="background-color: #f3f7f8;">
-	<tbody><tr>
-		<td align="center">
-						
-			<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile">
-				<tbody><tr>
-					<td width="100%" valign="middle" class="logo" align="center">
-					
-						
-						
-						
-					
-						<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="full" bgcolor="#ffffff" style="-webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; -moz-box-shadow:0 0 10px #dedede; -webkit-box-shadow:0 0 10px #dedede; box-shadow:0 0 10px #dedede; background-color: #ffffff;">
-							<tbody><tr>
-								<td width="450" align="center">
-                      
-									
-							
-									
-							
-									
-									
-									
-                        
-                        			
-                        
-									
-									
-									
-									
-									
-									
-									
-									
-                              	</td>
-							</tr>
-						</tbody></table>
-						
-						
-						
-						
-						
-						
-						
-						
-													
-					</td>
-				</tr>
-			</tbody></table>
-			
-		</td>
-	</tr>
-</tbody></table>
+										<a class="link-container" href="<%= raw @profile_url %>">
+											<h1 class="aligncenter">You asked out
+												<%= @profile_name %>
+											</h1>
+										</a>
+										<p class="aligncenter">We know it takes a lot of courage to ask someone out.
+										</p>
+									</td>
+								</tr>
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="full" bgcolor="#64c9e2" style="background-color: #64c9e2;">
-	<tbody><tr>
-		<td align="center">
-						
-			<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile">
-				<tbody><tr>
-					<td width="100%" valign="middle" align="center">
-					
-						
-						
-						
-                      
-						
-				
-						
-				
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-													
-					</td>
-				</tr>
-			</tbody></table>
-			
-		</td>
-	</tr>
-</tbody></table>
+								<tr>
+									<td class="content-block aligncenter">
+										<h2>What happens next?</h2>
+									</td>
+								</tr>
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="full" bgcolor="#f3f7f8" style="background-color: #f3f7f8;">
-	<tbody><tr>
-		<td align="center">
-						
-			<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile">
-				<tbody><tr>
-					<td width="100%" valign="middle" class="logo" align="center">
-					
-						<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse: collapse;" class="fullCenter">
-							<tbody><tr>
-								<td width="450" height="50"></td>
-							</tr>
-						</tbody></table>
-						
-						<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse: collapse;" class="fullCenter">
-							<tbody><tr>
-								<td width="450" height="50"></td>
-							</tr>
-						</tbody></table>
-					
-						<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="full" style="-webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; -moz-box-shadow:0 0 10px #dedede; -webkit-box-shadow:0 0 10px #dedede; box-shadow:0 0 10px #dedede; background-color: #ffffff;">
-							<tbody><tr>
-								<td width="450" align="center">
-                      
-									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile" bgcolor="#FFFFFF" style="background-color: #ffffff; border-top-left-radius: 5px; border-top-right-radius: 5px;">
-										<tbody><tr>
-											<td width="450" valign="middle" align="center" height="40">
-											</td>
-										</tr>
-									</tbody></table>
-							
-									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="full" bgcolor="#FFFFFF" style="background-color: #ffffff;">
-										<tbody><tr>
-											<td align="center" width="450" valign="middle">
-											
-												<table width="265" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
-													<tbody><tr>
-														<td width="265" class="">
-															<a href="#" style="text-decoration: none;">
-																<%= image_tag "email/confirmed/brand.png", width: "56", class: "hover", border: "0" %>
-															</a>
-														</td>
-													</tr>
-												</tbody></table>
-												
-											</td>
-										</tr>
-									</tbody></table>
-									
-									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile" bgcolor="#FFFFFF" style="background-color: #ffffff;">
-										<tbody><tr>
-											<td width="450" valign="middle" align="center" height="20">
-											</td>
-										</tr>
-									</tbody></table>
-									
-									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile" bgcolor="#FFFFFF" style="background-color: #ffffff;">
-										<tbody><tr>
-											<td width="450" valign="middle">
-												
-												<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
-													<tbody><tr>
-														<td valign="middle" width="350" style="text-align: center; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 30px; color: #ffffff; line-height: 30px; font-weight: 700;" class="fullCenter">
-															<span style="font-family:open sans;"><span style="color:#000000;">Thanks for asking <%= @profile_name %> out</span></span>
-														</td>
-													</tr>
-												</tbody></table>
-												
-											</td>
-										</tr>
-									</tbody></table>
-									
-									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile"style="z-index: 99999; top: 0px; left: 0px;">
-										<tbody><tr>
-											<td width="450" valign="middle" align="center" height="30">
-											</td>
-										</tr>
-									</tbody></table><table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile" bgcolor="#FFFFFF" style="background-color: #ffffff;">
-										<tbody><tr>
-											<td align="center" width="450" valign="middle">
-												
-												<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
-													<tbody><tr>
-														<td valign="middle" width="350" style="text-align: center; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 14px; color: #ffffff; line-height: 24px;" class="fullCenter">
-															<p style="background-color: #ffffff;"><span style="font-family:open sans;"><span style="color:#000000;">We know it takes a lot of courage to ask someone out. 
+								<tr>
+									<td class="content-block aligncenter">
+										<%= image_tag "email/confirmed/application_icon.png"%>
+											<h3>1.
+												<%= @profile_name %> reads what you sent</h3>
 
-														</td>
-													</tr>
-												</tbody></table>
-												
-											</td>
-										</tr>
-									</tbody></table><table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile"style="z-index: 99999; top: 0px; left: 0px;">
-										<tbody><tr>
-											<td width="450" valign="middle" align="center" height="30">
-											</td>
-										</tr>
-									</tbody></table>
-									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile" bgcolor="#FFFFFF" style="background-color: #ffffff;">
-									<tbody><tr>
-										<td width="450" valign="middle">
-											
-											<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
-												<tbody><tr>
-													<td valign="middle" width="350" style="text-align: center; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 30px; color: #ffffff; line-height: 30px; font-weight: 700;" class="fullCenter">
-														<span style="font-family:open sans;"><span style="color:#000000;">So what happens next?</span></span>
-													</td>
-												</tr>
+											<p>
+												<%=@profile_name %> will take a look at what you sent soon.</p>
+									</td>
+								</tr>
 
-											</tbody></table>
+								<tr>
+									<td class="content-block aligncenter">
+										<%= image_tag "email/confirmed/contact_information.png"%>
+											<h3>2. Contact information exchanged</h3>
 
-											<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile"style="z-index: 99999; top: 0px; left: 0px;">
-										<tbody><tr>
-											<td width="450" valign="middle" align="center" height="70">
-											</td>
-										</tr>
-									</tbody></table>
+											<p>If
+												<%= @profile_name %> wants to go on a date with you, you'll get an email with
+													<%= @gender_name %> contact info.</p>
+									</td>
+								</tr>
 
-											<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile" bgcolor="#FFFFFF" style="background-color: #ffffff;">
-									<tbody><tr>
-										<td width="450" valign="middle">
-											
-											<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
-												<tbody>
+								<tr>
+									<td class="content-block aligncenter">
+										<%= image_tag "email/confirmed/date.png"%>
+											<h3>3. Go on a date</h3>
 
-												<tr>
-												<div class="card">
-												<div class="card-circle">1</div>
-													<div class="rectangle-content">
-														<div class="card-title"><%= @profile_name %> reads your application</div>
-														<div class="application-icon"><%= image_tag "email/confirmed/application_icon.png"%></div>
-														<div class="card-description">Your application has been sent to <%= @profile_name %> and will be looked over shortly.</div>
-													</div>
-												
-												</div>
+											<p>Reach out to
+												<%= @profile_name %> to coordinate</p>
+									</td>
+								</tr>
 
-												<div class="card">
-												<div class="card-circle">2</div>
-													<div class="rectangle-content">
-														<div class="card-title">Contact information exchanged</div>
-														<div class="application-icon"><%= image_tag "email/confirmed/contact_information.png"%></div>
-														<div class="card-description">If <%= @profile_name %> wants to go on a date with you, you'll get an email</div>
-													</div>
-												
-												</div>
+							</table>
+						</td>
+					</tr>
 
-												<div class="card">
-												<div class="card-circle">3</div>
-													<div class="rectangle-content">
-														<div class="card-title">Go on a date!</div>
-														<div class="application-icon"><%= image_tag "email/confirmed/date.png"%></div>
-														<div class="card-description"></div>
-													</div>
-												
-												</div>
-												</tr>
-											</tbody></table>
-
-															                        			
-									
-									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile">
-										<tbody><tr>
-											<td align="center" width="450" valign="middle">
-											
-												<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
-													<tbody><tr>
-														<td valign="middle" width="350" style="text-align: left; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 26px; color: #0c0c0c; line-height: 34px; font-weight: 300;" class="fullCenter">
-															What if I don't hear back?
-														</td>
-													</tr>
-												</tbody></table>
-												
-											</td>
-										</tr>
-									</tbody></table>
-									
-									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile">
-										<tbody><tr>
-											<td width="450" valign="middle" align="center" height="30">
-											</td>
-										</tr>
-									</tbody></table>
-									
-									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile">
-										<tbody><tr>
-											<td align="center" width="450" valign="middle">
-											
-												<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
-													<tbody><tr>
-														<td valign="middle" width="450" style="text-align: left; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 14px; color: #a9a9a9; line-height: 24px;" class="fullCenter">
-															<span style="color:#000000;">Don't worry. <%= @profile_name %> might just be busy, and if it turns out they're not interested, at least you asked. You miss every shot you don't take.</span>
-														</td>
-													</tr>
-												</tbody></table>
-												
-											</td>
-										</tr>
-			
-									
-									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile" bgcolor="#FFFFFF" style="background-color: #ffffff;">
-										<tbody><tr>
-											<td width="450" valign="middle" align="center" height="40">
-											</td>
-										</tr>
-									</tbody></table>
-									
-									
-									
-									
-									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile">
-										<tbody><tr>
-											<td width="450" valign="middle" align="center" height="50">
-											</td>
-										</tr>
-									</tbody></table>
-									
-									
-									
-									
-									
-									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile">
-										<tbody><tr>
-											<td align="center" width="450" valign="middle">
-											
-					
-											
-											</td>
-										</tr>
-									</tbody></table>
-									
-									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile">
-										<tbody><tr>
-											<td width="450" valign="middle" align="center" height="40">
-											</td>
-										</tr>
-									</tbody></table>
-									
-                              	</td>
-							</tr>
-						</tbody></table>
-						
-						<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse: collapse;" class="fullCenter">
-							<tbody><tr>
-								<td width="450" height="50"></td>
-							</tr>
-						</tbody></table>
-						
-						<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse: collapse;" class="fullCenter">
-							<tbody><tr>
-								<td width="450" height="50"></td>
-							</tr>
+					<% content_for :footer do %>
+						<table width="100%">
 							<tr>
-								<td width="450" height="1" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
+								<td class="aligncenter content-block">
+									<tr>
+										<h4>What if I don't hear back?</h4>
+										<p>Don't worry.
+											<%= @profile_name %> might just be busy, and if it turns out they're not interested, at least you asked. You miss every shot you don't
+												take.
+										</p>
+									</tr>
+								</td>
 							</tr>
-						</tbody></table>
-													
-					</td>
-				</tr>
-			</tbody></table>
-			
-		</td>
-	</tr>
-</tbody></table>
-</body>
+						</table>
+						<% end %>

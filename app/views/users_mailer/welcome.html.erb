@@ -1,534 +1,76 @@
-<%= stylesheet_link_tag "applications_mailer" %>
+<% content_for :table_params, raw('itemprop="action" itemscope itemtype="http://schema.org/ViewAction"') %>
+	<% pretext "Welcome to Apply to Date! To get started, finish setting up your page. Heres a quick guide." %>
 
-<body style='margin: 0; padding: 0;'>
+		<tr>
+			<td class="content-wrap">
+				<meta itemprop="name" content="Edit your page" />
+				<table width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+						<td class="content-block aligncenter">
+							<%= image_tag "email/welcome/animatedlogo.gif", width: "56", alt: "", border: "" %>
+								<h1 class="aligncenter">Welcome to Apply to Date!</h1>
+								<p class="alignleft">We're excited to help you go on better dates with more
+									<%= @preferred_gender %>. Here's a quick guide on how to get started.</p>
+						</td>
+					</tr>
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="full" bgcolor="#f3f7f8" style="background-color: #f3f7f8;">
-	<tbody><tr>
-		<td align="center">
-						
-			<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile">
-				<tbody><tr>
-					<td width="100%" valign="middle" class="logo" align="center">
-					
-						
-						
-						
-					
-						<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="full" bgcolor="#ffffff" style="-webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; -moz-box-shadow:0 0 10px #dedede; -webkit-box-shadow:0 0 10px #dedede; box-shadow:0 0 10px #dedede; background-color: #ffffff;">
-							<tbody><tr>
-								<td width="450" align="center">
-                      
-									
-							
-									
-							
-									
-									
-									
-                        
-                        			
-                        
-									
-									
-									
-									
-									
-									
-									
-									
-                              	</td>
-							</tr>
-						</tbody></table>
-						
-						
-						
-						
-						
-						
-						
-						
-													
-					</td>
-				</tr>
-			</tbody></table>
-			
-		</td>
-	</tr>
-</tbody></table>
+					<tr>
+						<td class="content-block">
+							<h2>1. Fill out your page</h2>
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="full" bgcolor="#64c9e2" style="background-color: #64c9e2;">
-	<tbody><tr>
-		<td align="center">
-						
-			<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile">
-				<tbody><tr>
-					<td width="100%" valign="middle" align="center">
-					
-						
-						
-						
-                      
-						
-				
-						
-				
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-						
-													
-					</td>
-				</tr>
-			</tbody></table>
-			
-		</td>
-	</tr>
-</tbody></table>
+							<p>We suggest you:</p>
+							<p>
+								<ul>
+									<li>Link to at least one social profile</li>
+									<li>Upload two or more pics of yourself</li>
+									<li>Write a little about yourself</li>
+								</ul>
+							</p>
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="full" bgcolor="#f3f7f8" style="background-color: #f3f7f8;">
-	<tbody><tr>
-		<td align="center">
-						
-			<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile">
-				<tbody><tr>
-					<td width="100%" valign="middle" class="logo" align="center">
-					
-						<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse: collapse;" class="fullCenter">
-							<tbody><tr>
-								<td width="450" height="50"></td>
-							</tr>
-						</tbody></table>
-						
-						<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse: collapse;" class="fullCenter">
-							<tbody><tr>
-								<td width="450" height="50"></td>
-							</tr>
-						</tbody></table>
-					
-						<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="full" style="-webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; -moz-box-shadow:0 0 10px #dedede; -webkit-box-shadow:0 0 10px #dedede; box-shadow:0 0 10px #dedede; background-color: #ffffff;">
-							<tbody><tr>
-								<td width="450" align="center">
-                      
-									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile" bgcolor="#FFFFFF" style="background-color: #ffffff; border-top-left-radius: 5px; border-top-right-radius: 5px;">
-										<tbody><tr>
-											<td width="450" valign="middle" align="center" height="40">
-											</td>
-										</tr>
-									</tbody></table>
-							
-									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="full" bgcolor="#FFFFFF" style="background-color: #ffffff;">
-										<tbody><tr>
-											<td align="center" width="450" valign="middle">
-											
-												<table width="265" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
-													<tbody><tr>
-														<td width="265" class="">
-															<a href="#" style="text-decoration: none;">
-																<%= image_tag "email/welcome/animatedlogo.gif", width: "56", alt: "", border: "", class: "hover" %>
-															</a>
-														</td>
-													</tr>
-												</tbody></table>
-												
-											</td>
-										</tr>
-									</tbody></table>
-									
-									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile" bgcolor="#FFFFFF" style="background-color: #ffffff;">
-										<tbody><tr>
-											<td width="450" valign="middle" align="center" height="20">
-											</td>
-										</tr>
-									</tbody></table>
-									
-									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile" bgcolor="#FFFFFF" style="background-color: #ffffff;">
-										<tbody><tr>
-											<td width="450" valign="middle">
-												
-												<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
-													<tbody><tr>
-														<td valign="middle" width="350" style="text-align: center; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 30px; color: #ffffff; line-height: 30px; font-weight: 700;" class="fullCenter">
-															<span style="color:#000000;">Welcome to Apply to Date</span>
-														</td>
-													</tr>
-												</tbody></table>
-												
-											</td>
-										</tr>
-									</tbody></table>
-									
-									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile" bgcolor="#FFFFFF" style="background-color: #ffffff;">
-										<tbody><tr>
-											<td width="450" valign="middle" align="center" height="20">
-											</td>
-										</tr>
-									</tbody></table>
-									
-									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile" bgcolor="#FFFFFF" style="background-color: #ffffff;">
-										<tbody><tr>
-											<td align="center" width="450" valign="middle">
-												
-												<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
-													<tbody><tr>
-														<td valign="middle" width="350" style="text-align: center; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 14px; color: #ffffff; line-height: 24px;" class="fullCenter">
-															<span style="color:#000000;">We're excited to help you go on better dates with more <%= @preferred_gender %>. Here's a quick guide on how to get started.</span>
-														</td>
-													</tr>
-												</tbody></table>
-												
-											</td>
-										</tr>
-									</tbody></table>
-                      
-									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile" bgcolor="#FFFFFF" style="background-color: #ffffff;">
-										<tbody><tr>
-											<td width="450" valign="middle" align="center" height="30">
-											</td>
-										</tr>
-									</tbody></table>
-                      
-									
-									
-									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile"style="z-index: 99999; top: 0px; left: 0px;">
-										<tbody><tr>
-											<td align="center" width="450" valign="middle">
-											
-												<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
-													<tbody><tr>
-														<td valign="middle" width="350" style="text-align: left; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 26px; color: #0c0c0c; line-height: 34px; font-weight: 300;" class="fullCenter">
-															1. Fill out your page
-														</td>
-													</tr>
-												</tbody></table>
-												
-											</td>
-										</tr>
-									</tbody></table><table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile" bgcolor="#FFFFFF" style="background-color: #ffffff;">
-										<tbody><tr>
-											<td width="450" valign="middle" align="center" height="40">
-											</td>
-										</tr>
-									</tbody></table><table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile"style="z-index: 99999; top: 0px; left: 0px;">
-										<tbody><tr>
-											<td align="center" width="450" valign="middle">
-											
-												<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
-													<tbody><tr>
-														<td valign="middle" width="450" style="text-align: left; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 14px; color: #a9a9a9; line-height: 24px;" class="fullCenter">
-															<font color="#000000">Get more <%= @preferred_gender %> to ask you out by including more information in your profile.&nbsp;</font><br><br><font color="#000000">We suggest you:
-															<ul>
-																<li>Link to at least one social profile</li>
-																<li>Upload two or more pics of yourself</li>
-																<li>Write a little about yourself</li>
-															</ul>
-															<br />
-															<br />
-															Once you're ready, <strong style="color: #555"><a href="<%= raw @edit_profile_url %>">go live</a></strong> so that other people can see your page.
-															</font>
-														</td>
-													</tr>
-												</tbody></table>
-												
-											</td>
-										</tr>
-									</tbody></table><table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile"style="z-index: 99999; top: 0px; left: 0px;">
-										<tbody><tr>
-											<td width="450" valign="middle" align="center" height="30">
-											</td>
-										</tr>
-									</tbody></table><table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="fullCenter" bgcolor="#ffffff" style="background-color: #ffffff;">
-							<tbody><tr>
-								<td align="center" width="450" valign="middle">
-								
-									<span class="featuredHolder"><span class="featuredHolder"><span class="featuredHolder"><table border="0" cellpadding="0" cellspacing="0" align="center">
-										<tbody><tr>
-											<td align="center" height="38" bgcolor="#222526" style="border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; padding-left: 25px; padding-right: 25px; font-weight: 600; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; color: #ffffff; font-size: 14px;">
-												<a href="<%= raw @edit_profile_url %>" style="color: #ffffff; font-size: 14px; text-decoration: none; line-height: 34px; width: 100%;">Fill out your page</a>
-											</td>
-										</tr>
-									</tbody></table></span></span></span>
-									<br><br>
-															If you want help filling out your profile, just reply to this email.
-								</td>
-							</tr>
-						</tbody></table>
-									
-									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile"style="z-index: 99999; top: 0px; left: 0px;">
-										<tbody><tr>
-											<td width="450" valign="middle" align="center" height="50">
-											</td>
-										</tr>
-									</tbody></table><table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile"style="z-index: 99999; top: 0px; left: 0px;">
-										<tbody><tr>
-											<td align="center" width="450" valign="middle">
-											
-												<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
-													<tbody><tr>
-														<td valign="middle" width="350" style="text-align: left; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 26px; color: #0c0c0c; line-height: 34px; font-weight: 300;" class="fullCenter">
-															2. Share your page
-														</td>
-													</tr>
-												</tbody></table>
-												
-											</td>
-										</tr>
-									</tbody></table><table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile" bgcolor="#FFFFFF" style="background-color: #ffffff; z-index: 99999; top: 0px; left: 0px;">
-										<tbody><tr>
-											<td width="450" valign="middle" align="center" height="40">
-											</td>
-										</tr>
-									</tbody></table><table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile"style="z-index: 99999; top: 0px; left: 0px;">
-										<tbody><tr>
-											<td align="center" width="450" valign="middle">
-											
-												<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
-													<tbody><tr>
-														<td valign="middle" width="450" style="text-align: left; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 14px; color: #a9a9a9; line-height: 24px;" class="fullCenter">
-														<div class="url-bar" style="margin-bottom:15px;">
-															<div class="url-area">
-																<div class="link-box">
+							<p>If you want help filling out your page, just reply to this email and we'll help.</p>
+						</td>
+					</tr>
 
-																	<a href="<%= raw @profile_url %>" class="url-link" style="margin-top: 10px; text-decoration: none; display: block;"><%= raw @profile_url %></a>
-																</div>
-															</div>
-														</div>
-														
-														
-														<font color="#000000">
-															Share your page on the internet. Seriously.<br /> <br /> Link to your page in:
-																<br />
-																<ul>
-																	<li>Your Tinder bio</li>
-																	<li>Instagram</li>
-																	<li>Facebook</li>
-																	<li>OkCupid</li>
-																	<li>Twitter</li>
-																</ul>
-																<br />
-															Be shameless, because people who aren't as confident won't go on as many dates. The more who see your page, the more who apply.
-															<br /><br />
-															So get yourself out there -- and don't worry, we've already hidden your page from Google.
-															</font>
-														</td>
-													</tr>
-												</tbody></table>
-												
-											</td>
-										</tr>
-									</tbody></table><table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile"style="z-index: 99999; top: 0px; left: 0px;">
-										<tbody><tr>
-											<td width="450" valign="middle" align="center" height="50">
-											</td>
-										</tr>
-									</tbody></table>
-									
-                        			
-									
-									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile">
-										<tbody><tr>
-											<td align="center" width="450" valign="middle">
-											
-												<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
-													<tbody><tr>
-														<td valign="middle" width="350" style="text-align: left; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 26px; color: #0c0c0c; line-height: 34px; font-weight: 300;" class="fullCenter">
-															3. Get applications and go on dates!
-														</td>
-													</tr>
-												</tbody></table>
-												
-											</td>
-										</tr>
-									</tbody></table>
-									
-									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile">
-										<tbody><tr>
-											<td width="450" valign="middle" align="center" height="30">
-											</td>
-										</tr>
-									</tbody></table>
-									
-									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="full"style="z-index: 99999; top: 0px; left: 0px;">
-										<tbody><tr>
-											<td align="center" width="450" valign="middle">
-											
-												<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
-													<tbody><tr>
-														<td>
-									
-															<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
-																<tbody><tr>
-																	<td width="450" class="full-size" style="line-height: 1px;">
-																		<a href="#" style="text-decoration: none;">
-																			<%= image_tag "email/welcome/romantic-date.jpg", width: "100%", border: "0", class: "hover", alt: "" %>
-																		</a>
-																	</td>
-																</tr>
-															</tbody></table>
-									
-														</td>
-													</tr>
-												</tbody></table>
-										
-											</td>
-										</tr>
-									</tbody></table><table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile"style="z-index: 99999; top: 0px; left: 0px;">
-										<tbody><tr>
-											<td width="450" valign="middle" align="center" height="30">
-											</td>
-										</tr>
-									</tbody></table><table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile">
-										<tbody><tr>
-											<td align="center" width="450" valign="middle">
-											
-												<table width="350" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse:collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;" class="fullCenter">
-													<tbody><tr>
-														<td valign="middle" width="450" style="text-align: left; font-family: Helvetica, Arial, sans-serif, 'Open Sans'; font-size: 14px; color: #a9a9a9; line-height: 24px;" class="fullCenter">
-															<p><font color="#000000">Watch the applications roll in! We'll exchange your preferred contact information with the applications you approve.</font><br></p>
-														</td>
-													</tr>
-												</tbody></table>
-												
-											</td>
-										</tr>
-									</tbody></table>
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile">
-										<tbody><tr>
-											<td width="450" valign="middle" align="center" height="40">
-											</td>
-										</tr>
-									</tbody></table>
-									
-                              	</td>
-							</tr>
-						</tbody></table>
-						
-						<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse: collapse;" class="fullCenter">
-							<tbody><tr>
-								<td width="450" height="50"></td>
-							</tr>
-						</tbody></table>
-						
-						<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" style="text-align: center; border-collapse: collapse;" class="fullCenter">
-							<tbody><tr>
-								<td width="450" height="50"></td>
-							</tr>
-							<tr>
-								<td width="450" height="1" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
-							</tr>
-						</tbody></table>
-													
-					</td>
-				</tr>
-			</tbody></table>
-			
-		</td>
-	</tr>
-</tbody></table>
+					<tr>
+						<td class="content-block aligncenter" itemprop="handler" itemscope itemtype="http://schema.org/HttpActionHandler">
+							<a href="<%= raw @edit_profile_url %>" class="btn-primary" itemprop="url">Fill out your page</a>
+						</td>
+					</tr>
 
-<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="full" bgcolor="#ddd9b8" style="background-color: #ddd9b8;">
-	<tbody><tr>
-		<td align="center">
-		
-			
-			
-			
-		
-			
-						
-			<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="mobile">
-				<tbody><tr>
-					<td width="100%" valign="middle" class="logo" align="center">
-					
-						<table width="450" border="0" cellpadding="0" cellspacing="0" align="center" class="full" style="-webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px; -moz-box-shadow:0 0 6px #dedede; -webkit-box-shadow:0 0 6px #dedede; box-shadow:0 0 6px #dedede; background-color: #ffffff;">
-							<tbody><tr>
-								<td width="450" align="center">
-                      
-									
-							
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-									
-                              	</td>
-							</tr>
-						</tbody></table>
-						
-						
-						
-						
-													
-					</td>
-				</tr>
-			</tbody></table>
-			
-		</td>
-	</tr>
-</tbody></table>
-</body>
+					<tr>
+						<td class="content-block">
+							<h2>2. Share your page</h2>
+
+							<a href="<%= raw @profile_url %>" class="url-link aligncenter">
+								<%= raw @profile_url %>
+							</a>
+
+							<p>Link to your page in:</p>
+							<ul>
+								<li>Your Tinder bio</li>
+								<li>Instagram</li>
+								<li>Facebook</li>
+								<li>OkCupid</li>
+								<li>Twitter</li>
+							</ul>
+							<p>Be shameless, because people who aren't as confident won't go on as many dates.</p>
+							<p>The more who see your page, the more who apply. So get yourself out there – and don't worry, we've already hidden
+								your page from Google.</p>
+						</td>
+					</tr>
+
+
+					<tr>
+						<td class="content-block">
+							<h2>3. Watch the applications roll in</h2>
+							<%= image_tag "email/welcome/romantic-date.jpg", class: "full-bleed", alt: "" %>
+
+								<p>We'll exchange your preferred contact information with your matches.</p>
+						</td>
+					</tr>
+
+
+
+				</table>
+			</td>
+		</tr>

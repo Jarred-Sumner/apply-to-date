@@ -173,17 +173,17 @@ class Profile < ApplicationRecord
     @recommended_external_authentication ||= external_authentications.where(provider: recommended_contact_method).order('created_at DESC').first
   end
 
-  def contact_method_type
-    if contact_via_phone?
-      phone
+  def formatted_phone
+    if Phonelib.valid?(phone)
+      Phonelib.parse(phone).national
     else
-      recommended_external_authentication.try(:url)
+      phone
     end
   end
 
   def contact_method_value
     if contact_via_phone?
-      phone
+      formatted_phone
     else
       recommended_external_authentication.try(:url)
     end

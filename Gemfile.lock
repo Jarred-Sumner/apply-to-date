@@ -230,6 +230,7 @@ GEM
       omniauth-oauth (~> 1.1)
       rack
     pg (0.21.0)
+    phonelib (0.6.19)
     possessive (1.0.1)
     premailer (1.11.1)
       addressable
@@ -422,6 +423,7 @@ DEPENDENCIES
   omniauth-medium!
   omniauth-twitter
   pg (~> 0.18)
+  phonelib
   possessive
   premailer-rails
   pry-awesome_print
