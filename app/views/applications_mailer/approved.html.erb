@@ -1,3 +1,9 @@
+<% if @profile.contact_method_value.present? %>
+	<%= pretext("You should #{@button_label} – #{@profile.contact_method_value}. #{@profile.sections.values.first}") %>
+<% else %>
+	<%= pretext(@profile.sections.values.first) %>
+<% end %>
+
 <tr>
 	<td class="content-wrap">
 		<table width="100%" cellpadding="0" cellspacing="0">
@@ -24,7 +30,7 @@
 				<tr>
 					<td class="content-block aligncenter">
 						<% if @profile.contact_via_phone? %>
-							<a class="btn-primary" href="sms://<%= raw @profile.contact_method_value.gsub(" ", " ") %>">
+							<a class="btn-primary" href="tel://<%= raw @profile.contact_method_value.gsub(" ", " ") %>">
 								<%= @button_label %>
 									<%= @profile.contact_method_value %>
 							</a>
