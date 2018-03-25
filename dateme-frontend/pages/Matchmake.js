@@ -88,7 +88,7 @@ class _MatchmakeActionsMenu extends React.Component {
             display: flex;
             padding: 10px 14px;
             width: 100%;
-            height: calc(${ACTIONS_MENU_HEIGHT}px);
+            height: ${ACTIONS_MENU_HEIGHT + "px"};
             justify-content: space-around;
             border-top: 1px solid #e8e8e8;
             background-color: white;

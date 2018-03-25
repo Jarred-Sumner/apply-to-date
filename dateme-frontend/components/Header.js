@@ -12,53 +12,49 @@ import { Link } from "../routes";
 import Icon from "./Icon";
 import ActiveLink from "./ActiveLink";
 import Text from "./Text";
+import Divider from "./Divider";
 import classNames from "classnames";
 import _ from "lodash";
 import { Router } from "../routes";
 import { buildEditProfileURL } from "../lib/routeHelpers";
 import ProfileMenu from "./ProfileMenu";
 import { setIsMobile } from "../lib/Mobile";
+import { defaultProps } from "recompose";
+import { isDatesEnabled } from "../helpers/dateEvent";
 
-const isSwitcherRouteActive = (router, href) => {
-  return router.asPath.split("?")[0] === href;
-};
-
-const textTypeForRouter = (router, href) => {
-  if (isSwitcherRouteActive(router, href)) {
-    return "switcher--active";
-  } else {
-    return "switcher--inactive";
+class _SwitcherItemComponent extends React.Component {
+  get textType() {
+    return this.props.isActive ? "switcher--active" : "switcher--inactive";
   }
-};
-
-class SwitcherItemComponent extends React.Component {
-  componentDidMount() {
-    Router.prefetchRoute(this.props.href);
-  }
-
-  handleClick = evt => {
-    evt.preventDefault();
-
-    Router.pushRoute(this.props.href);
-  };
 
   render() {
-    const { router, href, iconType, children, isMobile } = this.props;
-    const isActive = isSwitcherRouteActive(router, href);
+    const {
+      router,
+      href,
+      iconType,
+      isActive,
+      children,
+      isMobile,
+      first,
+      last,
+      onClick
+    } = this.props;
 
     return (
       <a
-        onClick={this.handleClick}
+        onClick={onClick}
         href={href}
         className={classNames("SwitcherItem Matchmake", {
           "SwitcherItem--active": isActive,
+          "SwitcherItem--first": first,
+          "SwitcherItem--last": last,
           "SwitcherItem--inactive": !isActive
         })}
       >
         <Icon type={iconType} size="17px" />
         {!isMobile && (
           <div className="TextWrapper">
-            <Text type={textTypeForRouter(router, href)}>{children}</Text>
+            <Text type={this.textType}>{children}</Text>
           </div>
         )}
 
@@ -75,12 +71,22 @@ class SwitcherItemComponent extends React.Component {
             border: 1px solid transparent;
           }
 
-          :global(.SwitcherItem--inactive:first-of-type) {
+          .SwitcherItem--active {
+            background-image: linear-gradient(
+              -122deg,
+              #00c0c7 0%,
+              #00c8c5 49%,
+              #03e0cb 100%
+            );
+            background-color: transparent;
+          }
+
+          .SwitcherItem--first {
             border-top-left-radius: 28px;
             border-bottom-left-radius: 28px;
           }
 
-          :global(.SwitcherItem--inactive:last-of-type) {
+          .SwitcherItem--last {
             border-top-right-radius: 28px;
             border-bottom-right-radius: 28px;
           }
@@ -126,93 +132,63 @@ class SwitcherItemComponent extends React.Component {
   }
 }
 
-const SwitcherItem = withRouter(SwitcherItemComponent);
+const SwitcherItem = defaultProps({ prefetch: true })(
+  ActiveLink(_SwitcherItemComponent)
+);
 
-const Switcher = withRouter(({ router, isMobile }) => (
+const Switcher = withRouter(({ router, isMobile, showDates = false }) => (
   <div className="Wrapper">
     <div className="Switcher">
-      <div
-        className={classNames("Switcher-bg", "Switcher-bg--left", {
-          "Switcher-bg--leftActive": isSwitcherRouteActive(router, "/shuffle")
-        })}
-      />
-      <SwitcherItem isMobile={isMobile} href={"/shuffle"} iconType="shuffle">
+      <SwitcherItem
+        first
+        isMobile={isMobile}
+        href={"/shuffle"}
+        iconType="shuffle"
+      >
         Shuffle
       </SwitcherItem>
 
+      <Divider height="100%" color="#dcdfe8" width="1px" />
+
+      {showDates && (
+        <React.Fragment>
+          <SwitcherItem
+            isMobile={isMobile}
+            href={"/dates"}
+            additionalMatches={[/dates\/.*/]}
+            iconType="date"
+          >
+            Dates
+          </SwitcherItem>
+
+          <Divider height="100%" color="#dcdfe8" width="1px" />
+        </React.Fragment>
+      )}
+
       <SwitcherItem
+        last
         isMobile={isMobile}
         href={"/matchmake"}
         iconType="matchmake"
       >
         Matchmake
       </SwitcherItem>
-      <div
-        className={classNames("Switcher-bg", "Switcher-bg--right", {
-          "Switcher-bg--rightActive": isSwitcherRouteActive(
-            router,
-            "/matchmake"
-          )
-        })}
-      />
 
       <style jsx>{`
         .Switcher {
           display: grid;
           justify-content: center;
           align-items: center;
-          grid-template-columns: 1fr 1fr;
-          width: max-content;
-          margin-left: auto;
-          margin-right: auto;
+          grid-area: "center";
+          grid-auto-flow: column;
+          grid-template-columns: ${showDates
+            ? "1fr 1px 1fr 1px 1fr"
+            : "1fr 1px 1fr"};
+          border: 1px solid #dcdfe8;
+          align-self: center;
+
           border-radius: 28px;
           position: relative;
-        }
-
-        .Switcher-bg {
-          background-color: white;
-          position: absolute;
-          top: 0;
-          bottom: 0;
-          display: block;
-          content: "";
-          z-index: 0;
-
-          width: 50%;
-          height: 100%;
-          border: 1px solid #dcdfe8;
-
-          transition: transform 0.1s linear;
-        }
-
-        .Switcher-bg--left {
-          border-top-left-radius: 28px;
-          border-bottom-left-radius: 28px;
-        }
-
-        .Switcher-bg--right {
-          border-top-right-radius: 28px;
-          border-bottom-right-radius: 28px;
-        }
-
-        .Switcher-bg--leftActive,
-        .Switcher-bg--rightActive {
-          background-image: linear-gradient(
-            -122deg,
-            #00c0c7 0%,
-            #00c8c5 49%,
-            #03e0cb 100%
-          );
-          background-color: transparent;
-          border: 0;
-        }
-
-        .Switcher-bg--left {
-          left: 0;
-        }
-
-        .Switcher-bg--right {
-          right: 0;
         }
       `}</style>
     </div>
@@ -412,7 +388,10 @@ class Header extends React.Component {
 
               {showChildren && !children ? (
                 this.props.isProbablyLoggedIn ? (
-                  <Switcher isMobile={isMobile} />
+                  <Switcher
+                    showDates={isDatesEnabled(this.props.currentProfile)}
+                    isMobile={isMobile}
+                  />
                 ) : (
                   <div />
                 )
@@ -434,7 +413,7 @@ class Header extends React.Component {
                   background-color: white;
                   z-index: 999;
                   grid-template-areas: "left center right";
-                  grid-template-columns: 1fr 1fr 1fr;
+                  grid-template-columns: 1fr auto 1fr;
                   justify-content: space-between;
                   align-items: center;
                 }

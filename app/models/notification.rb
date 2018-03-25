@@ -47,10 +47,23 @@ class Notification < ApplicationRecord
     elsif new_date_event_application?
       {
         name: notifiable.name,
-        thumbnail: notifiable.photos.try(:first)
+        thumbnail: notifiable.photos.try(:first),
+        category: notifiable.category,
+      }
+    elsif please_rsvp_to_date_event?
+      {
+        name: notifiable.profile.name,
+        thumbnail: notifiable.profile.photos.try(:first),
+        category: notifiable.category,
+      }
+    elsif swapped_date_event?
+      {
+        name: notifiable.profile.name,
+        thumbnail: notifiable.profile.photos.try(:first),
+        category: notifiable.category,
       }
     else
-      {}
+
     end
   end
 

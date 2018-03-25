@@ -17,6 +17,31 @@ routes
     pattern: "/notifications",
     page: "Notifications"
   })
+  .add({
+    name: "DateEventListPicker",
+    pattern: "/dates",
+    page: "DateEventList"
+  })
+  .add({
+    name: "DateEventList",
+    pattern: "/dates/:id",
+    page: "DateEventList"
+  })
+  .add({
+    name: "DateEventApplicationListPicker",
+    pattern: "/dates/:dateEventId/pick-someone",
+    page: "DateEventApplicationList"
+  })
+  .add({
+    name: "DateEventApplicationList",
+    pattern: "/dates/:dateEventId/pick-someone/:id",
+    page: "DateEventApplicationList"
+  })
+  .add({
+    name: "DateEventRedirector",
+    pattern: "/d/:id",
+    page: "DateEventRedirector"
+  })
   .add("CreateAccount", "/sign-up")
   .add({
     name: "create-account",
@@ -102,6 +127,11 @@ routes
     name: "EditProfile",
     pattern: "/:id/edit",
     page: "EditProfile"
+  })
+  .add({
+    name: "ShowDateEvent",
+    pattern: "/:profileId/:slug",
+    page: "ShowDateEvent"
   });
 
 module.exports = routes;

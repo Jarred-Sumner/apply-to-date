@@ -27,6 +27,9 @@ import Link from "../static/Icon/icons/link.svg";
 import Shuffle from "../static/Icon/icons/shuffle.svg";
 import User from "../static/Icon/icons/user.svg";
 import Retweet from "../static/Icon/icons/retweet.svg";
+import LocationIcon from "../static/Icon/icons/location.svg";
+import EditIcon from "../static/Icon/icons/edit.svg";
+import DateIcon from "../static/Icon/icons/date.svg";
 
 import ThumbsUp from "../static/Icon/icons/thumbs-up.svg";
 import ThumbsDown from "../static/Icon/icons/thumbs-down.svg";
@@ -55,6 +58,9 @@ const ICON_COMPONENT_BY_TYPE = {
   matchmake: Matchmake,
   user: User,
   link: Link,
+  location: LocationIcon,
+  edit: EditIcon,
+  date: DateIcon,
   linkedin: defaultProps({ provider: "linkedin" })(SocialIcon),
   "thumbs-up": ThumbsUp,
   "thumbs-down": ThumbsDown,
@@ -66,7 +72,8 @@ export default ({
   color = "#ffffff",
   size = "18px",
   width,
-  inline,
+  inline = false,
+  rotate,
   height
 }) => {
   let Component = ICON_COMPONENT_BY_TYPE[type];
@@ -77,17 +84,22 @@ export default ({
       <style jsx>{`
         .IconContainer {
           align-items: center;
-          display: ${inline ? "inline-flex" : "flex"}
+          display: ${typeof inline !== "undefined" && inline
+            ? "inline-flex"
+            : "flex"};
           flex: 0;
           justify-content: center;
+          ${rotate && `transform: rotate(${rotate});`};
         }
 
         .IconContainer :global(.SVGStroke) {
-          stroke: ${color} !important;
+          stroke: ${typeof color !== "undefined"
+            ? color
+            : "#ffffff"} !important;
         }
 
         .IconContainer :global(.SVGFill) {
-          fill: ${color} !important;
+          fill: ${typeof color !== "undefined" ? color : "#ffffff"} !important;
         }
       `}</style>
     </div>

@@ -1,6 +1,7 @@
 import RateButtons from "./RateButton";
 import _ from "lodash";
 import Thumbnail from "./Thumbnail";
+import TwoThumbnail from "./TwoThumbnail";
 import Text from "./Text";
 import { buildUrl } from "../api";
 import { buildProfileShareURL } from "../lib/routeHelpers";
@@ -106,39 +107,13 @@ export default class MatchmakePreviewGraphic extends React.Component {
 
     return (
       <div className="Container">
-        <div className="Pics">
-          <a
-            className="Pic"
-            key={currentPair.left}
-            target="_blank"
-            href={buildProfileShareURL(currentPair.left)}
-          >
-            <Thumbnail
-              autoSize={false}
-              size="105px"
-              url={photoURL(currentPair.left)}
-              circle
-            />
-          </a>
-          <div className="Divider">
-            <Text size="30px" lineHeight="40px">
-              +
-            </Text>
-          </div>
-          <a
-            className="Pic"
-            key={currentPair.right}
-            target="_blank"
-            href={buildProfileShareURL(currentPair.right)}
-          >
-            <Thumbnail
-              autoSize={false}
-              size="105px"
-              url={photoURL(currentPair.right)}
-              circle
-            />
-          </a>
-        </div>
+        <TwoThumbnail
+          left={photoURL(currentPair.left)}
+          autoSize={false}
+          leftURL={buildProfileShareURL(currentPair.left)}
+          right={photoURL(currentPair.right)}
+          rightURL={buildProfileShareURL(currentPair.right)}
+        />
 
         <div className="Rate">
           <RateButtons
@@ -179,45 +154,6 @@ export default class MatchmakePreviewGraphic extends React.Component {
 
           .Divider {
             width: 45px;
-          }
-
-          .Pics {
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            align-content: center;
-          }
-
-          .Pic {
-            transform: scale(0);
-            animation-delay: 0.2s;
-            opacity: 0;
-            flex: 1;
-            width: 107px;
-            height: 107px;
-            animation: show-photo 0.8s ease-in-out;
-            animation-fill-mode: forwards;
-          }
-
-          @keyframes show-photo {
-            0% {
-              opacity: 0;
-              transform: scale(0);
-            }
-
-            50% {
-              opacity: 0.9;
-              transform: scale(1.1);
-            }
-            80% {
-              opacity: 1;
-              transform: scale(0.89);
-            }
-
-            100% {
-              opacity: 1;
-              transform: scale(1);
-            }
           }
 
           @media (max-width: 500px) {

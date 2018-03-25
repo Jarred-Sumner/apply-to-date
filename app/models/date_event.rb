@@ -3,7 +3,7 @@ class DateEvent < ApplicationRecord
   belongs_to :profile
   belongs_to :user
   has_many :date_event_applications
-  friendly_id :build_slug, use: :scoped, :scope => :profile
+  friendly_id :build_slug, use: [:scoped, :history], :scope => :profile
   has_many :notifications, as: :notifiable
 
   LABELS_BY_CATEGORY = {
@@ -23,6 +23,10 @@ class DateEvent < ApplicationRecord
       :short_slug_label,
       :medium_slug_label,
     ]
+  end
+
+  def should_generate_new_friendly_id?
+    super || category_changed? || occurs_on_day_changed? || profile_id_changed?
   end
 
   def short_slug_label

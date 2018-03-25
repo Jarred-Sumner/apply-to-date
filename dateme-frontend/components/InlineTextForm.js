@@ -110,13 +110,13 @@ export default class InlineTextForm extends React.Component {
               padding-bottom: 14px;
             }
 
-            .Form--normalSize.Form--hideInputOnMobile :global(.InlineApply-Button) {
+            .Form--normalSize.Form--hideInputOnMobile
+              :global(.InlineApply-Button) {
               border-radius: 100px;
               padding-top: 14px;
               padding-bottom: 14px;
             }
-
-     
+          }
         `}</style>
       </form>
     );

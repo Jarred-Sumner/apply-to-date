@@ -30,10 +30,11 @@ class DateEventApplication < ApplicationRecord
       update!(approval_status: DateEventApplication.approval_statuses[:approved])
 
       notification = Notification.create!(
-        notifiable: self,
+        notifiable: date_event,
         user: profile.user,
         kind: Notification.kinds[:please_rsvp_to_date_event],
         occurred_at: DateTime.now,
+        expires_at: date_event.occurs_on_day + 24.hours,
       )
 
       notification.enqueue_email!
@@ -46,7 +47,7 @@ class DateEventApplication < ApplicationRecord
     ActiveRecord::Base.transaction do
       update!(approval_status: DateEventApplication.approval_statuses[:swap_date])
 
-      Application.create!({
+      application = Application.create!({
         applicant_id: profile.user_id,
         profile_id: date_event.profile_id,
         sections: sections.merge(profile.sections),
@@ -65,7 +66,7 @@ class DateEventApplication < ApplicationRecord
       })
 
       notification = Notification.create!({
-        notifiable: self,
+        notifiable: application,
         user: profile.user,
         kind: Notification.kinds[:swapped_date_event],
         occurred_at: DateTime.now,

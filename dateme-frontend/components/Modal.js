@@ -10,7 +10,7 @@ export const ConfirmAndCloseButtons = ({
 }) => {
   return (
     <div className="Container">
-      <Button componentType="div" fill={false} onCancel={onCancel}>
+      <Button componentType="div" fill={false} onClick={onCancel}>
         {cancelLabel}
       </Button>
 
@@ -138,6 +138,7 @@ export default ({
           position: absolute;
           top: 14px;
           right: 14px;
+          transform: scale(0.75) translateY(-25%);
           cursor: pointer;
         }
         .react-responsive-modal-transition-enter {

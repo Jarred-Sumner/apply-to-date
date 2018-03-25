@@ -12,9 +12,13 @@ const getPathname = href => {
 
 const isActive = router => href => {
   const pathname = getPathname(href);
-  const currentPath = router.asPath.split("?")[0];
-
+  const currentPath = getPathname(router.asPath.split("?")[0]);
   return pathname === currentPath;
+};
+
+const isRegexActive = router => regex => {
+  const currentPath = getPathname(router.asPath.split("?")[0]);
+  return regex.test(currentPath);
 };
 
 const ActiveLink = Component =>
@@ -36,13 +40,16 @@ const ActiveLink = Component =>
         Router.pushRoute(href);
       };
 
-      if (prefetch) {
+      if (prefetch && typeof window !== "undefined") {
         Router.prefetchRoute(href);
       }
 
       return (
         <Component
-          isActive={!![href, ...additionalMatches].find(isActive(router))}
+          isActive={
+            isActive(router)(href) ||
+            additionalMatches.find(isRegexActive(router))
+          }
           href={href}
           onClick={handleClick}
           {...otherProps}

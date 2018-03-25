@@ -3,6 +3,7 @@ import _ from "lodash";
 import classNames from "classnames";
 import Icon from "./Icon";
 import Button from "./Button";
+import { phoneLabel } from "../helpers/phone";
 
 const PhoneButton = ({ phone }) => {
   return (
@@ -13,7 +14,7 @@ const PhoneButton = ({ phone }) => {
       size="small"
       href={`sms://${phone}`}
     >
-      {phone}
+      {phoneLabel(phone)}
     </Button>
   );
 };

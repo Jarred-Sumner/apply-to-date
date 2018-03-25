@@ -1,5 +1,6 @@
-import {Link} from "../routes";
+import { Link } from "../routes";
 import classNames from "classnames";
+import { COLORS } from "../helpers/styles";
 
 const Button = ({
   onClick,
@@ -17,7 +18,8 @@ const Button = ({
   rightIcon,
   circle = false,
   pending = false,
-  disabled = false
+  disabled = false,
+  maxWidth
 }) => {
   const realComponentType = href ? "a" : componentType;
   const iconOnly = !children && !!icon;
@@ -25,6 +27,8 @@ const Button = ({
     "Button--iconOnly": iconOnly,
     "Button--icon": !!icon,
     "Button--circle": !!circle,
+    "Button--blue--unfill": color === "blue" && !fill,
+    "Button--blue--fill": color === "blue" && fill,
     "Button--black--fill": color === "black" && fill,
     "Button--black--unfill": color === "black" && !fill,
     "Button--green--fill": color === "green" && fill,
@@ -118,6 +122,22 @@ const Button = ({
           color: #fff;
         }
 
+        .Button--blue--fill {
+          background-color: ${COLORS.BLUE};
+          color: #fff;
+        }
+
+        .Button--blue--unfill {
+          border-color: ${COLORS.BLUE};
+          background-color: #fff;
+          color: ${COLORS.BLUE};
+        }
+
+        .Button--blue--fill:hover {
+          background-color: color(rgb(0, 158, 255) shade(10%));
+          color: #fff;
+        }
+
         .Button--red--fill {
           background-color: #860f06;
           color: #fff;
@@ -131,6 +151,7 @@ const Button = ({
         .Button--large {
           padding: 16px 24px;
           font-size: 14px;
+          ${maxWidth && `max-width: ${maxWidth};`};
         }
 
         .Button--normal {

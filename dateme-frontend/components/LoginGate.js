@@ -2,7 +2,9 @@ import {
   updateEntities,
   setCurrentUser,
   setLoginStatus,
-  setCheckingLogin
+  setCheckingLogin,
+  currentProfileSelector,
+  currentUserSelector
 } from "../redux/store";
 import { getProfile, getCurrentUser } from "../api";
 import { connect } from "react-redux";
@@ -189,7 +191,8 @@ export default _.memoize((Component, options = {}) => {
       return {
         isProbablyLoggedIn: !!state.currentUserId,
         currentUserId: state.currentUserId,
-        currentUser: state.user[state.currentUserId],
+        currentUser: currentUserSelector(state),
+        currentProfile: currentProfileSelector(state),
         loginStatus: state.loginStatus,
         userAgent: state.userAgent
       };

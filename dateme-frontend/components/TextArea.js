@@ -22,7 +22,9 @@ export default class TextArea extends React.Component {
         <TextareaAutosize
           className={classNames("TextArea", {
             "TextArea--Tagline": type === "Tagline",
-            "TextArea--ProfilePageTitle": type === "ProfilePageTitle"
+            "TextArea--WhyDateEvent": type === "WhyDateEvent",
+            "TextArea--ProfilePageTitle": type === "ProfilePageTitle",
+            "TextArea--DateEventSummary": type === "DateEventSummary"
           })}
           {...otherProps}
           name={name}
@@ -51,6 +53,15 @@ export default class TextArea extends React.Component {
             color: #b9bed1;
           }
 
+          .TextArea--DateEventSummary {
+            font-family: Frank Ruhl Libre, serif;
+            color: #000;
+            font-size: 16px;
+            line-height: 18px;
+            text-align: left;
+            padding: 7px 11px;
+          }
+
           .TextArea--ProfilePageTitle {
             font-family: Frank Ruhl Libre, serif;
             color: #000;
@@ -58,6 +69,16 @@ export default class TextArea extends React.Component {
             line-height: 35px;
             text-align: center;
             font-weight: 700;
+            outline: none;
+          }
+
+          .TextArea--WhyDateEvent {
+            font-family: Frank Ruhl Libre, serif;
+            color: #000;
+            font-size: 16px;
+            line-height: 20px;
+            text-align: left;
+            font-weight: 400;
             outline: none;
           }
 

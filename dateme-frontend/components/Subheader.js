@@ -12,7 +12,8 @@ export default ({
   direction = "row",
   padding,
   position = "fixed",
-  spaceBetween
+  spaceBetween,
+  showLeftBorder = false
 }) => {
   if (!bottom) {
     return (
@@ -37,6 +38,7 @@ export default ({
             flex-direction: ${direction};
             flex: 1;
             border-bottom: 1px solid #e8e8e8;
+            ${showLeftBorder && `border-left: 1px solid #e8e8e8;`};
           }
 
           .Subheader--noPadding {

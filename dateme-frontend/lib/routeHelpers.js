@@ -82,5 +82,24 @@ export const buildRouteForNotification = notification => {
     return buildApplicationURL(notifiableId);
   } else if (notifiableType === "Profile") {
     return buildProfileURL(notifiableId);
+  } else if (notifiableType === "DateEvent") {
+    return `/d/${notifiableId}`;
   }
+};
+
+export const buildDateEventURL = dateEventId => {
+  return encodeURI(process.env.SHARE_DOMAIN + "/dates/" + dateEventId);
+};
+
+export const buildCreatorDateEventApplicationURL = (
+  applicationId,
+  dateEventId
+) => {
+  return encodeURI(
+    process.env.SHARE_DOMAIN +
+      "/dates/" +
+      dateEventId +
+      "/pick-someone/" +
+      applicationId
+  );
 };

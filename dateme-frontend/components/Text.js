@@ -15,6 +15,8 @@ const Text = ({
   letterSpacing = "default",
   align = "inherit",
   wrap = null,
+  width,
+  animated = false,
   underline = false,
   hoverable = false,
   highlightId
@@ -59,6 +61,9 @@ const Text = ({
 
         .Text--noWrap {
           white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          ${width && `width: ${width};`};
         }
 
         .Text :global(a),
@@ -346,7 +351,11 @@ export default ({ type, children, ...otherProps }) => {
     );
   } else if (type === "muted") {
     return (
-      <Text {...otherProps} color="#B0B0B0" size="13px">
+      <Text
+        {...otherProps}
+        color="#B0B0B0"
+        size={_.get(otherProps, "size", "13px")}
+      >
         {children}
       </Text>
     );

@@ -1,5 +1,5 @@
 class Api::V1::DateEventsController < Api::V1::ApplicationController
-  before_action :require_login, except: :show
+  before_action :require_login, except: [:show, :show_slug]
 
   def index
     if params[:profile_id] == 'me'
@@ -102,6 +102,10 @@ class Api::V1::DateEventsController < Api::V1::ApplicationController
 
     if params[:location].present?
       date_event.location = params[:location]
+    end
+
+    if params[:category].present? && DateEvent.categories.keys.map(&:to_s).include?(params[:category])
+      date_event.category = params[:category]
     end
 
     if !params[:summary].nil?

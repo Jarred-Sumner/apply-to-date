@@ -48,6 +48,7 @@ export default ({
   size = "default",
   renderMessage,
   renderOutside,
+  flexDirection = "column",
   contentScrolls = false
 }) => {
   const classes = classNames("PageSize", {
@@ -83,7 +84,7 @@ export default ({
           padding-right: 14px;
           max-width: 710px;
           display: flex;
-          flex-direction: column;
+          flex-direction: ${flexDirection};
           background-color: ${gray ? "#F5F5F5" : "unset"};
         }
 

@@ -1,5 +1,6 @@
 import request from "superagent";
 import superagentJsonapify from "superagent-jsonapify";
+import qs from "qs";
 
 superagentJsonapify(request);
 
@@ -173,6 +174,130 @@ export const getVerifications = () => {
   return get(`/verifications`);
 };
 
+export const rateDateEventApplication = (
+  dateEventId,
+  applicationId,
+  approvalStatus
+) => {
+  return post(`/date_events/${dateEventId}/rate/${applicationId}`, {
+    approval_status: approvalStatus
+  });
+};
+
+export const swapDate = (dateEventId, applicationId, category) => {
+  return post(`/date_events/${dateEventId}/rate/${applicationId}`, {
+    approval_status: "swap_date",
+    category
+  });
+};
+
+export const getDateEvents = ({ region, id }) => {
+  const query = qs.stringify({ id, region }, { arrayFormat: "brackets" });
+  return get(`/date_events?${query}`);
+};
+
+export const getDateEvent = id => {
+  return get(`/date_events/${id}`);
+};
+
+export const getDateEventApplication = id => {
+  return get(`/date_event_applications/${id}`);
+};
+
+export const updateDateEventApplication = ({ id, sections }) => {
+  return put(`/date_event_applications/${id}`, {
+    sections
+  });
+};
+
+export const updateRSVPForDateEventApplication = ({
+  id,
+  confirmationStatus
+}) => {
+  return put(`/date_event_applications/${id}`, {
+    confirmation_status: confirmationStatus
+  });
+};
+
+export const getAppliedDateEvents = date_event_ids => {
+  return get(
+    `/date_event_applications?${qs.stringify(
+      { date_event_ids },
+      { arrayFormat: "brackets" }
+    )}`
+  );
+};
+
+export const getPendingDateApplications = () => {
+  return get(`/date_event_applications`);
+};
+
+export const getPendingDateEvents = () => {
+  return getPendingDateApplications().then(response => {
+    const dateEventIDs = response.body.data.map(
+      ({ dateEventId }) => dateEventId
+    );
+    var responseBody = response.body;
+    return getDateEvents({ id: dateEventIDs }).then(dateEventsResponse => {
+      return {
+        body: {
+          data: [...responseBody.data, ...dateEventsResponse.body.data],
+          included: [
+            ...(responseBody.included || []),
+            ...(dateEventsResponse.body.included || [])
+          ]
+        }
+      };
+    });
+  });
+};
+
+export const createDateEventApplication = ({ dateEventId, profileId }) => {
+  return post(`/date_event_applications`, {
+    profile_id: profileId,
+    date_event_id: dateEventId
+  });
+};
+
+export const createDateEvent = ({
+  occursOnDay,
+  category,
+  summary,
+  location,
+  region
+}) => {
+  return post(`/date_events`, {
+    date_event: {
+      occurs_on_day: occursOnDay,
+      summary,
+      region,
+      category,
+      location
+    }
+  });
+};
+
+export const updateDateEvent = ({
+  occursOnDay,
+  category,
+  summary,
+  location,
+  id
+}) => {
+  return put(`/date_events/${id}`, {
+    occurs_on_day: occursOnDay,
+    summary,
+    category,
+    location
+  });
+};
+
+export const hideDateEvent = id => {
+  return put(`/date_events/${id}`, {
+    status: "hidden"
+  });
+};
+
 export const login = session => {
   return post(`/sessions`, {
     session
@@ -214,4 +339,11 @@ export const incrementProfileViewCount = id => {
 
 export const rateApplication = (id, status) => {
   return put(`/ratings/${id}`, { status });
+};
+
+export const getDateEventBySlug = ({ profileId, slug }) => {
+  return post(`/date_events/slug`).send({
+    profile_id: profileId,
+    slug
+  });
 };

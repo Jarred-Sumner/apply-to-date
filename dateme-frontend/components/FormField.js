@@ -4,10 +4,12 @@ import UnwrappedPlacesAutocomplete from "react-places-autocomplete";
 import Checkbox from "./Checkbox";
 import _ from "lodash";
 import Radio from "./Radio";
+import PillButton from "./PillButton";
 import TextInput from "./TextInput";
 import scriptLoader from "react-async-script-loader";
 import DatePicker from "./DatePicker";
 import moment from "moment";
+import { SPACING } from "../helpers/styles";
 
 const PlacesAutocomplete = scriptLoader(
   "https://maps.googleapis.com/maps/api/js?key=AIzaSyD_ad15stG5b8YA-oVUoneLHmIW7pWpa3w&libraries=places"
@@ -59,6 +61,7 @@ export default class FormField extends React.Component {
   handleChange = evt => {
     this.props.onChange(evt.target.value);
   };
+  handlePillChange = value => this.props.onChange(value);
   handleLocationChange = location => {
     this.props.onChange(location);
   };
@@ -137,6 +140,41 @@ export default class FormField extends React.Component {
               display: flex;
               justify-content: space-between;
               width: 100%;
+            }
+          `}</style>
+        </div>
+      );
+    } else if (type === "pill") {
+      return (
+        <div className="Pills">
+          {radios.map((radio, index) => (
+            <div className="Pill">
+              <PillButton
+                key={index}
+                selected={radio.value === value}
+                value={radio.value}
+                name={name}
+                onChange={this.handlePillChange}
+              >
+                {radio.label}
+              </PillButton>
+            </div>
+          ))}
+          <style jsx>{`
+            .Pills {
+              display: flex;
+              flex-wrap: wrap;
+              width: 100%;
+            }
+
+            .Pill {
+              margin-right: ${SPACING.SMALL}px;
+              margin-bottom: ${SPACING.SMALL}px;
+            }
+
+            .Pill:last-child {
+              margin-right: 0;
+              margin-bottom: 0;
             }
           `}</style>
         </div>
@@ -229,7 +267,14 @@ export default class FormField extends React.Component {
   };
 
   render() {
-    const { icon, name, label, children, showBorder = true } = this.props;
+    const {
+      icon,
+      name,
+      label,
+      children,
+      showBorder = true,
+      inline
+    } = this.props;
 
     return (
       <fieldset onClick={this.focus}>
@@ -262,7 +307,7 @@ export default class FormField extends React.Component {
 
           label {
             margin-bottom: 7px;
-            margin-left: 22px;
+            margin-left: ${inline ? "0px" : "22px"};
             text-align: left;
           }
 
@@ -270,8 +315,7 @@ export default class FormField extends React.Component {
             display: flex;
             position: relative;
             flex-direction: row;
-            padding: 12px 22px;
-            border-radius: 100px;
+            ${!inline && "padding: 12px 22px;"} border-radius: 100px;
           }
 
           .InputContainer--bordered {
