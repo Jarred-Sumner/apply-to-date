@@ -80,7 +80,7 @@ class CreateDateEventModal extends React.Component {
 
         if (dateEvent) {
           this.props.onHide();
-          Router.pushRoute(cdateEvent.url);
+          Router.pushRoute(dateEvent.url);
         }
       })
       .catch(exception => {

@@ -48,7 +48,7 @@ class Notification < ApplicationRecord
       {
         name: notifiable.name,
         thumbnail: notifiable.photos.try(:first),
-        category: notifiable.category,
+        category: notifiable.date_event.category,
       }
     elsif please_rsvp_to_date_event?
       {

@@ -25,6 +25,19 @@ class Api::V1::DateEventApplicationsController < Api::V1::ApplicationController
       @date_event_application.sections = current_profile.sections
 
       @date_event_application.save!
+
+      @date_event_application.verified_networks.destroy_all
+      current_profile.external_authentications.each do |auth|
+        VerifiedNetwork.create!(date_event_application_id: @date_event_application.id, external_authentication_id: auth.id)
+      end
+
+      Notification.create!(
+        user: date_event.user,
+        notifiable: @date_event_application,
+        kind: Notification.kinds[
+          :new_date_event_application
+        ]
+      )
     else
 
     end

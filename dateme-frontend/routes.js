@@ -38,6 +38,11 @@ routes
     page: "DateEventApplicationList"
   })
   .add({
+    name: "DateEventApplicationRedirector",
+    pattern: "/de/:id",
+    page: "DateEventApplicationRedirector"
+  })
+  .add({
     name: "DateEventRedirector",
     pattern: "/d/:id",
     page: "DateEventRedirector"

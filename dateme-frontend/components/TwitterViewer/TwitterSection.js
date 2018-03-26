@@ -149,7 +149,12 @@ export default class TwitterSection extends React.Component {
       this.setState({ status: STATUS.loading });
     }
 
-    getFeed("twitter", this.props.profileId, this.props.applicationId)
+    getFeed({
+      provider: "twitter",
+      profileId: this.props.profileId,
+      applicationId: this.props.applicationId,
+      dateEventApplicationId: this.props.dateEventApplicationId
+    })
       .then(response => {
         this.setState({
           tweets: response.body.data,

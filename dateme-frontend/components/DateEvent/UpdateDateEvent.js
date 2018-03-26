@@ -1,4 +1,4 @@
-import FormField from "../FormField";
+import FormField, { CategoryFormField } from "../FormField";
 import {
   CATEGORIES,
   LABELS_BY_CATEGORY,
@@ -118,20 +118,7 @@ export default class UpdateDateEvent extends React.Component {
 
     return (
       <div className="Container">
-        <FormField
-          label="What do you want to do?"
-          onChange={onChangeCategory}
-          type="pill"
-          inline
-          showBorder={false}
-          value={category}
-          radios={_.keys(PUBLIC_CATEGORIES).map(category => ({
-            label: `${LABELS_BY_CATEGORY[category]} ${
-              EMOJI_BY_CATEGORY[category]
-            }`,
-            value: category
-          }))}
-        />
+        <CategoryFormField onChange={onChangeCategory} value={category} />
 
         <Divider height={`${SPACING.LARGE}px`} color="transparent" />
 

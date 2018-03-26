@@ -1,6 +1,8 @@
 class DateEventApplication < ApplicationRecord
   belongs_to :profile, class_name: 'Profile', optional: true
   belongs_to :date_event
+  has_many :verified_networks
+  has_many :external_authentications, through: :verified_networks
   has_one :application
 
   enum approval_status: {
@@ -22,7 +24,7 @@ class DateEventApplication < ApplicationRecord
     return self if approved?
     ActiveRecord::Base.transaction do
       date_event.date_event_applications
-        .where(approval_status: [DateEventApplication.approval_statuses[:pending], DateEventApplication.approval_statuses[:submitted]])
+        .where(approval_status: [DateEventApplication.approval_statuses[:pending], DateEventApplication.approval_statuses[:submitted], DateEventApplication.approval_statuses[:approved]])
         .where
         .not(id: id)
         .update_all(approval_status: DateEventApplication.approval_statuses[:rejected])

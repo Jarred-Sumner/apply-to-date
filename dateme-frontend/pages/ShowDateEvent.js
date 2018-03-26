@@ -18,7 +18,8 @@ import {
   withCookies,
   incrementProfileViewCount,
   getDateEventBySlug,
-  getAppliedDateEvents
+  getAppliedDateEvents,
+  getApplicationsForDateEvent
 } from "../api";
 import { bindActionCreators } from "redux";
 import Header from "../components/Header";
@@ -57,7 +58,8 @@ import ViewDateEvent from "../components/DateEvent/ViewDateEvent";
 import {
   LABELS_BY_CATEGORY,
   CATEGORIES,
-  labelWithPrefix
+  labelWithPrefix,
+  isOwnedByCurrentUser
 } from "../helpers/dateEvent";
 import cookies from "next-cookies";
 
@@ -110,6 +112,10 @@ class Profile extends React.Component {
       await getAppliedDateEvents([dateEventId]).then(response =>
         store.dispatch(updateEntities(response.body))
       );
+
+      await getApplicationsForDateEvent(dateEventId).then(response =>
+        store.dispatch(updateEntities(response.body))
+      );
     }
 
     return { profileId, dateEventId };
@@ -125,7 +131,7 @@ class Profile extends React.Component {
   }
 
   async componentDidMount() {
-    let { profile = null, dateEvent = null } = this.props;
+    let { profile = null, dateEvent = null, currentProfile } = this.props;
     if (!profile) {
       const response = await getDateEventBySlug({
         profileId: decodeURI(this.props.url.query.profileId),
@@ -153,6 +159,9 @@ class Profile extends React.Component {
         }
       );
     } else if (dateEvent) {
+      getApplicationsForDateEvent(dateEvent.id).then(response =>
+        this.props.updateEntities(response.body)
+      );
       getAppliedDateEvents([dateEvent.id]).then(response =>
         this.props.updateEntities(response.body)
       );

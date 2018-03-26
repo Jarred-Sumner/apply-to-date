@@ -19,7 +19,7 @@ const PlacesAutocomplete = scriptLoader(
 );
 
 export { geocodeByAddress, getLatLng } from "react-places-autocomplete";
-
+export { default as CategoryFormField } from "./FormField/CategoryFormField";
 export { default as PasswordFormField } from "./FormField/PasswordFormField";
 export { default as UsernameFormField } from "./FormField/UsernameFormField";
 export { default as SexFormField } from "./FormField/SexFormField";

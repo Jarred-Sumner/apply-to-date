@@ -24,7 +24,12 @@ export default class InstagramSection extends React.Component {
       this.setState({ status: STATUS.loading });
     }
 
-    getFeed("instagram", this.props.profileId, this.props.applicationId)
+    getFeed({
+      provider: "instagram",
+      profileId: this.props.profileId,
+      applicationId: this.props.applicationId,
+      dateEventApplicationId: this.props.dateEventApplicationId
+    })
       .then(response => {
         this.setState({
           instagramProfile: response.body.profile,

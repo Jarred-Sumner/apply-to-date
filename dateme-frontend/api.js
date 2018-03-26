@@ -56,10 +56,16 @@ export const getNewMatchmake = ({ exclude }) => {
   return post("/matchmakes/new").send({ exclude });
 };
 
-export const getFeed = (provider, profileId, applicationId) => {
+export const getFeed = ({
+  provider,
+  profileId,
+  applicationId,
+  dateEventApplicationId
+}) => {
   return get(`/feeds/${provider}`).query({
     profile_id: profileId,
-    application_id: applicationId
+    application_id: applicationId,
+    date_event_application_id: dateEventApplicationId
   });
 };
 
@@ -227,6 +233,9 @@ export const getAppliedDateEvents = date_event_ids => {
     )}`
   );
 };
+
+export const getApplicationsForDateEvent = dateEventId =>
+  get(`/date_events/${dateEventId}/applications`);
 
 export const getPendingDateApplications = () => {
   return get(`/date_event_applications`);

@@ -247,3 +247,34 @@ export const isOwnedByCurrentUser = ({ dateEvent, currentProfile }) => {
 export const isDatesEnabled = profile => {
   return profile && profile.region === REGIONS.bay_area;
 };
+
+export const APPLICATION_STATUSES = {
+  pending: "PENDING",
+  single_confirm_rsvp: "SINGLE_CONFIRM_RSVP",
+  double_confirm_rsvp: "DOUBLE_CONFIRM_RSVP",
+  declined: "DECLINED",
+  swap_date: "SWAP_DATE"
+};
+
+export const getApplicationStatus = dateEventApplication => {
+  if (
+    dateEventApplication.approvalStatus === "approved" &&
+    dateEventApplication.confirmationStatus === "pending_confirmation"
+  ) {
+    return APPLICATION_STATUSES.single_confirm_rsvp;
+  } else if (
+    dateEventApplication.approvalStatus === "approved" &&
+    dateEventApplication.confirmationStatus === "confirmed"
+  ) {
+    return APPLICATION_STATUSES.double_confirm_rsvp;
+  } else if (
+    dateEventApplication.approvalStatus === "approved" &&
+    dateEventApplication.confirmationStatus === "declined"
+  ) {
+    return APPLICATION_STATUSES.declined;
+  } else if (dateEventApplication.approvalStatus === "swap_date") {
+    return APPLICATION_STATUSES.swap_date;
+  } else {
+    return APPLICATION_STATUSES.pending;
+  }
+};

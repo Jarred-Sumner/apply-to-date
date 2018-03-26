@@ -18,6 +18,7 @@ import ContactButton, {
 } from "../../ContactButton";
 import { himHerThem } from "../../../lib/pronoun";
 import EditableTitle from "../EditableTitle";
+import { buildPickSomeoneURL } from "../../../lib/routeHelpers";
 
 export default class SingleConfirmDateEvent extends React.Component {
   render() {
@@ -71,7 +72,12 @@ export default class SingleConfirmDateEvent extends React.Component {
           <Divider height={`${SPACING.LARGE}px`} color="transparent" />
 
           <div className="CenterBox">
-            <Button color="blue" fill={false} onClick={onPickSomeone}>
+            <Button
+              href={buildPickSomeoneURL(dateEvent.id)}
+              color="blue"
+              fill={false}
+              onClick={onPickSomeone}
+            >
               Pick someone else
             </Button>
 

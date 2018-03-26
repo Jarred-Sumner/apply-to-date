@@ -74,6 +74,16 @@ class Api::V1::FeedsController < Api::V1::ApplicationController
       profile_id ||= application.try(:applicant).try(:username)
 
       @external_authentication = application.external_authentications.find_by(provider: params[:provider])
+    elsif params[:date_event_application_id].present?
+      application = current_user.date_event_applications.find(params[:date_event_application_id])
+
+      if application.social_links[params[:provider]].blank?
+        return render_error(message: "No #{params[:provider]} associated with application on Apply to Date")
+      end
+
+      profile_id ||= application.try(:applicant).try(:username)
+
+      @external_authentication = application.external_authentications.find_by(provider: params[:provider])
     end
 
     if profile_id.present? && !@external_authentication

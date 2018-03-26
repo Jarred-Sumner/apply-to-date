@@ -134,7 +134,7 @@ const Button = ({
         }
 
         .Button--blue--fill:hover {
-          background-color: color(rgb(0, 158, 255) shade(10%));
+          background-color: rgb(0, 158, 255);
           color: #fff;
         }
 

@@ -272,6 +272,12 @@ export const dateEventApplicationsByDateEventID = createSelector(
       }
 
       dateEventIDs[String(application.dateEventId)].push(application);
+
+      dateEventIDs[String(application.dateEventId)] = _.orderBy(
+        dateEventIDs[String(application.dateEventId)],
+        "createdAt",
+        "desc"
+      );
     });
 
     return dateEventIDs;

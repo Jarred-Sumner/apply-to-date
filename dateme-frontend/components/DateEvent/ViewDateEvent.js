@@ -10,7 +10,8 @@ import {
 import {
   getDateEvent,
   createDateEventApplication,
-  updateRSVPForDateEventApplication
+  updateRSVPForDateEventApplication,
+  getApplicationsForDateEvent
 } from "../../api";
 import Alert, { handleApiError } from "../Alert";
 import Profile from "./Profile";

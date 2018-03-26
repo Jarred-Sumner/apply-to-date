@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180321010507) do
+ActiveRecord::Schema.define(version: 20180325191008) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -310,7 +310,9 @@ ActiveRecord::Schema.define(version: 20180321010507) do
     t.string "email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "date_event_application_id"
     t.index ["application_id"], name: "index_verified_networks_on_application_id"
+    t.index ["date_event_application_id"], name: "index_verified_networks_on_date_event_application_id"
     t.index ["external_authentication_id"], name: "index_verified_networks_on_external_authentication_id"
     t.index ["profile_id"], name: "index_verified_networks_on_profile_id"
   end
@@ -341,6 +343,7 @@ ActiveRecord::Schema.define(version: 20180321010507) do
   add_foreign_key "profiles", "users"
   add_foreign_key "reports", "users"
   add_foreign_key "verified_networks", "applications"
+  add_foreign_key "verified_networks", "date_event_applications"
   add_foreign_key "verified_networks", "external_authentications"
   add_foreign_key "verified_networks", "profiles"
 end

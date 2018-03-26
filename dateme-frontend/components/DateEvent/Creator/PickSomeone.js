@@ -15,6 +15,7 @@ import { createDateEvent, createDateEventApplication } from "../../../api";
 import Timing from "../Timing";
 import EditableTitle from "../EditableTitle";
 import _ from "lodash";
+import { buildPickSomeoneURL } from "../../../lib/routeHelpers";
 
 export default class PickSomeoneDateEvent extends React.Component {
   render() {
@@ -34,16 +35,6 @@ export default class PickSomeoneDateEvent extends React.Component {
             onEdit={onEdit}
             category={dateEvent.category}
             profile={profile}
-          />
-
-          <Divider width={`${SPACING.NORMAL}px`} color="transparent" />
-          <Button
-            icon={<Icon type="edit" size="18px" color={COLORS.WHITE} />}
-            onClick={onEdit}
-            color="blue"
-            circle
-            fill
-            inline
           />
         </div>
 
@@ -75,7 +66,12 @@ export default class PickSomeoneDateEvent extends React.Component {
           <Divider height={`${SPACING.LARGE}px`} color="transparent" />
 
           <div className="ButtonContainer">
-            <Button color="blue" onClick={onPickSomeone}>
+            <Button
+              href={buildPickSomeoneURL(dateEvent.id)}
+              color="blue"
+              size="large"
+              onClick={onPickSomeone}
+            >
               Pick someone
             </Button>
           </div>

@@ -89,14 +89,14 @@ export const getContactMethod = ({ socialLinks, phone, sex }) => {
 
 export default class ContactButton extends React.Component {
   render() {
-    const { socialLinks, phone } = this.props;
+    const { socialLinks, phone, size = "normal" } = this.props;
     const contactMethod = getContactMethodType({ socialLinks, phone });
     if (contactMethod === CONTACT_METHODS.phone) {
       return (
         <Button
           icon={<Icon type="phone" active width="14px" height="14px" />}
           color="black"
-          size={"normal"}
+          size={size}
           href={`sms://${phone}`}
         >
           {phoneLabel(phone)}
@@ -113,7 +113,7 @@ export default class ContactButton extends React.Component {
               height="14px"
             />
           }
-          size={"normal"}
+          size={size}
           color="instagram"
           target="_blank"
           href={socialLinks.instagram}
@@ -128,7 +128,7 @@ export default class ContactButton extends React.Component {
             <SocialIcon provider="facebook" active width="14px" height="14px" />
           }
           color="facebook"
-          size={"normal"}
+          size={size}
           target="_blank"
           href={socialLinks.facebook}
         >
@@ -142,7 +142,7 @@ export default class ContactButton extends React.Component {
             <SocialIcon provider="twitter" active width="14px" height="14px" />
           }
           color="twitter"
-          size={"normal"}
+          size={size}
           target="_blank"
           href={socialLinks.twitter}
         >
