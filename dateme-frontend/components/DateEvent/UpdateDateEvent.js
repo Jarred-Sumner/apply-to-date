@@ -26,7 +26,7 @@ const buildDayOptions = selectedDay => {
     }
   ];
 
-  _.range(2, 6)
+  _.range(2, 7)
     .map(offset =>
       moment()
         .add(offset, "day")
