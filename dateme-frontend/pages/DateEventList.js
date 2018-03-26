@@ -35,6 +35,7 @@ import Button from "../components/Button";
 import Thumbnail from "../components/Thumbnail";
 import PageFooter from "../components/PageFooter";
 import Page from "../components/Page";
+import Divider from "../components/Divider";
 import SocialLinkList from "../components/SocialLinkList";
 import MessageBar from "../components/MessageBar";
 import PhotoGroup from "../components/PhotoGroup";
@@ -230,9 +231,15 @@ class DateEventList extends React.Component {
       showCreateModal
     } = this.state;
 
+    const {
+      isMobile,
+      canCurrentUserCreateDateEvents,
+      currentProfile
+    } = this.props;
+
     if (this.state.isLoading) {
       return <Page isLoading />;
-    } else if (!this.props.canCurrentUserCreateDateEvents) {
+    } else if (!canCurrentUserCreateDateEvents) {
       return (
         <Page contentScrolls flexDirection="row" size="100%">
           <Head noScroll disableGoogle />
@@ -240,6 +247,57 @@ class DateEventList extends React.Component {
           <Text type="title">
             Sorry, this feature is only available in the Bay Area right now.
           </Text>
+        </Page>
+      );
+    }
+
+    if (isMobile) {
+      return (
+        <Page>
+          <Head noScroll disableGoogle />
+
+          <Divider height={`${SPACING.LARGE}px`} color="transparent" />
+
+          <div className="Photo">
+            <Thumbnail
+              circle
+              size="126px"
+              url={_.first(currentProfile.photos)}
+            />
+          </div>
+
+          <Divider height={`${SPACING.LARGE}px`} color="transparent" />
+
+          <Text align="center" type="title">
+            Only available on Desktop and iOS
+          </Text>
+
+          <Divider height={`${SPACING.LARGE}px`} color="transparent" />
+
+          <a
+            target="_blank"
+            href="https://itunes.apple.com/us/app/apply-to-date/id1357419725?mt=8"
+          >
+            <img src="https://devimages-cdn.apple.com/app-store/marketing/guidelines/images/badge-download-on-the-app-store.svg" />
+          </a>
+
+          <style jsx>{`
+            .Photo {
+              width: 126px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              margin-left: auto;
+              margin-right: auto;
+            }
+
+            a {
+              width: 100%;
+              display: flex;
+              justify-content: center;
+              transform: scale(1.5, 1.5);
+            }
+          `}</style>
         </Page>
       );
     }

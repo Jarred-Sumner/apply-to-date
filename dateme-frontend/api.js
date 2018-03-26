@@ -210,9 +210,18 @@ export const getDateEventApplication = id => {
   return get(`/date_event_applications/${id}`);
 };
 
-export const updateDateEventApplication = ({ id, sections }) => {
+export const updateDateEventApplication = ({
+  id,
+  sections,
+  photos,
+  socialLinks,
+  externalAuthentications
+}) => {
   return put(`/date_event_applications/${id}`, {
-    sections
+    sections,
+    photos,
+    social_links: socialLinks,
+    external_authentications: externalAuthentications
   });
 };
 
@@ -261,10 +270,27 @@ export const getPendingDateEvents = () => {
   });
 };
 
-export const createDateEventApplication = ({ dateEventId, profileId }) => {
+export const createDateEventApplication = ({
+  dateEventId,
+  profileId,
+  name,
+  email,
+  phone,
+  sections,
+  sex,
+  status,
+  externalAuthentications
+}) => {
   return post(`/date_event_applications`, {
     profile_id: profileId,
-    date_event_id: dateEventId
+    date_event_id: dateEventId,
+    name,
+    email,
+    phone,
+    sections,
+    sex,
+    status,
+    external_authentications: externalAuthentications
   });
 };
 

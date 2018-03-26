@@ -5,6 +5,8 @@ class DateEvent < ApplicationRecord
   has_many :date_event_applications
   friendly_id :build_slug, use: [:scoped, :history], :scope => :profile
   has_many :notifications, as: :notifiable
+  scope :visible_to, lambda { |user| user ? where.not(user_id: user.blocked_by_users.pluck(:id)) : self }
+  scope :appliable, lambda { where(status: DateEvent.statuses[:scheduled]).where("(occurs_on_day + interval '1 day') >= now()") }
 
   LABELS_BY_CATEGORY = {
     dine: "Dine",

@@ -29,7 +29,11 @@ export default class PendingDateEvent extends React.Component {
           })}
         </Text>
 
-        {dateEvent.summary && <Text type="paragraph">{dateEvent.summary}</Text>}
+        {dateEvent.summary && (
+          <Text align="center" type="paragraph">
+            {dateEvent.summary}
+          </Text>
+        )}
 
         <Timing dateEvent={dateEvent} />
 
@@ -39,7 +43,7 @@ export default class PendingDateEvent extends React.Component {
           size="16px"
           color={COLORS.DARK_GRAY}
         >
-          This event already happened
+          This event is closed
         </Text>
 
         <style jsx>{`

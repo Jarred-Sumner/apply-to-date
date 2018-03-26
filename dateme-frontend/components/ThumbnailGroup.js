@@ -17,7 +17,7 @@ export default class ThumbnailGroup extends React.PureComponent {
     return (
       <div className="Container">
         {photos
-          .slice(0, 2)
+          .slice(0, 3)
           .map((url, index) => (
             <Thumbnail
               key={url}
@@ -35,6 +35,8 @@ export default class ThumbnailGroup extends React.PureComponent {
           .Container {
             display: grid;
             grid-auto-flow: column;
+            grid-auto-columns: ${size};
+            grid-auto-rows: ${size};
             grid-gap: ${SPACING.NORMAL}px;
             align-items: center;
             justify-content: center;

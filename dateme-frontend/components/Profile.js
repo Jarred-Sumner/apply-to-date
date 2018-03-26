@@ -10,6 +10,7 @@ import SocialLinkList from "./SocialLinkList";
 import TwitterViewer from "./TwitterViewer";
 import InstagramSection from "./InstagramSection";
 import Tag from "./Tag";
+import { COLORS } from "../helpers/styles";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -91,7 +92,7 @@ export default ({
 
         {profile.location && (
           <div className="Tags">
-            <Tag color="blue">{profile.location}</Tag>
+            <Tag color={COLORS.BLUE}>{profile.location}</Tag>
           </div>
         )}
       </div>

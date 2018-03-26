@@ -1,9 +1,11 @@
 class Api::V1::DateEventApplicationsController < Api::V1::ApplicationController
   before_action :require_login, only: :index
-  def create
-    date_event = DateEvent.scheduled.find(params[:date_event_id])
+  attr_reader :date_event
 
-    sections = params[:sections].try(:permit, Application::DEFAULT_SECTIONS) || {}
+  def create
+    @date_event = DateEvent.appliable.find(params[:date_event_id])
+
+    sections = params[:sections].try(:permit, DateEventApplication::DEFAULT_SECTIONS) || {}
 
     if logged_in?
       if current_user.id == date_event.user_id
@@ -11,43 +13,45 @@ class Api::V1::DateEventApplicationsController < Api::V1::ApplicationController
         return
       end
 
-      @date_event_application = date_event.date_event_applications.where(
-        "profile_id = ? OR email = ?", current_profile.id, current_user.email
-      ).first_or_initialize
+      ActiveRecord::Base.transaction do
+        @date_event_application = date_event.date_event_applications.where(
+          "profile_id = ? OR email = ?", current_profile.id, current_user.email
+        ).first_or_initialize
 
-      @date_event_application.profile_id = current_profile.id
-      @date_event_application.email = current_user.email
-      @date_event_application.photos = current_profile.photos
-      @date_event_application.sex = current_profile.sex
-      @date_event_application.recommended_contact_method = current_profile.recommended_contact_method
-      @date_event_application.name = current_profile.name
-      @date_event_application.social_links = current_profile.social_links
-      @date_event_application.sections = current_profile.sections
+        @date_event_application.profile_id = current_profile.id
+        @date_event_application.email = current_user.email
+        @date_event_application.photos = current_profile.photos
+        @date_event_application.sex = current_profile.sex
+        @date_event_application.recommended_contact_method = current_profile.recommended_contact_method
+        @date_event_application.name = current_profile.name
+        @date_event_application.social_links = current_profile.social_links
+        @date_event_application.sections = current_profile.sections
 
-      @date_event_application.save!
+        @date_event_application.save!
 
-      @date_event_application.verified_networks.destroy_all
-      current_profile.external_authentications.each do |auth|
-        VerifiedNetwork.create!(date_event_application_id: @date_event_application.id, external_authentication_id: auth.id)
+        @date_event_application.verified_networks.destroy_all
+        current_profile.external_authentications.each do |auth|
+          VerifiedNetwork.create!(date_event_application_id: @date_event_application.id, external_authentication_id: auth.id)
+        end
+
+        Notification.where(
+          user: date_event.user,
+          notifiable: @date_event_application,
+          kind: Notification.kinds[
+            :new_date_event_application
+          ]
+        ).first_or_create!
       end
-
-      Notification.create!(
-        user: date_event.user,
-        notifiable: @date_event_application,
-        kind: Notification.kinds[
-          :new_date_event_application
-        ]
-      )
     else
-
+      create_application_from_guest
     end
 
     render json: DateEventApplicationSerializer.new(@date_event_application).serializable_hash
   end
 
   def index_event
-    date_event = DateEvent.includes(:date_event_applications).find(params[:date_event_id])
-    render json: DateEventApplicationSerializer.new(date_event.date_event_applications.limit(100), {
+    applications = DateEventApplication.where(date_event: current_user.date_events.find(params[:date_event_id]))
+    render json: DateEventApplicationSerializer.new(applications.limit(100), {
       }).serializable_hash
   end
 
@@ -67,23 +71,42 @@ class Api::V1::DateEventApplicationsController < Api::V1::ApplicationController
   end
 
   def show
-    render json: DateEventApplicationSerializer.new(date_event_application, {
+    render json: DateEventApplicationSerializer.new(date_event_application, { include: [:external_authentications]
     }).serializable_hash
   end
 
   def update
-    if !params[:sections].nil?
-      sections = params[:sections].permit(DateEventApplication::DEFAULT_SECTIONS)
-      date_event_application.update(sections: sections)
-    end
+    ActiveRecord::Base.transaction do
+      if !params[:sections].nil?
+        sections = params[:sections].permit(DateEventApplication::DEFAULT_SECTIONS)
+        date_event_application.update!(sections: sections)
+      end
 
-    if params[:confirmation_status] == 'confirmed' && date_event_application.approved?
-      ActiveRecord::Base.transaction do
+      if !params[:photos].nil?
+        photos = Array(params[:photos])
+        # Ensure Photo URLs are valid
+        begin
+          photos.each do |photo|
+            URI.parse(URI.encode(photo))
+          end
+        rescue URI::InvalidURIError
+          raise ArgumentError.new("Please re-upload your photos and try again")
+        end
+
+        date_event_application.update!(photos: Array(params[:photos]))
+      end
+
+      if !params[:social_links].nil?
+        social_links = ExternalAuthentication.update_social_links(
+          params[:social_links]
+        )
+        date_event_application.update!(social_links: social_links)
+      end
+
+      if params[:confirmation_status] == 'confirmed' && date_event_application.approved?
         date_event_application.confirmed!
         date_event_application.date_event.chose_applicant!
-      end
-    elsif params[:confirmation_status] == 'declined' && date_event_application.approved?
-      ActiveRecord::Base.transaction do
+      elsif params[:confirmation_status] == 'declined' && date_event_application.approved?
         date_event_application.declined!
         if date_event_application.date_event.can_still_choose_someone?
           date_event_application.date_event.scheduled!
@@ -112,4 +135,86 @@ class Api::V1::DateEventApplicationsController < Api::V1::ApplicationController
     end
   end
 
+  private def create_application_from_guest
+    social_links = params[:social_links].try(:to_unsafe_h) || {}
+    external_authentications = ExternalAuthentication.where(id: Array(params[:external_authentications]))
+    email = String(create_params[:email])
+
+    if create_params[:email].blank?
+      raise ArgumentError.new("Please include your email")
+    end
+
+    ActiveRecord::Base.transaction do
+      @date_event_application = date_event.date_event_applications.where(email: email).first_or_initialize
+      @should_send_email = !@date_event_application.persisted?
+
+      @date_event_application.social_links = ExternalAuthentication.update_social_links(
+        (current_user.try(:profile).try(:social_links) || {}).merge(
+          social_links
+        )
+      )
+
+      photos = [@date_event_application.photos, current_user.try(:profile).try(:photos)].find(&:present?) || []
+
+      if photos.blank? && external_authentications.facebook.exists?
+        begin
+          facebook = external_authentications.facebook.first
+          facebook.get_facebook_photos.each do |photo_url|
+            upload = Upload.upload_from_url(photo_url)
+            photos.push(Upload.get_public_url(upload.public_url))
+          end
+        rescue => e
+          Raven.capture_exception(e)
+          Rails.logger.info e
+          Rails.logger.info "AUTO UPLOADING FROM FACEBOOK FAILED #{e.inspect} for application #{@application.inspect}"
+        end
+      end
+
+      if photos.blank? && external_authentications.with_photos.exists?
+        begin
+          upload = Upload.upload_from_url(ExternalAuthentication.build_default_photo_url(external_authentications))
+          photos.push(Upload.get_public_url(upload.public_url))
+        rescue => e
+          Raven.capture_exception(e)
+          Rails.logger.info e
+          Rails.logger.info "UPLOADING DEFAULT PHOTO FAILED #{e.inspect} for application #{@application.inspect}"
+        end
+      end
+
+      sections = (params[:sections] || {}).permit(DateEventApplication::DEFAULT_SECTIONS)
+
+      @date_event_application.update!(create_params.merge(
+        email: email,
+        approval_status: DateEventApplication.submission_statuses[params[:status]],
+        sections: sections.present? ? sections : DateEventApplication.build_default_sections,
+        photos: photos,
+        profile_id: current_profile.try(:id),
+        date_event_id: date_event.id,
+      ))
+
+      @date_event_application.verified_networks.destroy_all
+      external_authentications.each do |auth|
+        VerifiedNetwork.create!(date_event_application_id: @date_event_application.id, external_authentication_id: auth.id)
+      end
+
+      external_authentications.each do |auth|
+        @date_event_application.social_links = @date_event_application.social_links.merge(auth.build_social_link_entry)
+      end
+
+      @date_event_application.save!
+      Notification.where(
+        user: date_event.user,
+        notifiable: @date_event_application,
+        kind: Notification.kinds[
+          :new_date_event_application
+        ]
+      ).first_or_create!
+    end
+  end
+
+
+  private def create_params
+    params
+      .permit(:name, :photos, :email, :name, :recommended_contact_method, :sex, :phone)
+  end
 end

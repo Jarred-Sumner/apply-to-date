@@ -10,6 +10,12 @@ export const buildApplyURL = profileId => {
   return encodeURI(process.env.DOMAIN + "/" + profileId + "/apply");
 };
 
+export const buildDateEventApplyURL = (profileId, slug) => {
+  return encodeURI(
+    process.env.DOMAIN + "/" + profileId + "/" + slug + "/apply"
+  );
+};
+
 export const buildApplicationURL = applicationId => {
   return encodeURI(process.env.DOMAIN + "/applications/" + applicationId);
 };
@@ -109,5 +115,11 @@ export const buildCreatorDateEventApplicationURL = (
 export const buildPickSomeoneURL = dateEventId => {
   return encodeURI(
     process.env.SHARE_DOMAIN + "/dates/" + dateEventId + "/pick-someone"
+  );
+};
+
+export const buildApplicantUpdateDateApplicationURL = dateEventApplicationId => {
+  return encodeURI(
+    process.env.SHARE_DOMAIN + "/asked-out/" + dateEventApplicationId
   );
 };

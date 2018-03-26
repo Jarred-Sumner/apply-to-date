@@ -1,9 +1,10 @@
 import Button from "../Button";
 import Icon from "../Icon";
-import LoginGate from "../LoginGate";
+import LoginGate, { LOGIN_STATUSES } from "../LoginGate";
 import {
   buildApplyURL,
-  buildApplicantApplicationURL
+  buildApplicantApplicationURL,
+  buildDateEventApplyURL
 } from "../../lib/routeHelpers";
 import { updateApplication, createDateEventApplication } from "../../api";
 import { Router } from "../../routes";
@@ -21,12 +22,31 @@ class AskDateEventOutButton extends React.Component {
       applicantStatus,
       onEdit,
       onAskOut,
-      isAskingOut
+      isAskingOut,
+      dateEvent,
+      loginStatus,
+      componentRef
     } = this.props;
+
+    if ([LOGIN_STATUSES.guest, LOGIN_STATUSES.checking].includes(loginStatus)) {
+      return (
+        <Button
+          componentRef={componentRef}
+          href={buildDateEventApplyURL(dateEvent.profileId, dateEvent.slug)}
+          maxWidth="150px"
+          size="large"
+          onClick={onAskOut}
+          color="blue"
+        >
+          Ask to go
+        </Button>
+      );
+    }
 
     if (applicantStatus === APPLICANT_STATUSES.pending_approval) {
       return (
         <Button
+          componentRef={componentRef}
           icon={<Icon type="check" color={COLORS.BLUE} size="14px" />}
           maxWidth="150px"
           size="large"
@@ -43,6 +63,7 @@ class AskDateEventOutButton extends React.Component {
           icon={<Icon type="x" color={COLORS.BLUE} size="14px" />}
           maxWidth="150px"
           size="large"
+          componentRef={componentRef}
           fill={false}
           disabled
           color="blue"
@@ -57,6 +78,7 @@ class AskDateEventOutButton extends React.Component {
         return (
           <Button
             size="large"
+            componentRef={componentRef}
             onClick={onAskOut}
             color="blue"
             maxWidth="150px"
@@ -67,7 +89,13 @@ class AskDateEventOutButton extends React.Component {
         );
       } else {
         return (
-          <Button maxWidth="150px" size="large" onClick={onAskOut} color="blue">
+          <Button
+            componentRef={componentRef}
+            maxWidth="150px"
+            size="large"
+            onClick={onAskOut}
+            color="blue"
+          >
             {copy}
           </Button>
         );

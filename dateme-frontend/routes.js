@@ -109,6 +109,11 @@ routes
     page: "ReviewSpecificApplication"
   })
   .add({
+    name: "UpdateDateEventApplication",
+    pattern: "/asked-out/:id",
+    page: "UpdateDateEventApplication"
+  })
+  .add({
     name: "ProfileNotFound",
     pattern: "/page-not-found",
     page: "ProfileNotFound"
@@ -137,6 +142,11 @@ routes
     name: "ShowDateEvent",
     pattern: "/:profileId/:slug",
     page: "ShowDateEvent"
+  })
+  .add({
+    name: "CreateDateEventApplication",
+    pattern: "/:profileId/:slug/apply",
+    page: "CreateDateEventApplication"
   });
 
 module.exports = routes;

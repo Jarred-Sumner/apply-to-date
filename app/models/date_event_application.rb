@@ -1,9 +1,17 @@
 class DateEventApplication < ApplicationRecord
   belongs_to :profile, class_name: 'Profile', optional: true
   belongs_to :date_event
+  belongs_to :converted_application, optional: true, class_name: 'Application'
   has_many :verified_networks
   has_many :external_authentications, through: :verified_networks
   has_one :application
+
+  def self.submission_statuses
+    {
+      submitted: DateEventApplication.approval_statuses[:submitted],
+      pending: DateEventApplication.approval_statuses[:pending],
+    }.with_indifferent_access
+  end
 
   enum approval_status: {
     filtered: -1,
@@ -19,6 +27,16 @@ class DateEventApplication < ApplicationRecord
     confirmed: 1,
     declined: 2
   }
+
+  def self.build_default_sections
+    DEFAULT_SECTIONS.map { |s| [s, '']}.to_h
+  end
+
+  def build_default_sections
+    sections = self.sections || {}
+
+    DEFAULT_SECTIONS.map { |s| [s, sections[s] || '']}.to_h
+  end
 
   def approved!
     return self if approved?
@@ -47,34 +65,35 @@ class DateEventApplication < ApplicationRecord
     return self if swap_date?
 
     ActiveRecord::Base.transaction do
-      update!(approval_status: DateEventApplication.approval_statuses[:swap_date])
-
       application = Application.create!({
-        applicant_id: profile.user_id,
+        applicant_id: profile.try(:user_id),
         profile_id: date_event.profile_id,
-        sections: sections.merge(profile.sections),
+        sections: sections.merge(profile.try(:sections) || {}),
         social_links: social_links,
         photos: photos,
         sex: sex,
-        location: profile.location,
-        latitude: profile.latitude,
-        longitude: profile.longitude,
+        location: profile.try(:location),
+        latitude: profile.try(:latitude),
+        longitude: profile.try(:longitude),
         phone: phone,
         email: email,
         name: name,
         status: Application.statuses[:approved],
         category: category,
-        date_event_application: self
       })
 
-      notification = Notification.create!({
-        notifiable: application,
-        user: profile.user,
-        kind: Notification.kinds[:swapped_date_event],
-        occurred_at: DateTime.now,
-      })
+      if profile.present?
+        notification = Notification.create!({
+          notifiable: application,
+          user: profile.user,
+          kind: Notification.kinds[:swapped_date_event],
+          occurred_at: DateTime.now,
+        })
 
-      notification.enqueue_email!
+        notification.enqueue_email!
+      end
+
+      update!(approval_status: DateEventApplication.approval_statuses[:swap_date], converted_application: application)
     end
   end
 

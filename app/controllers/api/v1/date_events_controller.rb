@@ -126,12 +126,21 @@ class Api::V1::DateEventsController < Api::V1::ApplicationController
         .find(params[:id])
 
       render json: DateEventSerializer.new(date_event).serializable_hash
+    elsif logged_in?
+      date_event = DateEvent
+        .visible_to(current_user)
+        .includes(:profile)
+        .where(Profile.build_interested_in_columns(current_user.try(:profile).sex))
+        .where(profiles: { sex: current_user.profile.interested_in_sexes })
+        .find(params[:id])
+
+      render json: DateEventSerializer.new(date_event, {
+        include: [:profile]
+      }).serializable_hash
     else
       date_event = DateEvent
-        .where.not(user_id: current_user.blocked_by_users.pluck(:id))
+        .appliable
         .includes(:profile)
-        .where(Profile.build_interested_in_columns(current_user.profile.sex))
-        .where(profiles: { sex: current_user.profile.interested_in_sexes })
         .find(params[:id])
 
       render json: DateEventSerializer.new(date_event, {

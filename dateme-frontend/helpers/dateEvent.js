@@ -69,7 +69,8 @@ export const APPLICANT_STATUSES = {
   pending_approval: "PENDING_APPROVAL",
   declined: "declined",
   rsvp: "RSVP",
-  confirmed: "CONFIRMED"
+  confirmed: "CONFIRMED",
+  closed: "CLOSED"
 };
 
 export const CREATOR_STATUSES = {
@@ -116,14 +117,16 @@ export const getApplicantStatus = ({
   } else if (
     !["expired", "hidden"].includes(dateEvent.status) &&
     dateEventApplication &&
-    dateEventApplication.approvalStatus === "pending" &&
+    ["pending", "submitted"].includes(dateEventApplication.approvalStatus) &&
     dateEventApplication.confirmationStatus === "pending_confirmation"
   ) {
     return APPLICANT_STATUSES.pending_approval;
-  } else if (!["expired", "hidden"].includes(dateEvent.status)) {
+  } else if (
+    !["expired", "hidden", "chose_applicant"].includes(dateEvent.status)
+  ) {
     return APPLICANT_STATUSES.pending;
   } else {
-    return null;
+    return APPLICANT_STATUSES.closed;
   }
 };
 

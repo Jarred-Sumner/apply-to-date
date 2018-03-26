@@ -8,8 +8,15 @@ import AskOutButton from "../AskOutButton";
 import { COLORS, SPACING } from "../../../helpers/styles";
 import { createDateEvent, createDateEventApplication } from "../../../api";
 import Timing from "../Timing";
+import Waypoint from "react-waypoint";
 
 export default class PendingDateEvent extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.buttonRef = null;
+  }
+
   render() {
     const {
       dateEvent,
@@ -18,7 +25,9 @@ export default class PendingDateEvent extends React.Component {
       applicationId,
       onEdit,
       isAskingOut,
-      onAskOut
+      onAskOut,
+      onScrollEnterAskButton,
+      onScrollLeaveAskButton
     } = this.props;
     return (
       <div className="Container">
@@ -29,20 +38,29 @@ export default class PendingDateEvent extends React.Component {
           })}
         </Text>
 
-        {dateEvent.summary && <Text type="paragraph">{dateEvent.summary}</Text>}
+        {dateEvent.summary && (
+          <Text align="center" type="paragraph">
+            {dateEvent.summary}
+          </Text>
+        )}
 
         <Timing dateEvent={dateEvent} />
-
-        <div className="ButtonContainer">
-          <AskOutButton
-            applicantStatus={applicantStatus}
-            profile={profile}
-            dateEvent={dateEvent}
-            onAskOut={onAskOut}
-            onEdit={onEdit}
-            isAskingOut={isAskingOut}
-          />
-        </div>
+        <Waypoint
+          scrollableAncestor="window"
+          onEnter={onScrollEnterAskButton}
+          onLeave={onScrollLeaveAskButton}
+        >
+          <div className="ButtonContainer">
+            <AskOutButton
+              applicantStatus={applicantStatus}
+              profile={profile}
+              dateEvent={dateEvent}
+              onAskOut={onAskOut}
+              onEdit={onEdit}
+              isAskingOut={isAskingOut}
+            />
+          </div>
+        </Waypoint>
 
         <style jsx>{`
           .Container {

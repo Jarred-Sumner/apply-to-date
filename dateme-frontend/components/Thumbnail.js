@@ -72,8 +72,11 @@ export default ({
         object-fit: cover;
         box-shadow: 0 0 20px rgba(160, 160, 160, 0.5);
         border-radius: 6px;
-        cursor: pointer;
         transition: transform 0.1s linear;
+      }
+
+      .photo--hoverable img {
+        cursor: pointer;
       }
 
       .photo--hoverable img:hover {

@@ -23,7 +23,7 @@ import {
 } from "../api";
 import { bindActionCreators } from "redux";
 import Header from "../components/Header";
-import LoginGate from "../components/LoginGate";
+import LoginGate, { LOGIN_STATUSES } from "../components/LoginGate";
 import Text from "../components/Text";
 import Icon from "../components/Icon";
 import InlineApply from "../components/profile/InlineApply";
@@ -159,12 +159,32 @@ class Profile extends React.Component {
         }
       );
     } else if (dateEvent) {
-      getApplicationsForDateEvent(dateEvent.id).then(response =>
-        this.props.updateEntities(response.body)
-      );
-      getAppliedDateEvents([dateEvent.id]).then(response =>
-        this.props.updateEntities(response.body)
-      );
+      this.loadApplications();
+    }
+  }
+
+  loadApplications = () => {
+    const { dateEvent, loginStatus, currentProfile } = this.props;
+
+    if (loginStatus === LOGIN_STATUSES.loggedIn) {
+      if (isOwnedByCurrentUser({ dateEvent, currentProfile })) {
+        getApplicationsForDateEvent(dateEvent.id).then(response =>
+          this.props.updateEntities(response.body)
+        );
+      } else {
+        getAppliedDateEvents([dateEvent.id]).then(response =>
+          this.props.updateEntities(response.body)
+        );
+      }
+    }
+  };
+
+  componentDidUpdate(prevProps) {
+    if (
+      _.get(prevProps, "dateEvent.id") !== _.get(this.props, "dateEvent.id") ||
+      this.props.loginStatus !== prevProps.loginStatus
+    ) {
+      this.loadApplications();
     }
   }
 
@@ -185,7 +205,12 @@ class Profile extends React.Component {
           ogImage={_.first(profile.photos)}
         />
 
-        <ViewDateEvent key={dateEvent.id} dateEventId={dateEvent.id} />
+        <ViewDateEvent
+          footerEnabled
+          key={dateEvent.id}
+          isMobile={this.props.isMobile}
+          dateEventId={dateEvent.id}
+        />
       </Page>
     );
   }

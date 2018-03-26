@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180325191008) do
+ActiveRecord::Schema.define(version: 20180326184448) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,8 +72,10 @@ ActiveRecord::Schema.define(version: 20180325191008) do
     t.datetime "updated_at", null: false
     t.string "sex"
     t.string "recommended_contact_method"
+    t.uuid "converted_application_id"
     t.index ["approval_status"], name: "index_date_event_applications_on_approval_status"
     t.index ["confirmation_status"], name: "index_date_event_applications_on_confirmation_status"
+    t.index ["converted_application_id"], name: "index_date_event_applications_on_converted_application_id"
     t.index ["date_event_id"], name: "index_date_event_applications_on_date_event_id"
     t.index ["email"], name: "index_date_event_applications_on_email"
     t.index ["profile_id"], name: "index_date_event_applications_on_profile_id"
@@ -324,6 +326,7 @@ ActiveRecord::Schema.define(version: 20180325191008) do
   add_foreign_key "applications", "users", column: "applicant_id"
   add_foreign_key "block_users", "users", column: "blocked_by_id"
   add_foreign_key "block_users", "users", column: "blocked_user_id"
+  add_foreign_key "date_event_applications", "applications", column: "converted_application_id"
   add_foreign_key "date_event_applications", "date_events"
   add_foreign_key "date_event_applications", "profiles"
   add_foreign_key "date_events", "profiles"

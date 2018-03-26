@@ -28,7 +28,11 @@ export default class PendingDateEvent extends React.Component {
           profile={profile}
         />
 
-        {dateEvent.summary && <Text type="paragraph">{dateEvent.summary}</Text>}
+        {dateEvent.summary && (
+          <Text align="center" type="paragraph">
+            {dateEvent.summary}
+          </Text>
+        )}
 
         <Timing dateEvent={dateEvent} />
 

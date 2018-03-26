@@ -38,7 +38,11 @@ export default class PickSomeoneDateEvent extends React.Component {
           />
         </div>
 
-        {dateEvent.summary && <Text type="paragraph">{dateEvent.summary}</Text>}
+        {dateEvent.summary && (
+          <Text align="center" type="paragraph">
+            {dateEvent.summary}
+          </Text>
+        )}
 
         <Timing dateEvent={dateEvent} />
 

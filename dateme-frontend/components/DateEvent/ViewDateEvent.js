@@ -33,6 +33,8 @@ import UpdateDateApplication from "./UpdateDateApplication";
 import { Collapse } from "react-collapse";
 import ShareBar from "./ShareBar";
 import EditDateModal from "./EditModal";
+import AskOutButton from "./AskOutButton";
+import Subheader from "../Subheader";
 
 class ViewDateEvent extends React.Component {
   constructor(props) {
@@ -218,6 +220,32 @@ class ViewDateEvent extends React.Component {
     this.setState({ showEditDateModal: true });
   };
   handleShowEdit = () => this.setState({ showEditArea: true });
+  showFooter = () => {
+    console.log("SHOW");
+    if (this.props.footerEnabled) {
+      this.setState({ showFooter: true });
+    }
+  };
+
+  hideFooter = () => {
+    if (this.props.footerEnabled) {
+      console.log("HIDE");
+      this.setState({ showFooter: false });
+    }
+  };
+
+  get shouldShowFooter() {
+    return (
+      this.state.showFooter &&
+      this.props.footerEnabled &&
+      [
+        APPLICANT_STATUSES.pending,
+        APPLICANT_STATUSES.pending_approval,
+        APPLICANT_STATUSES.declined
+      ].includes(this.applicantStatus)
+    );
+  }
+
   render() {
     const {
       profile,
@@ -233,7 +261,7 @@ class ViewDateEvent extends React.Component {
     } else {
       return (
         <React.Fragment>
-          <div className="ProfileContainer">
+          <div id="ProfileScrollBox" className="ProfileContainer">
             <div className="DateEventWrapper">
               <div className="DateEventBackground" />
 
@@ -264,6 +292,8 @@ class ViewDateEvent extends React.Component {
                   isUpdatingAttendance={this.state.isUpdatingAttendance}
                   creatorStatus={this.creatorStatus}
                   applicantStatus={this.applicantStatus}
+                  onScrollEnterAskButton={this.hideFooter}
+                  onScrollLeaveAskButton={this.showFooter}
                 />
 
                 {application && (
@@ -281,7 +311,7 @@ class ViewDateEvent extends React.Component {
             </div>
 
             <div className="Profile">
-              <Profile profile={profile} />
+              <Profile isMobile={this.props.isMobile} profile={profile} />
             </div>
 
             {isOwnedByCurrentUser({ dateEvent, currentProfile }) && (
@@ -291,13 +321,33 @@ class ViewDateEvent extends React.Component {
                 onHide={this.handlHideEditDateModal}
               />
             )}
+
+            {this.shouldShowFooter && (
+              <Divider height="140px" color="transparent" />
+            )}
+
+            {this.shouldShowFooter && (
+              <Subheader center bottom fade>
+                <div className="AskOutContainer">
+                  <AskOutButton
+                    dateEvent={dateEvent}
+                    onAskOut={this.handleAskOut}
+                    isAskingOut={this.state.isAskingOut}
+                    applicantStatus={this.applicantStatus}
+                  />
+                </div>
+              </Subheader>
+            )}
           </div>
 
           <style jsx>{`
             .ProfileContainer {
               flex: 1;
-
               overflow: auto;
+            }
+
+            .AskOutContainer {
+              padding: ${SPACING.LARGE}px;
             }
 
             .EditArea {
@@ -339,6 +389,13 @@ class ViewDateEvent extends React.Component {
               justify-content: center;
               display: flex;
               flex-direction: column;
+            }
+
+            @media (max-width: 700px) {
+              .Profile {
+                padding-left: ${SPACING.NORMAL}px;
+                padding-right: ${SPACING.NORMAL}px;
+              }
             }
           `}</style>
         </React.Fragment>

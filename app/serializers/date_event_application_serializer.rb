@@ -3,6 +3,8 @@ class DateEventApplicationSerializer
   set_type :date_event_application
 
   has_one :profile, class_name: 'Profile'
+  has_one :converted_application, class_name: 'ApplicantApplication'
+  has_many :external_authentications
   has_one :date_event, class_name: 'DateEvent'
 
   attributes :social_links, :sections, :name, :photos, :email, :name, :profile_id, :date_event_id, :sex, :recommended_contact_method, :approval_status, :approved, :confirmation_status, :date_event_phone, :created_at

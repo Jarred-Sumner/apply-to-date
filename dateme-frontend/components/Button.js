@@ -7,6 +7,7 @@ const Button = ({
   href,
   prefetch,
   className,
+  componentRef,
   children,
   target,
   inline,
@@ -318,7 +319,7 @@ const Button = ({
         }
       `}</style>
       {realComponentType === "button" && (
-        <button onClick={onClick} className={classes}>
+        <button ref={componentRef} onClick={onClick} className={classes}>
           <div className="IconContainer IconContainer--left">
             {!pending && !iconOnly && icon}
           </div>
@@ -334,6 +335,7 @@ const Button = ({
           onClick={onClick}
           href={href}
           className={classes}
+          ref={componentRef}
         >
           <div className="IconContainer IconContainer--left">
             {!pending && !iconOnly && icon}
@@ -345,7 +347,7 @@ const Button = ({
         </a>
       )}
       {realComponentType === "div" && (
-        <div onClick={onClick} className={classes}>
+        <div ref={componentRef} onClick={onClick} className={classes}>
           <div className="IconContainer IconContainer--left">
             {!pending && !iconOnly && icon}
           </div>

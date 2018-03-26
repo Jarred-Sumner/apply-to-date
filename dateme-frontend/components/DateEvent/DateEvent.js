@@ -33,7 +33,9 @@ export default class DateEvent extends React.Component {
       currentProfile,
       onCancelEvent,
       isUpdatingAttendance,
-      onPickSomeone
+      onPickSomeone,
+      onScrollEnterAskButton,
+      onScrollLeaveAskButton
     } = this.props;
 
     if (isOwnedByCurrentUser({ currentProfile, dateEvent })) {
@@ -105,6 +107,8 @@ export default class DateEvent extends React.Component {
             onEdit={onEdit}
             isAskingOut={isAskingOut}
             onAskOut={onAskOut}
+            onScrollEnterAskButton={onScrollEnterAskButton}
+            onScrollLeaveAskButton={onScrollLeaveAskButton}
           />
         );
       } else if (APPLICANT_STATUSES.rsvp === applicantStatus) {

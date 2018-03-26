@@ -5,7 +5,9 @@ import {
   updateEntities,
   setCurrentUser,
   setLoginStatus,
-  initStore
+  initStore,
+  dateEventSelector,
+  profileSelector
 } from "../redux/store";
 import {
   getProfile,
@@ -13,7 +15,9 @@ import {
   updateProfile,
   getSavedApplication,
   updateApplication,
-  createAccount
+  createAccount,
+  createDateEventApplication,
+  getDateEventBySlug
 } from "../api";
 import { bindActionCreators } from "redux";
 import Header from "../components/Header";
@@ -44,7 +48,11 @@ import Icon from "../components/Icon";
 import MessageBar from "../components/MessageBar";
 import withLogin from "../lib/withLogin";
 import { logEvent } from "../lib/analytics";
-import { buildProfileURL } from "../lib/routeHelpers";
+import {
+  buildProfileURL,
+  buildApplicantUpdateDateApplicationURL
+} from "../lib/routeHelpers";
+import { labelWithPrefix } from "../helpers/dateEvent";
 
 export const SECTION_ORDERING = ["introduction", "why"];
 
@@ -67,29 +75,18 @@ const ROWS_BY_SECTION = {
   why: 6
 };
 
-const buildExternalAuthentications = ({ application = {}, url }) => {
-  return [
-    ..._.get(application, "externalAuthentications", []).map(({ id }) => id),
-    ..._.values(
-      _.pick(url.query, ["twitter", "facebook", "instagram", "linkedin"])
-    )
-  ];
-};
-
 class CreateApplication extends React.Component {
   static async getInitialProps({ query, store, req, isServer }) {
-    const profileResponse = await getProfile(decodeURI(query.id));
-    store.dispatch(updateEntities(profileResponse.body));
+    const dateEventResponse = await getDateEventBySlug({
+      profileId: query.profileId,
+      slug: query.slug
+    });
 
-    if (query.applicationId) {
-      const applicationResponse = await getSavedApplication(
-        query.applicationId
-      );
-      store.dispatch(updateEntities(applicationResponse.body));
-    }
+    store.dispatch(updateEntities(dateEventResponse.body));
 
     return {
-      profileId: _.get(profileResponse, "body.data.id")
+      dateEventId: _.get(dateEventResponse, "body.data.id"),
+      profileId: _.get(dateEventResponse, "body.data.attributes.profile_id")
     };
   }
 
@@ -147,9 +144,11 @@ class CreateApplication extends React.Component {
 
     const { profile } = props;
 
+    const externalAuthentications = _.values(
+      _.pick(props.url.query, ["twitter", "facebook", "instagram", "linkedin"])
+    );
+
     this.state = {
-      currentPhotoIndex: null,
-      isHeaderSticky: false,
       isSavingProfile: false,
       didCreateAccount: false,
       ...this.getDefaultValues(props, {}),
@@ -157,10 +156,7 @@ class CreateApplication extends React.Component {
       interestedInMen: false,
       interestedInWomen: false,
       interestedInOther: false,
-      externalAuthentications: buildExternalAuthentications({
-        application: _.get(props, "application"),
-        url: _.get(props, "url")
-      })
+      externalAuthentications
     };
   }
 
@@ -197,8 +193,9 @@ class CreateApplication extends React.Component {
     } = this.state;
     const { id: profileId } = this.props.profile;
 
-    return updateApplication({
+    return createDateEventApplication({
       profileId,
+      dateEventId: this.props.dateEventId,
       name,
       email,
       phone,
@@ -316,11 +313,13 @@ class CreateApplication extends React.Component {
           logEvent("Submit Application", {
             profile: this.props.profile.id,
             providers: _.keys(this.state.socialLinks),
+            type: "date_event",
             createAccount: true,
             auto: false
           });
           if (response) {
-            return Router.pushRoute(`/a/${this.props.application.id}`);
+            const id = _.get(response, "data.id");
+            return Router.pushRoute(buildApplicantUpdateDateApplicationURL(id));
           } else {
             return;
           }
@@ -338,7 +337,9 @@ class CreateApplication extends React.Component {
               auto: false
             });
 
-            return Router.pushRoute(`/a/${this.props.application.id}`);
+            const id = _.get(response, "data.id");
+            debugger;
+            return Router.pushRoute(buildApplicantUpdateDateApplicationURL(id));
           } else {
             return;
           }
@@ -389,7 +390,7 @@ class CreateApplication extends React.Component {
   setPassword = password => this.setState({ password });
 
   render() {
-    const { profile, currentUser, isProbablyLoggedIn } = this.props;
+    const { profile, currentUser, isProbablyLoggedIn, dateEvent } = this.props;
     const {
       name,
       photos,
@@ -414,9 +415,11 @@ class CreateApplication extends React.Component {
         renderMessage={() => (
           <MessageBar>
             <Text size="14px" color="white" lineHeight="19px">
-              Your application to{" "}
-              <Link route={buildProfileURL(profile.id)}>
-                <a>{profile.name}</a>
+              <Link route={dateEvent.url}>
+                <a>
+                  {_.capitalize(labelWithPrefix(dateEvent.category))} with{" "}
+                  {profile.name}
+                </a>
               </Link>
             </Text>
           </MessageBar>
@@ -610,11 +613,11 @@ class CreateApplication extends React.Component {
 const CreateApplicationWithStore = withRedux(
   initStore,
   (state, props) => {
-    const { id, applicationId } = _.get(props, "url.query", {});
+    const { profileId, dateEventId } = props;
 
     return {
-      profile: state.profile[props.profileId || id],
-      application: state.application[applicationId]
+      profile: profileSelector(state)[profileId],
+      dateEvent: dateEventSelector(dateEventId)(state)
     };
   },
   dispatch =>
@@ -625,11 +628,7 @@ const CreateApplicationWithStore = withRedux(
         setLoginStatus
       },
       dispatch
-    ),
-  null,
-  {
-    pure: false
-  }
+    )
 )(LoginGate(CreateApplication));
 
 export default CreateApplicationWithStore;
