@@ -3,6 +3,12 @@ import Header from "./Header";
 import classNames from "classnames";
 import Head from "../components/head";
 
+export const PAGE_SIZES = {
+  default: "710px",
+  large: "960px",
+  small: "483px"
+};
+
 const PageSpinner = ({}) => {
   return (
     <div className="Container">
@@ -82,7 +88,7 @@ export default ({
           padding-bottom: 56px;
           padding-left: 14px;
           padding-right: 14px;
-          max-width: 710px;
+          max-width: ${PAGE_SIZES.default};
           display: flex;
           flex-direction: ${flexDirection};
           background-color: ${gray ? "#F5F5F5" : "unset"};
@@ -105,15 +111,15 @@ export default ({
         }
 
         .PageSize--large {
-          max-width: 960px;
+          max-width: ${PAGE_SIZES.large};
         }
 
         .PageSize--default {
-          max-width: 710px;
+          max-width: ${PAGE_SIZES.default};
         }
 
         .PageSize--small {
-          max-width: 483px;
+          max-width: ${PAGE_SIZES.small};
         }
 
         footer {

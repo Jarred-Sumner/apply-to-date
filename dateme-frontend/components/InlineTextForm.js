@@ -56,7 +56,7 @@ export default class InlineTextForm extends React.Component {
           componentType="button"
           size={size}
           fill={buttonFill}
-          icon={hideInputOnMobile ? icon : undefined}
+          icon={hideInputOnMobile && isMobile() ? icon : undefined}
           inline={!isMobile()}
         >
           {buttonChildren}

@@ -53,6 +53,7 @@ export class Sidebar extends React.Component {
             flex: 0 0 ${width}px;
             background-color: ${COLORS.WHITE};
             filter: drop-shadow(3px 0 4px ${COLORS.LIGHT_SHADOW});
+            overflow-y: auto;
           }
         `}</style>
       </div>

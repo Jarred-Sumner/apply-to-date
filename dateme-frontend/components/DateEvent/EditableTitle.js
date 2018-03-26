@@ -27,6 +27,7 @@ export default ({ onEdit, category, profile }) => (
       .Title {
         display: flex;
         align-items: center;
+        justify-content: center;
       }
     `}</style>
   </div>

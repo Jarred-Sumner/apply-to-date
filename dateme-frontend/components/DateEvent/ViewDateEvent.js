@@ -35,6 +35,7 @@ import ShareBar from "./ShareBar";
 import EditDateModal from "./EditModal";
 import AskOutButton from "./AskOutButton";
 import Subheader from "../Subheader";
+import { PAGE_SIZES } from "../Page";
 
 class ViewDateEvent extends React.Component {
   constructor(props) {
@@ -374,6 +375,9 @@ class ViewDateEvent extends React.Component {
             .DateEventContainer {
               width: 100%;
               padding: ${SPACING.HUGE}px;
+              margin-left: auto;
+              margin-right: auto;
+              max-width: ${PAGE_SIZES.default};
             }
 
             .DateEventWrapper {

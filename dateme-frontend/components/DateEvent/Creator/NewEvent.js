@@ -36,7 +36,12 @@ export default class PendingDateEvent extends React.Component {
 
         <Timing dateEvent={dateEvent} />
 
-        <Text weight="semiBold" size="16px" color={COLORS.DARK_GRAY}>
+        <Text
+          align="center"
+          weight="semiBold"
+          size="16px"
+          color={COLORS.DARK_GRAY}
+        >
           Share your date to get more people to ask you out
         </Text>
 

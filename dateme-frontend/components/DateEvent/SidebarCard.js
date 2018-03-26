@@ -67,7 +67,7 @@ class PendingDateEventCard extends React.Component {
           <Text width="137px" wrap={false} type="muted" size="14px">
             {EMOJI_BY_CATEGORY[dateEvent.category]}
 
-            {moment(occursOnDay).format("dddd, MMM DD")}
+            {moment(occursOnDay).format("ddd, MMM DD")}
           </Text>
         </div>
 
