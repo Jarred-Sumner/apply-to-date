@@ -7,6 +7,8 @@ class Api::V1::DevicesController < Api::V1::ApplicationController
     current_device.update(update_params.merge(
       push_enabled: params[:push_enabled].present? ? params[:push_enabled] === 'true' : current_device.push_enabled?
     ))
+
+    render json: {}
   end
 
   private def update_params

@@ -10,6 +10,8 @@ export const CATEGORIES = {
   concert: "concert",
   coffee: "coffee",
   fitness: "fitness",
+  brunch: "brunch",
+  drinks: "drinks",
   custom: "custom"
 };
 
@@ -28,11 +30,15 @@ export const EMOJI_BY_CATEGORY = {
   [CATEGORIES.concert]: "🎸",
   [CATEGORIES.coffee]: "☕️",
   [CATEGORIES.fitness]: "💪",
+  [CATEGORIES.drinks]: "🍸",
+  [CATEGORIES.brunch]: "🍳",
   [CATEGORIES.custom]: ""
 };
 
 export const LABELS_BY_CATEGORY = {
   [CATEGORIES.dine]: "Dinner",
+  [CATEGORIES.drinks]: "Drinks",
+  [CATEGORIES.brunch]: "Brunch",
   [CATEGORIES.lunch]: "Lunch",
   [CATEGORIES.formal]: "Formal",
   [CATEGORIES.movie]: "Movie",
@@ -47,7 +53,13 @@ export const labelWithPrefix = category => {
   if (!category || category === CATEGORIES.custom) {
     return "a date";
   } else if (
-    [CATEGORIES.dine, CATEGORIES.lunch, CATEGORIES.coffee].includes(category)
+    [
+      CATEGORIES.dine,
+      CATEGORIES.lunch,
+      CATEGORIES.coffee,
+      CATEGORIES.drinks,
+      CATEGORIES.brunch
+    ].includes(category)
   ) {
     return `get ${LABELS_BY_CATEGORY[category].toLowerCase()}`;
   } else if ([CATEGORIES.fitness].includes(category)) {

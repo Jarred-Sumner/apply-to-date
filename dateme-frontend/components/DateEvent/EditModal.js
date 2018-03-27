@@ -1,5 +1,5 @@
 import Modal, { ConfirmAndCloseButtons } from "../Modal";
-import { updateDateEvent } from "../../api";
+import { updateDateEvent, hideDateEvent } from "../../api";
 import Text from "../Text";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -14,6 +14,8 @@ import {
 } from "../../helpers/dateEvent";
 import Alert, { handleApiError } from "../Alert";
 import moment from "moment";
+import { COLORS, SPACING } from "../../helpers/styles";
+import Divider from "../Divider";
 
 class EditDateEventModal extends React.Component {
   constructor(props) {
@@ -81,6 +83,15 @@ class EditDateEventModal extends React.Component {
         });
       });
   };
+
+  handleCancelDate = () => {
+    hideDateEvent(this.props.dateEvent.id)
+      .then(response => this.props.updateEntities(response.body))
+      .then(() => {
+        Alert.success("Canceled.");
+        this.props.onHide();
+      });
+  };
   handleChangeSummary = summary => this.setState({ summary });
   handleChangeCategory = category => this.setState({ category });
   handleChangeLocation = location => this.setState({ location });
@@ -109,7 +120,8 @@ class EditDateEventModal extends React.Component {
         renderFooter={() => (
           <ConfirmAndCloseButtons
             onConfirm={this.handleConfirm}
-            onCancel={this.props.onHide}
+            showCancel={false}
+            confirmLabel="Save changes"
             isConfirmPending={this.state.isSaving}
           />
         )}
@@ -125,6 +137,20 @@ class EditDateEventModal extends React.Component {
           occursOnDay={occursOnDay}
           onChangeOccursOnDay={this.handleChangeOccursOnDay}
         />
+
+        <div className="Cancel">
+          <Text onClick={this.handleCancelDate} type="link">
+            Cancel date
+          </Text>
+        </div>
+
+        <style jsx>{`
+          .Cancel {
+            padding-left: ${SPACING.LARGE}px;
+            padding-right: ${SPACING.LARGE}px;
+            margin-bottom: ${SPACING.NORMAL}px;
+          }
+        `}</style>
       </Modal>
     );
   }

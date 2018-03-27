@@ -37,7 +37,12 @@ export default class PendingDateEvent extends React.Component {
 
         <Timing dateEvent={dateEvent} />
 
-        <Text weight="semiBold" size="16px" color={COLORS.DARK_GRAY}>
+        <Text
+          align="center"
+          weight="semiBold"
+          size="16px"
+          color={COLORS.DARK_GRAY}
+        >
           This date is hidden, so only you can see it.
         </Text>
 

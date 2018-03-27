@@ -6,10 +6,13 @@ class DateEvent < ApplicationRecord
   friendly_id :build_slug, use: [:scoped, :history], :scope => :profile
   has_many :notifications, as: :notifiable
   scope :visible_to, lambda { |user| user ? where.not(user_id: user.blocked_by_users.pluck(:id)) : self }
-  scope :appliable, lambda { where(status: DateEvent.statuses[:scheduled]).where("(occurs_on_day + interval '1 day') >= now()") }
+  scope :upcoming, lambda { where("(occurs_on_day + interval '1 day') >= now()") }
+  scope :appliable, lambda { scheduled.upcoming }
 
   LABELS_BY_CATEGORY = {
     dine: "Dine",
+    drinks: "Drinks",
+    brunch: "Brunch",
     lunch: "Lunch",
     formal: "Formal",
     movie: "Movie",
@@ -98,6 +101,8 @@ class DateEvent < ApplicationRecord
     concert: 5,
     coffee: 6,
     fitness: 7,
+    drinks: 8,
+    brunch: 9,
     custom: -1,
   }
 

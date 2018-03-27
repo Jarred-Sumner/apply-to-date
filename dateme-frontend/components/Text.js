@@ -17,6 +17,7 @@ const Text = ({
   wrap = null,
   width,
   animated = false,
+  onClick,
   underline = false,
   hoverable = false,
   highlightId
@@ -41,7 +42,7 @@ const Text = ({
   });
 
   return (
-    <div className={classes}>
+    <div onClick={onClick} className={classes}>
       <style jsx>{`
         .Text {
           color: ${color};
@@ -152,6 +153,10 @@ const Text = ({
 
         .Text :global(strong) {
           font-weight: 700;
+        }
+
+        .Text--link {
+          cursor: pointer;
         }
 
         .Text--link:hover {

@@ -5,6 +5,7 @@ class Api::V1::DateEventsController < Api::V1::ApplicationController
     if params[:profile_id] == 'me'
       date_events = current_user
         .date_events
+        .upcoming
         .order("occurs_on_day ASC, starts_at ASC")
         .limit(100)
 
@@ -15,10 +16,8 @@ class Api::V1::DateEventsController < Api::V1::ApplicationController
 
       date_events = DateEvent
         .where(region: DateEvent.regions[region])
-        .where(status: DateEvent.statuses[:scheduled])
-        .where("occurs_on_day >= ?", time_zone.now.to_date)
-        .where("starts_at IS NULL OR starts_at > ?", time_zone.now.to_time)
-        .where.not(user_id: current_user.blocked_by_users.pluck(:id))
+        .appliable
+        .visible_to(current_user)
         .includes(:profile)
         .where(Profile.build_interested_in_columns(current_user.profile.sex))
         .where(profiles: { sex: current_user.profile.interested_in_sexes })

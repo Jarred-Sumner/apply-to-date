@@ -6,15 +6,20 @@ export const ConfirmAndCloseButtons = ({
   onCancel,
   confirmLabel = "Save",
   cancelLabel = "Cancel",
+  showCancel = true,
   isConfirmPending = false
 }) => {
   return (
     <div className="Container">
-      <Button componentType="div" fill={false} onClick={onCancel}>
-        {cancelLabel}
-      </Button>
+      {showCancel && (
+        <React.Fragment>
+          <Button componentType="div" fill={false} onClick={onCancel}>
+            {cancelLabel}
+          </Button>
 
-      <div className="spacer" />
+          <div className="spacer" />
+        </React.Fragment>
+      )}
 
       <Button
         componentType="div"
