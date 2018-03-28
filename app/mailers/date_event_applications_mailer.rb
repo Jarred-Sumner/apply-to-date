@@ -46,7 +46,6 @@ class DateEventApplicationsMailer < ApplicationMailer
     subject_line = [
       "#{@date_event_application.name} wants to #{@emoji} #{@label} with you",
       "#{@emoji} with #{@date_event_application.name} #{@formatted_time}?",
-      "#{@date_event_application.name} + #{@emoji} #{@label} + you?"
     ].sample
 
     @notification.update!(email_sent_at: DateTime.now)
