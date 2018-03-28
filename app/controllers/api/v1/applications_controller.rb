@@ -35,14 +35,13 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
     elsif @should_send_email
       ApplicationsMailer.confirmed(@application.id).deliver_later
 
-      notification = Notification.create!(
+      notification = Notification.where(
         kind: :new_application,
-        status: :unread,
         notifiable: application,
         occurred_at: @application.created_at,
         user_id: @applying_to_profile.user_id
-      )
-      notification.enqueue_email!
+      ).first_or_create!
+      notification.enqueue!
     end
 
     render json: ApplicantApplicationSerializer.new(@application, {

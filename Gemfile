@@ -25,6 +25,8 @@ gem "possessive"
 gem 'newrelic_rpm'
 gem 'sidekiq'
 
+gem 'one_signal'
+
 gem 'twitter', require: 'twitter'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'

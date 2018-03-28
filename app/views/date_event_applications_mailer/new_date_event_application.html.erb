@@ -1,5 +1,52 @@
-<h1>DateEventApplications#new_date_event_application</h1>
+<% content_for :table_params, raw('itemprop="action" itemscope itemtype="http://schema.org/ViewAction"') %>
+	<% if section_label(@date_event_application).present? %>
+		<% pretext(truncate(section_value(@date_event_application), {length: 200})) %>
+			<% else %>
+				<% pretext("Respond to #{@gender_name}. Don't worry, saying no won't send #{@gender_name} any notifications.") %>
+					<% end %>
+						<tr>
+							<td class="content-wrap">
+								<meta itemprop="name" content="Respond" />
+								<table width="100%" cellpadding="0" cellspacing="0">
+									<tr>
+										<td class="content-block aligncenter">
+											<%= image_tag "email/welcome/animatedlogo.gif", width: "56", alt: "", border: "" %>
+												<a class="link-container" href="<%= raw @url %>">
+													<h1>
+														<%= @date_event_application.name %> asked you out
+													</h1>
+												</a>
+										</td>
+									</tr>
 
-<p>
-  <%= @greeting %>, find me in app/views/date_event_applications_mailer/new_date_event_application.html.erb
-</p>
+
+									<tr>
+										<td class="content-block aligncenter" itemprop="handler" itemscope itemtype="http://schema.org/HttpActionHandler">
+											<a class="btn-primary" itemprop="url" href="<%= raw @url %>">Respond to
+												<%= truncate(short_profile_name(@date_event_application), { length: 175 }) %>
+											</a>
+
+											<br />
+											<br />
+
+											<p class="muted aligncenter">Don't worry, declining won't notify <%= @gender_name %>.</p>
+										</td>
+									</tr>
+
+									<% if @date_event_application.sections.values.first.present? %>
+										<tr>
+											<td class="content-block">
+												<h2>
+													<%= section_label(@date_event_application) %>
+												</h2>
+
+												<p>
+													<%= truncate(section_value(@date_event_application), { length: 250 }) %>
+												</p>
+
+										</tr>
+									<% end %>
+
+								</table>
+								</td>
+						</tr>

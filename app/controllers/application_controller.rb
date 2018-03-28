@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
-  http_basic_authenticate_with name: Rails.application.secrets[:login_as_username], password: Rails.application.secrets[:login_as_password], only: :login_as
 
   def login_as
     if params[:profile].present?

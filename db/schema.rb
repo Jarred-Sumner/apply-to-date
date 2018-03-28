@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180326184448) do
+ActiveRecord::Schema.define(version: 20180327233757) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -120,6 +120,7 @@ ActiveRecord::Schema.define(version: 20180326184448) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "push_token"
+    t.datetime "push_sent_at"
     t.index ["onesignal_uid"], name: "index_devices_on_onesignal_uid", unique: true
     t.index ["uid"], name: "index_devices_on_uid", unique: true
     t.index ["user_id"], name: "index_devices_on_user_id"
@@ -207,6 +208,7 @@ ActiveRecord::Schema.define(version: 20180326184448) do
     t.datetime "updated_at", null: false
     t.jsonb "meta"
     t.datetime "occurred_at"
+    t.datetime "push_sent_at"
     t.index ["kind"], name: "index_notifications_on_kind"
     t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable_type_and_notifiable_id"
     t.index ["user_id", "status"], name: "index_notifications_on_user_id_and_status"

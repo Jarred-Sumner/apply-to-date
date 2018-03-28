@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_many :users_who_viewed, class_name: 'ProfileView', foreign_key: 'user_id'
   has_many :viewed_users, class_name: 'ProfileView', foreign_key: 'viewed_by_user_id'
   has_many :date_events
+  has_many :devices
   has_many :date_event_applications, through: :date_events
 
   scope :fake, lambda { where("email ~~ ANY('{#{PROBABLY_FAKE_ACCOUNTS.map { |email| "%#{email}%"}.join(",")}}')") }
@@ -35,6 +36,15 @@ class User < ApplicationRecord
   SHUFFLE_BATCH_SIZE_FLOOR = 5.freeze
   SHUFFLE_COOLDOWN_CEILING = 12.hours.freeze
   SHUFFLE_COOLDOWN_FLOOR = 1.hours.freeze
+
+  ADMIN_EMAILS = [
+    'jarred@jarredsumner.com',
+    'lucyguo94@gmail.com'
+  ]
+
+  def admin?
+    ADMIN_EMAILS.include?(email)
+  end
 
   def blocked?(user_id)
     return false if user_id.blank?

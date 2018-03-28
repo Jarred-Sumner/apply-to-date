@@ -34,7 +34,7 @@ class Api::V1::DateEventApplicationsController < Api::V1::ApplicationController
           VerifiedNetwork.create!(date_event_application_id: @date_event_application.id, external_authentication_id: auth.id)
         end
 
-        Notification.where(
+        @notification = Notification.where(
           user: date_event.user,
           notifiable: @date_event_application,
           kind: Notification.kinds[
@@ -46,7 +46,11 @@ class Api::V1::DateEventApplicationsController < Api::V1::ApplicationController
       create_application_from_guest
     end
 
-    render json: DateEventApplicationSerializer.new(@date_event_application).serializable_hash
+    @notification.enqueue!
+
+    if !performed?
+      render json: DateEventApplicationSerializer.new(@date_event_application).serializable_hash
+    end
   end
 
   def index_event
@@ -202,7 +206,7 @@ class Api::V1::DateEventApplicationsController < Api::V1::ApplicationController
       end
 
       @date_event_application.save!
-      Notification.where(
+      @notification = Notification.where(
         user: date_event.user,
         notifiable: @date_event_application,
         kind: Notification.kinds[

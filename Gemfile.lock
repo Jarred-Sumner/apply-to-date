@@ -229,6 +229,7 @@ GEM
     omniauth-twitter (1.4.0)
       omniauth-oauth (~> 1.1)
       rack
+    one_signal (1.2.0)
     pg (0.21.0)
     phonelib (0.6.19)
     possessive (1.0.1)
@@ -422,6 +423,7 @@ DEPENDENCIES
   omniauth-linkedin-oauth2
   omniauth-medium!
   omniauth-twitter
+  one_signal
   pg (~> 0.18)
   phonelib
   possessive

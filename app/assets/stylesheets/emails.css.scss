@@ -3,6 +3,7 @@ $color_2: #404040;
 $color_3: rgb(0, 158, 255);
 $color_4: #fff;
 $color_5: #fff;
+$color_6: #666;
 $font: "Open Sans", "Helvetica Neue", Helvetica, Arial, "Lucida Grande",
   sans-serif;
 $background_color_1: #f7f8fb;
@@ -348,4 +349,8 @@ a {
 
 .link-container {
   text-decoration: none;
+}
+
+.muted {
+  color: $color_6;
 }

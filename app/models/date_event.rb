@@ -31,7 +31,7 @@ class DateEvent < ApplicationRecord
   end
 
   def should_generate_new_friendly_id?
-    super || category_changed? || occurs_on_day_changed? || profile_id_changed?
+    category_changed? || occurs_on_day_changed? || profile_id_changed?
   end
 
   def short_slug_label

@@ -11,6 +11,7 @@ module Dateme
     config.load_defaults 5.1
 
     config.autoload_paths << "#{Rails.root}/lib"
+    config.autoload_paths << "#{Rails.root}/app/notifications"
     config.autoload_paths << "#{Rails.root}/app/serializers"
     config.read_encrypted_secrets = true
 
@@ -24,6 +25,7 @@ module Dateme
     config.cache_store = :redis_store, "#{Rails.application.secrets[:redis_url]}/0/cache"
 
     Geokit::Geocoders::GoogleGeocoder.api_key = Rails.application.secrets[:google_maps_key]
+    OneSignal::OneSignal.api_key = Rails.application.secrets[:onesignal_key]
 
     config.session_store(
       :cookie_store,

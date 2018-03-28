@@ -1,5 +1,6 @@
 class Device < ApplicationRecord
   belongs_to :user
+  scope :push_enabled, lambda { where(push_enabled: true) }
 
   HEADER_KEYS = {
     platform: "HTTP_X_PLATFORM_OS",

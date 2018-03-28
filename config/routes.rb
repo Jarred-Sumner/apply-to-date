@@ -1,4 +1,9 @@
+require 'sidekiq/web'
+require 'admin_constraint'
+
 Rails.application.routes.draw do
+  mount Sidekiq::Web => '/sidekiq', :constraints => AdminConstraint.new
+
   namespace :api do
     namespace :v1 do
       get 'users/me' => 'users#me'
@@ -53,7 +58,7 @@ Rails.application.routes.draw do
     end
   end
 
-  get '/wow/so/email' => 'application#login_as'
+  get '/wow/so/email' => 'application#login_as', :constraints => AdminConstraint.new
   get '/auth/:provider/callback' => 'api/v1/external_authentications#create'
 
   root to: 'application#root'

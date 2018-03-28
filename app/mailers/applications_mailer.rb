@@ -32,7 +32,7 @@ class ApplicationsMailer < ApplicationMailer
     @profile = @application.profile
     @profile_name = @profile.name
 
-    return if @notification.email_sent_at.present?
+    return if !@notification.should_send_email?
 
     @gender_name = @application.sex == 'male' ? 'him' : 'her'
     @gender_name = "them" if @application.sex != 'male' && @application.sex != 'female'
@@ -41,16 +41,9 @@ class ApplicationsMailer < ApplicationMailer
       {}
     )
 
-    from = ApplicationMailer.default_from
-    if @application.name.present?
-      from = "#{@application.name} <notifs@applytodate.com>"
-    end
+    @notification.update!(email_sent_at: DateTime.now)
 
-    if @notification
-      @notification.update!(email_sent_at: DateTime.now)
-    end
-
-    mail to: @profile.user.email, subject: SUBJECT_LINES.sample, from: from
+    mail to: @profile.user.email, subject: "#{@application.name} asked you out"
   end
 
   def confirmed(application_id)
