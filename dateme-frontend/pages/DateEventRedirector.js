@@ -105,6 +105,9 @@ class Profile extends React.Component {
         res.writeHead(302, {
           Location: dateEvent.url
         });
+
+        res.end();
+        res.finished = true;
       } else {
         Router.replaceRoute(dateEvent.url);
       }

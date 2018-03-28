@@ -119,6 +119,16 @@ routes
     page: "ProfileNotFound"
   })
   .add({
+    name: "Home",
+    pattern: "/home",
+    page: "index"
+  })
+  .add({
+    name: "LoggedInUserRedirector",
+    pattern: "/welcome",
+    page: "LoggedInUserRedirector"
+  })
+  .add({
     name: "profile",
     pattern: "/:id",
     page: "profile"

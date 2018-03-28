@@ -4,6 +4,7 @@ import Nav from "../components/nav";
 import withRedux from "next-redux-wrapper";
 import Header from "../components/Header";
 import Button from "../components/Button";
+import cookies from "next-cookies";
 import Text from "../components/Text";
 import _ from "lodash";
 import { updateEntities, setCurrentUser, initStore } from "../redux/store";
@@ -16,6 +17,7 @@ import qs from "qs";
 import LazyLoad from "react-lazyload";
 import { buildImgSrcSet } from "../lib/imgUri";
 import { buildProfileURL } from "../lib/routeHelpers";
+import LoginGate, { LOGIN_STATUSES } from "../components/LoginGate";
 
 const FeaturedProfile = ({ profile }) => {
   return (
@@ -178,6 +180,21 @@ class Homepage extends React.Component {
     };
   }
 
+  static async getInitialProps(ctx) {
+    if (ctx.isServer && ctx.req.path === "/") {
+      const { currentUserId } = cookies(ctx);
+
+      if (currentUserId) {
+        ctx.res.writeHead(302, {
+          Location: `${process.env.DOMAIN}/welcome`
+        });
+
+        ctx.res.end();
+        ctx.res.finished = true;
+      }
+    }
+  }
+
   async componentDidMount() {
     const profileResponse = await getFeaturedProfiles();
     this.props.updateEntities(profileResponse.body);
@@ -215,7 +232,7 @@ class Homepage extends React.Component {
                 </Text>
               </div>
 
-              <SignupForm />
+              {!this.props.currentUserId && <SignupForm />}
             </div>
           </main>
         </article>
@@ -369,18 +386,8 @@ class Homepage extends React.Component {
   }
 }
 
-const HomepageWithStore = withRedux(
-  initStore,
-  (state, props) => {
-    return {
-      currentUser: state.currentUserId ? state.user[state.currentUserId] : null
-    };
-  },
-  dispatch => bindActionCreators({ updateEntities, setCurrentUser }, dispatch),
-  null,
-  {
-    pure: false
-  }
-)(withLogin(Homepage));
+const HomepageWithStore = withRedux(initStore, null, dispatch =>
+  bindActionCreators({ updateEntities, setCurrentUser }, dispatch)
+)(LoginGate(Homepage));
 
 export default HomepageWithStore;

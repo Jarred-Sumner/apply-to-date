@@ -7,7 +7,7 @@ const WITHOUT_TEXT = "/static/brand-no-text@2x.png";
 export default ({ hideText = "auto" }) => {
   return (
     <div>
-      <Link route="/">
+      <Link route="/home">
         <a
           className={classNames("Brand", {
             "Brand--autohideText": hideText === "auto",
