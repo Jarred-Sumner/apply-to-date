@@ -244,12 +244,12 @@ const HeaderLinks = ({ isProbablyLoggedIn, currentUser, isMobile }) => {
           </div>
         </NavLink>
 
-        <NavLink key={"/applications"} href={"/applications"}>
+        <NavLink key={"/matches"} href={"/matches"}>
           <Icon color="#333" type="heart" size="14px" />
           &nbsp;
           <div className="TextWrapper">
             <Text casing="uppercase" weight="semiBold" size="12px">
-              Review applications
+              Matches
             </Text>
           </div>
         </NavLink>

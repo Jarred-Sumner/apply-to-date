@@ -4,5 +4,5 @@ class ApplicantApplicationSerializer
 
   has_many :external_authentications
   belongs_to :profile
-  attributes :social_links, :sections, :name, :photos, :email, :name, :profile_id, :sex, :recommended_contact_method, :profile_phone, :approved
+  attributes :social_links, :sections, :name, :photos, :email, :name, :profile_id, :sex, :recommended_contact_method, :profile_phone, :approved, :created_at
 end

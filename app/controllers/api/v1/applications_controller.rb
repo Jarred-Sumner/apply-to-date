@@ -1,5 +1,14 @@
 class Api::V1::ApplicationsController < Api::V1::ApplicationController
   attr_reader :applying_to_profile, :application
+  before_action :require_login, only: :index
+
+  def index
+    applications = current_user.sent_applications.approved.order("created_at DESC").includes(:profile).limit(100)
+
+    render json: ApplicantApplicationSerializer.new(applications, {
+      include: [:profile]
+    }).serializable_hash
+  end
 
   def for_profile
     if logged_in?

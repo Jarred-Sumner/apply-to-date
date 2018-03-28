@@ -5,6 +5,7 @@ import { SECTION_ORDERING, SECTION_LABELS } from "../pages/CreateApplication";
 import SocialLinkList from "./SocialLinkList";
 import PhotoGroup from "./PhotoGroup";
 import Button from "./Button";
+import ContactButton from "./ContactButton";
 import classNames from "classnames";
 
 export default class ApplicationListItem extends React.Component {
@@ -44,6 +45,7 @@ export default class ApplicationListItem extends React.Component {
       phone,
       tagline,
       socialLinks,
+      profilePhone,
       sections
     } = this.props.application;
     const { isExpanded } = this.state;
@@ -66,6 +68,14 @@ export default class ApplicationListItem extends React.Component {
         </div>
 
         <PhotoGroup showPlaceholder size="192px" photos={photos} />
+
+        <div className="ContactButton">
+          <ContactButton
+            socialLinks={socialLinks}
+            phone={phone || profilePhone}
+          />
+        </div>
+
         {!_.isEmpty(this.paragraphs()) && (
           <div
             className={classNames("Bio", {
@@ -133,6 +143,11 @@ export default class ApplicationListItem extends React.Component {
 
           .SocialLinks {
             text-align: left;
+          }
+
+          .ContactButton {
+            display: flex;
+            justify-content: center;
           }
 
           .Section-row {

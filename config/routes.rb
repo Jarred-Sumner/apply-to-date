@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       get 'verifications/:id' => 'external_authentications#show'
       post 'verifications/:provider' => 'external_authentications#claim'
 
+      get 'applications' => 'applications#index'
       get 'applications/:id' => 'applications#show_applicant'
       put 'applications/:id' => 'applications#update'
       post 'forgot-password' => 'forgot_passwords#create'

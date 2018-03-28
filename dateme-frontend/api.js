@@ -388,3 +388,5 @@ export const getApplication = ({ profileId }) => {
     profile_id: profileId
   });
 };
+
+export const getApplications = () => get("/applications");

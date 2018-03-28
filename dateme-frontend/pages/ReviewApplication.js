@@ -35,20 +35,26 @@ class ReviewApplication extends React.PureComponent {
   }
 
   async componentDidMount() {
-    this.loadNextApplication();
+    this.loadNextApplication(true);
   }
 
-  loadNextApplication = async () => {
+  loadNextApplication = async (allowEmptyState = false) => {
     const response = await getReviewApplications({
       status: "submitted",
       limit: 1
     });
 
-    this.setState({
-      application: _.first(response.body.data),
-      isLoadingApplication: false,
-      isRating: false
-    });
+    const application = _.first(response.body.data);
+
+    if (application || allowEmptyState) {
+      this.setState({
+        application: application,
+        isLoadingApplication: false,
+        isRating: false
+      });
+    } else {
+      Router.replaceRoute("/matches");
+    }
   };
 
   rate = status => {
@@ -110,14 +116,8 @@ class ReviewApplication extends React.PureComponent {
   }
 }
 
-const ReviewApplicationWithStore = withRedux(
-  initStore,
-  null,
-  dispatch => bindActionCreators({ setUnreadNotificationCount }, dispatch),
-  null,
-  {
-    pure: false
-  }
+const ReviewApplicationWithStore = withRedux(initStore, null, dispatch =>
+  bindActionCreators({ setUnreadNotificationCount }, dispatch)
 )(
   LoginGate(ReviewApplication, {
     loginRequired: true,

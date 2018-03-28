@@ -2,7 +2,12 @@ import { Link } from "../routes";
 import Head from "../components/head";
 import Nav from "../components/nav";
 import withRedux from "next-redux-wrapper";
-import { updateEntities, setCurrentUser, initStore } from "../redux/store";
+import {
+  updateEntities,
+  setCurrentUser,
+  initStore,
+  applicationsByProfile
+} from "../redux/store";
 import {
   getProfile,
   getCurrentUser,
@@ -125,26 +130,32 @@ class Profile extends React.Component {
   disableStickyHeader = () => this.setState({ isHeaderSticky: false });
 
   render() {
-    const { profile, currentUser, isMobile } = this.props;
+    const { profile, currentUser, isMobile, application } = this.props;
     if (!profile) {
       return <Page isLoading />;
     }
 
     return (
       <Page
-        renderMessage={() =>
-          _.get(currentUser, "username") === profile.id &&
-          !profile.visible && (
-            <MessageBar>
-              <Text size="14px" color="white" lineHeight="19px">
-                Your profile is hidden from others until you{" "}
-                <Link route={buildEditProfileURL(profile.id)}>
-                  <a>go live</a>
-                </Link>
-              </Text>
-            </MessageBar>
-          )
-        }
+        renderMessage={() => {
+          if (
+            _.get(currentUser, "username") === profile.id &&
+            !profile.visible
+          ) {
+            return (
+              <MessageBar>
+                <Text size="14px" color="white" lineHeight="19px">
+                  Your profile is hidden from others until you{" "}
+                  <Link route={buildEditProfileURL(profile.id)}>
+                    <a>go live</a>
+                  </Link>
+                </Text>
+              </MessageBar>
+            );
+          } else {
+            return null;
+          }
+        }}
         headerProps={{
           renderSubheader:
             isMobile &&
@@ -179,6 +190,7 @@ class Profile extends React.Component {
         <ProfileComponent
           profile={profile}
           isMobile={isMobile}
+          application={application}
           onScrollEnterAskButton={this.disableStickyHeader}
           onScrollLeaveAskButton={this.enableStickyHeader}
         />
@@ -229,8 +241,11 @@ class Profile extends React.Component {
 const ProfileWithStore = withRedux(
   initStore,
   (state, props) => {
+    const profile =
+      state.profile[props.profileId || decodeURI(props.url.query.id)];
     return {
-      profile: state.profile[props.profileId || decodeURI(props.url.query.id)]
+      profile,
+      application: _.first(applicationsByProfile(state)[_.get(profile, "id")])
     };
   },
   dispatch => bindActionCreators({ updateEntities }, dispatch)

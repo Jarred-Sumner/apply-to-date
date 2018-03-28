@@ -7,8 +7,8 @@ export default class ApplicationsBreadcrumbs extends React.Component {
         <BreadcrumbLink prefetch href="/applications">
           New
         </BreadcrumbLink>
-        <BreadcrumbLink prefetch href="/applications/liked">
-          Liked
+        <BreadcrumbLink prefetch href="/matches">
+          Matches
         </BreadcrumbLink>
         <BreadcrumbLink prefetch href="/applications/passed">
           Passed

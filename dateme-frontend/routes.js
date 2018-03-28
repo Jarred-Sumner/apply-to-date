@@ -94,6 +94,11 @@ routes
     page: "LikedApplications"
   })
   .add({
+    name: "/matches",
+    pattern: "/matches",
+    page: "LikedApplications"
+  })
+  .add({
     name: "/applications/passed",
     pattern: "/applications/passed",
     page: "PassedApplications"

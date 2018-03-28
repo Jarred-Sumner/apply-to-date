@@ -6,6 +6,7 @@ import _ from "lodash";
 import Typed from "react-typed";
 import titleCase from "title-case";
 import Linkify from "react-linkify";
+import Icon from "./Icon";
 import SocialLinkList from "./SocialLinkList";
 import TwitterViewer from "./TwitterViewer";
 import InstagramSection from "./InstagramSection";
@@ -44,6 +45,7 @@ export default ({
   profile,
   isMobile,
   onScrollEnterAskButton,
+  application,
   onScrollLeaveAskButton
 }) => (
   <React.Fragment>
@@ -98,6 +100,7 @@ export default ({
       </div>
 
       <SocialLinkList socialLinks={profile.socialLinks} />
+
       <Waypoint
         onEnter={onScrollEnterAskButton}
         onLeave={onScrollLeaveAskButton}
@@ -106,6 +109,19 @@ export default ({
           <AskProfileOutButton profile={profile} />
         </div>
       </Waypoint>
+
+      {application &&
+        application.approved && (
+          <div className="Section-row">
+            <span>
+              <Icon inline type="check" size="14px" color={COLORS.BLUE} />
+              &nbsp;
+              <Text size="14px" color={COLORS.BLUE}>
+                {profile.name} agreed to go on a date with you
+              </Text>
+            </span>
+          </div>
+        )}
     </section>
     {profile.photos.length > 1 && (
       <section className="Section">
