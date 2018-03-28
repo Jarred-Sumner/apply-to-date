@@ -40,11 +40,11 @@
 										<tr>
 											<td class="content-block">
 												<h2>
-													<%= section_label(@application.sections.keys.first) %>
+													<%= section_label(@application) %>
 												</h2>
 
 												<p>
-													<%= truncate(@application.sections.values.first, { length: 250 }) %>
+													<%= truncate(section_value(@application), { length: 250 }) %>
 												</p>
 
 										</tr>
