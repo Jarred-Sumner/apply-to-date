@@ -51,6 +51,9 @@ class Api::V1::DateEventApplicationsController < Api::V1::ApplicationController
     if !performed?
       render json: DateEventApplicationSerializer.new(@date_event_application).serializable_hash
     end
+  rescue ArgumentError => e
+    Rails.logger.error(e)
+    render_error(message: e.message)
   end
 
   def index_event
