@@ -46,7 +46,8 @@ export default class ApplicationListItem extends React.Component {
       tagline,
       socialLinks,
       profilePhone,
-      sections
+      sections,
+      type
     } = this.props.application;
     const { isExpanded } = this.state;
     return (
@@ -59,11 +60,7 @@ export default class ApplicationListItem extends React.Component {
           </div>
 
           <div className="SocialLinks">
-            <SocialLinkList
-              centered={false}
-              phone={phone}
-              socialLinks={socialLinks}
-            />
+            <SocialLinkList centered={false} socialLinks={socialLinks} />
           </div>
         </div>
 
