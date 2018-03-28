@@ -258,6 +258,19 @@ export const dateEventApplicationSelector = id => state => {
   return state.date_event_application[id];
 };
 
+export const applicationsByProfile = state => {
+  const profileIds = {};
+  _.values(state.application).map(application => {
+    if (!profileIds[application.profileId]) {
+      profileIds[application.profileId] = [];
+    }
+
+    profileIds[application.profileId].push(application);
+  });
+
+  return profileIds;
+};
+
 export const dateEventsSelector = state => state.date_event;
 export const dateEventApplicationsSelector = state =>
   state.date_event_application;

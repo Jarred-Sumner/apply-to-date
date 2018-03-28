@@ -382,3 +382,9 @@ export const getDateEventBySlug = ({ profileId, slug }) => {
     slug
   });
 };
+
+export const getApplication = ({ profileId }) => {
+  return post(`/profile/application`).send({
+    profile_id: profileId
+  });
+};

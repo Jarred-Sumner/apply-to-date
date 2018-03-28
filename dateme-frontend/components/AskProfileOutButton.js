@@ -1,15 +1,23 @@
 import Button from "./Button";
 import Icon from "./Icon";
-import LoginGate from "./LoginGate";
+import LoginGate, { LOGIN_STATUSES } from "./LoginGate";
 import {
   buildApplyURL,
   buildApplicantApplicationURL
 } from "../lib/routeHelpers";
-import { updateApplication } from "../api";
+import { updateApplication, getApplication } from "../api";
 import { Router } from "../routes";
 import Alert from "./Alert";
 import { logEvent } from "../lib/analytics";
 import _ from "lodash";
+import {
+  applicationsByProfile,
+  currentUserSelector,
+  updateEntities
+} from "../redux/store";
+import { connect } from "react-redux";
+import ContactButton from "./ContactButton";
+import { bindActionCreators } from "redux";
 
 class AskProfileOutButton extends React.Component {
   constructor(props) {
@@ -21,8 +29,31 @@ class AskProfileOutButton extends React.Component {
   }
 
   componentDidMount() {
-    Router.prefetchRoute(buildApplyURL(this.props.profile.id));
+    if (
+      this.props.loginStatus === LOGIN_STATUSES.loggedIn &&
+      !this.props.application
+    ) {
+      this.checkForApplication();
+    } else if (this.props.loginStatus !== LOGIN_STATUSES.loggedIn) {
+      Router.prefetchRoute(buildApplyURL(this.props.profile.id));
+    }
   }
+
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.loginStatus === LOGIN_STATUSES.loggedIn &&
+      prevProps.loginStatus !== LOGIN_STATUSES.loggedIn &&
+      !this.props.application
+    ) {
+      this.checkForApplication();
+    }
+  }
+
+  checkForApplication = () => {
+    getApplication({ profileId: this.props.profile.id }).then(response => {
+      this.props.updateEntities(response.body);
+    });
+  };
 
   askOut = () => {
     if (this.state.isAskingOut) {
@@ -59,31 +90,75 @@ class AskProfileOutButton extends React.Component {
   };
 
   render() {
-    const { currentUser, profile } = this.props;
+    const { currentUser, profile, loginStatus, application } = this.props;
     const copy = `Ask ${profile.name} out`;
-    if (currentUser && currentUser.isAutoApplyEnabled) {
+
+    if ([LOGIN_STATUSES.guest, LOGIN_STATUSES.checking].includes(loginStatus)) {
       return (
         <Button
           size="large"
-          onClick={this.askOut}
           icon={<Icon type="heart" size="14px" />}
-          pending={this.state.isAskingOut}
-        >
-          {copy}
-        </Button>
-      );
-    } else {
-      return (
-        <Button
-          icon={<Icon type="heart" size="14px" />}
-          size="large"
           href={buildApplyURL(profile.id)}
+          color="black"
         >
           {copy}
         </Button>
       );
     }
+
+    if (application && !application.approved) {
+      return (
+        <Button
+          icon={<Icon type="check" color="white" size="14px" />}
+          color="black"
+          size="large"
+          href={buildApplicantApplicationURL(application.id)}
+        >
+          Asked out
+        </Button>
+      );
+    } else if (application && application.approved) {
+      return (
+        <ContactButton
+          size="large"
+          socialLinks={profile.socialLinks}
+          phone={application.profilePhone}
+        />
+      );
+    } else {
+      if (currentUser && currentUser.isAutoApplyEnabled) {
+        return (
+          <Button
+            onClick={this.askOut}
+            size="large"
+            icon={<Icon type="heart" size="14px" />}
+            color="black"
+            pending={this.state.isAskingOut}
+          >
+            {copy}
+          </Button>
+        );
+      } else {
+        return (
+          <Button
+            icon={<Icon type="heart" size="14px" />}
+            size="large"
+            href={buildApplyURL(profile.id)}
+            color="black"
+          >
+            {copy}
+          </Button>
+        );
+      }
+    }
   }
 }
 
-export default LoginGate(AskProfileOutButton);
+export default connect(
+  (state, props) => ({
+    application: _.first(applicationsByProfile(state)[props.profile.id]),
+    currentUser: currentUserSelector(state),
+    loginStatus: state.loginStatus
+  }),
+  dispatch => bindActionCreators({ updateEntities }, dispatch)
+)(AskProfileOutButton);

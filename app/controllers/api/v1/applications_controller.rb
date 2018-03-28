@@ -1,6 +1,15 @@
 class Api::V1::ApplicationsController < Api::V1::ApplicationController
   attr_reader :applying_to_profile, :application
 
+  def for_profile
+    if logged_in?
+      application = Application.where(profile_id: params[:profile_id]).where("email = ? or applicant_id = ?", current_user.email, current_user.id).first
+      render json: ApplicantApplicationSerializer.new(application).serializable_hash
+    else
+      render json: ApplicantApplicationSerializer.new([]).serializable_hash
+    end
+  end
+
   def create
     @applying_to_profile = Profile.find(params[:profile_id])
 

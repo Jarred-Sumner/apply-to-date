@@ -47,6 +47,8 @@ Rails.application.routes.draw do
       resources :date_event_applications
       post '/devices' => 'devices#update'
 
+      post '/profile/application' => 'applications#for_profile'
+
       post '/reports/:reportable_type/:reportable_id' => 'reports#create'
       get '/reports/:reportable_type/:reportable_id' => 'reports#show'
 

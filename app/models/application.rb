@@ -17,6 +17,10 @@ class Application < ApplicationRecord
     }.with_indifferent_access
   end
 
+  def approved
+    approved?
+  end
+
   def self.approval_statuses
     {
       :rejected => Application.statuses[:rejected],
@@ -47,6 +51,14 @@ class Application < ApplicationRecord
   validates :profile, presence: true
   validates :name, presence: true, :unless => :pending?
   validates :sex, presence: true, inclusion: { in: ['male', 'female', 'other'] }, unless: :pending?
+
+  def profile_phone
+    if approved?
+      profile.phone
+    else
+      nil
+    end
+  end
 
   def self.fetch(email: nil, profile_id: nil)
     profile = Profile.find_by(id: profile_id, visible: true)
