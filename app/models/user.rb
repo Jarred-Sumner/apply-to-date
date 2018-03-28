@@ -10,7 +10,6 @@ class User < ApplicationRecord
   has_many :received_applications, class_name: 'Application', foreign_key: 'user_id'
   has_many :users_who_viewed, class_name: 'ProfileView', foreign_key: 'user_id'
   has_many :viewed_users, class_name: 'ProfileView', foreign_key: 'viewed_by_user_id'
-  has_many :date_events
   has_many :devices
   has_many :date_event_applications, through: :date_events
 
