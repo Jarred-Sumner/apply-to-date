@@ -112,7 +112,6 @@ const Head = props => (
             content={`app-id=1357419725, app-argument=${props.mobileURL}`}
           />
           <meta property="al:ios:url" content={props.mobileURL} />
-          <meta property="al:web:should_fallback" content="false" />
           <meta property="al:ios:app_store_id" content="1357419725" />
           <meta property="al:ios:app_name" content="Apply to Date" />
         </React.Fragment>
