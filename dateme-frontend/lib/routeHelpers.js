@@ -123,3 +123,5 @@ export const buildApplicantUpdateDateApplicationURL = dateEventApplicationId => 
     process.env.SHARE_DOMAIN + "/asked-out/" + dateEventApplicationId
   );
 };
+export const buildMobileDateEventURL = (profileId, dateEventId) =>
+  `${MOBILE_APP_BASE_URI}date-events/${profileId}/${dateEventId}`;

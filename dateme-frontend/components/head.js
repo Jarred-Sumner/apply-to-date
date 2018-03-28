@@ -89,6 +89,7 @@ const Head = props => (
       />
       <link rel="icon" href={props.favicon || "/static/favicon.png"} />
       <meta property="og:url" content={props.url || defaultOGURL} />
+      {props.url && <meta property="al:web:url" content={props.url} />}
       <meta property="og:title" content={props.title || ""} />
       <meta
         property="og:description"
@@ -105,10 +106,15 @@ const Head = props => (
       <meta name="apple-mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="black" />
       {props.mobileURL ? (
-        <meta
-          name="apple-itunes-app"
-          content={`app-id=1357419725, app-argument=${props.mobileURL}`}
-        />
+        <React.Fragment>
+          <meta
+            name="apple-itunes-app"
+            content={`app-id=1357419725, app-argument=${props.mobileURL}`}
+          />
+          <meta property="al:ios:url" content={props.mobileURL} />
+          <meta property="al:ios:app_store_id" content="1357419725" />
+          <meta property="al:ios:app_name" content="Apply to Date" />
+        </React.Fragment>
       ) : (
         <meta name="apple-itunes-app" content="app-id=1357419725" />
       )}

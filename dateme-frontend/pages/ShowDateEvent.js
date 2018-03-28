@@ -45,7 +45,8 @@ import { Router } from "../routes";
 import {
   buildProfileURL,
   buildEditProfileURL,
-  buildMobileViewProfileURL
+  buildMobileViewProfileURL,
+  buildMobileDateEventURL
 } from "../lib/routeHelpers";
 import { getMobileDetect } from "../lib/Mobile";
 import Subheader from "../components/Subheader";
@@ -202,6 +203,7 @@ class Profile extends React.Component {
           title={formatPageTitle({ dateEvent, profile })}
           description={formatPageDescription({ dateEvent, profile })}
           favicon={_.sample(profile.photos)}
+          mobileURL={buildMobileDateEventURL(profile.id, dateEvent.id)}
           ogImage={_.first(profile.photos)}
         />
 
