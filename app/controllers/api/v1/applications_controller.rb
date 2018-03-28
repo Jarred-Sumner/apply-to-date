@@ -3,11 +3,19 @@ class Api::V1::ApplicationsController < Api::V1::ApplicationController
   before_action :require_login, only: :index
 
   def index
-    applications = current_user.sent_applications.approved.order("created_at DESC").includes(:profile).limit(100)
-
-    render json: ApplicantApplicationSerializer.new(applications, {
-      include: [:profile]
-    }).serializable_hash
+    if params[:count_only].blank?
+      applications = current_user.sent_applications.approved.order("created_at DESC").includes(:profile).limit(100)
+      render json: ApplicantApplicationSerializer.new(applications, {
+        include: [:profile]
+      }).serializable_hash
+    else
+      count = current_user.received_applications.submitted.count
+      render json: ApplicantApplicationSerializer.new([], {
+        meta: {
+          count: count
+        }
+      }).serializable_hash
+    end
   end
 
   def for_profile

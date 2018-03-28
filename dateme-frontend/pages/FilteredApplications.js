@@ -1,4 +1,4 @@
-import {Link} from "../routes";
+import { Link } from "../routes";
 import Head from "../components/head";
 import Nav from "../components/nav";
 import withRedux from "next-redux-wrapper";
@@ -8,7 +8,11 @@ import FormField from "../components/FormField";
 import Text from "../components/Text";
 import _ from "lodash";
 import { updateEntities, setCurrentUser, initStore } from "../redux/store";
-import { getReviewApplications, rateApplication } from "../api";
+import {
+  getReviewApplications,
+  rateApplication,
+  getPendingApplicationsCount
+} from "../api";
 import { bindActionCreators } from "redux";
 import { Router } from "../routes";
 import Alert, { handleApiError } from "../components/Alert";
@@ -24,7 +28,8 @@ class FilteredApplication extends React.PureComponent {
 
     this.state = {
       isLoading: true,
-      applications: []
+      applications: [],
+      newApplicationsCount: 0
     };
   }
 
@@ -38,19 +43,28 @@ class FilteredApplication extends React.PureComponent {
       limit: 25
     });
 
+    const applicationsCountResponse = await getPendingApplicationsCount();
+    const newApplicationsCount = applicationsCountResponse.body.meta.count;
+
     this.setState({
       applications: response.body.data,
-      isLoading: false
+      isLoading: false,
+      newApplicationsCount
     });
   };
 
   render() {
-    const { applications, isLoading, isRating } = this.state;
+    const {
+      applications,
+      isLoading,
+      newApplicationsCount,
+      isRating
+    } = this.state;
 
     return (
       <Page isLoading={isLoading}>
         <Head title="Filtered applications | Apply to date" />
-        <ApplicationsBreadcrumbs />
+        <ApplicationsBreadcrumbs newApplicationsCount={newApplicationsCount} />
         <article>
           <ApplicationList applications={applications} />
         </article>

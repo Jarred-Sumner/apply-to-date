@@ -5,7 +5,9 @@ export default class ApplicationsBreadcrumbs extends React.Component {
     return (
       <nav>
         <BreadcrumbLink prefetch href="/applications">
-          New
+          {this.props.newApplicationsCount > 0
+            ? `New (${this.props.newApplicationsCount})`
+            : `New`}
         </BreadcrumbLink>
         <BreadcrumbLink prefetch href="/matches">
           Matches
@@ -22,7 +24,7 @@ export default class ApplicationsBreadcrumbs extends React.Component {
             display: grid;
             grid-auto-flow: column dense;
             grid-column-gap: 24px;
-            grid-auto-columns: min-content min-content min-content min-content;
+            grid-auto-columns: auto auto auto auto;
             margin-top: 48px;
             margin-bottom: 48px;
             justify-content: center;

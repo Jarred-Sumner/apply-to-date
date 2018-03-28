@@ -390,3 +390,7 @@ export const getApplication = ({ profileId }) => {
 };
 
 export const getApplications = () => get("/applications");
+export const getPendingApplicationsCount = () =>
+  get("/applications").query({
+    count_only: true
+  });

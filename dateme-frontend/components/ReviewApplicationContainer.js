@@ -79,6 +79,7 @@ export default ({
   application,
   isLoading,
   onYes,
+  newApplicationsCount,
   onNo,
   currentUser,
   isMobile,
@@ -101,7 +102,7 @@ export default ({
   >
     <Head mobileURL={mobileURL} title="Review Application | Apply to date" />
 
-    <ApplicationsBreadcrumbs />
+    <ApplicationsBreadcrumbs newApplicationsCount={newApplicationsCount} />
 
     {application && (
       <article>

@@ -13,7 +13,11 @@ import {
   initStore,
   setUnreadNotificationCount
 } from "../redux/store";
-import { getReviewApplication, rateApplication } from "../api";
+import {
+  getReviewApplication,
+  rateApplication,
+  getPendingApplicationsCount
+} from "../api";
 import { bindActionCreators } from "redux";
 import { Router } from "../routes";
 import Alert, { handleApiError } from "../components/Alert";
@@ -33,7 +37,8 @@ class ReviewSpecificApplication extends React.PureComponent {
     this.state = {
       isRating: false,
       application: null,
-      isLoadingApplication: true
+      isLoadingApplication: true,
+      newApplicationsCount: 0
     };
   }
 
@@ -82,15 +87,22 @@ class ReviewSpecificApplication extends React.PureComponent {
 
   async componentDidMount() {
     const response = await getReviewApplication(this.props.url.query.id);
+    const applicationsCountResponse = await getPendingApplicationsCount();
 
     this.setState({
       application: response.body.data,
-      isLoadingApplication: false
+      isLoadingApplication: false,
+      newApplicationsCount: applicationsCountResponse.body.meta.count
     });
   }
 
   render() {
-    const { application, isLoadingApplication, isRating } = this.state;
+    const {
+      application,
+      isLoadingApplication,
+      isRating,
+      newApplicationsCount
+    } = this.state;
     return (
       <ReviewApplicationContainer
         application={application}
@@ -99,6 +111,7 @@ class ReviewSpecificApplication extends React.PureComponent {
         onNo={this.handleNo}
         mobileURL={buildMobileApplicationURL(_.get(application, "id"))}
         isLoading={isLoadingApplication}
+        newApplicationsCount={newApplicationsCount}
         isRating={isRating}
         isMobile={this.props.isMobile}
       />

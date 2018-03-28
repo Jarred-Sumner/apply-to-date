@@ -13,7 +13,11 @@ import {
   initStore,
   setUnreadNotificationCount
 } from "../redux/store";
-import { getReviewApplications, rateApplication } from "../api";
+import {
+  getReviewApplications,
+  rateApplication,
+  getPendingApplicationsCount
+} from "../api";
 import { bindActionCreators } from "redux";
 import { Router } from "../routes";
 import Alert, { handleApiError } from "../components/Alert";
@@ -30,6 +34,7 @@ class ReviewApplication extends React.PureComponent {
     this.state = {
       isRating: false,
       application: null,
+      newApplicationsCount: 0,
       isLoadingApplication: true
     };
   }
@@ -44,13 +49,16 @@ class ReviewApplication extends React.PureComponent {
       limit: 1
     });
 
+    const applicationsCountResponse = await getPendingApplicationsCount();
+
     const application = _.first(response.body.data);
 
     if (application || allowEmptyState) {
       this.setState({
         application: application,
         isLoadingApplication: false,
-        isRating: false
+        isRating: false,
+        newApplicationsCount: applicationsCountResponse.body.meta.count
       });
     } else {
       Router.replaceRoute("/matches");
@@ -86,7 +94,7 @@ class ReviewApplication extends React.PureComponent {
           logEvent("Application Rejected");
         }
 
-        this.loadNextApplication();
+        this.loadNextApplication(false);
       })
       .catch(error => handleApiError(error))
       .finally(() => this.setState({ isRating: false }));
@@ -101,13 +109,19 @@ class ReviewApplication extends React.PureComponent {
   };
 
   render() {
-    const { application, isLoadingApplication, isRating } = this.state;
+    const {
+      application,
+      isLoadingApplication,
+      newApplicationsCount,
+      isRating
+    } = this.state;
     return (
       <ReviewApplicationContainer
         application={application}
         currentUser={this.props.currentUser}
         isLoading={isLoadingApplication || !this.props.currentUser}
         onYes={this.handleYes}
+        newApplicationsCount={newApplicationsCount}
         mobileURL={buildMobileApplicationsURL()}
         onNo={this.handleNo}
         isMobile={this.props.isMobile}

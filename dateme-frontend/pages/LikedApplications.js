@@ -16,7 +16,8 @@ import {
 import {
   getReviewApplications,
   rateApplication,
-  getApplications
+  getApplications,
+  getPendingApplicationsCount
 } from "../api";
 import { bindActionCreators } from "redux";
 import { Router } from "../routes";
@@ -34,6 +35,7 @@ class LikedApplication extends React.PureComponent {
 
     this.state = {
       isLoading: true,
+      newApplicationsCount: 0,
       applications: []
     };
   }
@@ -52,6 +54,9 @@ class LikedApplication extends React.PureComponent {
       limit: 25
     });
 
+    const applicationsCountResponse = await getPendingApplicationsCount();
+    const newApplicationsCount = applicationsCountResponse.body.meta.count;
+
     const reviewApplications = response.body.data;
 
     const applicationsResponse = await getApplications();
@@ -60,6 +65,7 @@ class LikedApplication extends React.PureComponent {
     const { application } = normalizeApiResponse(applicationsResponse.body);
 
     this.setState({
+      newApplicationsCount,
       applications: _.orderBy(
         _.concat(reviewApplications, _.values(application)),
         "createdAt",
@@ -76,12 +82,17 @@ class LikedApplication extends React.PureComponent {
   };
 
   render() {
-    const { applications, isLoading, isRating } = this.state;
+    const {
+      applications,
+      isLoading,
+      isRating,
+      newApplicationsCount
+    } = this.state;
 
     return (
       <Page isLoading={isLoading}>
         <Head title="Matches | Apply to date" />
-        <ApplicationsBreadcrumbs />
+        <ApplicationsBreadcrumbs newApplicationsCount={newApplicationsCount} />
         <article>
           <ApplicationList applications={applications} />
         </article>
