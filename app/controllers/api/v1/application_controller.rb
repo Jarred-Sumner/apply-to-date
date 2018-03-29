@@ -38,7 +38,10 @@ class Api::V1::ApplicationController < ActionController::Base
 
   def self.build_frontend_uri(path, params, merge = true, is_mobile = false, mobile_platform = 'ios')
     hostname = frontend_hostname(is_mobile, mobile_platform)
-    uri = Addressable::URI.parse(hostname + path)
+    uri = Addressable::URI.parse(hostname)
+    uri.path = path.split("?")[0]
+    uri.query = path.split("?")[1]
+
     if merge
       uri.query_values = (uri.query_values || {}).merge(params) if params.present?
     else
