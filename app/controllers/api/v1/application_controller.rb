@@ -26,8 +26,18 @@ class Api::V1::ApplicationController < ActionController::Base
     render_error(message: e.record.errors.full_messages)
   end
 
-  def self.build_frontend_uri(path, params, merge = true, is_mobile = false)
-    hostname = is_mobile ? Rails.application.secrets[:mobile_base_uri] : Rails.application.secrets[:frontend_url]
+  def self.frontend_hostname(is_mobile = false, mobile_platform = "ios")
+    if is_mobile && mobile_platform == 'ios'
+      Rails.application.secrets[:ios_base_uri]
+    elsif is_mobile && mobile_platform == 'android'
+      Rails.application.secrets[:android_base_uri]
+    else
+      Rails.application.secrets[:frontend_url]
+    end
+  end
+
+  def self.build_frontend_uri(path, params, merge = true, is_mobile = false, mobile_platform = 'ios')
+    hostname = frontend_hostname(is_mobile, mobile_platform)
     uri = Addressable::URI.parse(hostname + path)
     if merge
       uri.query_values = (uri.query_values || {}).merge(params) if params.present?
