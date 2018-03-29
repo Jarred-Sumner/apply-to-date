@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      post 'geocode' => 'geocode#create'
       get 'users/me' => 'users#me'
       get 'verifications' => 'external_authentications#index'
       get 'verifications/:id' => 'external_authentications#show'
