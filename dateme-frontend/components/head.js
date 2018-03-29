@@ -69,6 +69,7 @@ const Head = props => (
         sizes="192x192"
         href={props.favicon || "/static/favicon.png"}
       />
+      <link rel="manifest" href="/static/manifest.json" />
       <meta property="fb:app_id" content="2014016792189722" />
       <meta property="og:type" content={props.type || "website"} />
       {props.disableGoogle && (
