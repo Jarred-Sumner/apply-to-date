@@ -48,8 +48,8 @@ class Api::V1::ApplicationController < ActionController::Base
     uri
   end
 
-  def redirect_to_frontend(path, params = {}, merge = true, is_mobile = false)
-    uri = Api::V1::ApplicationController.build_frontend_uri(path, params, merge, is_mobile)
+  def redirect_to_frontend(path, params = {}, merge = true, is_mobile = false, mobile_platform = 'ios')
+    uri = Api::V1::ApplicationController.build_frontend_uri(path, params, merge, is_mobile, mobile_platform)
     redirect_to uri.to_s
   end
 
