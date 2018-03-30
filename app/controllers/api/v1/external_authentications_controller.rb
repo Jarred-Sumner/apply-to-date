@@ -3,7 +3,7 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
   before_action :disable_caching
 
   def disable_caching
-    response.headers['Cache-Control'] = 'no-store, no-cache'
+    response.headers['Cache-Control'] = 'no-store'
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
   end
