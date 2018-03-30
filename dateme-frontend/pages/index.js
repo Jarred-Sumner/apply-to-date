@@ -233,6 +233,27 @@ class Homepage extends React.Component {
               </div>
 
               {!this.props.currentUserId && <SignupForm />}
+
+              <div className="AppStoreContainer">
+                <a
+                  className="AppStore AppStore--ios"
+                  target="_blank"
+                  href="https://itunes.apple.com/us/app/apply-to-date/id1357419725?mt=8"
+                >
+                  <img src="https://devimages-cdn.apple.com/app-store/marketing/guidelines/images/badge-download-on-the-app-store.svg" />
+                </a>
+
+                <a
+                  target="_blank"
+                  className="AppStore AppStore--android"
+                  href="https://play.google.com/store/apps/details?id=com.shipfirstlabs.applytodate&utm_source=homepage&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"
+                >
+                  <img
+                    alt="Get it on Google Play"
+                    src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
+                  />
+                </a>
+              </div>
             </div>
           </main>
         </article>
@@ -332,6 +353,20 @@ class Homepage extends React.Component {
             border: 4px solid #4be1ab;
             border-right-color: transparent;
             border-radius: 50%;
+          }
+
+          .AppStoreContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+
+          .AppStore--ios img {
+            width: 180px;
+          }
+
+          .AppStore--android img {
+            width: 230px;
           }
 
           @keyframes rotate {
