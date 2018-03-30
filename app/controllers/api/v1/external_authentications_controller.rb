@@ -2,11 +2,6 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
   before_action :require_login, only: :index
   before_action :disable_caching
 
-  def disable_caching
-    response.headers['Cache-Control'] = 'no-store'
-    response.headers["Pragma"] = "no-cache"
-    response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
-  end
 
   def index
     render json: ExternalAuthenticationSerializer.new(current_user.external_authentications).serializable_hash

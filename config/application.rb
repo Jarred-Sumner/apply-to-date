@@ -15,6 +15,10 @@ module Dateme
     config.autoload_paths << "#{Rails.root}/app/serializers"
     config.read_encrypted_secrets = true
 
+    config.action_dispatch.default_headers.merge!(
+      'Cache-Control' => 'no-store, no-cache'
+    )
+
     config.action_mailer.delivery_method = :mailgun
     config.action_mailer.mailgun_settings = {
         api_key: Rails.application.secrets[:mailgun],
