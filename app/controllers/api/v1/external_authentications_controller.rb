@@ -178,7 +178,7 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
   end
 
   def redirect_to_frontend(path, params = {}, merge = true)
-    super(path, params, merge, is_mobile?, auth_params[:mobile_platform] || 'ios')
+    super(path, params, merge, is_mobile?, (auth_params[:mobile_platform] || auth_params[:mp]) || 'ios')
   end
 
   def is_mobile?
