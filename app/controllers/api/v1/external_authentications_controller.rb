@@ -1,6 +1,5 @@
 class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationController
   before_action :require_login, only: :index
-  before_action :disable_caching
 
 
   def index
