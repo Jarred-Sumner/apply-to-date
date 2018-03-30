@@ -249,7 +249,7 @@ class Profile < ApplicationRecord
     end
   end
 
-  validates :recommended_contact_method, inclusion: { in: VALID_CONTACT_METHODS }
+  validates :recommended_contact_method, inclusion: { in: VALID_CONTACT_METHODS }, allow_blank: true
 
   before_validation on: :create do
     self.sections = Profile.build_default_sections
