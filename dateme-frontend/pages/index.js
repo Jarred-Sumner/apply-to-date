@@ -407,6 +407,10 @@ class Homepage extends React.Component {
               padding-right: 14px;
             }
 
+            .AppStoreContainer {
+              flex-direction: column;
+            }
+
             .FeaturedProfiles {
               grid-auto-flow: row dense;
               grid-auto-rows: auto;
