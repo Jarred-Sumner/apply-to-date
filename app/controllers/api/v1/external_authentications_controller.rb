@@ -1,6 +1,5 @@
 class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationController
   before_action :require_login, only: :index
-  after_action :set_mobile_cookie, only: :create, if: :is_mobile?
 
   def index
     render json: ExternalAuthenticationSerializer.new(current_user.external_authentications).serializable_hash
@@ -178,7 +177,7 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
   end
 
   def redirect_to_frontend(path, params = {}, merge = true)
-    super(path, params, merge, is_mobile?, 'ios')
+    super(path, params, merge, is_mobile?, auth_params[:mobile_platform] || 'ios')
   end
 
   def is_mobile?
