@@ -18,6 +18,8 @@ import LazyLoad from "react-lazyload";
 import { buildImgSrcSet } from "../lib/imgUri";
 import { buildProfileURL } from "../lib/routeHelpers";
 import LoginGate, { LOGIN_STATUSES } from "../components/LoginGate";
+import Divider from "../components/Divider";
+import { SPACING } from "../helpers/styles";
 
 const FeaturedProfile = ({ profile }) => {
   return (
@@ -235,6 +237,7 @@ class Homepage extends React.Component {
               {!this.props.currentUserId && <SignupForm />}
 
               <div className="AppStoreContainer">
+                <Divider height={`${SPACING.normal}px`} color="transparent" />
                 <a
                   className="AppStore AppStore--ios"
                   target="_blank"
