@@ -143,6 +143,10 @@ class User < ApplicationRecord
     !fake?
   end
 
+  def generate_login_token!
+    self.update!(login_token: SecureRandom.urlsafe_base64(14))
+  end
+
   def interested_in_sexes
     VALID_SEXES
       .reject { |sex| sex === 'male' && !interested_in_men? }

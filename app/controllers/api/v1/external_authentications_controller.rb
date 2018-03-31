@@ -122,8 +122,14 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
 
         )
         elsif auth_params[:signIn] == 'true' && auth.get_user.present?
-          auto_login(auth.get_user, true)
-          redirect_to_frontend "/shuffle"
+          if is_mobile?
+            auth.get_user.generate_login_token!
+
+            token = auth.get_user.login_token
+            redirect_to_frontend "/welcome?t=#{token}"
+          else
+            redirect_to_frontend "/welcome"
+          end
         elsif auth_params[:signIn] == 'true' && auth.get_user.blank?
           redirect_to_frontend "/sign-up/#{auth_hash.provider}/#{auth.id}"
         elsif auth.user.present?
