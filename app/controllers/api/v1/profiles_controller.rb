@@ -93,8 +93,23 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
       end
 
       if !update_params[:tagline].nil?
-
         profile.update!(tagline: update_params[:tagline])
+      end
+
+      if !update_params[:interested_in_men].nil?
+        profile.update!(interested_in_men: String(update_params[:interested_in_men]) == 'true')
+      end
+
+      if !update_params[:interested_in_women].nil?
+        profile.update!(interested_in_women: String(update_params[:interested_in_women]) == 'true')
+      end
+
+      if !update_params[:interested_in_other].nil?
+        profile.update!(interested_in_other: String(update_params[:interested_in_other]) == 'true')
+      end
+
+      if User::VALID_SEXES.include?(update_params[:sex])
+        profile.update!(sex: update_params[:sex])
       end
 
       if !update_params[:photos].nil?
