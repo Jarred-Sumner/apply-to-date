@@ -6,6 +6,7 @@ import Amplitude from "react-amplitude";
 import FullStory from "./FullStory";
 import Router from "next/router";
 import Raven from "raven-js";
+import ReactPixel from "react-facebook-pixel";
 
 const defaultDescription =
   "Create a page where people apply to go on a date with you. You pick the winners.";
@@ -29,7 +30,9 @@ if (typeof window !== "undefined") {
   ReactGA.plugin.require("pageVisibilityTracker");
   ReactGA.plugin.require("socialWidgetTracker");
 
+  ReactPixel.init(process.env.FACEBOOK_PIXEL);
   ReactGA.pageview(window.location.pathname);
+  ReactPixel.pageView(window.location.pathname);
   var lastUrl = null;
   Router.onRouteChangeComplete = url => {
     console.log(url);
@@ -38,6 +41,7 @@ if (typeof window !== "undefined") {
       ReactGA.pageview(url);
     }
 
+    ReactPixel.pageView();
     lastUrl = url;
   };
 

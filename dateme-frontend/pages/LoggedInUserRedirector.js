@@ -12,9 +12,7 @@ class LoggedInUserRedirector extends React.Component {
       return;
     }
 
-    if (this.props.currentProfile.region === "bay_area") {
-      return Router.replaceRoute("/dates");
-    } else if (this.props.currentUser.shuffleStatus === "shuffle_allowed") {
+    if (this.props.currentUser.shuffleStatus === "shuffle_allowed") {
       return Router.replaceRoute("/shuffle");
     } else {
       return Router.replaceRoute("/matchmake");

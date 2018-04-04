@@ -18,6 +18,7 @@ import {
 import { connect } from "react-redux";
 import ContactButton from "./ContactButton";
 import { bindActionCreators } from "redux";
+import ReactPixel from "react-facebook-pixel";
 
 class AskProfileOutButton extends React.Component {
   constructor(props) {
@@ -76,6 +77,12 @@ class AskProfileOutButton extends React.Component {
           providers: _.keys(this.props.currentUser.profile.socialLinks),
           createAccount: false,
           auto: true
+        });
+
+        ReactPixel.trackCustom("SubmitApplication", {
+          create_account: false,
+          auto: true,
+          content_ids: [this.props.profile.id]
         });
       })
       .catch(error => {

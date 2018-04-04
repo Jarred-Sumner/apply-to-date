@@ -45,6 +45,7 @@ import MessageBar from "../components/MessageBar";
 import withLogin from "../lib/withLogin";
 import { logEvent } from "../lib/analytics";
 import { buildProfileURL } from "../lib/routeHelpers";
+import ReactPixel from "react-facebook-pixel";
 
 export const SECTION_ORDERING = ["introduction", "why"];
 
@@ -170,6 +171,11 @@ class CreateApplication extends React.Component {
       providers: _.keys(this.state.socialLinks),
       featured: this.props.profile.featured
     });
+
+    ReactPixel.trackCustom("StartApplication", {
+      content_ids: [this.props.profile.id],
+      signed_in: !!this.props.isProbablyLoggedIn
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -282,6 +288,8 @@ class CreateApplication extends React.Component {
         from_application: true
       });
 
+      ReactPixel.track("CompleteRegistration");
+
       return response;
     });
   };
@@ -319,6 +327,13 @@ class CreateApplication extends React.Component {
             createAccount: true,
             auto: false
           });
+
+          ReactPixel.trackCustom("SubmitApplication", {
+            create_account: true,
+            auto: false,
+            content_ids: [this.props.profile.id]
+          });
+
           if (response) {
             return Router.pushRoute(`/a/${this.props.application.id}`);
           } else {
@@ -336,6 +351,12 @@ class CreateApplication extends React.Component {
               providers: _.keys(this.state.socialLinks),
               createAccount: false,
               auto: false
+            });
+
+            ReactPixel.trackCustom("SubmitApplication", {
+              create_account: false,
+              auto: false,
+              content_ids: [this.props.profile.id]
             });
 
             return Router.pushRoute(`/a/${this.props.application.id}`);

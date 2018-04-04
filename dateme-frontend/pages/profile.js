@@ -44,6 +44,7 @@ import Subheader from "../components/Subheader";
 import { animateScroll } from "react-scroll";
 import Linkify from "react-linkify";
 import ProfileComponent from "../components/Profile";
+import ReactPixel from "react-facebook-pixel";
 import { logEvent } from "../lib/analytics";
 import { hasMobileAppInstalled } from "../lib/applyMobileCookie";
 
@@ -89,6 +90,12 @@ class Profile extends React.Component {
     logEvent("View Profile", {
       profile: profile.id,
       featured: profile.featured || false
+    });
+
+    ReactPixel.track("ViewContent", {
+      content_name: profile.name,
+      content_category: "Profile",
+      content_ids: [profile.id]
     });
 
     this.setSelectedElementId();
