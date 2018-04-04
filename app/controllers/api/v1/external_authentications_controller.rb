@@ -128,6 +128,7 @@ class Api::V1::ExternalAuthenticationsController < Api::V1::ApplicationControlle
             token = auth.get_user.login_token
             redirect_to_frontend "/welcome?t=#{token}"
           else
+            auto_login(auth.get_user, true)
             redirect_to_frontend "/welcome"
           end
         elsif auth_params[:signIn] == 'true' && auth.get_user.blank?
