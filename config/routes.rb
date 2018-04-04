@@ -21,7 +21,7 @@ Rails.application.routes.draw do
       get 'locations' => 'locations#search'
 
       get '/feeds/:provider' => 'feeds#show'
-
+      get 'profiles/stats' => 'profiles#stats'
       get 'images/sign' => 'images#sign'
       resources :users
       post '/profiles/get' => 'profiles#show'

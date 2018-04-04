@@ -1,5 +1,5 @@
 class Api::V1::ProfilesController < Api::V1::ApplicationController
-  before_action :require_login, only: [:update, :shuffle]
+  before_action :require_login, only: [:update, :shuffle, :stats]
 
   def index
     if current_user.present?
@@ -21,6 +21,16 @@ class Api::V1::ProfilesController < Api::V1::ApplicationController
     else
       render_error(message: "No photos", status: 404)
     end
+  end
+
+  def stats
+    render json: {
+      data: {
+        views: current_profile.view_count,
+        asked_out: current_user.received_applications.count,
+        matches: current_user.received_applications.approved.count
+      }
+    }
   end
 
   def shuffle

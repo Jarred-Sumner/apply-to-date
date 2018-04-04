@@ -10,6 +10,10 @@ class Profile < ApplicationRecord
   has_many :views, class_name: 'ProfileView', foreign_key: 'profile_id'
   has_many :viewed, class_name: 'ProfileView', foreign_key: 'viewed_by_profile_id'
 
+  def view_count
+    views.where.not(viewed_by_profile_id: id).sum(:view_count)
+  end
+
   MINIMUM_DISTANCE_TO_REGION = 100.0
 
   enum region: {
