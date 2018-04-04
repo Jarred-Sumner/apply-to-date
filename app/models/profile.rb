@@ -31,7 +31,7 @@ class Profile < ApplicationRecord
   scope :matchmakable, lambda { visible.where(appear_in_matchmake: true) }
   scope :filled_out, lambda {where("array_length(photos, 1) >= 1 AND (#{Profile.sections_sql_selectors_not_empty} OR #{Profile.has_social_links_query})") }
 
-  scope :nearby, lambda { |profile| within(100, origin: [profile.latitude, profile.longitude]) }
+  scope :nearby, lambda { |profile| profile.latitude && profile.longitude ? within(100, origin: [profile.latitude, profile.longitude]) : where.not(id: nil) }
   scope :interested_in, lambda { |interested_in| where(Profile.build_interested_in_columns(interested_in)) }
   scope :sexually_compatible_with, lambda { |profile| interested_in(profile.sex).where(sex: profile.interested_in_sexes) }
   scope :compatible_with, lambda { |profile| sexually_compatible_with(profile).nearby(profile) }
