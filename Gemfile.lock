@@ -120,6 +120,9 @@ GEM
     execjs (2.7.0)
     faraday (0.12.2)
       multipart-post (>= 1.2, < 3)
+    faraday-manual-cache (0.1.1)
+      activesupport (>= 3.0.0)
+      faraday (~> 0.9)
     fast_jsonapi (1.0.17)
       activerecord (~> 5.0)
       activesupport (~> 5.0)
@@ -407,6 +410,7 @@ DEPENDENCIES
   capistrano3-unicorn
   capybara (~> 2.13)
   coffee-rails (~> 4.2)
+  faraday-manual-cache
   fast_jsonapi
   friendly_id (~> 5.1.0)
   geokit-rails

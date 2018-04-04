@@ -17,6 +17,8 @@ Rails.application.routes.draw do
       put 'applications/:id' => 'applications#update'
       post 'forgot-password' => 'forgot_passwords#create'
       post 'reset-password/:id' => 'reset_passwords#create'
+      get 'locations/:id' => 'locations#show'
+      get 'locations' => 'locations#search'
 
       get '/feeds/:provider' => 'feeds#show'
 

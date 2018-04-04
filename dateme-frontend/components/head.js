@@ -30,7 +30,10 @@ if (typeof window !== "undefined") {
   ReactGA.plugin.require("pageVisibilityTracker");
   ReactGA.plugin.require("socialWidgetTracker");
 
-  ReactPixel.init(process.env.FACEBOOK_PIXEL);
+  if (process.env.NODE_ENV === "production") {
+    ReactPixel.init(process.env.FACEBOOK_PIXEL);
+  }
+
   ReactGA.pageview(window.location.pathname);
   ReactPixel.pageView(window.location.pathname);
   var lastUrl = null;

@@ -47,6 +47,7 @@ gem 'premailer-rails'
 gem "letter_opener", :group => :development
 # Use Capistrano for deployment
 gem 'capistrano-rails', group: :development
+gem 'faraday-manual-cache'
 gem "sentry-raven"
 gem 'capistrano-rails-logs-tail'
 gem 'capistrano-passenger'
