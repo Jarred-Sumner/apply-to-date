@@ -5,6 +5,7 @@ class Profile < ApplicationRecord
   has_many :applications
   has_many :notifications, as: :notifiable
   has_many :external_authentications, through: :verified_networks
+  has_many :profile_posts
   has_many :reports, as: :reportable
   has_many :date_event_applications
   has_many :views, class_name: 'ProfileView', foreign_key: 'profile_id'
@@ -12,6 +13,10 @@ class Profile < ApplicationRecord
 
   def view_count
     views.where.not(viewed_by_profile_id: id).sum(:view_count)
+  end
+
+  def visible_profile_posts
+    profile_posts.visible
   end
 
   MINIMUM_DISTANCE_TO_REGION = 100.0

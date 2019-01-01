@@ -12,6 +12,7 @@ import TwitterViewer from "./TwitterViewer";
 import InstagramSection from "./InstagramSection";
 import Tag from "./Tag";
 import { COLORS } from "../helpers/styles";
+import ProfilePost from "./ProfilePost";
 
 const SECTION_ORDERING = [
   "introduction",
@@ -110,18 +111,17 @@ export default ({
         </div>
       </Waypoint>
 
-      {application &&
-        application.approved && (
-          <div className="Section-row">
-            <span>
-              <Icon inline type="check" size="14px" color={COLORS.BLUE} />
-              &nbsp;
-              <Text size="14px" color={COLORS.BLUE}>
-                {profile.name} agreed to go on a date with you
-              </Text>
-            </span>
-          </div>
-        )}
+      {application && application.approved && (
+        <div className="Section-row">
+          <span>
+            <Icon inline type="check" size="14px" color={COLORS.BLUE} />
+            &nbsp;
+            <Text size="14px" color={COLORS.BLUE}>
+              {profile.name} agreed to go on a date with you
+            </Text>
+          </span>
+        </div>
+      )}
     </section>
     {profile.photos.length > 1 && (
       <section className="Section">
@@ -133,8 +133,27 @@ export default ({
         />
       </section>
     )}
-    {!_.isEmpty(getParagraphs(profile)) && (
+
+    {(!_.isEmpty(getParagraphs(profile)) ||
+      !_.isEmpty(profile.profilePosts)) && (
       <section className="Section Section--bio">
+        {!_.isEmpty(profile.profilePosts) && (
+          <div className="ProfilePosts">
+            <Text className="Section-title" type="title">
+              What friends say
+            </Text>
+
+            {profile.profilePosts.map(profilePost => (
+              <div
+                key={profilePost.id}
+                className="Section-row Section-row--bio"
+              >
+                <ProfilePost profilePost={profilePost} />
+              </div>
+            ))}
+          </div>
+        )}
+
         {getParagraphs(profile).map(paragraph => {
           return (
             <div key={paragraph.key} className="Section-row Section-row--bio">

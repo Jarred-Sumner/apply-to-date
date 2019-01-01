@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  body: MyText
+  author_token: MyString
+  author: one
+  profile: one
+  visible: false
+
+two:
+  body: MyText
+  author_token: MyString
+  author: two
+  profile: two
+  visible: false

@@ -12,11 +12,7 @@ class LoggedInUserRedirector extends React.Component {
       return;
     }
 
-    if (this.props.currentUser.shuffleStatus === "shuffle_allowed") {
-      return Router.replaceRoute("/shuffle");
-    } else {
-      return Router.replaceRoute("/matchmake");
-    }
+    Router.replaceRoute(`/${this.props.currentProfile.username}`);
   }
 
   render() {

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180331003216) do
+ActiveRecord::Schema.define(version: 20190101062631) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -215,6 +215,22 @@ ActiveRecord::Schema.define(version: 20180331003216) do
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
+  create_table "profile_posts", force: :cascade do |t|
+    t.text "body", null: false
+    t.string "author_token", null: false
+    t.string "author_name", null: false
+    t.string "author_email"
+    t.string "author_photo", null: false
+    t.uuid "author_id"
+    t.citext "profile_id"
+    t.boolean "visible", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_profile_posts_on_author_id"
+    t.index ["author_token"], name: "index_profile_posts_on_author_token", unique: true
+    t.index ["profile_id"], name: "index_profile_posts_on_profile_id"
+  end
+
   create_table "profile_views", force: :cascade do |t|
     t.citext "profile_id"
     t.uuid "user_id"
@@ -343,6 +359,8 @@ ActiveRecord::Schema.define(version: 20180331003216) do
   add_foreign_key "matchmakes", "profiles", column: "left_profile_id"
   add_foreign_key "matchmakes", "profiles", column: "right_profile_id"
   add_foreign_key "notifications", "users"
+  add_foreign_key "profile_posts", "profiles"
+  add_foreign_key "profile_posts", "users", column: "author_id"
   add_foreign_key "profile_views", "profiles"
   add_foreign_key "profile_views", "profiles", column: "viewed_by_profile_id"
   add_foreign_key "profile_views", "users"

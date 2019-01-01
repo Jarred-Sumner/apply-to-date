@@ -21,6 +21,7 @@ import ProfileMenu from "./ProfileMenu";
 import { setIsMobile } from "../lib/Mobile";
 import { defaultProps } from "recompose";
 import { isDatesEnabled } from "../helpers/dateEvent";
+import { buildImgSrcSet, buildImgSrc } from "../lib/imgUri";
 
 class _SwitcherItemComponent extends React.Component {
   get textType() {
@@ -136,32 +137,6 @@ const SwitcherItem = defaultProps({ prefetch: true })(
   ActiveLink(_SwitcherItemComponent)
 );
 
-const Switcher = withRouter(
-  ({ router, profileId, isMobile, showDates = false }) => (
-    <div className="Wrapper">
-      <div className="Switcher">
-        <SwitcherItem isMobile={isMobile} href={buildProfileURL(profileId)}>
-          @{profileId}
-        </SwitcherItem>
-
-        <style jsx>{`
-          .Switcher {
-            display: grid;
-            justify-content: center;
-            align-items: center;
-            grid-area: "center";
-            border: 1px solid #dcdfe8;
-            align-self: center;
-
-            border-radius: 28px;
-            position: relative;
-          }
-        `}</style>
-      </div>
-    </div>
-  )
-);
-
 const NavLink = ActiveLink(({ children, href, isActive, onClick }) => {
   return (
     <a
@@ -192,6 +167,38 @@ const NavLink = ActiveLink(({ children, href, isActive, onClick }) => {
     </a>
   );
 });
+
+const Switcher = withRouter(
+  ({ router, username, isMobile, photo, showDates = false }) => (
+    <NavLink isActive href={buildProfileURL(username)}>
+      <div className="ProfileLink">
+        <img
+          className="AvatarProfile"
+          src={buildImgSrc(photo, 24)}
+          srcSet={buildImgSrcSet(photo, 24)}
+          width={24}
+          height={24}
+        />
+
+        <Divider color="transparent" width="8px" height="1px" />
+        <Text weight="semiBold" size="14px">
+          @{username}
+        </Text>
+      </div>
+      <style jsx>{`
+        .ProfileLink {
+          display: flex;
+          align-items: center;
+        }
+
+        .AvatarProfile {
+          border-radius: 50%;
+          overflow: hidden;
+        }
+      `}</style>
+    </NavLink>
+  )
+);
 
 const HeaderLinks = ({ isProbablyLoggedIn, currentUser, isMobile }) => {
   if (isProbablyLoggedIn) {
@@ -336,8 +343,8 @@ class Header extends React.Component {
       showChildren = true,
       pending = false,
       renderSubheader,
-      currentUser,
-      children
+      children,
+      currentProfile
     } = this.props;
 
     const { isHamburgerOpen, stickyStatus } = this.state;
@@ -357,7 +364,8 @@ class Header extends React.Component {
               {showChildren && !children ? (
                 this.props.isProbablyLoggedIn ? (
                   <Switcher
-                    profileId={_.get(currentUser, "username")}
+                    username={_.get(currentProfile, "id")}
+                    photo={_.first(_.get(currentProfile, "photos") || [])}
                     isMobile={isMobile}
                   />
                 ) : (
