@@ -16,7 +16,7 @@ import Divider from "./Divider";
 import classNames from "classnames";
 import _ from "lodash";
 import { Router } from "../routes";
-import { buildEditProfileURL } from "../lib/routeHelpers";
+import { buildEditProfileURL, buildProfileURL } from "../lib/routeHelpers";
 import ProfileMenu from "./ProfileMenu";
 import { setIsMobile } from "../lib/Mobile";
 import { defaultProps } from "recompose";
@@ -51,7 +51,7 @@ class _SwitcherItemComponent extends React.Component {
           "SwitcherItem--inactive": !isActive
         })}
       >
-        <Icon type={iconType} size="17px" />
+        {iconType && <Icon type={iconType} size="17px" />}
         {!isMobile && (
           <div className="TextWrapper">
             <Text type={this.textType}>{children}</Text>
@@ -136,64 +136,31 @@ const SwitcherItem = defaultProps({ prefetch: true })(
   ActiveLink(_SwitcherItemComponent)
 );
 
-const Switcher = withRouter(({ router, isMobile, showDates = false }) => (
-  <div className="Wrapper">
-    <div className="Switcher">
-      <SwitcherItem
-        first
-        isMobile={isMobile}
-        href={"/shuffle"}
-        iconType="shuffle"
-      >
-        Shuffle
-      </SwitcherItem>
+const Switcher = withRouter(
+  ({ router, profileId, isMobile, showDates = false }) => (
+    <div className="Wrapper">
+      <div className="Switcher">
+        <SwitcherItem isMobile={isMobile} href={buildProfileURL(profileId)}>
+          @{profileId}
+        </SwitcherItem>
 
-      <Divider height="100%" color="#dcdfe8" width="1px" />
+        <style jsx>{`
+          .Switcher {
+            display: grid;
+            justify-content: center;
+            align-items: center;
+            grid-area: "center";
+            border: 1px solid #dcdfe8;
+            align-self: center;
 
-      {showDates && (
-        <React.Fragment>
-          <SwitcherItem
-            isMobile={isMobile}
-            href={"/dates"}
-            additionalMatches={[/dates\/.*/]}
-            iconType="date"
-          >
-            Dates
-          </SwitcherItem>
-
-          <Divider height="100%" color="#dcdfe8" width="1px" />
-        </React.Fragment>
-      )}
-
-      <SwitcherItem
-        last
-        isMobile={isMobile}
-        href={"/matchmake"}
-        iconType="matchmake"
-      >
-        Matchmake
-      </SwitcherItem>
-
-      <style jsx>{`
-        .Switcher {
-          display: grid;
-          justify-content: center;
-          align-items: center;
-          grid-area: "center";
-          grid-auto-flow: column;
-          grid-template-columns: ${showDates
-            ? "1fr 1px 1fr 1px 1fr"
-            : "1fr 1px 1fr"};
-          border: 1px solid #dcdfe8;
-          align-self: center;
-
-          border-radius: 28px;
-          position: relative;
-        }
-      `}</style>
+            border-radius: 28px;
+            position: relative;
+          }
+        `}</style>
+      </div>
     </div>
-  </div>
-));
+  )
+);
 
 const NavLink = ActiveLink(({ children, href, isActive, onClick }) => {
   return (
@@ -369,6 +336,7 @@ class Header extends React.Component {
       showChildren = true,
       pending = false,
       renderSubheader,
+      currentUser,
       children
     } = this.props;
 
@@ -389,7 +357,7 @@ class Header extends React.Component {
               {showChildren && !children ? (
                 this.props.isProbablyLoggedIn ? (
                   <Switcher
-                    showDates={isDatesEnabled(this.props.currentProfile)}
+                    profileId={_.get(currentUser, "username")}
                     isMobile={isMobile}
                   />
                 ) : (
