@@ -361,17 +361,7 @@ class Header extends React.Component {
             <header>
               <Brand hideText={isMobile} />
 
-              {showChildren && !children ? (
-                this.props.isProbablyLoggedIn ? (
-                  <Switcher
-                    username={_.get(currentProfile, "id")}
-                    photo={_.first(_.get(currentProfile, "photos") || [])}
-                    isMobile={isMobile}
-                  />
-                ) : (
-                  <div />
-                )
-              ) : null}
+              {showChildren && !children && <div />}
               {showChildren && children}
               <div className="RightSide">
                 <BurgerIcon
