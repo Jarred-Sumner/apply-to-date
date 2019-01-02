@@ -13,29 +13,29 @@ const LINKEDIN_REGEX = /((https?:\/\/)?((www|\w\w)\.)?linkedin\.com\/)((([\w]{2,
 const URL_ONLY_PROVIDERS = ["linkedin", "facebook"];
 
 const LABEL_BY_PROVIDER = {
-  snapchat: "Add your Snapchat",
-  facebook: "Add your Facebook",
-  medium: "Add your Medium",
-  instagram: "Add your Instagram",
-  linkedin: "Add your LinkedIn",
-  dribbble: "Add your Dribbble",
-  twitter: "Add your Twitter",
-  youtube: "Add your YouTube",
-  quora: "Add your Quora"
+  snapchat: "Add Snapchat",
+  facebook: "Add Facebook",
+  medium: "Add Medium",
+  instagram: "Add Instagram",
+  linkedin: "Add LinkedIn",
+  dribbble: "Add Dribbble",
+  twitter: "Add Twitter",
+  youtube: "Add YouTube",
+  quora: "Add Quora"
 };
 
 const PLACEHOLDER_BY_PROVIDER = {
   facebook:
-    "your facebook url e.g. https://facebook.com/facebook.username (full url)",
-  snapchat: "your snapchat username e.g. snapchat.username (no @ sign)",
-  instagram: "your instagram username e.g. jarredsumner (no @ sign)",
+    "facebook url e.g. https://facebook.com/facebook.username (full url)",
+  snapchat: "snapchat username e.g. snapchat.username (no @ sign)",
+  instagram: "instagram username e.g. jarredsumner (no @ sign)",
   linkedin:
-    "your linkedin url e.g. https://www.linkedin.com/in/jarred-sumner-a8772425/ (full url)",
-  dribbble: "your dribbble username e.g. username",
-  medium: "your medium username e.g. @jarredsumner",
-  twitter: "your twitter handle e.g. @jarredsumner",
-  youtube: "your youtube username e.g. jarredsumner",
-  quora: "your quora username e.g. Lucy-Guo"
+    "linkedin url e.g. https://www.linkedin.com/in/jarred-sumner-a8772425/ (full url)",
+  dribbble: "dribbble username e.g. username",
+  medium: "medium username e.g. @jarredsumner",
+  twitter: "twitter handle e.g. @jarredsumner",
+  youtube: "youtube username e.g. jarredsumner",
+  quora: "quora username e.g. Lucy-Guo"
 };
 
 const DEFAULT_BY_PROVIDER = {

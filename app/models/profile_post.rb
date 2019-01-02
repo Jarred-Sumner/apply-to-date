@@ -1,5 +1,5 @@
 class ProfilePost < ApplicationRecord
-  belongs_to :author, optional: true
+  belongs_to :author, optional: true, class_name: 'User'
   belongs_to :profile
 
   before_validation on: :create do
@@ -7,4 +7,5 @@ class ProfilePost < ApplicationRecord
   end
 
   scope :visible, lambda { where(visible: true) }
+  validates :body, presence: true
 end

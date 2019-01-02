@@ -172,7 +172,7 @@ class SignupType extends React.PureComponent {
         <Head title="Create a profile | Apply to Date" />
         <Page>
           <main>
-            <Text type="PageTitle">Create a profile for:</Text>
+            <Text type="PageTitle">Create a page for:</Text>
 
             <div className="Row">
               <div className="Column">
@@ -186,7 +186,7 @@ class SignupType extends React.PureComponent {
                 </Link>
               </div>
               <div className="Column">
-                <Link href="/sign-up/friend">
+                <Link href="/sign-up/for-friend">
                   <a className="ColumnCard">
                     <FriendIcon />
                     <Text weight="bold" size="28px">

@@ -1,5 +1,6 @@
 class Profile < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, optional: true
+  belongs_to :posted_by, optional: true, class_name: 'ProfilePost'
   validates :id, presence: true, uniqueness: true
   has_many :verified_networks
   has_many :applications

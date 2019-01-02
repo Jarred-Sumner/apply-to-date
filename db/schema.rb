@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190101062631) do
+ActiveRecord::Schema.define(version: 20190101231529) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -274,6 +274,8 @@ ActiveRecord::Schema.define(version: 20190101062631) do
     t.boolean "appear_in_matchmake", default: true, null: false
     t.date "birthday"
     t.integer "region"
+    t.boolean "claimed", default: true, null: false
+    t.bigint "posted_by_id"
     t.index ["appear_in_discover"], name: "index_profiles_on_appear_in_discover"
     t.index ["appear_in_matchmake"], name: "index_profiles_on_appear_in_matchmake"
     t.index ["featured"], name: "index_profiles_on_featured"
@@ -281,6 +283,7 @@ ActiveRecord::Schema.define(version: 20190101062631) do
     t.index ["interested_in_other"], name: "index_profiles_on_interested_in_other"
     t.index ["interested_in_women"], name: "index_profiles_on_interested_in_women"
     t.index ["latitude", "longitude"], name: "index_profiles_on_latitude_and_longitude"
+    t.index ["posted_by_id"], name: "index_profiles_on_posted_by_id"
     t.index ["sex"], name: "index_profiles_on_sex"
     t.index ["user_id"], name: "index_profiles_on_user_id"
   end
@@ -365,6 +368,7 @@ ActiveRecord::Schema.define(version: 20190101062631) do
   add_foreign_key "profile_views", "profiles", column: "viewed_by_profile_id"
   add_foreign_key "profile_views", "users"
   add_foreign_key "profile_views", "users", column: "viewed_by_user_id"
+  add_foreign_key "profiles", "profile_posts", column: "posted_by_id"
   add_foreign_key "profiles", "users"
   add_foreign_key "reports", "users"
   add_foreign_key "verified_networks", "applications"

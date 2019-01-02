@@ -18,6 +18,11 @@ routes
     pattern: "/sign-up/type"
   })
   .add({
+    name: "CreateFriendProfile",
+    page: "CreateFriendProfile",
+    pattern: "/sign-up/for-friend"
+  })
+  .add({
     name: "notifications",
     pattern: "/notifications",
     page: "Notifications"
